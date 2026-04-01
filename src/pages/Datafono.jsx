@@ -45,11 +45,10 @@ export default function Datafono() {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/30">
       {/* Header */}
       <div
-        className="sticky top-0 z-20 backdrop-blur-md border-b border-border/60"
-        style={{ background: "hsla(230,25%,8%,0.92)" }}
+        className="sticky top-0 z-20 border-b border-border bg-white"
       >
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -58,10 +57,9 @@ export default function Datafono() {
             </Link>
             <PopsyLogo size="small" />
           </div>
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full"
-            style={{ background: "hsla(210,90%,60%,0.15)", border: "1px solid hsla(210,90%,60%,0.3)" }}>
-            <CreditCard className="w-4 h-4" style={{ color: "hsl(210,90%,65%)" }} />
-            <span className="text-sm font-black" style={{ color: "hsl(210,90%,65%)" }}>DATÁFONO</span>
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200">
+            <CreditCard className="w-4 h-4 text-blue-600" />
+            <span className="text-sm font-black text-blue-600">DATÁFONO</span>
           </div>
         </div>
 
@@ -69,45 +67,31 @@ export default function Datafono() {
         <div className="max-w-2xl mx-auto px-4 pb-3 flex gap-2">
           <button
             onClick={() => setActiveTab("cobrar")}
-            className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all ${
+            className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all border ${
               activeTab === "cobrar"
-                ? "text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-blue-600 text-white border-blue-600"
+                : "bg-white text-muted-foreground border-border hover:text-foreground"
             }`}
-            style={activeTab === "cobrar" ? {
-              background: "linear-gradient(135deg, hsl(210,90%,50%), hsl(230,90%,50%))",
-              boxShadow: "0 0 14px hsla(210,90%,50%,0.4)"
-            } : {
-              background: "hsl(var(--card))",
-              border: "1px solid hsl(var(--border))"
-            }}
           >
             💳 Cobrar tarjeta
             {pendingOrders.length > 0 && (
-              <span className="ml-2 bg-primary text-primary-foreground text-xs rounded-full px-1.5 py-0.5">
+              <span className="ml-2 bg-primary text-white text-xs rounded-full px-1.5 py-0.5">
                 {pendingOrders.length}
               </span>
             )}
           </button>
           <button
             onClick={() => setActiveTab("facturado")}
-            className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all ${
+            className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all border ${
               activeTab === "facturado"
-                ? "text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-green-600 text-white border-green-600"
+                : "bg-white text-muted-foreground border-border hover:text-foreground"
             }`}
-            style={activeTab === "facturado" ? {
-              background: "linear-gradient(135deg, hsl(162,72%,38%), hsl(162,72%,30%))",
-              boxShadow: "0 0 14px hsla(162,72%,45%,0.4)"
-            } : {
-              background: "hsl(var(--card))",
-              border: "1px solid hsl(var(--border))"
-            }}
           >
             <CheckCircle2 className="w-3.5 h-3.5 inline mr-1" />
             Tarjeta facturado
             {tarjetaOrders.length > 0 && (
-              <span className="ml-2 bg-accent text-accent-foreground text-xs rounded-full px-1.5 py-0.5">
+              <span className="ml-2 bg-accent text-white text-xs rounded-full px-1.5 py-0.5">
                 {tarjetaOrders.length}
               </span>
             )}
@@ -115,7 +99,7 @@ export default function Datafono() {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-4 space-y-4">
+      <div className="max-w-2xl mx-auto px-4 py-4 space-y-4 bg-background min-h-screen">
         {activeTab === "cobrar" && (
           <>
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
@@ -127,11 +111,7 @@ export default function Datafono() {
                 order={order}
                 actions={
                   <Button
-                    className="w-full font-black rounded-xl h-12 text-white"
-                    style={{
-                      background: "linear-gradient(135deg, hsl(210,90%,50%), hsl(230,80%,55%))",
-                      boxShadow: "0 0 12px hsla(210,90%,50%,0.4)"
-                    }}
+                    className="w-full font-black rounded-xl h-12 bg-blue-600 hover:bg-blue-700 text-white"
                     onClick={() => markTarjeta.mutate({ id: order.id })}
                     disabled={markTarjeta.isPending}
                   >
@@ -153,14 +133,8 @@ export default function Datafono() {
 
         {activeTab === "facturado" && (
           <>
-            <div
-              className="rounded-2xl p-4 mb-2"
-              style={{
-                background: "linear-gradient(135deg, hsla(162,72%,18%,0.8), hsla(162,72%,12%,0.8))",
-                border: "1px solid hsla(162,72%,40%,0.3)"
-              }}
-            >
-              <p className="text-sm font-bold" style={{ color: "hsl(162,72%,65%)" }}>
+            <div className="rounded-2xl p-4 mb-2 bg-green-50 border border-green-200">
+              <p className="text-sm font-bold text-green-700">
                 ✅ Estos pedidos ya fueron cobrados con tarjeta y están esperando factura en caja.
                 El cajero debe facturarlos manualmente.
               </p>

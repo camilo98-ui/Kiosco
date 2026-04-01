@@ -8,52 +8,72 @@
   :root {
     --font-nunito: 'Nunito', sans-serif;
 
-    /* Paleta oscura vibrante tipo KDS/Génesis */
-    --background: 230 25% 8%;
-    --foreground: 45 100% 95%;
-    --card: 230 22% 13%;
-    --card-foreground: 45 100% 95%;
-    --popover: 230 22% 13%;
-    --popover-foreground: 45 100% 95%;
+    /* Paleta Popsy oficial — blanco + fucsia + pasteles */
+    --background: 0 0% 98%;
+    --foreground: 340 15% 18%;
 
-    /* Popsy Yellow */
-    --primary: 42 100% 55%;
-    --primary-foreground: 230 25% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 340 15% 18%;
 
-    /* Hot pink / magenta */
-    --secondary: 338 90% 58%;
-    --secondary-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 15% 18%;
 
-    /* Mint green */
-    --accent: 162 72% 48%;
-    --accent-foreground: 0 0% 100%;
+    /* Fucsia Popsy principal */
+    --primary: 338 82% 44%;
+    --primary-foreground: 0 0% 100%;
 
-    --muted: 230 20% 18%;
-    --muted-foreground: 230 15% 55%;
+    /* Rosa suave secundario */
+    --secondary: 338 70% 92%;
+    --secondary-foreground: 338 82% 35%;
+
+    /* Menta/teal acento */
+    --accent: 174 45% 72%;
+    --accent-foreground: 174 45% 20%;
+
+    --muted: 340 20% 95%;
+    --muted-foreground: 340 10% 50%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 230 20% 20%;
-    --input: 230 20% 20%;
-    --ring: 42 100% 55%;
+    --border: 340 20% 90%;
+    --input: 340 20% 90%;
+    --ring: 338 82% 44%;
 
-    --chart-1: 42 100% 55%;
-    --chart-2: 338 90% 58%;
-    --chart-3: 162 72% 48%;
-    --chart-4: 210 90% 60%;
-    --chart-5: 280 75% 65%;
+    --chart-1: 338 82% 44%;
+    --chart-2: 174 45% 65%;
+    --chart-3: 45 80% 75%;
+    --chart-4: 338 50% 80%;
+    --chart-5: 200 55% 70%;
 
     --radius: 0.85rem;
 
-    --sidebar-background: 230 25% 6%;
-    --sidebar-foreground: 45 100% 95%;
-    --sidebar-primary: 42 100% 55%;
-    --sidebar-primary-foreground: 230 25% 8%;
-    --sidebar-accent: 230 20% 16%;
-    --sidebar-accent-foreground: 45 100% 95%;
-    --sidebar-border: 230 20% 18%;
-    --sidebar-ring: 42 100% 55%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 340 15% 18%;
+    --sidebar-primary: 338 82% 44%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 340 20% 95%;
+    --sidebar-accent-foreground: 340 15% 18%;
+    --sidebar-border: 340 20% 90%;
+    --sidebar-ring: 338 82% 44%;
+  }
+
+  .dark {
+    --background: 0 0% 98%;
+    --foreground: 340 15% 18%;
+    --card: 0 0% 100%;
+    --card-foreground: 340 15% 18%;
+    --primary: 338 82% 44%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 338 70% 92%;
+    --secondary-foreground: 338 82% 35%;
+    --accent: 174 45% 72%;
+    --accent-foreground: 174 45% 20%;
+    --muted: 340 20% 95%;
+    --muted-foreground: 340 10% 50%;
+    --border: 340 20% 90%;
+    --input: 340 20% 90%;
+    --ring: 338 82% 44%;
   }
 }
 
@@ -66,19 +86,15 @@
   }
 }
 
-/* Custom scrollbar */
+/* Scrollbar mínimo */
 ::-webkit-scrollbar { width: 3px; height: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
 
-/* Glow effects */
-.glow-yellow { box-shadow: 0 0 20px hsla(42, 100%, 55%, 0.35); }
-.glow-pink   { box-shadow: 0 0 20px hsla(338, 90%, 58%, 0.35); }
-.glow-green  { box-shadow: 0 0 20px hsla(162, 72%, 48%, 0.35); }
-
-/* Glass card */
-.glass {
-  background: hsla(230, 22%, 13%, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid hsla(230, 20%, 28%, 0.6);
-}
+/* Colores pastel para categorías — igual que la imagen */
+.cat-mint    { background: #B2DFD8; }
+.cat-cream   { background: #F0EAD6; }
+.cat-yellow  { background: #F9E4A0; }
+.cat-pink    { background: #F7C5D0; }
+.cat-lavender{ background: #D4C5E2; }
+.cat-sky     { background: #BDE3F0; }

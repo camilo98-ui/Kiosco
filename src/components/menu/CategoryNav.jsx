@@ -25,20 +25,13 @@ export default function CategoryNav({ activeCategory, onSelect }) {
           key={cat.id}
           ref={activeCategory === cat.id ? activeRef : null}
           onClick={() => onSelect(cat.id)}
-          className={`flex flex-col items-center gap-0.5 px-4 py-2 rounded-2xl whitespace-nowrap text-xs font-bold transition-all shrink-0
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-full whitespace-nowrap text-sm font-bold transition-all shrink-0 border
             ${activeCategory === cat.id
-              ? "text-primary-foreground scale-105"
-              : "text-muted-foreground hover:text-foreground"
+              ? "bg-primary text-primary-foreground border-primary shadow-sm"
+              : "bg-white text-foreground border-border hover:border-primary/40 hover:text-primary"
             }`}
-          style={activeCategory === cat.id ? {
-            background: "linear-gradient(135deg, hsl(42,100%,55%) 0%, hsl(32,100%,55%) 100%)",
-            boxShadow: "0 0 14px hsla(42,100%,55%,0.4)"
-          } : {
-            background: "hsl(var(--card))",
-            border: "1px solid hsl(var(--border))"
-          }}
         >
-          <span className="text-base">{cat.emoji}</span>
+          <span>{cat.emoji}</span>
           <span>{cat.label}</span>
         </button>
       ))}

@@ -13,35 +13,31 @@ export default function UpsellBanner({ message, onDismiss, onAccept }) {
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           className="fixed bottom-24 left-4 right-4 z-40 max-w-lg mx-auto"
         >
-          <div className="rounded-2xl p-4 flex items-center gap-3 shadow-2xl glow-pink"
+          <div
+            className="rounded-2xl p-4 flex items-center gap-3 shadow-lg border"
             style={{
-              background: "linear-gradient(135deg, hsl(338,90%,28%) 0%, hsl(280,70%,22%) 100%)",
-              border: "1px solid hsla(338,90%,58%,0.4)"
+              background: "white",
+              borderColor: "hsl(338,82%,44%)",
+              borderWidth: "1.5px"
             }}
           >
             <div className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center"
-              style={{ background: "hsla(338,90%,58%,0.25)" }}>
-              <Sparkles className="w-5 h-5" style={{ color: "hsl(338,90%,70%)" }} />
+              style={{ background: "hsl(338,70%,92%)" }}>
+              <Sparkles className="w-5 h-5 text-primary" />
             </div>
-            <p className="font-bold text-sm flex-1 text-white">{message}</p>
+            <p className="font-bold text-sm flex-1 text-foreground">{message}</p>
             <div className="flex gap-2 shrink-0">
               <button
                 onClick={onAccept}
-                className="font-black px-4 py-2 rounded-xl text-sm transition-all hover:scale-105 active:scale-95"
-                style={{
-                  background: "hsl(338,90%,58%)",
-                  color: "white",
-                  boxShadow: "0 0 12px hsla(338,90%,58%,0.5)"
-                }}
+                className="font-black px-4 py-2 rounded-xl text-sm bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
               >
-                ¡Sí! ✨
+                ¡Sí!
               </button>
               <button
                 onClick={onDismiss}
-                className="w-8 h-8 rounded-full flex items-center justify-center hover:opacity-70 transition-opacity"
-                style={{ background: "hsla(0,0%,100%,0.1)" }}
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-muted transition-colors"
               >
-                <X className="w-4 h-4 text-white/70" />
+                <X className="w-4 h-4 text-muted-foreground" />
               </button>
             </div>
           </div>

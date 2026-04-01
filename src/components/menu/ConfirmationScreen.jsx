@@ -8,7 +8,7 @@ export default function ConfirmationScreen({ order, onNewOrder }) {
   useEffect(() => {
     const duration = 2500;
     const end = Date.now() + duration;
-    const colors = ["#F5A623", "#E91E8C", "#26C485", "#3B82F6", "#F59E0B"];
+    const colors = ["#C8145C", "#F7C5D0", "#B2DFD8", "#F9E4A0", "#D4C5E2"];
     const frame = () => {
       confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, colors });
       confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, colors });
@@ -18,9 +18,7 @@ export default function ConfirmationScreen({ order, onNewOrder }) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 text-center"
-      style={{ background: "hsl(230,25%,8%)" }}>
-
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 text-center bg-white">
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -36,12 +34,8 @@ export default function ConfirmationScreen({ order, onNewOrder }) {
         transition={{ delay: 0.3 }}
         className="space-y-4 max-w-sm w-full"
       >
-        {/* Número de pedido */}
-        <div
-          className="inline-block rounded-3xl px-10 py-4 glow-yellow"
-          style={{ background: "linear-gradient(135deg, hsl(42,100%,52%), hsl(32,100%,52%))" }}
-        >
-          <p className="text-5xl font-black text-primary-foreground">#{order.order_number}</p>
+        <div className="inline-block rounded-3xl px-10 py-4 bg-primary">
+          <p className="text-5xl font-black text-white">#{order.order_number}</p>
         </div>
 
         <h1 className="text-2xl font-black leading-tight text-foreground">
@@ -53,11 +47,7 @@ export default function ConfirmationScreen({ order, onNewOrder }) {
           ¡Gracias por elegir Popsy! 💛
         </p>
 
-        {/* Resumen */}
-        <div
-          className="rounded-2xl p-4 text-left space-y-2 border border-border/60"
-          style={{ background: "hsl(var(--card))" }}
-        >
+        <div className="rounded-2xl p-4 text-left space-y-2 border border-border bg-muted/30">
           <p className="font-black text-xs text-muted-foreground uppercase tracking-wider mb-2">Tu pedido</p>
           {order.items.map((item, i) => (
             <div key={i} className="flex justify-between text-sm">
@@ -65,17 +55,13 @@ export default function ConfirmationScreen({ order, onNewOrder }) {
               <span className="font-bold text-foreground">{formatCOP(item.price * item.quantity)}</span>
             </div>
           ))}
-          <div className="border-t border-border/60 pt-2 flex justify-between font-black">
+          <div className="border-t border-border pt-2 flex justify-between font-black">
             <span className="text-muted-foreground">Total</span>
             <span className="text-primary">{formatCOP(order.total)}</span>
           </div>
         </div>
 
-        {/* Info */}
-        <div
-          className="rounded-2xl p-4"
-          style={{ background: "hsla(42,100%,55%,0.1)", border: "1px solid hsla(42,100%,55%,0.2)" }}
-        >
+        <div className="rounded-2xl p-4 border border-primary/20 bg-secondary/30">
           <p className="font-bold text-sm text-foreground">
             📍 Preséntate en caja con tu número{" "}
             <span className="text-primary font-black">#{order.order_number}</span>
@@ -84,11 +70,7 @@ export default function ConfirmationScreen({ order, onNewOrder }) {
 
         <Button
           onClick={onNewOrder}
-          className="w-full h-14 text-base font-black rounded-2xl glow-yellow"
-          style={{
-            background: "linear-gradient(135deg, hsl(42,100%,52%), hsl(32,100%,52%))",
-            color: "hsl(230,25%,8%)"
-          }}
+          className="w-full h-14 text-base font-black rounded-2xl bg-primary hover:bg-primary/90 text-white"
         >
           Hacer otro pedido 🍦
         </Button>

@@ -11,11 +11,10 @@ export default function ProductCard({ product, onAdd }) {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      whileTap={isAvailable ? { scale: 0.98 } : {}}
-      className={`relative flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 transition-all
+      className={`relative flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 bg-white transition-all
         ${isAvailable
-          ? "bg-card border-border hover:border-primary/40 hover:bg-card/80 cursor-pointer"
-          : "bg-card/40 border-border/40 opacity-50"
+          ? "border-border hover:border-primary/30 hover:shadow-sm cursor-pointer"
+          : "border-border/50 opacity-50"
         }`}
       onClick={isAvailable ? () => onAdd(product) : undefined}
     >
@@ -41,7 +40,7 @@ export default function ProductCard({ product, onAdd }) {
       {isAvailable && (
         <button
           onClick={(e) => { e.stopPropagation(); onAdd(product); }}
-          className="shrink-0 w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition-transform glow-yellow"
+          className="shrink-0 w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm hover:scale-110 active:scale-95 transition-transform"
         >
           <Plus className="w-4 h-4" />
         </button>

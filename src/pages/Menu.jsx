@@ -127,20 +127,20 @@ export default function Menu() {
   const categoryProducts = productsByCategory[activeCategory] || [];
 
   return (
-    <div className="min-h-screen bg-background pb-28">
-      {/* Header con logo flotante */}
+    <div className="min-h-screen pb-28" style={{ background: "#f9f6f7" }}>
+      {/* Header fucsia Popsy */}
       <div
-        className="sticky top-0 z-20 backdrop-blur-md border-b border-border/60"
-        style={{ background: "hsla(230,25%,8%,0.92)" }}
+        className="sticky top-0 z-20 border-b border-primary/20"
+        style={{ background: "hsl(338,82%,44%)" }}
       >
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <PopsyLogo onClick={handleLogoClick} />
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-muted-foreground">El sabor de la felicidad</span>
+            <span className="text-xs font-bold text-white/80">Helado Gourmet</span>
             <span className="text-lg">🍦</span>
           </div>
         </div>
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto" style={{ background: "white" }}>
           <CategoryNav activeCategory={activeCategory} onSelect={setActiveCategory} />
         </div>
       </div>
