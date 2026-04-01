@@ -13,7 +13,7 @@ export default function PopsyLogo({ onClick, size = "normal", floating = false }
       <img
         src={LOGO_URL}
         alt="Popsy"
-        className={`${imgSize} w-auto object-contain`}
+        className={`${imgSize} w-auto object-contain brightness-0 invert`}
       />
     </button>
   );
