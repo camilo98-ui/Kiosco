@@ -25,7 +25,15 @@ export default function ProductCard({ product, onAdd }) {
       )}
 
       <div className="flex items-center gap-3 flex-1 min-w-0">
-        <span className="text-2xl shrink-0">{product.emoji || "🍦"}</span>
+        {product.image_url ? (
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="w-14 h-14 object-cover rounded-xl shrink-0"
+          />
+        ) : (
+          <span className="text-2xl shrink-0">{product.emoji || "🍦"}</span>
+        )}
         <div className="min-w-0">
           <p className={`font-semibold text-sm leading-tight ${!isAvailable ? "line-through text-muted-foreground" : "text-foreground"}`}>
             {product.name}
