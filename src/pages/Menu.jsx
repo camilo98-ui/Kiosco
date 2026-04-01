@@ -9,6 +9,7 @@ import UpsellBanner from "@/components/menu/UpsellBanner";
 import CheckoutDialog from "@/components/menu/CheckoutDialog";
 import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
+import AdditionsUpsell from "@/components/menu/AdditionsUpsell";
 import { useCart } from "@/lib/cartStore";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
 import { Loader2, Sparkles } from "lucide-react";
@@ -22,7 +23,9 @@ export default function Menu() {
   const [confirmedOrder, setConfirmedOrder] = useState(null);
   const [hiddenMenuOpen, setHiddenMenuOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [addedFlash, setAddedFlash] = useState(null); // product id flash
+  const [addedFlash, setAddedFlash] = useState(null);
+  const [lastAdded, setLastAdded] = useState(null);
+  const [showAdditionsUpsell, setShowAdditionsUpsell] = useState(false);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -68,15 +71,24 @@ export default function Menu() {
       setAddedFlash(product.id);
       setTimeout(() => setAddedFlash(null), 600);
 
-      // Upsell estratégico: no mostrar si ya hay uno activo
-      clearTimeout(upsellTimer.current);
+      // Upsell de adiciones: mostrar si el producto NO es ya una adición
+      if (product.category !== "adiciones") {
+        clearTimeout(upsellTimer.current);
+        setShowAdditionsUpsell(false);
+        upsellTimer.current = setTimeout(() => {
+          setLastAdded(product);
+          setShowAdditionsUpsell(true);
+          // Auto-dismiss después de 8 segundos
+          setTimeout(() => setShowAdditionsUpsell(false), 8000);
+        }, 700);
+      }
+
+      // Upsell de categoría (banner pequeño)
       const rule = UPSELL_RULES[product.category];
-      if (rule) {
-        // Pequeño delay para que se sienta natural, no inmediato
+      if (rule && product.category === "adiciones") {
         upsellTimer.current = setTimeout(() => {
           setUpsellMsg(rule.message);
           setUpsellTarget(rule.targetCategory);
-          // Auto-dismiss después de 6 segundos
           setTimeout(() => setUpsellMsg(null), 6000);
         }, 800);
       }
@@ -219,6 +231,14 @@ export default function Menu() {
       </div>
 
       <CartSheet onCheckout={() => setCheckoutOpen(true)} />
+      {showAdditionsUpsell && (
+        <AdditionsUpsell
+          lastAdded={lastAdded}
+          additions={productsByCategory["adiciones"] || []}
+          onAdd={handleAddProduct}
+          onDismiss={() => setShowAdditionsUpsell(false)}
+        />
+      )}
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
