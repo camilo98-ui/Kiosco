@@ -135,10 +135,7 @@ export default function Menu() {
       >
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <PopsyLogo onClick={handleLogoClick} />
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-white/80">Helado Gourmet</span>
-            <span className="text-lg">🍦</span>
-          </div>
+          <div />
         </div>
         <div className="max-w-2xl mx-auto" style={{ background: "white" }}>
           <CategoryNav activeCategory={activeCategory} onSelect={setActiveCategory} />
