@@ -9,36 +9,41 @@ export default function ProductCard({ product, onAdd }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`relative bg-card rounded-2xl border border-border p-4 flex items-center justify-between gap-3 transition-all ${
-        isAvailable ? "hover:shadow-md hover:border-primary/30" : "opacity-50"
-      }`}
+      whileTap={isAvailable ? { scale: 0.98 } : {}}
+      className={`relative flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 transition-all
+        ${isAvailable
+          ? "bg-card border-border hover:border-primary/40 hover:bg-card/80 cursor-pointer"
+          : "bg-card/40 border-border/40 opacity-50"
+        }`}
+      onClick={isAvailable ? () => onAdd(product) : undefined}
     >
       {tag && product.tag !== "none" && (
-        <span className={`absolute -top-2 left-3 text-[10px] font-bold px-2 py-0.5 rounded-full ${tag.className}`}>
+        <span className={`absolute -top-2 left-3 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide ${tag.className}`}>
           {tag.label}
         </span>
       )}
 
-      <div className="flex-1 min-w-0">
-        <p className={`font-semibold text-sm leading-tight ${!isAvailable ? "line-through text-muted-foreground" : ""}`}>
-          {product.name}
-        </p>
-        {!isAvailable && (
-          <span className="text-xs text-destructive font-bold">Agotado</span>
-        )}
-        <p className="text-primary font-bold text-base mt-1">
-          {formatCOP(product.price)}
-        </p>
+      <div className="flex items-center gap-3 flex-1 min-w-0">
+        <span className="text-2xl shrink-0">{product.emoji || "🍦"}</span>
+        <div className="min-w-0">
+          <p className={`font-semibold text-sm leading-tight ${!isAvailable ? "line-through text-muted-foreground" : "text-foreground"}`}>
+            {product.name}
+          </p>
+          {!isAvailable
+            ? <span className="text-xs text-destructive font-bold">Agotado</span>
+            : <p className="text-primary font-black text-sm mt-0.5">{formatCOP(product.price)}</p>
+          }
+        </div>
       </div>
 
       {isAvailable && (
         <button
-          onClick={() => onAdd(product)}
-          className="shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-transform"
+          onClick={(e) => { e.stopPropagation(); onAdd(product); }}
+          className="shrink-0 w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition-transform glow-yellow"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4" />
         </button>
       )}
     </motion.div>

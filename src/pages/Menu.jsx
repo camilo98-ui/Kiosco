@@ -10,8 +10,9 @@ import CheckoutDialog from "@/components/menu/CheckoutDialog";
 import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
 import { useCart } from "@/lib/cartStore";
-import { CATEGORIES, UPSELL_RULES } from "@/lib/constants";
-import { Loader2 } from "lucide-react";
+import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
+import { Loader2, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Menu() {
   const [activeCategory, setActiveCategory] = useState("combos");
@@ -21,6 +22,8 @@ export default function Menu() {
   const [confirmedOrder, setConfirmedOrder] = useState(null);
   const [hiddenMenuOpen, setHiddenMenuOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [addedFlash, setAddedFlash] = useState(null); // product id flash
+  const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
   const { addItem, cart, clearCart, total } = useCart();
@@ -39,6 +42,13 @@ export default function Menu() {
     return map;
   }, [products]);
 
+  // Best sellers de otras categorías para sugerencias inline
+  const suggestedProducts = useMemo(() => {
+    return products
+      .filter((p) => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false)
+      .slice(0, 4);
+  }, [products, activeCategory]);
+
   const handleLogoClick = () => {
     logoClickCount.current += 1;
     clearTimeout(logoClickTimer.current);
@@ -55,11 +65,20 @@ export default function Menu() {
   const handleAddProduct = useCallback(
     (product) => {
       addItem(product);
+      setAddedFlash(product.id);
+      setTimeout(() => setAddedFlash(null), 600);
+
+      // Upsell estratégico: no mostrar si ya hay uno activo
+      clearTimeout(upsellTimer.current);
       const rule = UPSELL_RULES[product.category];
       if (rule) {
-        setUpsellMsg(rule.message);
-        setUpsellTarget(rule.targetCategory);
-        setTimeout(() => setUpsellMsg(null), 5000);
+        // Pequeño delay para que se sienta natural, no inmediato
+        upsellTimer.current = setTimeout(() => {
+          setUpsellMsg(rule.message);
+          setUpsellTarget(rule.targetCategory);
+          // Auto-dismiss después de 6 segundos
+          setTimeout(() => setUpsellMsg(null), 6000);
+        }, 800);
       }
     },
     [addItem]
@@ -105,60 +124,98 @@ export default function Menu() {
     );
   }
 
+  const categoryProducts = productsByCategory[activeCategory] || [];
+
   return (
-    <div className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-md border-b border-border">
-        <div className="max-w-2xl mx-auto px-4 py-3">
+    <div className="min-h-screen bg-background pb-28">
+      {/* Header con logo flotante */}
+      <div
+        className="sticky top-0 z-20 backdrop-blur-md border-b border-border/60"
+        style={{ background: "hsla(230,25%,8%,0.92)" }}
+      >
+        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <PopsyLogo onClick={handleLogoClick} />
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-muted-foreground">El sabor de la felicidad</span>
+            <span className="text-lg">🍦</span>
+          </div>
         </div>
         <div className="max-w-2xl mx-auto">
           <CategoryNav activeCategory={activeCategory} onSelect={setActiveCategory} />
         </div>
       </div>
 
-      {/* Products */}
+      {/* Hero de categoría activa */}
       <div className="max-w-2xl mx-auto px-4 pt-4">
-        {isLoading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {(productsByCategory[activeCategory] || []).map((product) => (
-              <ProductCard key={product.id} product={product} onAdd={handleAddProduct} />
-            ))}
-            {(productsByCategory[activeCategory] || []).length === 0 && (
-              <p className="text-center text-muted-foreground py-10">
-                No hay productos en esta categoría
-              </p>
-            )}
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.18 }}
+          >
+            {/* Título de sección */}
+            <div className="mb-3 flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-black text-foreground">
+                  {CATEGORIES.find(c => c.id === activeCategory)?.emoji}{" "}
+                  {CATEGORIES.find(c => c.id === activeCategory)?.label}
+                </h2>
+                <p className="text-xs text-muted-foreground">{categoryProducts.filter(p => p.is_available !== false).length} disponibles</p>
+              </div>
+            </div>
 
-        {/* Also ordered section */}
-        {activeCategory !== "adiciones" && (
-          <div className="mt-8">
-            <h3 className="font-bold text-sm text-muted-foreground mb-3">
-              🛒 Clientes también piden
-            </h3>
-            <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
-              {products
-                .filter((p) => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false)
-                .slice(0, 5)
-                .map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => handleAddProduct(p)}
-                    className="shrink-0 bg-card border border-border rounded-2xl p-3 text-left w-36 hover:border-primary/30 transition-all"
+            {/* Productos */}
+            {isLoading ? (
+              <div className="flex justify-center py-16">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {categoryProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className={`transition-all duration-150 ${addedFlash === product.id ? "scale-[0.97] opacity-80" : ""}`}
                   >
-                    <span className="text-2xl">{p.emoji}</span>
-                    <p className="text-xs font-semibold mt-1 leading-tight line-clamp-2">{p.name}</p>
-                    <p className="text-xs text-primary font-bold mt-1">
-                      {new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(p.price)}
-                    </p>
-                  </button>
+                    <ProductCard product={product} onAdd={handleAddProduct} />
+                  </div>
                 ))}
+                {categoryProducts.length === 0 && (
+                  <p className="text-center text-muted-foreground py-10">
+                    No hay productos en esta categoría
+                  </p>
+                )}
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Sección de sugerencias estratégicas al final del listado */}
+        {!isLoading && suggestedProducts.length > 0 && (
+          <div className="mt-6 mb-2">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <h3 className="text-sm font-black text-foreground">¿Te animas con algo más?</h3>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
+              {suggestedProducts.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => handleAddProduct(p)}
+                  className="shrink-0 rounded-2xl p-3 text-left w-32 transition-all hover:scale-105 active:scale-95"
+                  style={{
+                    background: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                  }}
+                >
+                  <span className="text-2xl">{p.emoji || "🍦"}</span>
+                  <p className="text-xs font-bold mt-1 leading-tight line-clamp-2 text-foreground">{p.name}</p>
+                  <p className="text-xs font-black mt-1" style={{ color: "hsl(var(--primary))" }}>
+                    {formatCOP(p.price)}
+                  </p>
+                </button>
+              ))}
             </div>
           </div>
         )}

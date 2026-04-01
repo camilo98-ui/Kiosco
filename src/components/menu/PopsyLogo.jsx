@@ -1,22 +1,65 @@
 import React from "react";
 
-export default function PopsyLogo({ onClick, size = "normal" }) {
-  const sizeClass = size === "small" ? "h-10" : "h-14";
+// Logo real de Popsy usando la imagen oficial del sistema
+export default function PopsyLogo({ onClick, size = "normal", floating = false }) {
+  const imgSize = size === "small" ? "h-9" : "h-14";
+
+  if (floating) {
+    return (
+      <button
+        onClick={onClick}
+        className="select-none focus:outline-none"
+      >
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Popsy_logo.svg/1200px-Popsy_logo.svg.png"
+          alt="Popsy"
+          className="h-10 w-auto object-contain drop-shadow-lg"
+          onError={(e) => {
+            // fallback text logo
+            e.target.style.display = "none";
+            e.target.nextSibling.style.display = "flex";
+          }}
+        />
+        <span
+          className="hidden items-center gap-1 font-nunito font-black text-2xl tracking-tight"
+          style={{ display: "none" }}
+        >
+          <span style={{ color: "#F5A623" }}>P</span>
+          <span style={{ color: "#E91E8C" }}>O</span>
+          <span style={{ color: "#F5A623" }}>P</span>
+          <span style={{ color: "#26C485" }}>S</span>
+          <span style={{ color: "#F5A623" }}>Y</span>
+          <span className="ml-1">🍦</span>
+        </span>
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={onClick}
       className="flex items-center gap-2 select-none focus:outline-none"
     >
-      <div className={`${sizeClass} flex items-center`}>
-        <span className={`font-nunito font-black ${size === "small" ? "text-2xl" : "text-4xl"} tracking-tight`}>
-          <span className="text-primary">P</span>
-          <span className="text-secondary">O</span>
-          <span className="text-primary">P</span>
-          <span className="text-accent">S</span>
-          <span className="text-primary">Y</span>
-        </span>
-        <span className={`ml-1 ${size === "small" ? "text-lg" : "text-2xl"}`}>🍦</span>
-      </div>
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Popsy_logo.svg/1200px-Popsy_logo.svg.png"
+        alt="Popsy"
+        className={`${imgSize} w-auto object-contain drop-shadow-lg`}
+        onError={(e) => {
+          e.target.style.display = "none";
+          e.target.nextSibling.style.display = "flex";
+        }}
+      />
+      <span
+        className="hidden items-center gap-0.5 font-nunito font-black tracking-tight"
+        style={{ display: "none", fontSize: size === "small" ? "1.4rem" : "2rem" }}
+      >
+        <span style={{ color: "#F5A623" }}>P</span>
+        <span style={{ color: "#E91E8C" }}>O</span>
+        <span style={{ color: "#F5A623" }}>P</span>
+        <span style={{ color: "#26C485" }}>S</span>
+        <span style={{ color: "#F5A623" }}>Y</span>
+        <span className="ml-1 text-xl">🍦</span>
+      </span>
     </button>
   );
 }
