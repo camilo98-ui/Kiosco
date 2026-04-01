@@ -11,7 +11,7 @@ export default function PopsyLogo({ onClick, size = "normal", floating = false }
         className="select-none focus:outline-none"
       >
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Popsy_logo.svg/1200px-Popsy_logo.svg.png"
+          src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/af2c73dd3_popsy-b-01__4_-removebg-preview1.png"
           alt="Popsy"
           className="h-10 w-auto object-contain drop-shadow-lg"
           onError={(e) => {
@@ -41,7 +41,7 @@ export default function PopsyLogo({ onClick, size = "normal", floating = false }
       className="flex items-center gap-2 select-none focus:outline-none"
     >
       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Popsy_logo.svg/1200px-Popsy_logo.svg.png"
+        src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/af2c73dd3_popsy-b-01__4_-removebg-preview1.png"
         alt="Popsy"
         className={`${imgSize} w-auto object-contain drop-shadow-lg`}
         onError={(e) => {
