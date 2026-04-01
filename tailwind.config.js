@@ -2,8 +2,17 @@
 module.exports = {
     darkMode: ["class"],
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+    safelist: [
+      "bg-yellow-400", "text-yellow-800", "border-yellow-400",
+      "bg-blue-500", "text-blue-800", "border-blue-500",
+      "bg-green-500", "text-green-800", "border-green-500",
+      "bg-red-500",
+    ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			nunito: ['var(--font-nunito)']
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
