@@ -3,7 +3,7 @@ import React from "react";
 const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/af2c73dd3_popsy-b-01__4_-removebg-preview1.png";
 
 export default function PopsyLogo({ onClick, size = "normal", floating = false }) {
-  const imgSize = size === "small" ? "h-12" : "h-20";
+  const imgSize = size === "small" ? "h-14" : "h-28";
 
   return (
     <button
