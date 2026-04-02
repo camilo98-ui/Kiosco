@@ -30,59 +30,77 @@ export default function HeaderLine() {
           @keyframes flow1 {
             0% { transform: translateX(-240px) translateY(0px); opacity: 0; }
             5% { opacity: 1; }
-            25% { transform: translateX(85px) translateY(-6px); }
-            50% { transform: translateX(215px) translateY(-10px); }
-            75% { transform: translateX(345px) translateY(-6px); }
             95% { opacity: 1; }
             100% { transform: translateX(550px) translateY(0px); opacity: 0; }
           }
           @keyframes flow2 {
             0% { transform: translateX(-240px) translateY(0px); opacity: 0; }
             5% { opacity: 1; }
-            25% { transform: translateX(85px) translateY(-7px); }
-            50% { transform: translateX(215px) translateY(-12px); }
-            75% { transform: translateX(345px) translateY(-7px); }
             95% { opacity: 1; }
             100% { transform: translateX(550px) translateY(0px); opacity: 0; }
           }
           @keyframes flow3 {
             0% { transform: translateX(-240px) translateY(0px); opacity: 0; }
             5% { opacity: 1; }
-            25% { transform: translateX(85px) translateY(-5px); }
-            50% { transform: translateX(215px) translateY(-9px); }
-            75% { transform: translateX(345px) translateY(-5px); }
             95% { opacity: 1; }
             100% { transform: translateX(550px) translateY(0px); opacity: 0; }
           }
-          .wave1 { animation: flow1 20s ease-in-out infinite; }
-          .wave2 { animation: flow2 22s ease-in-out infinite 3s; }
-          .wave3 { animation: flow3 18s ease-in-out infinite 1.5s; }
+          @keyframes waveBob1 {
+            0%, 100% { transform: translateY(0px); }
+            25% { transform: translateY(-4px); }
+            50% { transform: translateY(-8px); }
+            75% { transform: translateY(-4px); }
+          }
+          @keyframes waveBob2 {
+            0%, 100% { transform: translateY(0px); }
+            25% { transform: translateY(-5px); }
+            50% { transform: translateY(-10px); }
+            75% { transform: translateY(-5px); }
+          }
+          @keyframes waveBob3 {
+            0%, 100% { transform: translateY(0px); }
+            25% { transform: translateY(-3px); }
+            50% { transform: translateY(-6px); }
+            75% { transform: translateY(-3px); }
+          }
+          .wave1 { animation: flow1 20s linear infinite; }
+          .wave2 { animation: flow2 22s linear infinite 3s; }
+          .wave3 { animation: flow3 18s linear infinite 1.5s; }
+          .waveBob1 { animation: waveBob1 2s ease-in-out infinite; }
+          .waveBob2 { animation: waveBob2 2.2s ease-in-out infinite; }
+          .waveBob3 { animation: waveBob3 2.1s ease-in-out infinite; }
         `}</style>
       </defs>
 
       {/* Ola 1 */}
-      <path
-        className="wave1"
-        d="M -10 56 C 10 48, 30 52, 50 56 C 70 50, 90 52, 110 56 C 130 48, 150 52, 170 56 C 190 50, 210 52, 230 56 Z"
-        fill="white"
-        fillOpacity="0.16"
-      />
+      <g className="wave1">
+        <path
+          className="waveBob1"
+          d="M -10 56 C 20 44, 50 52, 80 42 C 108 32, 118 48, 148 40 C 175 33, 178 50, 200 56 Z"
+          fill="white"
+          fillOpacity="0.16"
+        />
+      </g>
 
       {/* Ola 2 */}
-      <path
-        className="wave2"
-        d="M 240 56 C 260 48, 280 52, 300 56 C 320 50, 340 52, 360 56 C 380 48, 400 52, 420 56 C 440 50, 460 52, 480 56 Z"
-        fill="white"
-        fillOpacity="0.14"
-      />
+      <g className="wave2">
+        <path
+          className="waveBob2"
+          d="M 240 56 C 268 48, 295 38, 325 46 C 355 54, 370 36, 400 42 C 420 46, 435 52, 450 56 Z"
+          fill="white"
+          fillOpacity="0.14"
+        />
+      </g>
 
       {/* Ola 3 */}
-      <path
-        className="wave3"
-        d="M 160 56 C 180 48, 200 52, 220 56 C 240 50, 260 52, 280 56 C 300 48, 320 52, 340 56 Z"
-        fill="white"
-        fillOpacity="0.10"
-      />
+      <g className="wave3">
+        <path
+          className="waveBob3"
+          d="M 160 56 C 180 46, 205 52, 230 44 C 252 37, 262 50, 285 56 Z"
+          fill="white"
+          fillOpacity="0.10"
+        />
+      </g>
 
       {/* Brillos difusos */}
       <ellipse cx="92" cy="12" rx="18" ry="8" fill="url(#glowA)" />
