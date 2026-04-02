@@ -150,44 +150,52 @@ export default function Menu() {
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
 
       {/* ── HEADER COMPACTO ── */}
-      <div className="sticky top-0 z-20" style={{ background: "#FFFCFD" }}>
-        <div className="flex items-center justify-between px-4 pt-2 pb-1.5">
-          {/* Izquierda: eyebrow + logo */}
-          <div className="flex flex-col justify-center">
+      <div className="sticky top-0 z-20 flex overflow-hidden" style={{ height: 64 }}>
+        {/* Lado izquierdo: fondo fucsia con logo */}
+        <div
+          className="flex items-center px-4"
+          style={{ background: "#B5145A", flex: "0 0 auto", minWidth: 120 }}
+          onClick={handleLogoClick}
+        >
+          <div className="flex flex-col justify-center cursor-pointer select-none">
             <span
               className="uppercase font-extrabold tracking-widest"
-              style={{ fontSize: 7, color: "#C2185B", letterSpacing: "2.5px", lineHeight: 1 }}
+              style={{ fontSize: 6, color: "rgba(255,255,255,0.75)", letterSpacing: "2px", lineHeight: 1 }}
             >
               HELADO GOURMET
             </span>
-            <PopsyLogo onClick={handleLogoClick} size="small" />
+            <PopsyLogo size="small" dark />
           </div>
+        </div>
 
-          {/* Centro: tagline */}
-          <p
-            className="text-center"
-            style={{ fontSize: 8, color: "#BBA8B0", lineHeight: 1.5 }}
-          >
-            Hecho con<br />amor y crema
-          </p>
+        {/* Divisor vertical blanco */}
+        <div style={{ width: 1, background: "rgba(255,255,255,0.3)", alignSelf: "stretch" }} />
 
-          {/* Derecha: íconos */}
-          <div className="flex items-center gap-1.5">
+        {/* Lado derecho: fondo teal con íconos */}
+        <div
+          className="flex items-center justify-between flex-1 px-4"
+          style={{ background: "#6BBFB5" }}
+        >
+          {/* Espacio vacío para centrar visualmente */}
+          <div className="flex-1" />
+
+          {/* Íconos */}
+          <div className="flex items-center gap-2">
             <button
               className="flex items-center justify-center"
-              style={{ width: 32, height: 32, borderRadius: "50%", background: "#F5EEF1", border: "1px solid #F0E4EA" }}
+              style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.25)", border: "1px solid rgba(255,255,255,0.4)" }}
             >
-              <Search size={13} style={{ color: "#2D1A22" }} />
+              <Search size={14} style={{ color: "#fff" }} />
             </button>
             <button
               className="flex items-center justify-center relative"
-              style={{ width: 32, height: 32, borderRadius: "50%", background: "#F5EEF1", border: "1px solid #F0E4EA" }}
+              style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.25)", border: "1px solid rgba(255,255,255,0.4)" }}
             >
-              <ShoppingBag size={13} style={{ color: "#2D1A22" }} />
+              <ShoppingBag size={14} style={{ color: "#fff" }} />
               {itemCount > 0 && (
                 <span
                   className="absolute -top-1 -right-1 font-black flex items-center justify-center"
-                  style={{ width: 14, height: 14, borderRadius: "50%", background: "#C2185B", color: "#fff", fontSize: 8 }}
+                  style={{ width: 15, height: 15, borderRadius: "50%", background: "#B5145A", color: "#fff", fontSize: 8 }}
                 >
                   {itemCount}
                 </span>
@@ -195,9 +203,6 @@ export default function Menu() {
             </button>
           </div>
         </div>
-
-        {/* Divisor */}
-        <div style={{ height: 1, background: "#F0E4EA", marginLeft: 16, marginRight: 16 }} />
       </div>
 
       {/* ── CONTENIDO SCROLLABLE ── */}
