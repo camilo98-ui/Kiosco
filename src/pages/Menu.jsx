@@ -6,6 +6,7 @@ import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingBag, Loader2 } from "lucide-react";
 import PopsyLogo from "@/components/menu/PopsyLogo";
+import SearchModal from "@/components/menu/SearchModal";
 
 // Componentes nuevos premium
 import PromoBanners from "@/components/menu/PromoBanners";
@@ -28,6 +29,7 @@ export default function Menu() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [confirmedOrder, setConfirmedOrder] = useState(null);
   const [hiddenMenuOpen, setHiddenMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addedFlash, setAddedFlash] = useState(null);
   const [lastAdded, setLastAdded] = useState(null);
@@ -181,7 +183,7 @@ export default function Menu() {
         {/* Derecha: íconos blancos */}
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setHiddenMenuOpen(true)}
+            onClick={() => setSearchOpen(true)}
             className="flex items-center justify-center hover:opacity-80 transition-opacity"
             style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
           >
@@ -305,6 +307,13 @@ export default function Menu() {
       />
 
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
+
+      <SearchModal 
+        open={searchOpen} 
+        onClose={() => setSearchOpen(false)} 
+        products={products} 
+        onAddProduct={handleAddProduct}
+      />
     </div>
   );
 }
