@@ -8,7 +8,7 @@ export default function PopsyLogo({ onClick, size = "normal", dark = false }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center select-none focus:outline-none"
+      className="flex items-center select-none focus:outline-none -ml-3"
     >
       <img
         src={LOGO_URL}
