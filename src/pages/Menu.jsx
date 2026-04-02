@@ -155,7 +155,7 @@ export default function Menu() {
         className="sticky top-0 z-20 flex items-center justify-between pl-0 pr-3"
         style={{
           height: 56,
-          background: "#C2185B",
+          background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)",
         }}
       >
         {/* Izquierda: logo blanco */}
