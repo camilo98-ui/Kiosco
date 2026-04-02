@@ -9,7 +9,7 @@ export default function SuggestedRow({ products, onAdd }) {
   if (!products || products.length === 0) return null;
 
   return (
-    <div className="mb-6">
+    <div className="mb-6" style={{ paddingBottom: 80 }}>
       {/* Label sección */}
       <p
         className="uppercase font-extrabold tracking-widest px-5 mb-3"
