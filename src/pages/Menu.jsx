@@ -210,14 +210,20 @@ export default function Menu() {
         <button
           onClick={() => setActiveCategory(contextBanner.category)}
           style={{
-            display: "block", width: "100%", textAlign: "left",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 7,
+            width: "100%", textAlign: "center",
             background: "linear-gradient(90deg, #C2185B11 0%, #C2185B22 100%)",
             borderBottom: "1px solid #F0E4EA",
             padding: "7px 16px",
             fontSize: 11, fontWeight: 700, color: "#C2185B",
           }}
         >
-          {contextBanner.text}
+          {/* Cono minimalista de bola */}
+          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+            <circle cx="7" cy="5" r="4.5" stroke="#C2185B" strokeWidth="1.2" fill="none" />
+            <path d="M 3.5 9 L 7 17 L 10.5 9" stroke="#C2185B" strokeWidth="1.2" strokeLinejoin="round" fill="none" />
+          </svg>
+          {contextBanner.text.replace(/^[\p{Emoji}\s]+/u, "").trim()}
         </button>
 
         {/* ── BANNERS PROMOCIONALES ── */}
