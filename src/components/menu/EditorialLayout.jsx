@@ -236,14 +236,51 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
   const animRef = React.useRef(null);
   const posRef = React.useRef(0);
   const pausedRef = React.useRef(false);
+  const dragRef = React.useRef({ isDragging: false, startX: 0, startPos: 0 });
 
   // Duplicamos para loop infinito
   const doubled = [...products, ...products];
 
+  const handleMouseDown = (e) => {
+    dragRef.current = {
+      isDragging: true,
+      startX: e.clientX,
+      startPos: posRef.current,
+    };
+    pausedRef.current = true;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!dragRef.current.isDragging) return;
+    const diff = dragRef.current.startX - e.clientX;
+    const cardWidth = 150;
+    const totalWidth = cardWidth * products.length;
+    posRef.current = dragRef.current.startPos + diff;
+    if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
+    if (posRef.current >= totalWidth) posRef.current -= totalWidth;
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
+    }
+  };
+
+  const handleMouseUp = () => {
+    dragRef.current.isDragging = false;
+    pausedRef.current = false;
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [products.length]);
+
   React.useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-    const cardWidth = 150; // 140px card + 10px gap
+    const cardWidth = 150;
     const totalWidth = cardWidth * products.length;
 
     const animate = () => {
@@ -260,11 +297,12 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
 
   return (
     <div
-      style={{ overflow: "hidden", paddingLeft: 14, paddingBottom: 4 }}
+      style={{ overflow: "hidden", paddingLeft: 14, paddingBottom: 4, cursor: "grab" }}
+      onMouseDown={handleMouseDown}
       onTouchStart={() => { pausedRef.current = true; }}
       onTouchEnd={() => { pausedRef.current = false; }}
-      onMouseEnter={() => { pausedRef.current = true; }}
-      onMouseLeave={() => { pausedRef.current = false; }}
+      onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
+      onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
     >
       <div ref={trackRef} style={{ display: "flex", gap: 10, width: "max-content" }}>
         {doubled.map((p, i) => (
