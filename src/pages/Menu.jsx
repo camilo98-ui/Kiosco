@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCart } from "@/lib/cartStore";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShoppingBag, Loader2 } from "lucide-react";
+import { Search, ShoppingBag, MapPin, Loader2 } from "lucide-react";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 
 // Componentes nuevos premium
@@ -37,32 +37,35 @@ export default function Menu() {
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
-    queryFn: () => base44.entities.Product.list("sort_order", 200),
+    queryFn: () => base44.entities.Product.list("sort_order", 200)
   });
 
   const productsByCategory = useMemo(() => {
     const map = {};
-    CATEGORIES.forEach((c) => (map[c.id] = []));
+    CATEGORIES.forEach((c) => map[c.id] = []);
     products.forEach((p) => {
       if (map[p.category]) map[p.category].push(p);
     });
     return map;
   }, [products]);
 
+  // Productos de la categoría activa (solo disponibles)
   const categoryProducts = useMemo(() => {
     return (productsByCategory[activeCategory] || []).filter((p) => p.is_available !== false);
   }, [productsByCategory, activeCategory]);
 
+  // Featured: los "mas_vendido" primero, resto después
   const featuredProducts = useMemo(() => {
     const top = categoryProducts.filter((p) => p.tag === "mas_vendido");
     const rest = categoryProducts.filter((p) => p.tag !== "mas_vendido");
     return [...top, ...rest];
   }, [categoryProducts]);
 
+  // Sugerencias: best sellers de otras categorías
   const suggestedProducts = useMemo(() => {
-    return products
-      .filter((p) => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false)
-      .slice(0, 6);
+    return products.
+    filter((p) => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false).
+    slice(0, 6);
   }, [products, activeCategory]);
 
   const handleLogoClick = () => {
@@ -123,13 +126,13 @@ export default function Menu() {
         product_name: i.product_name,
         price: i.price,
         quantity: i.quantity,
-        notes: i.notes,
+        notes: i.notes
       })),
       total,
-      status: "pendiente",
+      status: "pendiente"
     });
     await base44.entities.Settings.update(settings[0].id, {
-      value: String(nextNum + 1),
+      value: String(nextNum + 1)
     });
     clearCart();
     setCheckoutOpen(false);
@@ -141,145 +144,161 @@ export default function Menu() {
     return (
       <ConfirmationScreen
         order={confirmedOrder}
-        onNewOrder={() => setConfirmedOrder(null)}
-      />
-    );
+        onNewOrder={() => setConfirmedOrder(null)} />);
+
+
   }
 
   return (
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
 
-      {/* ── HEADER COMPACTO ── */}
-      <div className="sticky top-0 z-20 flex overflow-hidden" style={{ height: 64 }}>
-        {/* Lado izquierdo: fondo fucsia con logo */}
-        <div
-          className="flex items-center px-4"
-          style={{ background: "#B5145A", flex: "0 0 auto", minWidth: 120 }}
-          onClick={handleLogoClick}
-        >
-          <div className="flex flex-col justify-center cursor-pointer select-none">
+      {/* ── BARRA SUPERIOR ── */}
+      <div className="sticky top-0 z-20" style={{ background: "#FFFCFD" }}>
+        {/* Status bar: ubicación + íconos */}
+        <div className="flex items-center justify-between px-5 pt-4 pb-2">
+          <button className="flex items-center gap-1.5" onClick={handleLogoClick}>
             <span
-              className="uppercase font-extrabold tracking-widest"
-              style={{ fontSize: 6, color: "rgba(255,255,255,0.75)", letterSpacing: "2px", lineHeight: 1 }}
-            >
-              HELADO GOURMET
+              className="rounded-full"
+              style={{ width: 7, height: 7, background: "#C2185B", display: "inline-block" }} />
+            
+            <span className="font-semibold" style={{ fontSize: 12, color: "#BBA8B0" }}>
+              Bogotá, Colombia
             </span>
-            <PopsyLogo size="small" dark />
-          </div>
-        </div>
-
-        {/* Divisor vertical blanco */}
-        <div style={{ width: 1, background: "rgba(255,255,255,0.3)", alignSelf: "stretch" }} />
-
-        {/* Lado derecho: fondo teal con íconos */}
-        <div
-          className="flex items-center justify-between flex-1 px-4"
-          style={{ background: "#6BBFB5" }}
-        >
-          {/* Espacio vacío para centrar visualmente */}
-          <div className="flex-1" />
-
-          {/* Íconos */}
+          </button>
           <div className="flex items-center gap-2">
             <button
               className="flex items-center justify-center"
-              style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.25)", border: "1px solid rgba(255,255,255,0.4)" }}
-            >
-              <Search size={14} style={{ color: "#fff" }} />
+              style={{
+                width: 36, height: 36, borderRadius: "50%",
+                background: "#F5EEF1",
+                border: "1px solid #F0E4EA"
+              }}>
+              
+              <Search size={15} style={{ color: "#2D1A22" }} />
             </button>
             <button
               className="flex items-center justify-center relative"
-              style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.25)", border: "1px solid rgba(255,255,255,0.4)" }}
-            >
-              <ShoppingBag size={14} style={{ color: "#fff" }} />
-              {itemCount > 0 && (
-                <span
-                  className="absolute -top-1 -right-1 font-black flex items-center justify-center"
-                  style={{ width: 15, height: 15, borderRadius: "50%", background: "#B5145A", color: "#fff", fontSize: 8 }}
-                >
+              style={{
+                width: 36, height: 36, borderRadius: "50%",
+                background: "#F5EEF1",
+                border: "1px solid #F0E4EA"
+              }}>
+              
+              <ShoppingBag size={15} style={{ color: "#2D1A22" }} />
+              {itemCount > 0 &&
+              <span
+                className="absolute -top-1 -right-1 font-black flex items-center justify-center"
+                style={{
+                  width: 16, height: 16, borderRadius: "50%",
+                  background: "#C2185B", color: "#fff", fontSize: 9
+                }}>
+                
                   {itemCount}
                 </span>
-              )}
+              }
             </button>
           </div>
         </div>
+
+        {/* ── HEADER DE MARCA ── */}
+        <div className="flex items-end justify-between px-5 pb-3">
+          <div>
+            
+
+
+
+
+            
+            <PopsyLogo onClick={handleLogoClick} />
+          </div>
+          <p
+            className="text-right pb-1"
+            style={{ fontSize: 9, color: "#BBA8B0", lineHeight: 1.5 }}>
+            
+            Hecho con<br />amor y crema
+          </p>
+        </div>
+
+        {/* Divisor */}
+        <div style={{ height: 1, background: "#F0E4EA", marginLeft: 20, marginRight: 20 }} />
       </div>
 
       {/* ── CONTENIDO SCROLLABLE ── */}
       <div className="pb-32">
 
         {/* ── BANNERS PROMOCIONALES ── */}
-        <div className="pt-3">
+        <div className="pt-4">
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
 
         {/* ── TABS DE CATEGORÍAS ── */}
         <PremiumCategoryTabs activeCategory={activeCategory} onSelect={setActiveCategory} />
 
-        {/* ── STAGE CARD ── */}
+        {/* ── STAGE CARD: producto estrella de la categoría ── */}
         <div className="pt-4">
-          {isLoading ? (
-            <div className="flex justify-center py-16">
+          {isLoading ?
+          <div className="flex justify-center py-16">
               <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C2185B" }} />
-            </div>
-          ) : (
-            <AnimatePresence mode="wait">
+            </div> :
+
+          <AnimatePresence mode="wait">
               <motion.div
-                key={activeCategory}
-                initial={{ opacity: 0, x: 16 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -16 }}
-                transition={{ duration: 0.2 }}
-              >
+              key={activeCategory}
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -16 }}
+              transition={{ duration: 0.2 }}>
+              
+                {/* Número de disponibles */}
                 <p
-                  className="uppercase font-extrabold tracking-widest px-5 mb-3"
-                  style={{ fontSize: 8, color: "#BBA8B0", letterSpacing: "2px" }}
-                >
+                className="uppercase font-extrabold tracking-widest px-5 mb-3"
+                style={{ fontSize: 8, color: "#BBA8B0", letterSpacing: "2px" }}>
+                
                   {CATEGORIES.find((c) => c.id === activeCategory)?.label} · {categoryProducts.length} disponibles
                 </p>
 
                 <StageCard
-                  products={featuredProducts}
-                  onAdd={handleAddProduct}
-                  addedFlash={addedFlash}
-                />
+                products={featuredProducts}
+                onAdd={handleAddProduct}
+                addedFlash={addedFlash} />
+              
               </motion.div>
             </AnimatePresence>
-          )}
+          }
         </div>
 
         {/* ── TAMBIÉN TE PUEDE GUSTAR ── */}
-        {!isLoading && suggestedProducts.length > 0 && (
-          <SuggestedRow products={suggestedProducts} onAdd={handleAddProduct} />
-        )}
+        {!isLoading && suggestedProducts.length > 0 &&
+        <SuggestedRow products={suggestedProducts} onAdd={handleAddProduct} />
+        }
       </div>
 
       {/* ── OVERLAYS Y MODALES ── */}
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
 
-      {showAdditionsUpsell && (
-        <AdditionsUpsell
-          lastAdded={lastAdded}
-          additions={productsByCategory["adiciones"] || []}
-          onAdd={handleAddProduct}
-          onDismiss={() => setShowAdditionsUpsell(false)}
-        />
-      )}
+      {showAdditionsUpsell &&
+      <AdditionsUpsell
+        lastAdded={lastAdded}
+        additions={productsByCategory["adiciones"] || []}
+        onAdd={handleAddProduct}
+        onDismiss={() => setShowAdditionsUpsell(false)} />
+
+      }
 
       <UpsellBanner
         message={upsellMsg}
         onDismiss={() => setUpsellMsg(null)}
-        onAccept={handleUpsellAccept}
-      />
+        onAccept={handleUpsellAccept} />
+      
 
       <CheckoutDialog
         open={checkoutOpen}
         onClose={() => setCheckoutOpen(false)}
         onConfirm={handleCheckout}
-        isLoading={isSubmitting}
-      />
+        isLoading={isSubmitting} />
+      
 
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
-    </div>
-  );
+    </div>);
+
 }
