@@ -150,54 +150,39 @@ export default function Menu() {
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
 
       {/* ── HEADER COMPACTO ── */}
-      <div className="sticky top-0 z-20" style={{ background: "#FFFCFD" }}>
-        <div className="flex items-center justify-between px-4 pt-2 pb-1.5">
-          {/* Izquierda: eyebrow + logo */}
-          <div className="flex flex-col justify-center">
-            <span
-              className="uppercase font-extrabold tracking-widest"
-              style={{ fontSize: 7, color: "#C2185B", letterSpacing: "2.5px", lineHeight: 1 }}
-            >
-              HELADO GOURMET
-            </span>
-            <PopsyLogo onClick={handleLogoClick} size="small" />
-          </div>
+      <div
+        className="sticky top-0 z-20 flex items-center justify-between px-4"
+        style={{
+          height: 52,
+          background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)",
+        }}
+      >
+        {/* Izquierda: logo blanco */}
+        <PopsyLogo onClick={handleLogoClick} size="small" dark />
 
-          {/* Centro: tagline */}
-          <p
-            className="text-center"
-            style={{ fontSize: 8, color: "#BBA8B0", lineHeight: 1.5 }}
+        {/* Derecha: íconos blancos */}
+        <div className="flex items-center gap-2">
+          <button
+            className="flex items-center justify-center"
+            style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
           >
-            Hecho con<br />amor y crema
-          </p>
-
-          {/* Derecha: íconos */}
-          <div className="flex items-center gap-1.5">
-            <button
-              className="flex items-center justify-center"
-              style={{ width: 32, height: 32, borderRadius: "50%", background: "#F5EEF1", border: "1px solid #F0E4EA" }}
-            >
-              <Search size={13} style={{ color: "#2D1A22" }} />
-            </button>
-            <button
-              className="flex items-center justify-center relative"
-              style={{ width: 32, height: 32, borderRadius: "50%", background: "#F5EEF1", border: "1px solid #F0E4EA" }}
-            >
-              <ShoppingBag size={13} style={{ color: "#2D1A22" }} />
-              {itemCount > 0 && (
-                <span
-                  className="absolute -top-1 -right-1 font-black flex items-center justify-center"
-                  style={{ width: 14, height: 14, borderRadius: "50%", background: "#C2185B", color: "#fff", fontSize: 8 }}
-                >
-                  {itemCount}
-                </span>
-              )}
-            </button>
-          </div>
+            <Search size={14} style={{ color: "#fff" }} />
+          </button>
+          <button
+            className="flex items-center justify-center relative"
+            style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
+          >
+            <ShoppingBag size={14} style={{ color: "#fff" }} />
+            {itemCount > 0 && (
+              <span
+                className="absolute -top-1 -right-1 font-black flex items-center justify-center"
+                style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#B5175A", fontSize: 8 }}
+              >
+                {itemCount}
+              </span>
+            )}
+          </button>
         </div>
-
-        {/* Divisor */}
-        <div style={{ height: 1, background: "#F0E4EA", marginLeft: 16, marginRight: 16 }} />
       </div>
 
       {/* ── CONTENIDO SCROLLABLE ── */}
