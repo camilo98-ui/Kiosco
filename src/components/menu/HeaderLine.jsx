@@ -96,14 +96,14 @@ export default function HeaderLine({ hasCart = false }) {
       <path
         d="M -10 56 C 20 44, 50 52, 80 42 C 108 32, 118 48, 148 40 C 175 33, 178 50, 200 56 Z"
         fill="white"
-        fillOpacity="0.06"
+        fillOpacity="0.14"
       />
 
       {/* ── Blob orgánico 2: ola media derecha ── */}
       <path
         d="M 240 56 C 268 48, 295 38, 325 46 C 355 54, 370 36, 400 42 C 420 46, 435 52, 450 56 Z"
         fill="white"
-        fillOpacity="0.05"
+        fillOpacity="0.12"
       />
 
       {/* ── Espiral ligera tipo soft-serve (centro-izquierda) ── */}
@@ -111,8 +111,8 @@ export default function HeaderLine({ hasCart = false }) {
         d="M 60 20 C 64 14, 72 12, 76 18 C 80 24, 74 30, 68 28 C 62 26, 62 18, 68 16"
         fill="none"
         stroke="white"
-        strokeOpacity="0.10"
-        strokeWidth="1.2"
+        strokeOpacity="0.24"
+        strokeWidth="1.6"
         strokeLinecap="round"
       />
 
@@ -121,8 +121,8 @@ export default function HeaderLine({ hasCart = false }) {
         d="M 150 46 C 170 36, 195 50, 218 40 C 240 30, 260 46, 285 38"
         fill="none"
         stroke="white"
-        strokeOpacity="0.08"
-        strokeWidth="1"
+        strokeOpacity="0.20"
+        strokeWidth="1.4"
         strokeLinecap="round"
       />
 
@@ -133,11 +133,11 @@ export default function HeaderLine({ hasCart = false }) {
       <ellipse cx="370" cy="22" rx="30" ry="12" fill="url(#glowB)" />
 
       {/* ── Punto brillo tipo reflejo helado ── */}
-      <circle cx="108" cy="9" r="2.2" fill="white" fillOpacity="0.14" />
-      <circle cx="110" cy="8" r="0.9" fill="white" fillOpacity="0.28" />
+      <circle cx="108" cy="9" r="2.2" fill="white" fillOpacity="0.28" />
+      <circle cx="110" cy="8" r="0.9" fill="white" fillOpacity="0.45" />
 
       {/* ── Punto brillo secundario ── */}
-      <circle cx="355" cy="18" r="1.6" fill="white" fillOpacity="0.12" />
+      <circle cx="355" cy="18" r="1.6" fill="white" fillOpacity="0.26" />
 
 
     </svg>
