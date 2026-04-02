@@ -69,7 +69,7 @@ export default function Cajero() {
             <Link to="/">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <PopsyLogo size="small" />
+            <PopsyLogo size="small" dark />
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-muted-foreground">CAJERO</span>

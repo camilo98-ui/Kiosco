@@ -55,7 +55,7 @@ export default function Datafono() {
             <Link to="/">
               <ArrowLeft className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
             </Link>
-            <PopsyLogo size="small" />
+            <PopsyLogo size="small" dark />
           </div>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200">
             <CreditCard className="w-4 h-4 text-blue-600" />

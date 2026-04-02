@@ -5,6 +5,7 @@ import { useCart } from "@/lib/cartStore";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingBag, MapPin, Loader2 } from "lucide-react";
+import PopsyLogo from "@/components/menu/PopsyLogo";
 
 // Componentes nuevos premium
 import PromoBanners from "@/components/menu/PromoBanners";
@@ -208,17 +209,7 @@ export default function Menu() {
             >
               HELADO GOURMET
             </p>
-            <p
-              className="font-black italic"
-              style={{
-                fontSize: 34,
-                color: "#2D1A22",
-                letterSpacing: "-3px",
-                lineHeight: 1.05,
-              }}
-            >
-              Popsy
-            </p>
+            <PopsyLogo onClick={handleLogoClick} />
           </div>
           <p
             className="text-right pb-1"
