@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { Minus, Plus, Trash2, MessageSquare } from "lucide-react";
 import { useCart } from "@/lib/cartStore";
 import { formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Umbrales de incentivo para aumentar ticket
+const INCENTIVE_THRESHOLDS = [
+  { min: 0,     max: 20000,  msg: "🍦 ¡Agrega algo más y arma el combo perfecto!" },
+  { min: 20000, max: 40000,  msg: "🚀 ¡Solo te faltan un poco para el domicilio gratis!" },
+  { min: 40000, max: 60000,  msg: "🎉 ¡Domicilio gratis desbloqueado! ¿Le sumamos algo?" },
+  { min: 60000, max: 999999, msg: "⭐ ¡Pedido top! Revisa las adiciones para completarlo" },
+];
+
+function getIncentive(total) {
+  return INCENTIVE_THRESHOLDS.find(t => total >= t.min && total < t.max)?.msg || null;
+}
 
 export default function PremiumCartBar({ onCheckout }) {
   const { cart, updateQuantity, removeItem, updateNotes, total, itemCount } = useCart();
@@ -37,21 +49,21 @@ export default function PremiumCartBar({ onCheckout }) {
           }}
         >
           {/* Izquierda: círculo contador + texto */}
-          <div className="flex items-center gap-3">
-            <div
-              className="flex items-center justify-center font-black"
-              style={{
-                width: 32, height: 32, borderRadius: "50%",
-                background: "#fff",
-                color: "#C2185B",
-                fontSize: 14,
-              }}
-            >
-              {itemCount}
+          <div className="flex flex-col items-start gap-0">
+            <div className="flex items-center gap-3">
+              <div
+                className="flex items-center justify-center font-black"
+                style={{ width: 32, height: 32, borderRadius: "50%", background: "#fff", color: "#C2185B", fontSize: 14 }}
+              >
+                {itemCount}
+              </div>
+              <span className="font-black text-white" style={{ fontSize: 15 }}>Ver mi pedido</span>
             </div>
-            <span className="font-black text-white" style={{ fontSize: 15 }}>
-              Ver mi pedido
-            </span>
+            {getIncentive(total) && (
+              <p style={{ fontSize: 9, color: "rgba(255,255,255,0.82)", marginTop: 2, marginLeft: 44, fontWeight: 600, lineHeight: 1.2 }}>
+                {getIncentive(total)}
+              </p>
+            )}
           </div>
           {/* Derecha: precio */}
           <span className="font-black text-white" style={{ fontSize: 16 }}>

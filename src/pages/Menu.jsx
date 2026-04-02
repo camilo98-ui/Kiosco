@@ -36,6 +36,16 @@ export default function Menu() {
   const logoClickTimer = useRef(null);
   const { addItem, cart, clearCart, total, itemCount } = useCart();
 
+  // Banner contextual según hora del día
+  const contextBanner = React.useMemo(() => {
+    const h = new Date().getHours();
+    if (h >= 6 && h < 11)  return { text: "☀️ ¡Buenos días! Empieza con un café Popsy", category: "cafe" };
+    if (h >= 11 && h < 14) return { text: "🍦 Hora del almuerzo — ¡combos especiales hoy!", category: "combos" };
+    if (h >= 14 && h < 17) return { text: "🥤 Tarde perfecta para una malteada fría", category: "malteadas" };
+    if (h >= 17 && h < 20) return { text: "🍭 ¡Antojo de algo dulce? Mira las paletas", category: "paletas_packs" };
+    return { text: "🌙 ¡Noche de helados! El sabor perfecto te espera", category: "helados" };
+  }, []);
+
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.list("sort_order", 200),
@@ -188,6 +198,20 @@ export default function Menu() {
 
       {/* ── CONTENIDO SCROLLABLE ── */}
       <div className="pb-36">
+
+        {/* ── BANNER CONTEXTUAL POR HORA ── */}
+        <button
+          onClick={() => setActiveCategory(contextBanner.category)}
+          style={{
+            display: "block", width: "100%", textAlign: "left",
+            background: "linear-gradient(90deg, #C2185B11 0%, #C2185B22 100%)",
+            borderBottom: "1px solid #F0E4EA",
+            padding: "7px 16px",
+            fontSize: 11, fontWeight: 700, color: "#C2185B",
+          }}
+        >
+          {contextBanner.text}
+        </button>
 
         {/* ── BANNERS PROMOCIONALES ── */}
         <div className="pt-3">

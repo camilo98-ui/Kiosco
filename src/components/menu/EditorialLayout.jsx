@@ -3,6 +3,26 @@ import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
 
+// ─── Ordenamiento comercial dinámico ───────────────────────────────
+const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
+
+export function sortProductsCommercially(products) {
+  return [...products].sort((a, b) => {
+    const pa = TAG_PRIORITY[a.tag] ?? 3;
+    const pb = TAG_PRIORITY[b.tag] ?? 3;
+    if (pa !== pb) return pa - pb;
+    return (a.sort_order || 0) - (b.sort_order || 0);
+  });
+}
+
+// Descripciones cortas por tipo de tag
+function getProductHint(product) {
+  if (product.tag === "mas_vendido") return "El favorito de nuestros clientes";
+  if (product.tag === "recomendado") return "Selección del chef Popsy";
+  if (product.tag === "promo") return "¡Precio especial por tiempo limitado!";
+  return null;
+}
+
 // Fondos por categoría
 const CATEGORY_BG = {
   helados: "#FFF0F5",
@@ -67,7 +87,10 @@ function HorizontalCard({ product, onAdd, addedFlash, bg }) {
       <div style={{ width: 1, height: 40, background: "#F0E4EA", flexShrink: 0 }} />
       <div style={{ flex: 1, padding: "0 10px", display: "flex", flexDirection: "column", gap: 2 }}>
         <p style={{ fontSize: 11, fontWeight: 700, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
-        <p style={{ fontSize: 9, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
+        {getProductHint(product)
+          ? <p style={{ fontSize: 8, color: "#C2185B", fontStyle: "italic" }}>{getProductHint(product)}</p>
+          : <p style={{ fontSize: 9, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
+        }
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, paddingRight: 12 }}>
         <span style={{ fontSize: 12, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
@@ -105,7 +128,10 @@ function TallCard({ product, onAdd, addedFlash, bg }) {
       )}
       <div style={{ padding: "10px", flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
         <p style={{ fontSize: 12, fontWeight: 800, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
-        <p style={{ fontSize: 8, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
+        {getProductHint(product)
+          ? <p style={{ fontSize: 8, color: "#C2185B", fontStyle: "italic" }}>{getProductHint(product)}</p>
+          : <p style={{ fontSize: 8, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
+        }
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto", paddingTop: 6 }}>
           <span style={{ fontSize: 14, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
           {product.is_available !== false && (
@@ -282,7 +308,10 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
           <span style={{ fontSize: 8, background: "#C2185B", color: "#fff", borderRadius: 20, padding: "1px 7px", fontWeight: 900, alignSelf: "flex-start" }}>{tag.label}</span>
         )}
         <p style={{ fontSize: 13, fontWeight: 700, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
-        <p style={{ fontSize: 9, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
+        {getProductHint(product)
+          ? <p style={{ fontSize: 8, color: "#C2185B", fontStyle: "italic" }}>{getProductHint(product)}</p>
+          : <p style={{ fontSize: 9, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
+        }
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <span style={{ fontSize: 14, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
           {product.is_available !== false && (
@@ -373,7 +402,9 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
-  const layoutProps = { products, onAdd, addedFlash, bg, catLabel };
+  // Ordenamiento comercial dinámico aplicado antes de pasar a cada layout
+  const sortedProducts = sortProductsCommercially(products);
+  const layoutProps = { products: sortedProducts, onAdd, addedFlash, bg, catLabel };
 
   const renderLayout = () => {
     switch (category) {
