@@ -74,7 +74,7 @@ export default function PromoBanners({ onCategorySelect }) {
   const banner = BANNERS[active];
 
   return (
-    <div className="px-4 mb-4">
+    <div className="px-1 mb-4">
       <div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
