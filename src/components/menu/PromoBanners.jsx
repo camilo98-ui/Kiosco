@@ -94,7 +94,7 @@ export default function PromoBanners({ onCategorySelect }) {
               src={banner.image}
               alt={banner.alt}
               className="w-full object-cover"
-              style={{ display: "block", height: 130, objectPosition: "center", marginBottom: -30 }}
+              style={{ display: "block", height: "auto", objectPosition: "center" }}
             />
           </motion.div>
         </AnimatePresence>
