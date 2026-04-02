@@ -63,7 +63,7 @@ export default function HeaderLine() {
       {/* Ola 1 */}
       <path
         className="wave1"
-        d="M -10 56 Q 20 50, 50 56 T 110 56 T 170 56 T 230 56 Z"
+        d="M -10 56 C 10 48, 30 52, 50 56 C 70 50, 90 52, 110 56 C 130 48, 150 52, 170 56 C 190 50, 210 52, 230 56 Z"
         fill="white"
         fillOpacity="0.16"
       />
@@ -71,7 +71,7 @@ export default function HeaderLine() {
       {/* Ola 2 */}
       <path
         className="wave2"
-        d="M 240 56 Q 270 50, 300 56 T 360 56 T 420 56 T 480 56 Z"
+        d="M 240 56 C 260 48, 280 52, 300 56 C 320 50, 340 52, 360 56 C 380 48, 400 52, 420 56 C 440 50, 460 52, 480 56 Z"
         fill="white"
         fillOpacity="0.14"
       />
@@ -79,7 +79,7 @@ export default function HeaderLine() {
       {/* Ola 3 */}
       <path
         className="wave3"
-        d="M 160 56 Q 190 50, 220 56 T 280 56 T 340 56 T 400 56 Z"
+        d="M 160 56 C 180 48, 200 52, 220 56 C 240 50, 260 52, 280 56 C 300 48, 320 52, 340 56 Z"
         fill="white"
         fillOpacity="0.10"
       />
