@@ -27,21 +27,30 @@ export default function HeaderLine() {
         </radialGradient>
 
         <style>{`
-          @keyframes wave1 {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-4px); }
+          @keyframes oceanWave {
+            0% { transform: translateX(0px) translateY(0px); }
+            25% { transform: translateX(40px) translateY(-3px); }
+            50% { transform: translateX(80px) translateY(-5px); }
+            75% { transform: translateX(120px) translateY(-2px); }
+            100% { transform: translateX(160px) translateY(0px); }
           }
-          @keyframes wave2 {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-6px); }
+          @keyframes oceanWave2 {
+            0% { transform: translateX(-50px) translateY(0px); }
+            25% { transform: translateX(0px) translateY(-4px); }
+            50% { transform: translateX(50px) translateY(-6px); }
+            75% { transform: translateX(100px) translateY(-3px); }
+            100% { transform: translateX(150px) translateY(0px); }
           }
-          @keyframes wave3 {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-3px); }
+          @keyframes oceanWave3 {
+            0% { transform: translateX(-100px) translateY(0px); }
+            25% { transform: translateX(-50px) translateY(-2px); }
+            50% { transform: translateX(0px) translateY(-4px); }
+            75% { transform: translateX(50px) translateY(-1px); }
+            100% { transform: translateX(100px) translateY(0px); }
           }
-          .blob1 { animation: wave1 5s ease-in-out infinite; transform-origin: 100px 50px; }
-          .blob2 { animation: wave2 6.5s ease-in-out infinite; transform-origin: 340px 50px; }
-          .blob3 { animation: wave3 4.5s ease-in-out infinite 1s; transform-origin: 220px 50px; }
+          .blob1 { animation: oceanWave 8s ease-in-out infinite; }
+          .blob2 { animation: oceanWave2 9s ease-in-out infinite; }
+          .blob3 { animation: oceanWave3 7s ease-in-out infinite; }
         `}</style>
       </defs>
 
