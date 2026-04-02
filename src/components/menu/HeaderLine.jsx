@@ -1,50 +1,63 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Estado: "idle" | "added" | "upsell"
-// idle   → línea curva hacia la derecha (hacia categorías/productos)
-// added  → línea apunta al botón "Ver mi pedido" (esquina inferior derecha)
-// upsell → línea gira hacia la izquierda (productos complementarios)
+// ─── Paths orgánicos tipo "crema de helado" ──────────────────────────────────
+// Sin carrito: línea fluida que termina apuntando a los productos (centro-derecha)
+// Con carrito: línea que vira y termina apuntando al ícono del carrito (extremo derecho)
 
-const PATHS = {
-  idle: "M -10 28 C 20 10, 60 42, 100 22 C 140 5, 175 35, 220 20 C 260 8, 290 30, 340 18 C 375 10, 400 28, 440 22",
-  added: "M -10 44 C 30 55, 80 20, 130 38 C 175 52, 210 15, 260 32 C 300 45, 340 12, 390 30 C 415 40, 435 26, 440 28",
-  upsell: "M -10 18 C 30 32, 70 8, 110 26 C 150 42, 180 10, 230 28 C 270 44, 310 16, 360 34 C 395 46, 425 20, 440 24",
-};
+const PATH_EMPTY = "M 2 38 C 18 48, 35 22, 55 30 C 72 38, 82 18, 102 26 C 118 32, 125 16, 145 22 C 162 27, 168 14, 188 18 C 205 22, 210 10, 232 14 C 252 18, 258 8, 278 12 C 294 15, 298 28, 316 22 C 330 18, 336 8, 352 12";
 
-// Punto final de cada path (arrowhead position)
-const TIP = {
-  idle:   { x: 440, y: 22, angle: -12 },
-  added:  { x: 440, y: 28, angle: 6 },
-  upsell: { x: 440, y: 24, angle: -8 },
-};
+const PATH_WITH_CART = "M 2 44 C 22 52, 42 28, 65 36 C 84 43, 98 22, 120 30 C 138 37, 148 18, 170 25 C 190 32, 196 14, 220 20 C 242 26, 250 10, 275 16 C 298 22, 308 8, 334 14 C 352 18, 362 8, 382 10 C 398 12, 412 8, 425 6";
 
-export default function HeaderLine({ state = "idle" }) {
-  const pathRef = useRef(null);
-  const [length, setLength] = useState(0);
-  const [prevState, setPrevState] = useState(state);
-  const [visible, setVisible] = useState(true);
+// Tip: donde termina la flecha y qué ángulo tiene
+const TIP_EMPTY     = { x: 352, y: 12, angle: -15 };
+const TIP_WITH_CART = { x: 425, y: 6,  angle: -18 };
 
-  // Medir longitud del path para el dasharray
+// Cuándo re-disparar la animación "draw" (en ms)
+const REDRAW_INTERVAL = 9000;
+
+export default function HeaderLine({ hasCart = false }) {
+  const pathRef     = useRef(null);
+  const [pathLen, setPathLen] = useState(500);
+  const [drawing, setDrawing] = useState(false);
+  const [fading, setFading]   = useState(false);
+  const timerRef = useRef(null);
+
+  const d   = hasCart ? PATH_WITH_CART : PATH_EMPTY;
+  const tip = hasCart ? TIP_WITH_CART  : TIP_EMPTY;
+
+  // Medir longitud del path actual
   useEffect(() => {
     if (pathRef.current) {
-      setLength(pathRef.current.getTotalLength());
+      setPathLen(pathRef.current.getTotalLength() || 500);
     }
-  }, [state]);
+  }, [d]);
 
-  // Crossfade: cuando cambia estado, fade out → cambiar → fade in
+  // Disparar animación draw periódicamente
+  const triggerDraw = () => {
+    setFading(true);
+    setTimeout(() => {
+      setFading(false);
+      setDrawing(true);
+      setTimeout(() => setDrawing(false), 2600);
+    }, 400);
+  };
+
   useEffect(() => {
-    if (state !== prevState) {
-      setVisible(false);
-      const t = setTimeout(() => {
-        setPrevState(state);
-        setVisible(true);
-      }, 300);
-      return () => clearTimeout(t);
-    }
-  }, [state, prevState]);
+    // Primer draw inmediato
+    triggerDraw();
+    timerRef.current = setInterval(triggerDraw, REDRAW_INTERVAL);
+    return () => clearInterval(timerRef.current);
+  }, []);
 
-  const d = PATHS[prevState] || PATHS.idle;
-  const tip = TIP[prevState] || TIP.idle;
+  // Re-disparar cuando cambia estado del carrito
+  useEffect(() => {
+    clearInterval(timerRef.current);
+    triggerDraw();
+    timerRef.current = setInterval(triggerDraw, REDRAW_INTERVAL);
+    return () => clearInterval(timerRef.current);
+  }, [hasCart]);
+
+  const lineOpacity = fading ? 0 : 1;
 
   return (
     <svg
@@ -57,89 +70,65 @@ export default function HeaderLine({ state = "idle" }) {
         height: "100%",
         pointerEvents: "none",
         overflow: "visible",
+        zIndex: 0,
       }}
       aria-hidden="true"
     >
       <defs>
-        {/* Gradiente a lo largo de la línea */}
-        <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="white" stopOpacity="0" />
-          <stop offset="30%" stopColor="white" stopOpacity="0.18" />
-          <stop offset="85%" stopColor="white" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="white" stopOpacity="0.08" />
+        <linearGradient id="hlineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stopColor="white" stopOpacity="0" />
+          <stop offset="20%"  stopColor="white" stopOpacity="0.10" />
+          <stop offset="70%"  stopColor="white" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="white" stopOpacity="0.06" />
         </linearGradient>
       </defs>
 
-      {/* Línea principal animada */}
+      {/* ── Línea orgánica principal ── */}
       <path
         ref={pathRef}
         d={d}
         fill="none"
-        stroke="url(#lineGrad)"
-        strokeWidth="1.4"
+        stroke="url(#hlineGrad)"
+        strokeWidth="1.5"
         strokeLinecap="round"
+        strokeLinejoin="round"
         style={{
-          opacity: visible ? 1 : 0,
-          transition: "opacity 0.3s ease",
-          // Animación de "dibujado progresivo"
-          strokeDasharray: length || 600,
-          strokeDashoffset: visible ? 0 : length || 600,
-          animation: visible ? "drawLine 2.2s ease forwards, breathe 3.5s ease-in-out 2.4s infinite" : "none",
+          opacity: lineOpacity,
+          transition: "opacity 0.4s ease",
+          strokeDasharray: pathLen,
+          strokeDashoffset: drawing ? 0 : pathLen,
+          transition: `opacity 0.4s ease, stroke-dashoffset ${drawing ? "2.4s" : "0s"} cubic-bezier(0.4,0,0.2,1)`,
         }}
       />
 
-      {/* Punta animada (arrowhead / dot) */}
-      {visible && (
-        <g
-          transform={`translate(${tip.x}, ${tip.y}) rotate(${tip.angle})`}
-          style={{
-            opacity: visible ? 1 : 0,
-            transition: "opacity 0.3s ease 1.8s",
-          }}
-        >
-          {/* Pulso exterior */}
-          <circle
-            cx="0"
-            cy="0"
-            r="4"
-            fill="white"
-            fillOpacity="0.08"
-            style={{ animation: "pulseTip 2s ease-in-out 2.5s infinite" }}
-          />
-          {/* Dot central */}
-          <circle
-            cx="0"
-            cy="0"
-            r="2"
-            fill="white"
-            fillOpacity="0.28"
-            style={{ animation: "pulseTip 2s ease-in-out 2.5s infinite alternate" }}
-          />
-          {/* Mini flecha */}
-          <path
-            d="M -4 0 L 0 -2.5 L 4 0"
-            fill="none"
-            stroke="white"
-            strokeOpacity="0.22"
-            strokeWidth="1"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </g>
-      )}
+      {/* ── Flecha / punta orgánica ── */}
+      <g
+        transform={`translate(${tip.x}, ${tip.y}) rotate(${tip.angle})`}
+        style={{
+          opacity: (drawing && !fading) ? 1 : 0,
+          transition: "opacity 0.5s ease 2s",
+        }}
+      >
+        {/* Halo pulsante exterior */}
+        <circle r="5" fill="white" fillOpacity="0" style={{ animation: "haloPulse 2.2s ease-in-out infinite" }} />
+        {/* Dot central */}
+        <circle r="1.8" fill="white" fillOpacity="0.22" />
+        {/* Flecha sutil */}
+        <path
+          d="M -5 2 Q 0 -1 5 2"
+          fill="none"
+          stroke="white"
+          strokeOpacity="0.20"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+        />
+      </g>
 
       <style>{`
-        @keyframes drawLine {
-          from { stroke-dashoffset: var(--line-length, 600); }
-          to   { stroke-dashoffset: 0; }
-        }
-        @keyframes breathe {
-          0%, 100% { opacity: 1; }
-          50%       { opacity: 0.55; }
-        }
-        @keyframes pulseTip {
-          0%, 100% { transform: scale(1);   opacity: 0.28; }
-          50%       { transform: scale(1.7); opacity: 0.08; }
+        @keyframes haloPulse {
+          0%   { r: 3;  fill-opacity: 0.12; }
+          60%  { r: 7;  fill-opacity: 0.04; }
+          100% { r: 3;  fill-opacity: 0.12; }
         }
       `}</style>
     </svg>

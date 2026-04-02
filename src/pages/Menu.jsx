@@ -37,12 +37,7 @@ export default function Menu() {
   const logoClickTimer = useRef(null);
   const { addItem, cart, clearCart, total, itemCount } = useCart();
 
-  // Estado de la línea inteligente del header
-  const headerLineState = useMemo(() => {
-    if (itemCount > 0 && total < 20000) return "upsell";
-    if (itemCount > 0) return "added";
-    return "idle";
-  }, [itemCount, total]);
+
 
   // Banner contextual según hora del día
   const contextBanner = React.useMemo(() => {
@@ -179,7 +174,7 @@ export default function Menu() {
         }}
       >
         {/* Línea animada inteligente */}
-        <HeaderLine state={headerLineState} />
+        <HeaderLine hasCart={itemCount > 0} />
         {/* Izquierda: logo blanco */}
         <PopsyLogo onClick={handleLogoClick} size="normal" dark />
 
