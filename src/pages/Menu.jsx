@@ -175,7 +175,8 @@ export default function Menu() {
           overflow: "hidden",
         }}
       >
-
+        {/* Línea animada inteligente */}
+        <HeaderLine hasCart={itemCount > 0} />
         {/* Izquierda: logo blanco */}
         <PopsyLogo onClick={handleLogoClick} size="normal" dark />
 
