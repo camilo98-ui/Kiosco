@@ -10,6 +10,7 @@ import PopsyLogo from "@/components/menu/PopsyLogo";
 // Componentes nuevos premium
 import PromoBanners from "@/components/menu/PromoBanners";
 import StageCard from "@/components/menu/StageCard";
+import EditorialLayout from "@/components/menu/EditorialLayout";
 import SuggestedRow from "@/components/menu/SuggestedRow";
 import PremiumCategoryTabs from "@/components/menu/PremiumCategoryTabs";
 import PremiumCartBar from "@/components/menu/PremiumCartBar";
@@ -153,8 +154,8 @@ export default function Menu() {
       <div
         className="sticky top-0 z-20 flex items-center justify-between pl-0 pr-3"
         style={{
-          height: 52,
-          background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)",
+          height: 56,
+          background: "#C2185B",
         }}
       >
         {/* Izquierda: logo blanco */}
@@ -186,7 +187,7 @@ export default function Menu() {
       </div>
 
       {/* ── CONTENIDO SCROLLABLE ── */}
-      <div className="pb-32">
+      <div className="pb-36">
 
         {/* ── BANNERS PROMOCIONALES ── */}
         <div className="pt-3">
@@ -196,13 +197,13 @@ export default function Menu() {
         {/* ── TABS DE CATEGORÍAS ── */}
         <PremiumCategoryTabs activeCategory={activeCategory} onSelect={setActiveCategory} />
 
-        {/* ── STAGE CARD ── */}
+        {/* ── PRODUCTOS ── */}
         <div className="pt-4">
           {isLoading ? (
             <div className="flex justify-center py-16">
               <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C2185B" }} />
             </div>
-          ) : (
+          ) : activeCategory === "combos" ? (
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeCategory}
@@ -217,7 +218,6 @@ export default function Menu() {
                 >
                   {CATEGORIES.find((c) => c.id === activeCategory)?.label} · {categoryProducts.length} disponibles
                 </p>
-
                 <StageCard
                   products={featuredProducts}
                   onAdd={handleAddProduct}
@@ -225,6 +225,13 @@ export default function Menu() {
                 />
               </motion.div>
             </AnimatePresence>
+          ) : (
+            <EditorialLayout
+              products={categoryProducts}
+              category={activeCategory}
+              onAdd={handleAddProduct}
+              addedFlash={addedFlash}
+            />
           )}
         </div>
 

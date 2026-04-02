@@ -1,9 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { CATEGORIES } from "@/lib/constants";
 
-// Solo las categorías principales en el tab visible (resto en "Más" como sub-menú)
-const MAIN_TABS = ["combos", "helados", "malteadas", "especialidades", "cafe", "galletas"];
-
 export default function PremiumCategoryTabs({ activeCategory, onSelect }) {
   const scrollRef = useRef(null);
   const activeRef = useRef(null);
@@ -17,45 +14,33 @@ export default function PremiumCategoryTabs({ activeCategory, onSelect }) {
     }
   }, [activeCategory]);
 
-  const allCats = CATEGORIES;
-
   return (
-    <div
-      style={{ borderBottom: "1.5px solid #F0E4EA" }}
-    >
+    <div style={{ background: "#fff", borderBottom: "1.5px solid #F0E4EA" }}>
       <div
         ref={scrollRef}
         className="flex overflow-x-auto"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none", paddingLeft: 20, paddingRight: 20 }}
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none", padding: "10px 10px" }}
       >
-        {allCats.map((cat) => {
+        {CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;
           return (
             <button
               key={cat.id}
               ref={isActive ? activeRef : null}
               onClick={() => onSelect(cat.id)}
-              className="flex items-center gap-1 whitespace-nowrap shrink-0 py-3 px-3 relative transition-colors"
-              style={{ border: "none", background: "transparent" }}
+              className="shrink-0 whitespace-nowrap font-bold transition-all"
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.5px",
+                padding: "7px 14px",
+                borderRadius: 30,
+                border: "none",
+                background: isActive ? "#C2185B" : "transparent",
+                color: isActive ? "#fff" : "#BBA8B0",
+                fontWeight: 700,
+              }}
             >
-              <span style={{ fontSize: 12 }}>{cat.emoji}</span>
-              <span
-                className="font-bold"
-                style={{
-                  fontSize: 13,
-                  color: isActive ? "#2D1A22" : "#CCCCCC",
-                  transition: "color 0.2s",
-                }}
-              >
-                {cat.label}
-              </span>
-              {/* Línea activa */}
-              {isActive && (
-                <span
-                  className="absolute bottom-0 left-0 right-0"
-                  style={{ height: 2, background: "#C2185B", borderRadius: 2 }}
-                />
-              )}
+              {cat.label}
             </button>
           );
         })}

@@ -43,7 +43,7 @@ export default function StageCard({ products, onAdd, addedFlash }) {
           background: PASTEL_BG[paletteIdx],
           border: `1.5px solid ${PASTEL_BORDER[paletteIdx]}`,
           borderRadius: 28,
-          height: 190,
+          height: 162,
           padding: "0 22px",
         }}
       >
@@ -161,19 +161,20 @@ export default function StageCard({ products, onAdd, addedFlash }) {
 
       {/* Dots */}
       {products.length > 1 && (
-        <div className="flex items-center justify-center gap-2 mt-3">
+        <div className="flex items-center justify-center gap-1 mt-2">
           {products.map((_, i) => (
             <button
               key={i}
               onClick={() => setActiveIdx(i)}
               style={{
-                height: 6,
-                width: i === activeIdx ? 18 : 6,
-                borderRadius: 6,
+                height: 5,
+                width: i === activeIdx ? 14 : 5,
+                borderRadius: 4,
                 background: i === activeIdx ? "#C2185B" : "#EDD8E4",
                 transition: "all 0.25s ease",
                 border: "none",
                 padding: 0,
+                flexShrink: 0,
               }}
             />
           ))}
