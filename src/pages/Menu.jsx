@@ -151,7 +151,7 @@ export default function Menu() {
 
       {/* ── HEADER COMPACTO ── */}
       <div
-        className="sticky top-0 z-20 flex items-center justify-between px-4"
+        className="sticky top-0 z-20 flex items-center justify-between px-2"
         style={{
           height: 52,
           background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)",
