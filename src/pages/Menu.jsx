@@ -181,13 +181,15 @@ export default function Menu() {
         {/* Derecha: íconos blancos */}
         <div className="flex items-center gap-2">
           <button
-            className="flex items-center justify-center"
+            onClick={() => setHiddenMenuOpen(true)}
+            className="flex items-center justify-center hover:opacity-80 transition-opacity"
             style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
           >
             <Search size={14} style={{ color: "#fff" }} />
           </button>
           <button
-            className="flex items-center justify-center relative"
+            onClick={() => setCheckoutOpen(true)}
+            className="flex items-center justify-center hover:opacity-80 transition-opacity relative"
             style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
           >
             <ShoppingBag size={14} style={{ color: "#fff" }} />
