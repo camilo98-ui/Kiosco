@@ -215,10 +215,10 @@ export default function Menu() {
           style={{
             display: "flex", alignItems: "center", justifyContent: "center", gap: 7,
             width: "100%", textAlign: "center",
-            background: "linear-gradient(90deg, #C2185B11 0%, #C2185B22 100%)",
-            borderBottom: "1px solid #F0E4EA",
+            background: "transparent",
+            border: "none",
             padding: "14px 16px",
-            fontSize: 12, fontWeight: 700, color: "#C2185B", lineHeight: 1.5,
+            fontSize: 12, fontWeight: 700, color: "#C2185B", lineHeight: 1.5, cursor: "pointer"
           }}
         >
           {/* Cono minimalista de bola */}
