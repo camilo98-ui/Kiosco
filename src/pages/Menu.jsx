@@ -207,7 +207,7 @@ export default function Menu() {
       </div>
 
       {/* ── CONTENIDO SCROLLABLE ── */}
-      <div className="pb-6 -mt-2">
+      <div className="pb-3 -mt-2">
 
         {/* ── BANNER CONTEXTUAL POR HORA ── */}
         <button
