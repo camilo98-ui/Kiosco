@@ -14,6 +14,30 @@ const BANNERS = [
     alt: "Domicilio Gratis por compras iguales o superiores a $40.000",
     category: "malteadas",
   },
+  {
+    id: 3,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/05dec2b30_image.png",
+    alt: "Nuevo helado con Yogo Yoo sabor fresa",
+    category: "helados",
+  },
+  {
+    id: 4,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9502d6914_image.png",
+    alt: "¡Doble o nada! 2 bolas de helado Gourmet",
+    category: "helados",
+  },
+  {
+    id: 5,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/8afa4278b_image.png",
+    alt: "1 tarrina con helado + 1 Popsy Toy por $58.900",
+    category: "combos",
+  },
+  {
+    id: 6,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/df199d449_image.png",
+    alt: "¡Arma el plan, nosotros ponemos el combo!",
+    category: "combos",
+  },
 ];
 
 export default function PromoBanners({ onCategorySelect }) {
