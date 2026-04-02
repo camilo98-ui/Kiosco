@@ -28,49 +28,58 @@ export default function HeaderLine() {
 
         <style>{`
           @keyframes flow1 {
-            0% { transform: translateX(-240px); opacity: 0; }
+            0% { transform: translateX(-240px) translateY(0px); opacity: 0; }
             5% { opacity: 1; }
+            25% { transform: translateX(85px) translateY(-6px); }
+            50% { transform: translateX(215px) translateY(-10px); }
+            75% { transform: translateX(345px) translateY(-6px); }
             95% { opacity: 1; }
-            100% { transform: translateX(550px); opacity: 0; }
+            100% { transform: translateX(550px) translateY(0px); opacity: 0; }
           }
           @keyframes flow2 {
-            0% { transform: translateX(-240px); opacity: 0; }
+            0% { transform: translateX(-240px) translateY(0px); opacity: 0; }
             5% { opacity: 1; }
+            25% { transform: translateX(85px) translateY(-7px); }
+            50% { transform: translateX(215px) translateY(-12px); }
+            75% { transform: translateX(345px) translateY(-7px); }
             95% { opacity: 1; }
-            100% { transform: translateX(550px); opacity: 0; }
+            100% { transform: translateX(550px) translateY(0px); opacity: 0; }
           }
           @keyframes flow3 {
-            0% { transform: translateX(-240px); opacity: 0; }
+            0% { transform: translateX(-240px) translateY(0px); opacity: 0; }
             5% { opacity: 1; }
+            25% { transform: translateX(85px) translateY(-5px); }
+            50% { transform: translateX(215px) translateY(-9px); }
+            75% { transform: translateX(345px) translateY(-5px); }
             95% { opacity: 1; }
-            100% { transform: translateX(550px); opacity: 0; }
+            100% { transform: translateX(550px) translateY(0px); opacity: 0; }
           }
-          .wave1 { animation: flow1 20s linear infinite; }
-          .wave2 { animation: flow2 22s linear infinite 3s; }
-          .wave3 { animation: flow3 18s linear infinite 1.5s; }
+          .wave1 { animation: flow1 20s ease-in-out infinite; }
+          .wave2 { animation: flow2 22s ease-in-out infinite 3s; }
+          .wave3 { animation: flow3 18s ease-in-out infinite 1.5s; }
         `}</style>
       </defs>
 
-      {/* Ola 1 - flujo dinámico */}
+      {/* Ola 1 */}
       <path
         className="wave1"
-        d="M -10 56 C 20 48, 50 40, 80 46 C 108 52, 118 36, 148 42 C 175 48, 178 32, 200 56 Z"
+        d="M -10 56 Q 20 50, 50 56 T 110 56 T 170 56 T 230 56 Z"
         fill="white"
         fillOpacity="0.16"
       />
 
-      {/* Ola 2 - flujo dinámico */}
+      {/* Ola 2 */}
       <path
         className="wave2"
-        d="M 240 56 C 268 44, 295 48, 325 40 C 355 36, 370 50, 400 46 C 420 42, 435 56, 450 56 Z"
+        d="M 240 56 Q 270 50, 300 56 T 360 56 T 420 56 T 480 56 Z"
         fill="white"
         fillOpacity="0.14"
       />
 
-      {/* Ola 3 - flujo dinámico */}
+      {/* Ola 3 */}
       <path
         className="wave3"
-        d="M 160 56 C 180 50, 205 38, 230 48 C 252 52, 262 36, 285 56 Z"
+        d="M 160 56 Q 190 50, 220 56 T 280 56 T 340 56 T 400 56 Z"
         fill="white"
         fillOpacity="0.10"
       />
