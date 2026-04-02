@@ -139,54 +139,7 @@ export default function HeaderLine({ hasCart = false }) {
       {/* ── Punto brillo secundario ── */}
       <circle cx="355" cy="18" r="1.6" fill="white" fillOpacity="0.12" />
 
-      {/* ── Línea orgánica principal ── */}
-      <path
-        ref={pathRef}
-        d={d}
-        fill="none"
-        stroke="url(#hlineGrad)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        style={{
-          opacity: lineOpacity,
-          transition: "opacity 0.4s ease",
-          strokeDasharray: pathLen,
-          strokeDashoffset: drawing ? 0 : pathLen,
-          transition: `opacity 0.4s ease, stroke-dashoffset ${drawing ? "2.4s" : "0s"} cubic-bezier(0.4,0,0.2,1)`,
-        }}
-      />
 
-      {/* ── Flecha / punta orgánica ── */}
-      <g
-        transform={`translate(${tip.x}, ${tip.y}) rotate(${tip.angle})`}
-        style={{
-          opacity: (drawing && !fading) ? 1 : 0,
-          transition: "opacity 0.5s ease 2s",
-        }}
-      >
-        {/* Halo pulsante exterior */}
-        <circle r="5" fill="white" fillOpacity="0" style={{ animation: "haloPulse 2.2s ease-in-out infinite" }} />
-        {/* Dot central */}
-        <circle r="1.8" fill="white" fillOpacity="0.22" />
-        {/* Flecha sutil */}
-        <path
-          d="M -5 2 Q 0 -1 5 2"
-          fill="none"
-          stroke="white"
-          strokeOpacity="0.20"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-        />
-      </g>
-
-      <style>{`
-        @keyframes haloPulse {
-          0%   { r: 3;  fill-opacity: 0.12; }
-          60%  { r: 7;  fill-opacity: 0.04; }
-          100% { r: 3;  fill-opacity: 0.12; }
-        }
-      `}</style>
     </svg>
   );
 }
