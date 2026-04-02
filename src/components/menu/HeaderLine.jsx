@@ -28,20 +28,20 @@ export default function HeaderLine() {
 
         <style>{`
           @keyframes flow1 {
-            0% { transform: translateX(-440px); }
-            100% { transform: translateX(0px); }
+            0% { transform: translateX(-240px); }
+            100% { transform: translateX(440px); }
           }
           @keyframes flow2 {
-            0% { transform: translateX(-440px); }
-            100% { transform: translateX(0px); }
+            0% { transform: translateX(-240px); }
+            100% { transform: translateX(440px); }
           }
           @keyframes flow3 {
-            0% { transform: translateX(-440px); }
-            100% { transform: translateX(0px); }
+            0% { transform: translateX(-240px); }
+            100% { transform: translateX(440px); }
           }
-          .wave1 { animation: flow1 12s ease-in-out infinite; }
-          .wave2 { animation: flow2 14s ease-in-out infinite 2s; }
-          .wave3 { animation: flow3 11s ease-in-out infinite 1s; }
+          .wave1 { animation: flow1 18s ease-in-out infinite; }
+          .wave2 { animation: flow2 20s ease-in-out infinite 3s; }
+          .wave3 { animation: flow3 16s ease-in-out infinite 1.5s; }
         `}</style>
       </defs>
 
