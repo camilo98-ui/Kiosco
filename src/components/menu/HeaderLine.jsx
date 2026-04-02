@@ -27,56 +27,77 @@ export default function HeaderLine() {
         </radialGradient>
 
         <style>{`
-          @keyframes oceanWave {
-            0% { transform: translateX(0px) translateY(0px); }
-            25% { transform: translateX(40px) translateY(-3px); }
-            50% { transform: translateX(80px) translateY(-5px); }
-            75% { transform: translateX(120px) translateY(-2px); }
-            100% { transform: translateX(160px) translateY(0px); }
+          @keyframes flowWave1 {
+            0% { transform: translateX(0px); }
+            100% { transform: translateX(440px); }
           }
-          @keyframes oceanWave2 {
-            0% { transform: translateX(-50px) translateY(0px); }
-            25% { transform: translateX(0px) translateY(-4px); }
-            50% { transform: translateX(50px) translateY(-6px); }
-            75% { transform: translateX(100px) translateY(-3px); }
-            100% { transform: translateX(150px) translateY(0px); }
+          @keyframes flowWave2 {
+            0% { transform: translateX(-220px); }
+            100% { transform: translateX(220px); }
           }
-          @keyframes oceanWave3 {
-            0% { transform: translateX(-100px) translateY(0px); }
-            25% { transform: translateX(-50px) translateY(-2px); }
-            50% { transform: translateX(0px) translateY(-4px); }
-            75% { transform: translateX(50px) translateY(-1px); }
-            100% { transform: translateX(100px) translateY(0px); }
+          @keyframes flowWave3 {
+            0% { transform: translateX(-110px); }
+            100% { transform: translateX(330px); }
           }
-          .blob1 { animation: oceanWave 8s ease-in-out infinite; }
-          .blob2 { animation: oceanWave2 9s ease-in-out infinite; }
-          .blob3 { animation: oceanWave3 7s ease-in-out infinite; }
+          @keyframes vertBob1 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+          }
+          @keyframes vertBob2 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+          }
+          @keyframes vertBob3 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+          }
+          .waveGroup1 { animation: flowWave1 10s linear infinite; }
+          .waveGroup2 { animation: flowWave2 11s linear infinite; }
+          .waveGroup3 { animation: flowWave3 9s linear infinite; }
         `}</style>
       </defs>
 
-      {/* Blob ola grande izquierda */}
-      <path
-        className="blob1"
-        d="M -10 56 C 20 44, 50 52, 80 42 C 108 32, 118 48, 148 40 C 175 33, 178 50, 200 56 Z"
-        fill="white"
-        fillOpacity="0.16"
-      />
+      {/* Grupo ola 1 - flujo continuo con duplicados */}
+      <g className="waveGroup1">
+        <path
+          d="M -10 56 C 20 44, 50 52, 80 42 C 108 32, 118 48, 148 40 C 175 33, 178 50, 200 56 Z"
+          fill="white"
+          fillOpacity="0.16"
+        />
+        <path
+          d="M 430 56 C 460 44, 490 52, 520 42 C 548 32, 558 48, 588 40 C 615 33, 618 50, 640 56 Z"
+          fill="white"
+          fillOpacity="0.16"
+        />
+      </g>
 
-      {/* Blob ola media derecha */}
-      <path
-        className="blob2"
-        d="M 240 56 C 268 48, 295 38, 325 46 C 355 54, 370 36, 400 42 C 420 46, 435 52, 450 56 Z"
-        fill="white"
-        fillOpacity="0.14"
-      />
+      {/* Grupo ola 2 - flujo continuo con duplicados */}
+      <g className="waveGroup2">
+        <path
+          d="M 240 56 C 268 48, 295 38, 325 46 C 355 54, 370 36, 400 42 C 420 46, 435 52, 450 56 Z"
+          fill="white"
+          fillOpacity="0.14"
+        />
+        <path
+          d="M -200 56 C -172 48, -145 38, -115 46 C -85 54, -70 36, -40 42 C -20 46, -5 52, 10 56 Z"
+          fill="white"
+          fillOpacity="0.14"
+        />
+      </g>
 
-      {/* Blob ola central pequeña */}
-      <path
-        className="blob3"
-        d="M 160 56 C 180 46, 205 52, 230 44 C 252 37, 262 50, 285 56 Z"
-        fill="white"
-        fillOpacity="0.10"
-      />
+      {/* Grupo ola 3 - flujo continuo con duplicados */}
+      <g className="waveGroup3">
+        <path
+          d="M 160 56 C 180 46, 205 52, 230 44 C 252 37, 262 50, 285 56 Z"
+          fill="white"
+          fillOpacity="0.10"
+        />
+        <path
+          d="M 600 56 C 620 46, 645 52, 670 44 C 692 37, 702 50, 725 56 Z"
+          fill="white"
+          fillOpacity="0.10"
+        />
+      </g>
 
       {/* Brillos difusos */}
       <ellipse cx="92" cy="12" rx="18" ry="8" fill="url(#glowA)" />
