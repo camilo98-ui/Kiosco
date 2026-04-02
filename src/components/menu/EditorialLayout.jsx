@@ -205,6 +205,50 @@ function MalteadaCard({ product, onAdd, addedFlash, bg }) {
   );
 }
 
+function AutoCarousel({ products, onAdd, addedFlash, bg }) {
+  const trackRef = React.useRef(null);
+  const animRef = React.useRef(null);
+  const posRef = React.useRef(0);
+  const pausedRef = React.useRef(false);
+
+  // Duplicamos para loop infinito
+  const doubled = [...products, ...products];
+
+  React.useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const cardWidth = 150; // 140px card + 10px gap
+    const totalWidth = cardWidth * products.length;
+
+    const animate = () => {
+      if (!pausedRef.current) {
+        posRef.current += 0.5;
+        if (posRef.current >= totalWidth) posRef.current = 0;
+        track.style.transform = `translateX(-${posRef.current}px)`;
+      }
+      animRef.current = requestAnimationFrame(animate);
+    };
+    animRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animRef.current);
+  }, [products.length]);
+
+  return (
+    <div
+      style={{ overflow: "hidden", paddingLeft: 14, paddingBottom: 4 }}
+      onTouchStart={() => { pausedRef.current = true; }}
+      onTouchEnd={() => { pausedRef.current = false; }}
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => { pausedRef.current = false; }}
+    >
+      <div ref={trackRef} style={{ display: "flex", gap: 10, width: "max-content" }}>
+        {doubled.map((p, i) => (
+          <MalteadaCard key={`${p.id}-${i}`} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   const available = products.filter(p => p.is_available !== false);
   const carouselProducts = available.slice(0, 8);
@@ -213,11 +257,7 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} />
-      <div style={{ overflowX: "auto", scrollbarWidth: "none", paddingLeft: 14, paddingRight: 14, paddingBottom: 4 }}>
-        <div style={{ display: "flex", gap: 10, width: "max-content" }}>
-          {carouselProducts.map(p => <MalteadaCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
-        </div>
-      </div>
+      <AutoCarousel products={carouselProducts} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
       {restProducts.length > 0 && <Separator label={catLabel} />}
       {restProducts.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
