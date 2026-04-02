@@ -19,6 +19,7 @@ import UpsellBanner from "@/components/menu/UpsellBanner";
 import CheckoutDialog from "@/components/menu/CheckoutDialog";
 import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
+import HeaderLine from "@/components/menu/HeaderLine";
 
 export default function Menu() {
   const [activeCategory, setActiveCategory] = useState("combos");
@@ -35,6 +36,13 @@ export default function Menu() {
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
   const { addItem, cart, clearCart, total, itemCount } = useCart();
+
+  // Estado de la línea inteligente del header
+  const headerLineState = useMemo(() => {
+    if (itemCount > 0 && total < 20000) return "upsell";
+    if (itemCount > 0) return "added";
+    return "idle";
+  }, [itemCount, total]);
 
   // Banner contextual según hora del día
   const contextBanner = React.useMemo(() => {
@@ -166,8 +174,12 @@ export default function Menu() {
         style={{
           height: 56,
           background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)",
+          position: "sticky",
+          overflow: "hidden",
         }}
       >
+        {/* Línea animada inteligente */}
+        <HeaderLine state={headerLineState} />
         {/* Izquierda: logo blanco */}
         <PopsyLogo onClick={handleLogoClick} size="normal" dark />
 
