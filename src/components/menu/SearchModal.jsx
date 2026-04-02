@@ -40,11 +40,9 @@ export default function SearchModal({ open, onClose, products, onAddProduct }) {
             <p className="text-center text-muted-foreground py-6">No encontramos nada 😢</p>
           )}
           {results.map((product) => (
-            <motion.button
+            <button
               key={product.id}
               onClick={() => handleAdd(product)}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
               className="w-full flex items-center gap-3 p-3 rounded-xl bg-muted hover:bg-secondary border border-border transition-colors text-left"
             >
               <span className="text-2xl">{product.emoji || "🍦"}</span>
@@ -53,7 +51,7 @@ export default function SearchModal({ open, onClose, products, onAddProduct }) {
                 <p className="text-xs text-muted-foreground">{product.category}</p>
               </div>
               <span className="font-black text-sm text-primary flex-shrink-0">{formatCOP(product.price)}</span>
-            </motion.button>
+            </button>
           ))}
         </div>
       </DialogContent>

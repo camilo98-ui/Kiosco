@@ -417,17 +417,8 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   };
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={category}
-        initial={{ opacity: 0, x: 16 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -16 }}
-        transition={{ duration: 0.2 }}
-        style={{ paddingBottom: 8 }}
-      >
-        {renderLayout()}
-      </motion.div>
-    </AnimatePresence>
+    <div style={{ paddingBottom: 8 }}>
+      {renderLayout()}
+    </div>
   );
 }

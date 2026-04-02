@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { Plus } from "lucide-react";
 import { formatCOP, TAG_CONFIG } from "@/lib/constants";
 

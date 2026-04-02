@@ -80,24 +80,18 @@ export default function PromoBanners({ onCategorySelect }) {
         onTouchEnd={handleTouchEnd}
         style={{ cursor: "grab" }}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={banner.id}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            onClick={() => onCategorySelect?.(banner.category)}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer" }}
-          >
-            <img
-              src={banner.image}
-              alt={banner.alt}
-              className="w-full object-cover"
-              style={{ display: "block", height: 130, objectPosition: "center" }}
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div
+          key={banner.id}
+          onClick={() => onCategorySelect?.(banner.category)}
+          style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer" }}
+        >
+          <img
+            src={banner.image}
+            alt={banner.alt}
+            className="w-full object-cover"
+            style={{ display: "block", height: 130, objectPosition: "center" }}
+          />
+        </div>
       </div>
 
       {/* Dots */}
