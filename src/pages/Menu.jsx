@@ -188,7 +188,6 @@ export default function Menu() {
             <Search size={14} style={{ color: "#fff" }} />
           </button>
           <button
-            onClick={() => setCheckoutOpen(true)}
             className="flex items-center justify-center hover:opacity-80 transition-opacity relative"
             style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
           >
