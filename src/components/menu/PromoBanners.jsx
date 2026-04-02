@@ -74,7 +74,7 @@ export default function PromoBanners({ onCategorySelect }) {
   const banner = BANNERS[active];
 
   return (
-    <div className="px-1 mb-4">
+    <div className="px-1 mb-0">
       <div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -88,7 +88,7 @@ export default function PromoBanners({ onCategorySelect }) {
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
             onClick={() => onCategorySelect?.(banner.category)}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer" }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", margin: 0 }}
           >
             <img
               src={banner.image}
@@ -101,7 +101,7 @@ export default function PromoBanners({ onCategorySelect }) {
       </div>
 
       {/* Dots */}
-      <div className="flex items-center justify-center gap-1 mt-2">
+      <div className="flex items-center justify-center gap-1 mt-1">
         {BANNERS.map((_, i) => (
           <button
             key={i}
