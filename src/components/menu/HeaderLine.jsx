@@ -81,7 +81,63 @@ export default function HeaderLine({ hasCart = false }) {
           <stop offset="70%"  stopColor="white" stopOpacity="0.15" />
           <stop offset="100%" stopColor="white" stopOpacity="0.06" />
         </linearGradient>
+        {/* Gradiente radial para brillos premium */}
+        <radialGradient id="glowA" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stopColor="white" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="glowB" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stopColor="white" stopOpacity="0.10" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </radialGradient>
       </defs>
+
+      {/* ── Blob orgánico 1: ola grande izquierda (tipo derrame de crema) ── */}
+      <path
+        d="M -10 56 C 20 44, 50 52, 80 42 C 108 32, 118 48, 148 40 C 175 33, 178 50, 200 56 Z"
+        fill="white"
+        fillOpacity="0.06"
+      />
+
+      {/* ── Blob orgánico 2: ola media derecha ── */}
+      <path
+        d="M 240 56 C 268 48, 295 38, 325 46 C 355 54, 370 36, 400 42 C 420 46, 435 52, 450 56 Z"
+        fill="white"
+        fillOpacity="0.05"
+      />
+
+      {/* ── Espiral ligera tipo soft-serve (centro-izquierda) ── */}
+      <path
+        d="M 60 20 C 64 14, 72 12, 76 18 C 80 24, 74 30, 68 28 C 62 26, 62 18, 68 16"
+        fill="none"
+        stroke="white"
+        strokeOpacity="0.10"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+
+      {/* ── Onda suave secundaria (centro) ── */}
+      <path
+        d="M 150 46 C 170 36, 195 50, 218 40 C 240 30, 260 46, 285 38"
+        fill="none"
+        stroke="white"
+        strokeOpacity="0.08"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
+
+      {/* ── Brillo premium 1: destello pequeño superior izquierdo ── */}
+      <ellipse cx="92" cy="12" rx="18" ry="8" fill="url(#glowA)" />
+
+      {/* ── Brillo premium 2: destello difuso derecha ── */}
+      <ellipse cx="370" cy="22" rx="30" ry="12" fill="url(#glowB)" />
+
+      {/* ── Punto brillo tipo reflejo helado ── */}
+      <circle cx="108" cy="9" r="2.2" fill="white" fillOpacity="0.14" />
+      <circle cx="110" cy="8" r="0.9" fill="white" fillOpacity="0.28" />
+
+      {/* ── Punto brillo secundario ── */}
+      <circle cx="355" cy="18" r="1.6" fill="white" fillOpacity="0.12" />
 
       {/* ── Línea orgánica principal ── */}
       <path
