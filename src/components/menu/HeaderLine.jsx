@@ -69,14 +69,7 @@ export default function HeaderLine() {
         fillOpacity="0.10"
       />
 
-      {/* Brillos difusos */}
-      <ellipse cx="92" cy="12" rx="18" ry="8" fill="url(#glowA)" />
-      <ellipse cx="370" cy="22" rx="30" ry="12" fill="url(#glowB)" />
 
-      {/* Puntos brillo reflejo */}
-      <circle cx="108" cy="9" r="2.2" fill="white" fillOpacity="0.28" />
-      <circle cx="110" cy="8" r="0.9" fill="white" fillOpacity="0.45" />
-      <circle cx="355" cy="18" r="1.6" fill="white" fillOpacity="0.26" />
     </svg>
   );
 }
