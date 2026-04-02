@@ -1,19 +1,22 @@
 import React, { useState, useRef, useCallback, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import PopsyLogo from "@/components/menu/PopsyLogo";
-import CategoryNav from "@/components/menu/CategoryNav";
-import ProductCard from "@/components/menu/ProductCard";
-import CartSheet from "@/components/menu/CartSheet";
+import { useCart } from "@/lib/cartStore";
+import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, ShoppingBag, MapPin, Loader2 } from "lucide-react";
+
+// Componentes nuevos premium
+import PromoBanners from "@/components/menu/PromoBanners";
+import StageCard from "@/components/menu/StageCard";
+import SuggestedRow from "@/components/menu/SuggestedRow";
+import PremiumCategoryTabs from "@/components/menu/PremiumCategoryTabs";
+import PremiumCartBar from "@/components/menu/PremiumCartBar";
+import AdditionsUpsell from "@/components/menu/AdditionsUpsell";
 import UpsellBanner from "@/components/menu/UpsellBanner";
 import CheckoutDialog from "@/components/menu/CheckoutDialog";
 import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
-import AdditionsUpsell from "@/components/menu/AdditionsUpsell";
-import { useCart } from "@/lib/cartStore";
-import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
-import { Loader2, Sparkles } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 export default function Menu() {
   const [activeCategory, setActiveCategory] = useState("combos");
@@ -29,7 +32,7 @@ export default function Menu() {
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
-  const { addItem, cart, clearCart, total } = useCart();
+  const { addItem, cart, clearCart, total, itemCount } = useCart();
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
@@ -45,11 +48,23 @@ export default function Menu() {
     return map;
   }, [products]);
 
-  // Best sellers de otras categorías para sugerencias inline
+  // Productos de la categoría activa (solo disponibles)
+  const categoryProducts = useMemo(() => {
+    return (productsByCategory[activeCategory] || []).filter(p => p.is_available !== false);
+  }, [productsByCategory, activeCategory]);
+
+  // Featured: los "mas_vendido" primero, resto después
+  const featuredProducts = useMemo(() => {
+    const top = categoryProducts.filter(p => p.tag === "mas_vendido");
+    const rest = categoryProducts.filter(p => p.tag !== "mas_vendido");
+    return [...top, ...rest];
+  }, [categoryProducts]);
+
+  // Sugerencias: best sellers de otras categorías
   const suggestedProducts = useMemo(() => {
     return products
       .filter((p) => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false)
-      .slice(0, 4);
+      .slice(0, 6);
   }, [products, activeCategory]);
 
   const handleLogoClick = () => {
@@ -71,19 +86,16 @@ export default function Menu() {
       setAddedFlash(product.id);
       setTimeout(() => setAddedFlash(null), 600);
 
-      // Upsell de adiciones: mostrar si el producto NO es ya una adición
       if (product.category !== "adiciones") {
         clearTimeout(upsellTimer.current);
         setShowAdditionsUpsell(false);
         upsellTimer.current = setTimeout(() => {
           setLastAdded(product);
           setShowAdditionsUpsell(true);
-          // Auto-dismiss después de 8 segundos
           setTimeout(() => setShowAdditionsUpsell(false), 8000);
         }, 700);
       }
 
-      // Upsell de categoría (banner pequeño)
       const rule = UPSELL_RULES[product.category];
       if (rule && product.category === "adiciones") {
         upsellTimer.current = setTimeout(() => {
@@ -136,101 +148,143 @@ export default function Menu() {
     );
   }
 
-  const categoryProducts = productsByCategory[activeCategory] || [];
-
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#f9f6f7" }}>
-      {/* Header fucsia Popsy */}
-      <div
-        className="sticky top-0 z-20 border-b border-primary/20"
-        style={{ background: "hsl(338,82%,44%)" }}
-      >
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-          <PopsyLogo onClick={handleLogoClick} />
-          <div />
-        </div>
-        <div className="max-w-2xl mx-auto" style={{ background: "white" }}>
-          <CategoryNav activeCategory={activeCategory} onSelect={setActiveCategory} />
-        </div>
-      </div>
+    <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
 
-      {/* Hero de categoría activa */}
-      <div className="max-w-2xl mx-auto px-4 pt-4">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            transition={{ duration: 0.18 }}
-          >
-            {/* Título de sección */}
-            <div className="mb-3 flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-black text-foreground">
-                  {CATEGORIES.find(c => c.id === activeCategory)?.emoji}{" "}
-                  {CATEGORIES.find(c => c.id === activeCategory)?.label}
-                </h2>
-                <p className="text-xs text-muted-foreground">{categoryProducts.filter(p => p.is_available !== false).length} disponibles</p>
-              </div>
-            </div>
-
-            {/* Productos */}
-            {isLoading ? (
-              <div className="flex justify-center py-16">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {categoryProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className={`transition-all duration-150 ${addedFlash === product.id ? "scale-[0.97] opacity-80" : ""}`}
-                  >
-                    <ProductCard product={product} onAdd={handleAddProduct} />
-                  </div>
-                ))}
-                {categoryProducts.length === 0 && (
-                  <p className="text-center text-muted-foreground py-10">
-                    No hay productos en esta categoría
-                  </p>
-                )}
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Sección de sugerencias estratégicas al final del listado */}
-        {!isLoading && suggestedProducts.length > 0 && (
-          <div className="mt-6 mb-2">
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <h3 className="text-sm font-black text-foreground">¿Te animas con algo más?</h3>
-            </div>
-            <div className="flex gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
-              {suggestedProducts.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => handleAddProduct(p)}
-                  className="shrink-0 rounded-2xl p-3 text-left w-32 transition-all hover:scale-105 active:scale-95"
+      {/* ── BARRA SUPERIOR ── */}
+      <div className="sticky top-0 z-20" style={{ background: "#FFFCFD" }}>
+        {/* Status bar: ubicación + íconos */}
+        <div className="flex items-center justify-between px-5 pt-4 pb-2">
+          <button className="flex items-center gap-1.5" onClick={handleLogoClick}>
+            <span
+              className="rounded-full"
+              style={{ width: 7, height: 7, background: "#C2185B", display: "inline-block" }}
+            />
+            <span className="font-semibold" style={{ fontSize: 12, color: "#BBA8B0" }}>
+              Bogotá, Colombia
+            </span>
+          </button>
+          <div className="flex items-center gap-2">
+            <button
+              className="flex items-center justify-center"
+              style={{
+                width: 36, height: 36, borderRadius: "50%",
+                background: "#F5EEF1",
+                border: "1px solid #F0E4EA",
+              }}
+            >
+              <Search size={15} style={{ color: "#2D1A22" }} />
+            </button>
+            <button
+              className="flex items-center justify-center relative"
+              style={{
+                width: 36, height: 36, borderRadius: "50%",
+                background: "#F5EEF1",
+                border: "1px solid #F0E4EA",
+              }}
+            >
+              <ShoppingBag size={15} style={{ color: "#2D1A22" }} />
+              {itemCount > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 font-black flex items-center justify-center"
                   style={{
-                    background: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
+                    width: 16, height: 16, borderRadius: "50%",
+                    background: "#C2185B", color: "#fff", fontSize: 9,
                   }}
                 >
-                  <span className="text-2xl">{p.emoji || "🍦"}</span>
-                  <p className="text-xs font-bold mt-1 leading-tight line-clamp-2 text-foreground">{p.name}</p>
-                  <p className="text-xs font-black mt-1" style={{ color: "hsl(var(--primary))" }}>
-                    {formatCOP(p.price)}
-                  </p>
-                </button>
-              ))}
-            </div>
+                  {itemCount}
+                </span>
+              )}
+            </button>
           </div>
+        </div>
+
+        {/* ── HEADER DE MARCA ── */}
+        <div className="flex items-end justify-between px-5 pb-3">
+          <div>
+            <p
+              className="uppercase font-extrabold tracking-widest"
+              style={{ fontSize: 8, color: "#C2185B", letterSpacing: "3px" }}
+            >
+              HELADO GOURMET
+            </p>
+            <p
+              className="font-black italic"
+              style={{
+                fontSize: 34,
+                color: "#2D1A22",
+                letterSpacing: "-3px",
+                lineHeight: 1.05,
+              }}
+            >
+              Popsy
+            </p>
+          </div>
+          <p
+            className="text-right pb-1"
+            style={{ fontSize: 9, color: "#BBA8B0", lineHeight: 1.5 }}
+          >
+            Hecho con<br />amor y crema
+          </p>
+        </div>
+
+        {/* Divisor */}
+        <div style={{ height: 1, background: "#F0E4EA", marginLeft: 20, marginRight: 20 }} />
+      </div>
+
+      {/* ── CONTENIDO SCROLLABLE ── */}
+      <div className="pb-32">
+
+        {/* ── BANNERS PROMOCIONALES ── */}
+        <div className="pt-4">
+          <PromoBanners onCategorySelect={setActiveCategory} />
+        </div>
+
+        {/* ── TABS DE CATEGORÍAS ── */}
+        <PremiumCategoryTabs activeCategory={activeCategory} onSelect={setActiveCategory} />
+
+        {/* ── STAGE CARD: producto estrella de la categoría ── */}
+        <div className="pt-4">
+          {isLoading ? (
+            <div className="flex justify-center py-16">
+              <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C2185B" }} />
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.2 }}
+              >
+                {/* Número de disponibles */}
+                <p
+                  className="uppercase font-extrabold tracking-widest px-5 mb-3"
+                  style={{ fontSize: 8, color: "#BBA8B0", letterSpacing: "2px" }}
+                >
+                  {CATEGORIES.find(c => c.id === activeCategory)?.label} · {categoryProducts.length} disponibles
+                </p>
+
+                <StageCard
+                  products={featuredProducts}
+                  onAdd={handleAddProduct}
+                  addedFlash={addedFlash}
+                />
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
+
+        {/* ── TAMBIÉN TE PUEDE GUSTAR ── */}
+        {!isLoading && suggestedProducts.length > 0 && (
+          <SuggestedRow products={suggestedProducts} onAdd={handleAddProduct} />
         )}
       </div>
 
-      <CartSheet onCheckout={() => setCheckoutOpen(true)} />
+      {/* ── OVERLAYS Y MODALES ── */}
+      <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
+
       {showAdditionsUpsell && (
         <AdditionsUpsell
           lastAdded={lastAdded}
@@ -239,8 +293,20 @@ export default function Menu() {
           onDismiss={() => setShowAdditionsUpsell(false)}
         />
       )}
-      <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
-      <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
+
+      <UpsellBanner
+        message={upsellMsg}
+        onDismiss={() => setUpsellMsg(null)}
+        onAccept={handleUpsellAccept}
+      />
+
+      <CheckoutDialog
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        onConfirm={handleCheckout}
+        isLoading={isSubmitting}
+      />
+
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
     </div>
   );
