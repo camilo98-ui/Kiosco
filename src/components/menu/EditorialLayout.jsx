@@ -57,13 +57,15 @@ function ProductImageBox({ product, bg, size = 120, emojiSize = 50 }) {
   );
 }
 
-function SectionHeader({ label, count }) {
+function SectionHeader({ label, count, onViewAll }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 14, paddingRight: 14, marginBottom: 10 }}>
       <p style={{ fontSize: 9, fontWeight: 800, color: "#BBA8B0", textTransform: "uppercase", letterSpacing: "1.5px" }}>
         {label} · {count} disponibles
       </p>
-      <p style={{ fontSize: 9, color: "#C2185B", fontWeight: 700 }}>Ver todos →</p>
+      <button onClick={onViewAll} style={{ fontSize: 9, color: "#C2185B", fontWeight: 700, background: "none", border: "none", cursor: "pointer" }}>
+        Ver todos →
+      </button>
     </div>
   );
 }
@@ -314,18 +316,27 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
 }
 
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
+  const [showAll, setShowAll] = React.useState(false);
   const available = products.filter(p => p.is_available !== false);
   const carouselProducts = available.slice(0, 8);
   const restProducts = available.slice(8);
 
   return (
     <>
-      <SectionHeader label={catLabel} count={available.length} />
-      <AutoCarousel products={carouselProducts} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-      {restProducts.length > 0 && <Separator label={catLabel} />}
-      {restProducts.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
-          {restProducts.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+      <SectionHeader label={catLabel} count={available.length} onViewAll={() => setShowAll(!showAll)} />
+      {!showAll ? (
+        <>
+          <AutoCarousel products={carouselProducts} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+          {restProducts.length > 0 && <Separator label={catLabel} />}
+          {restProducts.length > 0 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
+              {restProducts.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+            </div>
+          )}
+        </>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
+          {available.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
         </div>
       )}
     </>
