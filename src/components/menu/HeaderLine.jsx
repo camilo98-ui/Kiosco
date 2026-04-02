@@ -39,9 +39,9 @@ export default function HeaderLine() {
             0% { transform: translateX(-240px); }
             100% { transform: translateX(440px); }
           }
-          .wave1 { animation: flow1 18s ease-in-out infinite; }
-          .wave2 { animation: flow2 20s ease-in-out infinite 3s; }
-          .wave3 { animation: flow3 16s ease-in-out infinite 1.5s; }
+          .wave1 { animation: flow1 35s ease-in-out infinite; }
+          .wave2 { animation: flow2 40s ease-in-out infinite 5s; }
+          .wave3 { animation: flow3 32s ease-in-out infinite 2.5s; }
         `}</style>
       </defs>
 
