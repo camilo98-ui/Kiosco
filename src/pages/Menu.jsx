@@ -217,8 +217,8 @@ export default function Menu() {
             width: "100%", textAlign: "center",
             background: "linear-gradient(90deg, #C2185B11 0%, #C2185B22 100%)",
             borderBottom: "1px solid #F0E4EA",
-            padding: "7px 16px",
-            fontSize: 11, fontWeight: 700, color: "#C2185B",
+            padding: "14px 16px",
+            fontSize: 12, fontWeight: 700, color: "#C2185B", lineHeight: 1.5,
           }}
         >
           {/* Cono minimalista de bola */}
