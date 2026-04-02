@@ -74,7 +74,7 @@ export default function PromoBanners({ onCategorySelect }) {
   const banner = BANNERS[active];
 
   return (
-    <div className="mb-4">
+    <div className="px-1 mb-4">
       <div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -88,13 +88,13 @@ export default function PromoBanners({ onCategorySelect }) {
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
             onClick={() => onCategorySelect?.(banner.category)}
-            style={{ overflow: "hidden", cursor: "pointer" }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer" }}
           >
             <img
               src={banner.image}
               alt={banner.alt}
               className="w-full object-cover"
-              style={{ display: "block", height: 160, objectPosition: "center" }}
+              style={{ display: "block", height: 130, objectPosition: "center" }}
             />
           </motion.div>
         </AnimatePresence>
@@ -107,8 +107,8 @@ export default function PromoBanners({ onCategorySelect }) {
             key={i}
             onClick={() => goTo(i)}
             style={{
-              height: 5,
-              width: i === active ? 14 : 5,
+              height: 4,
+              width: i === active ? 14 : 4,
               borderRadius: 4,
               background: i === active ? "#C2185B" : "#EDD8E4",
               transition: "all 0.25s ease",
