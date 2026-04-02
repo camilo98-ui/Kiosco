@@ -213,11 +213,11 @@ export default function Menu() {
         <button
           onClick={() => setActiveCategory(contextBanner.category)}
           style={{
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 7,
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4,
             width: "100%", textAlign: "center",
             background: "linear-gradient(90deg, #C2185B11 0%, #C2185B22 100%)",
             borderBottom: "1px solid #F0E4EA",
-            padding: "14px 16px",
+            padding: "16px 16px 12px",
             fontSize: 12, fontWeight: 700, color: "#C2185B", lineHeight: 1.5,
           }}
         >
