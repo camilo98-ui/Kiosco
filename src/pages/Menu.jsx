@@ -158,7 +158,7 @@ export default function Menu() {
         }}
       >
         {/* Izquierda: logo blanco */}
-        <PopsyLogo onClick={handleLogoClick} size="small" dark />
+        <PopsyLogo onClick={handleLogoClick} size="normal" dark />
 
         {/* Derecha: íconos blancos */}
         <div className="flex items-center gap-2">

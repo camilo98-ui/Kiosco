@@ -101,19 +101,20 @@ export default function PromoBanners({ onCategorySelect }) {
       </div>
 
       {/* Dots */}
-      <div className="flex items-center justify-center gap-2 mt-2.5">
+      <div className="flex items-center justify-center gap-1 mt-2">
         {BANNERS.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
             style={{
-              height: 5,
-              width: i === active ? 16 : 5,
-              borderRadius: 6,
+              height: 4,
+              width: i === active ? 14 : 4,
+              borderRadius: 4,
               background: i === active ? "#C2185B" : "#EDD8E4",
               transition: "all 0.25s ease",
               border: "none",
               padding: 0,
+              flexShrink: 0,
             }}
           />
         ))}
