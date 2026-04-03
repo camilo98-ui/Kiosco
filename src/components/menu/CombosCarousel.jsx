@@ -90,7 +90,7 @@ export default function CombosCarousel({ onAdd }) {
   const dragRef = useRef({ isDragging: false, startX: 0, startPos: 0 });
 
   const doubled = [...COMBOS, ...COMBOS];
-  const cardWidth = 200;
+  const cardWidth = 300;
 
   const handleMouseDown = (e) => {
     dragRef.current = {
@@ -151,14 +151,14 @@ export default function CombosCarousel({ onAdd }) {
       </p>
 
       <div
-        style={{ overflow: "hidden", paddingLeft: 14, paddingBottom: 4, cursor: "grab" }}
+        style={{ overflow: "hidden", paddingLeft: 16, paddingRight: 16, paddingBottom: 4, cursor: "grab" }}
         onMouseDown={handleMouseDown}
         onTouchStart={() => { pausedRef.current = true; }}
         onTouchEnd={() => { pausedRef.current = false; }}
         onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
         onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
       >
-        <div ref={trackRef} style={{ display: "flex", gap: 10, width: "max-content" }}>
+        <div ref={trackRef} style={{ display: "flex", gap: 12, width: "max-content" }}>
           {doubled.map((combo, i) => (
             <div
               key={`${combo.id}-${i}`}
@@ -179,11 +179,11 @@ export default function CombosCarousel({ onAdd }) {
                 cursor: "pointer",
               }}
             >
-              <div style={{ borderRadius: 12, overflow: "hidden", background: "#f5f5f5" }}>
+              <div style={{ borderRadius: 14, overflow: "hidden", background: "#f5f5f5", aspectRatio: "1" }}>
                 <img
                   src={combo.image}
                   alt={combo.title}
-                  style={{ width: "100%", height: 150, objectFit: "contain", objectPosition: "center", display: "block" }}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block", padding: "8px" }}
                 />
               </div>
               <div style={{ marginTop: 6, paddingRight: 4 }}>
