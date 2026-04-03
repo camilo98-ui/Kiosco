@@ -56,15 +56,15 @@ function CategoryIcons({ activeCategory, onSelect }) {
               style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, flexShrink: 0, background: "none", border: "none", cursor: "pointer", padding: 0 }}
             >
               <div style={{
-                width: 56, height: 56, borderRadius: "50%",
+                width: 70, height: 70, borderRadius: "50%",
                 background: isActive ? "#FFF0F5" : "#F5F5F5",
                 border: isActive ? "2.5px solid #B5175A" : "2px solid transparent",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 24, transition: "all 0.15s ease",
+                fontSize: 32, transition: "all 0.15s ease",
               }}>
                 {cat.emoji}
               </div>
-              <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, color: isActive ? "#B5175A" : "#8A7880", whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? "#B5175A" : "#8A7880", whiteSpace: "nowrap" }}>
                 {cat.label}
               </span>
             </button>
