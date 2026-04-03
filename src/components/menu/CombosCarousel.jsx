@@ -134,7 +134,7 @@ export default function CombosCarousel({ onAdd }) {
 
     const animate = () => {
       if (!pausedRef.current) {
-        posRef.current += 0.5;
+        posRef.current += 1.2;
         if (posRef.current >= totalWidth) posRef.current = 0;
         track.style.transform = `translateX(-${posRef.current}px)`;
       }
@@ -179,11 +179,11 @@ export default function CombosCarousel({ onAdd }) {
                 cursor: "pointer",
               }}
             >
-              <div style={{ borderRadius: 14, overflow: "hidden", background: "#f5f5f5", aspectRatio: "1" }}>
+              <div style={{ borderRadius: 18, overflow: "hidden", background: "#fff", border: "1.5px solid #F0E4EA", aspectRatio: "1", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <img
                   src={combo.image}
                   alt={combo.title}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block", padding: "8px" }}
+                  style={{ width: "90%", height: "90%", objectFit: "contain", objectPosition: "center", display: "block" }}
                 />
               </div>
               <div style={{ marginTop: 6, paddingRight: 4 }}>
