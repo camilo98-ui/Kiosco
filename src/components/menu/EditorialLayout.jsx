@@ -6,6 +6,7 @@ import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
 import MalteadaCustomizer12oz from "@/components/menu/MalteadaCustomizer12oz";
 import BananaSplitCustomizer from "@/components/menu/BananaSplitCustomizer";
 import HeladoCustomizer from "@/components/menu/HeladoCustomizer";
+import MaxiConoCustomizer from "@/components/menu/MaxiConoCustomizer";
 
 // ─── Ordenamiento comercial dinámico ───────────────────────────────
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
@@ -501,6 +502,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   const [customizer12ozProduct, setCustomizer12ozProduct] = useState(null);
   const [bananaSplitProduct, setBananaSplitProduct] = useState(null);
   const [heladoProduct, setHeladoProduct] = useState(null);
+  const [maxiConoProduct, setMaxiConoProduct] = useState(null);
 
   if (!products || products.length === 0) return null;
 
@@ -518,7 +520,9 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
     } else if (category === "especialidades" && product.name.toLowerCase().includes("banana split")) {
       setBananaSplitProduct(product);
     } else if (category === "helados" && (product.name.toLowerCase().includes("maxi cono") || product.name.toLowerCase().includes("maxicono"))) {
-      setHeladoProduct(product);
+      setMaxiConoProduct(product);
+    } else if (category === "helados" && product.name.includes("2") && product.name.toLowerCase().includes("sabor")) {
+      setMaxiConoProduct(product);
     } else {
       onAdd(product);
     }
@@ -578,6 +582,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
         product={heladoProduct}
         open={!!heladoProduct}
         onClose={() => setHeladoProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <MaxiConoCustomizer
+        product={maxiConoProduct}
+        open={!!maxiConoProduct}
+        onClose={() => setMaxiConoProduct(null)}
         onAdd={handleCustomizerAdd}
       />
     </>

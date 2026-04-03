@@ -48,8 +48,7 @@ const EXTRAS = [
   { name: "Sprinkles", price: 3100 },
 ];
 
-const SECTIONS = ["sabor", "extras"];
-const MAX_SABORES = 1; // Default para helados normales
+const SECTIONS = ["sabor1", "sabor2", "extras"];
 
 function AccordionSection({ title, required, open, onToggle, children, badge }) {
   return (
@@ -131,9 +130,10 @@ function CheckOption({ label, price, selected, onToggle }) {
   );
 }
 
-export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
-  const [openSection, setOpenSection] = useState("sabor");
-  const [sabor, setSabor] = useState(null);
+export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
+  const [openSection, setOpenSection] = useState("sabor1");
+  const [sabor1, setSabor1] = useState(null);
+  const [sabor2, setSabor2] = useState(null);
   const [extras, setExtras] = useState([]);
 
   const advanceToNext = (current) => {
@@ -153,16 +153,18 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
   const total = (product?.price || 0) + extrasTotal;
 
+  const allRequired = sabor1 && sabor2;
+
   const handleConfirm = () => {
-    if (!sabor) return;
+    if (!allRequired) return;
     const notes = [
-      `Sabor: ${sabor}`,
+      `Sabores: ${sabor1}, ${sabor2}`,
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
-    setSabor(null); setExtras([]);
-    setOpenSection("sabor");
+    setSabor1(null); setSabor2(null); setExtras([]);
+    setOpenSection("sabor1");
     onClose();
   };
 
@@ -175,7 +177,6 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
         className="rounded-t-3xl"
         style={{ background: "#FFFCFD", border: "none", maxHeight: "90vh", overflowY: "auto", padding: 0 }}
       >
-        {/* Header */}
         <div style={{ padding: "20px 16px 12px", borderBottom: "1px solid #F0E4EA" }}>
           <p style={{ fontSize: 11, color: "#BBA8B0", margin: "0 0 4px", fontWeight: 600 }}>Personalizando</p>
           <SheetTitle style={{ fontSize: 18, fontWeight: 900, color: "#1A0A10", margin: 0 }}>
@@ -186,25 +187,40 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           </p>
         </div>
 
-        {/* Sabor */}
         <AccordionSection
-          title="Elige El Sabor De Helado"
+          title="Elige Tu Primer Sabor"
           required
-          open={openSection === "sabor"}
-          onToggle={() => setOpenSection(s => s === "sabor" ? null : "sabor")}
+          open={openSection === "sabor1"}
+          onToggle={() => setOpenSection(s => s === "sabor1" ? null : "sabor1")}
         >
           <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
           {SABORES_HELADO.map(s => (
             <RadioOption
               key={s}
               label={s}
-              selected={sabor === s}
-              onSelect={() => { setSabor(s); advanceToNext("sabor"); }}
+              selected={sabor1 === s}
+              onSelect={() => { setSabor1(s); advanceToNext("sabor1"); }}
             />
           ))}
         </AccordionSection>
 
-        {/* Extras */}
+        <AccordionSection
+          title="Elige Tu Segundo Sabor"
+          required
+          open={openSection === "sabor2"}
+          onToggle={() => setOpenSection(s => s === "sabor2" ? null : "sabor2")}
+        >
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
+          {SABORES_HELADO.map(s => (
+            <RadioOption
+              key={s}
+              label={s}
+              selected={sabor2 === s}
+              onSelect={() => { setSabor2(s); advanceToNext("sabor2"); }}
+            />
+          ))}
+        </AccordionSection>
+
         <AccordionSection
           title="Elige Tus Extras"
           required={false}
@@ -223,23 +239,22 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           ))}
         </AccordionSection>
 
-        {/* Footer */}
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
-          {!sabor && (
+          {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige un sabor para continuar
+              * Elige dos sabores para continuar
             </p>
           )}
           <button
             onClick={handleConfirm}
-            disabled={!sabor}
+            disabled={!allRequired}
             style={{
               width: "100%", height: 56, borderRadius: 18,
-              background: sabor ? "#C2185B" : "#EDD8E4",
-              color: sabor ? "#fff" : "#BBA8B0",
+              background: allRequired ? "#C2185B" : "#EDD8E4",
+              color: allRequired ? "#fff" : "#BBA8B0",
               fontSize: 15, fontWeight: 900, border: "none",
-              cursor: sabor ? "pointer" : "not-allowed",
-              boxShadow: sabor ? "0 4px 16px rgba(194,24,91,0.35)" : "none",
+              cursor: allRequired ? "pointer" : "not-allowed",
+              boxShadow: allRequired ? "0 4px 16px rgba(194,24,91,0.35)" : "none",
               transition: "all 0.2s",
             }}
           >
