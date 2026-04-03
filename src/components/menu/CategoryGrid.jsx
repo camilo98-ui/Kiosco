@@ -1,23 +1,61 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ChevronRight } from "lucide-react";
 
 export default function CategoryGrid({ categories, productCounts, onSelect }) {
+  const containerRef = useRef(null);
+  const startX = useRef(null);
+  const scrollLeft = useRef(null);
+
+  const handleMouseDown = (e) => {
+    startX.current = e.pageX - containerRef.current.offsetLeft;
+    scrollLeft.current = containerRef.current.scrollLeft;
+    containerRef.current.style.cursor = "grabbing";
+  };
+
+  const handleMouseMove = (e) => {
+    if (!startX.current) return;
+    e.preventDefault();
+    const x = e.pageX - containerRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.5;
+    containerRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const handleMouseUp = () => {
+    startX.current = null;
+    containerRef.current.style.cursor = "grab";
+  };
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, padding: "16px" }}>
+    <div
+      ref={containerRef}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      style={{
+        display: "flex",
+        gap: 12,
+        padding: "0 16px",
+        overflowX: "auto",
+        scrollbarWidth: "none",
+        WebkitOverflowScrolling: "touch",
+        cursor: "grab",
+      }}
+    >
       {categories.map((category) => (
         <button
           key={category.id}
           onClick={() => onSelect(category.id)}
           style={{
             position: "relative",
-            width: "100%",
-            paddingBottom: "125%",
-            border: "none",
+            minWidth: 160,
+            height: 200,
             borderRadius: 16,
             overflow: "hidden",
             background: "transparent",
+            border: "none",
             cursor: "pointer",
-            aspectRatio: "4/5",
+            flexShrink: 0,
           }}
         >
           {/* Imagen de fondo */}
