@@ -39,7 +39,7 @@ const FAMILY_CARDS = [
   { id: "helados",        label: "Helados",      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/f595fcc04_Helados.jpg" },
   { id: "combos",         label: "Cookie Jar",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/808f0498b_CookieJaar.png" },
   { id: "especialidades", label: "Especiales",   image: null },
-  { id: "cafe",           label: "Café",         image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/89f6f2a8f_150929101049-black-coffee-stock-removebg-preview.png" },
+  { id: "cafe",           label: "Café",         image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0107c0b2c_image.png" },
 ];
 
 function CategoryIcons({ activeCategory, onSelect }) {
