@@ -165,9 +165,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
         <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
           {CATEGORIES.find(c => c.id === activeCategory)?.label}
         </span>
-        <button onClick={() => setSearchOpen(true)} style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-          <Search size={14} color="#fff" />
-        </button>
+
       </div>
       <div className="pb-36 pt-2">
         <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} />
