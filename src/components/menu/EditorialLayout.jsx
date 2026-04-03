@@ -407,7 +407,7 @@ function CafeCard({ product, onAdd, addedFlash, bg }) {
       style={{ border: "1.5px solid #F0E4EA", borderRadius: 20, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
       <div style={{ background: bg, height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
         {product.image_url && !imgError ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
           <span style={{ fontSize: 40 }}>{product.emoji || "☕"}</span>
         )}
