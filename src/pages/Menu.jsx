@@ -21,7 +21,6 @@ import CheckoutDialog from "@/components/menu/CheckoutDialog";
 import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
 import HeaderLine from "@/components/menu/HeaderLine";
-import { CategoryIcons, FamilyCarousel, MostOrdered } from "@/components/menu/HomeLayout";
 
 export default function Menu() {
   const [activeCategory, setActiveCategory] = useState("combos");
@@ -166,106 +165,77 @@ export default function Menu() {
   return (
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
 
-      {/* ── HEADER ── */}
+      {/* ── HEADER COMPACTO ── */}
       <div
-        className="sticky top-0 z-20"
+        className="sticky top-0 z-20 flex items-center justify-between pl-0 pr-3"
         style={{
+          height: 56,
           background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)",
+          position: "sticky",
           overflow: "hidden",
         }}
       >
+        {/* Línea animada inteligente */}
         <HeaderLine hasCart={itemCount > 0} />
-        {/* Top row */}
-        <div className="flex items-center justify-between pl-0 pr-3" style={{ height: 52 }}>
-          <PopsyLogo onClick={handleLogoClick} size="normal" dark />
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="flex items-center justify-center hover:opacity-80 transition-opacity"
-              style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
-            >
-              <Search size={14} style={{ color: "#fff" }} />
-            </button>
-            <button
-              className="flex items-center justify-center hover:opacity-80 transition-opacity relative"
-              style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
-            >
-              <ShoppingBag size={14} style={{ color: "#fff" }} />
-              {itemCount > 0 && (
-                <span
-                  className="absolute -top-1 -right-1 font-black flex items-center justify-center"
-                  style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#B5175A", fontSize: 8 }}
-                >
-                  {itemCount}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
+        {/* Izquierda: logo blanco */}
+        <PopsyLogo onClick={handleLogoClick} size="normal" dark />
 
-        {/* Search bar */}
-        <div style={{ padding: "0 12px 8px" }}>
+        {/* Derecha: íconos blancos */}
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setSearchOpen(true)}
-            style={{
-              width: "100%",
-              background: "rgba(0,0,0,0.25)",
-              border: "none",
-              borderRadius: 20,
-              padding: "8px 14px",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              cursor: "pointer",
-              textAlign: "left",
-            }}
+            className="flex items-center justify-center hover:opacity-80 transition-opacity"
+            style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
           >
-            <Search size={13} color="rgba(255,255,255,0.6)" />
-            <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: 12, color: "rgba(255,255,255,0.6)", fontWeight: 400 }}>
-              Busca tu helado favorito...
-            </span>
+            <Search size={14} style={{ color: "#fff" }} />
           </button>
-        </div>
-
-        {/* Delivery row */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 14px 10px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4AE54A", boxShadow: "0 0 0 3px rgba(74,229,74,0.3)", display: "inline-block", flexShrink: 0 }} />
-            <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 500 }}>
-              25–35 min · Bogotá
-            </span>
-          </div>
-          <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
-            🛵 Domicilio gratis
-          </span>
+          <button
+            className="flex items-center justify-center hover:opacity-80 transition-opacity relative"
+            style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
+          >
+            <ShoppingBag size={14} style={{ color: "#fff" }} />
+            {itemCount > 0 && (
+              <span
+                className="absolute -top-1 -right-1 font-black flex items-center justify-center"
+                style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#B5175A", fontSize: 8 }}
+              >
+                {itemCount}
+              </span>
+            )}
+          </button>
         </div>
       </div>
 
       {/* ── CONTENIDO SCROLLABLE ── */}
-      <div className="pb-36">
+      <div className="pb-36 -mt-2">
+
+        {/* ── BANNER CONTEXTUAL POR HORA ── */}
+        <button
+          onClick={() => setActiveCategory(contextBanner.category)}
+          style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 7,
+            width: "100%", textAlign: "center",
+            background: "transparent",
+            border: "none",
+            padding: "14px 16px",
+            fontSize: 12, fontWeight: 700, color: "#C2185B", lineHeight: 1.5, cursor: "pointer"
+          }}
+        >
+          {/* Cono minimalista de bola */}
+          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+            <circle cx="7" cy="5" r="4.5" stroke="#C2185B" strokeWidth="1.2" fill="none" />
+            <path d="M 3.5 9 L 7 17 L 10.5 9" stroke="#C2185B" strokeWidth="1.2" strokeLinejoin="round" fill="none" />
+          </svg>
+          {contextBanner.text.replace(/^[\p{Emoji}\s]+/u, "").trim()}
+        </button>
 
         {/* ── BANNERS PROMOCIONALES ── */}
         <div className="pt-3">
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
 
-        {/* ── CATEGORÍAS CON ICONOS ── */}
-        <CategoryIcons activeCategory={activeCategory} onSelect={setActiveCategory} />
-
-        {/* ── EXPLORAR FAMILIAS ── */}
-        {!isLoading && (
-          <FamilyCarousel products={products} activeCategory={activeCategory} onSelect={setActiveCategory} />
-        )}
-
-        {/* ── LO MÁS PEDIDO ── */}
-        {!isLoading && (
-          <MostOrdered products={products} onAdd={handleAddProduct} />
-        )}
-
         {/* ── TABS DE CATEGORÍAS ── */}
-        <div style={{ marginTop: 20 }}>
-          <PremiumCategoryTabs activeCategory={activeCategory} onSelect={setActiveCategory} />
-        </div>
+        <PremiumCategoryTabs activeCategory={activeCategory} onSelect={setActiveCategory} />
 
         {/* ── PRODUCTOS ── */}
         <div className="pt-4">
