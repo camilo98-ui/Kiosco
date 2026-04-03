@@ -41,7 +41,6 @@ const FAMILY_CARDS = [
   { id: "cafe",           label: "Café" },
 ];
 
-// ── Categorías con iconos circulares ─────────────────────────────────
 function CategoryIcons({ activeCategory, onSelect }) {
   return (
     <div style={{ background: "#fff", padding: "18px 16px 16px" }}>
@@ -75,7 +74,6 @@ function CategoryIcons({ activeCategory, onSelect }) {
   );
 }
 
-// ── Carrusel de familias ─────────────────────────────────────────────
 function FamilyCarousel({ productCounts, onSelect }) {
   return (
     <div style={{ background: "#fff", padding: "18px 0 16px", marginTop: 10 }}>
@@ -110,7 +108,6 @@ function FamilyCarousel({ productCounts, onSelect }) {
   );
 }
 
-// ── Lo más pedido ────────────────────────────────────────────────────
 function MostOrderedItem({ product, idx, onAdd }) {
   const [imgError, setImgError] = useState(false);
   return (
@@ -156,7 +153,6 @@ function MostOrdered({ products, onAdd }) {
   );
 }
 
-// ── Vista de categoría ───────────────────────────────────────────────
 function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
   return (
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
@@ -185,7 +181,6 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
   );
 }
 
-// ── PÁGINA PRINCIPAL ─────────────────────────────────────────────────
 export default function Menu() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [upsellMsg, setUpsellMsg] = useState(null);
@@ -291,7 +286,6 @@ export default function Menu() {
     return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} />;
   }
 
-  // Vista de categoría
   if (activeCategory) {
     return (
       <CategoryView
@@ -322,10 +316,8 @@ export default function Menu() {
     );
   }
 
-  // Vista HOME
   return (
     <div className="min-h-screen" style={{ background: "#F7F3F5" }}>
-
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20 flex items-center justify-between pl-0 pr-3"
@@ -334,17 +326,10 @@ export default function Menu() {
         <HeaderLine hasCart={itemCount > 0} />
         <PopsyLogo onClick={handleLogoClick} size="normal" dark />
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="flex items-center justify-center"
-            style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
-          >
+          <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}>
             <Search size={14} color="#fff" />
           </button>
-          <button
-            className="flex items-center justify-center relative"
-            style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
-          >
+          <button className="flex items-center justify-center relative" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}>
             <ShoppingBag size={14} color="#fff" />
             {itemCount > 0 && (
               <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#B5175A", fontSize: 8 }}>
@@ -357,21 +342,13 @@ export default function Menu() {
 
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
-
-        {/* ── BANNER CARRUSEL ── */}
         <div style={{ background: "#fff", padding: "14px 12px 12px" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
-
-        {/* ── CATEGORÍAS ── */}
         <div style={{ marginTop: 10 }}>
           <CategoryIcons activeCategory={activeCategory} onSelect={setActiveCategory} />
         </div>
-
-        {/* ── EXPLORAR FAMILIAS ── */}
         <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
-
-        {/* ── LO MÁS PEDIDO ── */}
         {isLoading ? (
           <div className="flex justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#B5175A" }} />
@@ -383,9 +360,7 @@ export default function Menu() {
 
       {/* ── OVERLAYS ── */}
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
-      {showAdditionsUpsell && (
-        <AdditionsUpsell lastAdded={lastAdded} additions={productsByCategory["adiciones"] || []} onAdd={handleAddProduct} onDismiss={() => setShowAdditionsUpsell(false)} />
-      )}
+      {showAdditionsUpsell && <AdditionsUpsell lastAdded={lastAdded} additions={productsByCategory["adiciones"] || []} onAdd={handleAddProduct} onDismiss={() => setShowAdditionsUpsell(false)} />}
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
