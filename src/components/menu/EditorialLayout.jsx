@@ -343,7 +343,7 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
             transition: "all 0.2s",
           }}
         >
-          Malteadas 12oz (15oz)
+          Malteadas 12oz
         </button>
         <button
           onClick={() => setSelectedSize("16oz")}
