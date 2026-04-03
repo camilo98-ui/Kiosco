@@ -68,7 +68,8 @@ const EXTRAS = [
 ];
 
 const MAX_SABORES = 3;
-const SECTIONS = ["sabores", "salsa", "chantilly", "extras"];
+const MAX_SALSAS = 2;
+const SECTIONS = ["sabores", "salsas", "chantilly", "extras"];
 
 // ── Sub-componentes ──────────────────────────────────────────────────
 
@@ -134,6 +135,32 @@ function CheckOption({ label, price, selected, onToggle, disabled }) {
   );
 }
 
+function CheckOptionSalsa({ label, selected, onToggle, disabled }) {
+  return (
+    <button
+      onClick={!disabled ? onToggle : undefined}
+      style={{
+        width: "100%", display: "flex", alignItems: "center",
+        justifyContent: "space-between", padding: "12px 16px",
+        background: "none", border: "none", cursor: disabled ? "not-allowed" : "pointer",
+        textAlign: "left", borderBottom: "1px solid #F9F0F4",
+        opacity: disabled ? 0.45 : 1,
+      }}
+    >
+      <span style={{ fontSize: 13, color: "#1A0A10" }}>{label}</span>
+      <div style={{
+        width: 22, height: 22, borderRadius: 5,
+        border: selected ? "none" : "2px solid #DDD",
+        background: selected ? "#C2185B" : "#fff",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0, transition: "all 0.15s",
+      }}>
+        {selected && <span style={{ color: "#fff", fontSize: 13, fontWeight: 900 }}>✓</span>}
+      </div>
+    </button>
+  );
+}
+
 function RadioOption({ label, price, selected, onSelect }) {
   return (
     <button
@@ -167,7 +194,7 @@ function RadioOption({ label, price, selected, onSelect }) {
 export default function BananaSplitCustomizer({ product, open, onClose, onAdd }) {
   const [openSection, setOpenSection] = useState("sabores");
   const [sabores, setSabores] = useState([]);
-  const [salsa, setSalsa] = useState(null);
+  const [salsas, setSalsas] = useState([]);
   const [chantilly, setChantilly] = useState(null);
   const [extras, setExtras] = useState([]);
 
@@ -187,6 +214,16 @@ export default function BananaSplitCustomizer({ product, open, onClose, onAdd })
     });
   };
 
+  const toggleSalsa = (salsa) => {
+    setSalsas(prev => {
+      if (prev.includes(salsa)) return prev.filter(s => s !== salsa);
+      if (prev.length >= MAX_SALSAS) return prev;
+      const next = [...prev, salsa];
+      if (next.length === MAX_SALSAS) advanceToNext("salsas");
+      return next;
+    });
+  };
+
   const toggleExtra = (name, price) => {
     setExtras(prev =>
       prev.find(e => e.name === name)
@@ -198,20 +235,20 @@ export default function BananaSplitCustomizer({ product, open, onClose, onAdd })
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
   const total = (product?.price || 0) + extrasTotal;
 
-  const allRequired = sabores.length === MAX_SABORES && salsa && chantilly;
+  const allRequired = sabores.length === MAX_SABORES && salsas.length === MAX_SALSAS && chantilly;
 
   const handleConfirm = () => {
     if (!allRequired) return;
 
     const notes = [
       `Sabores: ${sabores.join(", ")}`,
-      `Salsa: ${salsa}`,
+      `Salsas: ${salsas.join(", ")}`,
       `Chantilly: ${chantilly}`,
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
-    setSabores([]); setSalsa(null); setChantilly(null); setExtras([]);
+    setSabores([]); setSalsas([]); setChantilly(null); setExtras([]);
     setOpenSection("sabores");
     onClose();
   };
@@ -259,21 +296,24 @@ export default function BananaSplitCustomizer({ product, open, onClose, onAdd })
           ))}
         </AccordionSection>
 
-        {/* Salsa */}
+        {/* Salsas */}
         <AccordionSection
-          title="Elige Sabor De Tu Salsa"
+          title="Elige Tus Salsas"
           required
-          open={openSection === "salsa"}
-          onToggle={() => setOpenSection(s => s === "salsa" ? null : "salsa")}
+          open={openSection === "salsas"}
+          onToggle={() => setOpenSection(s => s === "salsas" ? null : "salsas")}
+          badge={`${salsas.length}/${MAX_SALSAS}`}
         >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>
+            Selecciona {MAX_SALSAS} opciones
+          </p>
           {SALSAS.map(s => (
-            <RadioOption
+            <CheckOptionSalsa
               key={s}
               label={s}
-              price={0}
-              selected={salsa === s}
-              onSelect={() => { setSalsa(s); advanceToNext("salsa"); }}
+              selected={salsas.includes(s)}
+              onToggle={() => toggleSalsa(s)}
+              disabled={!salsas.includes(s) && salsas.length >= MAX_SALSAS}
             />
           ))}
         </AccordionSection>
@@ -320,7 +360,7 @@ export default function BananaSplitCustomizer({ product, open, onClose, onAdd })
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
           {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige 3 sabores, salsa y chantilly para continuar
+              * Elige 3 sabores, 2 salsas y chantilly para continuar
             </p>
           )}
           <button
