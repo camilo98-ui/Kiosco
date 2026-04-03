@@ -222,25 +222,20 @@ export default function QuickCombos({ products, onAddMultiple }) {
     <div style={{ background: "#fff", marginTop: 10 }}>
 
 
-      {/* Slide */}
-      <div
-        style={{ padding: "10px 16px 0", touchAction: "pan-y" }}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={combo.id}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-          >
-            <ComboCard combo={combo} products={products} onAddMultiple={onAddMultiple} />
-          </motion.div>
-        </AnimatePresence>
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={combo.id}
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -30 }}
+          transition={{ duration: 0.22, ease: "easeOut" }}
+          style={{ padding: "10px 16px 0" }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <ComboCard combo={combo} products={products} onAddMultiple={onAddMultiple} />
+        </motion.div>
+      </AnimatePresence>
 
       {/* Dots */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "10px 0 16px" }}>
