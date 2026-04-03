@@ -37,7 +37,7 @@ const EXTRAS = [
   { name: "Fresas", price: 3100 },
   { name: "Durazno", price: 3100 },
   { name: "Mini Masmelos", price: 3100 },
-  { name: "Chantilly", price: 3100 },
+  { name: "Chantilly", price: 2900 },
   { name: "Chips De Chocolate", price: 3100 },
   { name: "Brownie", price: 3100 },
   { name: "Galleta Oreo", price: 3100 },
@@ -209,8 +209,8 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
         <AccordionSection
           title="Elige Tus Extras"
           required={false}
-          open={openSection === "extras"}
-          onToggle={() => setOpenSection(s => s === "extras" ? null : "extras")}
+          open={true}
+          onToggle={() => {}}
         >
           <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Opcionales · puedes elegir varios</p>
           {EXTRAS.map(e => (
