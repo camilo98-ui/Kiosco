@@ -79,7 +79,7 @@ function FamilyCarousel({ productCounts, onSelect }) {
   return (
     <div style={{ background: "#fff", padding: "18px 0 16px", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
-        <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Categorías</p>
+        <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Explorar categorías</p>
         <button style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#B5175A" }}>Ver todo</button>
       </div>
       <div style={{ display: "flex", overflowX: "auto", gap: 10, paddingLeft: 16, paddingRight: 16, scrollbarWidth: "none", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
