@@ -9,7 +9,7 @@ const QUICK_COMBOS = [
     title: "El Clásico Refrescante",
     tagline: "Malteada + Agua",
     badgeText: "⚡ Más pedido",
-    bg: "linear-gradient(160deg, #7B1340 0%, #C2185B 100%)",
+    bg: "linear-gradient(160deg, #F8BBD9 0%, #FCE4EC 100%)",
     items: [
       { fallbackName: "Fresa Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
       { fallbackName: "Agua Botella Pequeña", category: "bebidas", price: 2500, emoji: "💧" },
@@ -20,7 +20,7 @@ const QUICK_COMBOS = [
     title: "Cookie & Malteada",
     tagline: "Galleta Cookies + Malteada Choco",
     badgeText: "💛 Favorito",
-    bg: "linear-gradient(160deg, #4A148C 0%, #7B1FA2 100%)",
+    bg: "linear-gradient(160deg, #E1BEE7 0%, #EDE7F6 100%)",
     items: [
       { fallbackName: "Galleta Cookies and Cream", category: "galletas", price: 12900, emoji: "🍪" },
       { fallbackName: "Chocolate Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
@@ -31,7 +31,7 @@ const QUICK_COMBOS = [
     title: "Brownie Power",
     tagline: "Brownie c/Helado + Malteada",
     badgeText: "🌟 Top combo",
-    bg: "linear-gradient(160deg, #1B5E20 0%, #388E3C 100%)",
+    bg: "linear-gradient(160deg, #C8E6C9 0%, #E8F5E9 100%)",
     items: [
       { fallbackName: "Brownie con Helado", category: "especialidades", price: 14900, emoji: "🍫" },
       { fallbackName: "Brownie", category: "malteadas", price: 19900, emoji: "🥤" },
@@ -42,7 +42,7 @@ const QUICK_COMBOS = [
     title: "Maxi Cono + Gaseosa",
     tagline: "Grande + Bebida refrescante",
     badgeText: "✨ Recomendado",
-    bg: "linear-gradient(160deg, #0D47A1 0%, #1976D2 100%)",
+    bg: "linear-gradient(160deg, #BBDEFB 0%, #E3F2FD 100%)",
     items: [
       { fallbackName: "Maxi Cono", category: "helados", price: 14900, emoji: "🍦" },
       { fallbackName: "Gaseosa", category: "bebidas", price: 4900, emoji: "🥤" },
@@ -53,7 +53,7 @@ const QUICK_COMBOS = [
     title: "Banana Split + Agua",
     tagline: "Especialidad icónica Popsy",
     badgeText: "🍌 Icónico",
-    bg: "linear-gradient(160deg, #E65100 0%, #FF8F00 100%)",
+    bg: "linear-gradient(160deg, #FFE0B2 0%, #FFF3E0 100%)",
     items: [
       { fallbackName: "Banana Split", category: "especialidades", price: 17900, emoji: "🍌" },
       { fallbackName: "Agua Botella Pequeña", category: "bebidas", price: 2500, emoji: "💧" },
@@ -64,7 +64,7 @@ const QUICK_COMBOS = [
     title: "Sundae + Galleta Choco",
     tagline: "Doble sabor, doble felicidad",
     badgeText: "🎉 Especial",
-    bg: "linear-gradient(160deg, #880E4F 0%, #C2185B 100%)",
+    bg: "linear-gradient(160deg, #F8BBD9 0%, #FFF0F5 100%)",
     items: [
       { fallbackName: "Sundae 2 Sabores", category: "especialidades", price: 14900, emoji: "🍨" },
       { fallbackName: "Galleta Triple Choco", category: "galletas", price: 12900, emoji: "🍪" },
@@ -142,12 +142,8 @@ function ComboCard({ combo, products, onAddMultiple }) {
       }}
       whileTap={{ scale: 0.98 }}
     >
-      {/* Círculos decorativos */}
-      <div style={{ position: "absolute", top: -25, right: -25, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.07)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: -30, left: -15, width: 90, height: 90, borderRadius: "50%", background: "rgba(255,255,255,0.05)", pointerEvents: "none" }} />
-
       {/* Badge */}
-      <span style={{ alignSelf: "flex-start", fontSize: 9, fontWeight: 800, color: "#fff", background: "rgba(0,0,0,0.28)", borderRadius: 20, padding: "3px 9px", backdropFilter: "blur(4px)", position: "relative", zIndex: 3 }}>
+      <span style={{ alignSelf: "flex-start", fontSize: 9, fontWeight: 800, color: "#C2185B", background: "rgba(194,24,91,0.12)", borderRadius: 20, padding: "3px 9px", position: "relative", zIndex: 3 }}>
         {combo.badgeText}
       </span>
 
@@ -155,24 +151,24 @@ function ComboCard({ combo, products, onAddMultiple }) {
       <ComboImage realItems={realItems} combo={combo} />
 
       {/* Título y tagline */}
-      <p style={{ fontSize: 15, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1.25 }}>{combo.title}</p>
-      <p style={{ fontSize: 11, color: "rgba(255,255,255,0.72)", margin: 0, lineHeight: 1.3 }}>{combo.tagline}</p>
+      <p style={{ fontSize: 15, fontWeight: 900, color: "#1A0A10", margin: 0, lineHeight: 1.25 }}>{combo.title}</p>
+      <p style={{ fontSize: 11, color: "#9A7880", margin: 0, lineHeight: 1.3 }}>{combo.tagline}</p>
 
       {/* Footer */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
         <div>
-          <p style={{ fontSize: 9, color: "rgba(255,255,255,0.55)", margin: 0 }}>total combo</p>
-          <p style={{ fontSize: 20, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1 }}>{formatCOP(totalReal)}</p>
+          <p style={{ fontSize: 9, color: "#BBA8B0", margin: 0 }}>total combo</p>
+          <p style={{ fontSize: 20, fontWeight: 900, color: "#C2185B", margin: 0, lineHeight: 1 }}>{formatCOP(totalReal)}</p>
         </div>
         <AnimatePresence mode="wait">
           {added ? (
             <motion.div key="check" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-              style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: "#333" }}>
+              style={{ width: 40, height: 40, borderRadius: "50%", background: "#C2185B", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: "#fff" }}>
               ✓
             </motion.div>
           ) : (
             <motion.div key="cart" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-              style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", border: "1.5px solid rgba(255,255,255,0.45)" }}>
+              style={{ width: 40, height: 40, borderRadius: "50%", background: "#C2185B", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <ShoppingCart size={17} color="#fff" />
             </motion.div>
           )}
