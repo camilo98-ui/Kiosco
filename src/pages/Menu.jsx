@@ -349,9 +349,6 @@ export default function Menu() {
         <div style={{ background: "#fff", padding: "14px 12px 12px" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
-        <div style={{ marginTop: 10 }}>
-          <CategoryIcons activeCategory={activeCategory} onSelect={setActiveCategory} />
-        </div>
         <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
         <QuickCombos products={products} onAddMultiple={handleAddProduct} />
         {isLoading ? (
