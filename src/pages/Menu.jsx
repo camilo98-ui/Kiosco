@@ -317,7 +317,7 @@ export default function Menu() {
 
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
-        <div style={{ background: "#fff", padding: "14px 12px 12px" }}>
+        <div style={{ background: "#fff", padding: "14px 0 12px" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
         <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
