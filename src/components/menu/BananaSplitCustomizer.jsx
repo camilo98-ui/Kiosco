@@ -6,29 +6,34 @@ import { formatCOP } from "@/lib/constants";
 // ── Datos ────────────────────────────────────────────────────────────
 
 const SABORES_HELADO = [
+  // Exclusivos
   "Yogo Yogo Fresa",
-  "Arequipe Gourmet",
-  "Brownie Gourmet",
+  "Brownie",
   "Cherry Mania",
-  "Chocolate Gourmet",
-  "Chocolate Belga",
   "Crema Limón",
-  "Fresa Gourmet",
   "M&M's",
-  "Mandarina Gourmet",
-  "Milky Way Gourmet",
-  "Mocaccino Juan Valdez",
+  "Macadamia",
+  "Milky Way",
+  "Mocaccino",
   "Oreo",
-  "Ron Con Pasas Gourmet",
-  "Vainilla Gourmet",
   "Vainilla Chips",
-  "Vainilla Francesa Gourmet",
+  "Arroz Con Leche",
+  "Yogurt De Cereza Italiana",
+  "Chicle",
+  "Snickers Almond",
+  // Gourmet
+  "Arequipe",
+  "Chocolate Belga",
+  "Chocolate",
+  "Fresa",
+  "Frutos Del Bosque",
   "Nieve Limón",
+  "Mandarina",
   "Nieve Mandarina",
   "Nieve Maracuyá",
-  "Yogurt De Cereza Italiana",
-  "Chicle Gourmet",
-  "Snickers Almond Gourmet",
+  "Ron Pasas",
+  "Vainilla Francesa",
+  "Vainilla",
 ];
 
 const SALSAS = [
