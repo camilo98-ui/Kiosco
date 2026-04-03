@@ -37,10 +37,10 @@ const ITEM_BG = [
 
 const FAMILY_CARDS = [
   { id: "malteadas",      label: "Malteadas",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7f68abf79_image.png" },
-  { id: "helados",        label: "Helados",      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/f595fcc04_Helados.jpg" },
+  { id: "helados",        label: "Helados",      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c9474e0e_Helados.png" },
   { id: "combos",         label: "Cookie Jar",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6dd912084_cookie-jaar-img.jpg" },
-  { id: "especialidades", label: "Especiales",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7b7dae157_image.jpeg" },
-  { id: "cafe",           label: "Café",         image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0107c0b2c_image.png" },
+  { id: "especialidades", label: "Especiales",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png" },
+  { id: "cafe",           label: "Café",         image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e15d81047_Coffee.png" },
 ];
 
 function CategoryIcons({ activeCategory, onSelect }) {
