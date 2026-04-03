@@ -68,6 +68,18 @@ const COMBOS = [
     title: "Compra un Litro",
     price: "Lleva otro con 30% dto",
   },
+  {
+    id: 12,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/46a819092_Americano9ONZGalletaRedvelvet20800.png",
+    title: "Americano 9 ONZ + Galleta Red velvet",
+    price: "$20.800",
+  },
+  {
+    id: 13,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0ffc145bd_Maletada16OzAgua25800.png",
+    title: "Malteada 16 Oz + Agua",
+    price: "$25.800",
+  },
 ];
 
 export default function CombosCarousel({ onAdd }) {
