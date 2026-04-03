@@ -34,11 +34,11 @@ const ITEM_BG = [
 ];
 
 const FAMILY_CARDS = [
-  { id: "malteadas",      label: "Malteadas" },
-  { id: "helados",        label: "Helados" },
-  { id: "combos",         label: "Cookie Jar" },
-  { id: "especialidades", label: "Especiales" },
-  { id: "cafe",           label: "Café" },
+  { id: "malteadas",      label: "Malteadas",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7f68abf79_image.png" },
+  { id: "helados",        label: "Helados",      image: null },
+  { id: "combos",         label: "Cookie Jar",   image: null },
+  { id: "especialidades", label: "Especiales",   image: null },
+  { id: "cafe",           label: "Café",         image: null },
 ];
 
 function CategoryIcons({ activeCategory, onSelect }) {
@@ -94,10 +94,13 @@ function FamilyCarousel({ productCounts, onSelect }) {
               padding: "0 0 10px 10px",
             }}
           >
-            <div style={{ position: "absolute", top: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {fam.image && (
+              <img src={fam.image} alt={fam.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.55 }} />
+            )}
+            <div style={{ position: "absolute", top: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}>
               <ChevronRight size={12} color="#fff" />
             </div>
-            <div>
+            <div style={{ position: "relative", zIndex: 1 }}>
               <p style={{ fontSize: 12, fontWeight: 700, color: "#fff", margin: 0, lineHeight: 1.2 }}>{fam.label}</p>
               <p style={{ fontSize: 9, color: "rgba(255,255,255,0.75)", margin: 0 }}>{productCounts[fam.id] || 0} opciones</p>
             </div>
