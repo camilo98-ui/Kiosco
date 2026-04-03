@@ -321,7 +321,6 @@ export default function Menu() {
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
         <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
-        <QuickCombos products={products} onAddMultiple={handleAddProduct} />
         {isLoading ? (
           <div className="flex justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#B5175A" }} />
