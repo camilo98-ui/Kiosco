@@ -161,7 +161,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
   return (
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
       <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)" }}>
-        <button onClick={onBack} style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 20, padding: "12px 18px", color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer", minHeight: 44 }}>
+        <button onClick={onBack} style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 20, padding: "12px 18px", color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer", minHeight: 44, position: "relative", zIndex: 10, pointerEvents: "auto" }}>
           ← Inicio
         </button>
         <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
