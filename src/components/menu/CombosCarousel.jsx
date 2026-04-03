@@ -85,23 +85,16 @@ const COMBOS = [
 export default function CombosCarousel({ onAdd }) {
   const [active, setActive] = useState(0);
   const startX = useRef(null);
-  const timerRef = useRef(null);
-
-  const startTimer = () => {
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setActive((a) => (a + 1) % COMBOS.length);
-    }, 3500);
-  };
 
   useEffect(() => {
-    startTimer();
-    return () => clearInterval(timerRef.current);
+    const timer = setInterval(() => {
+      setActive((a) => (a + 1) % COMBOS.length);
+    }, 3000);
+    return () => clearInterval(timer);
   }, []);
 
   const goTo = (i) => {
     setActive(i);
-    startTimer();
   };
 
   const handleTouchStart = (e) => {
@@ -111,8 +104,8 @@ export default function CombosCarousel({ onAdd }) {
   const handleTouchEnd = (e) => {
     if (startX.current === null) return;
     const diff = startX.current - e.changedTouches[0].clientX;
-    if (diff > 40) goTo((active + 1) % COMBOS.length);
-    else if (diff < -40) goTo((active - 1 + COMBOS.length) % COMBOS.length);
+    if (diff > 40) setActive((active + 1) % COMBOS.length);
+    else if (diff < -40) setActive((active - 1 + COMBOS.length) % COMBOS.length);
     startX.current = null;
   };
 
@@ -150,22 +143,22 @@ export default function CombosCarousel({ onAdd }) {
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
             onClick={handleComboClick}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer" }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", maxHeight: 200 }}
           >
             <img
               src={combo.image}
               alt={combo.title}
               className="w-full object-cover"
-              style={{ display: "block", height: "auto", objectPosition: "center" }}
+              style={{ display: "block", height: 200, objectPosition: "center" }}
             />
           </motion.div>
         </AnimatePresence>
-        <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#2D1A22", margin: 0, lineHeight: 1.4 }}>
+        <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 3 }}>
+          <p style={{ fontSize: 12, fontWeight: 600, color: "#2D1A22", margin: 0, lineHeight: 1.3 }}>
             {combo.title}
           </p>
           {combo.price && (
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#C2185B", margin: 0 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#C2185B", margin: 0 }}>
               {combo.price}
             </p>
           )}
