@@ -38,7 +38,7 @@ const FAMILY_CARDS = [
   { id: "malteadas",      label: "Malteadas",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7f68abf79_image.png" },
   { id: "helados",        label: "Helados",      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/f595fcc04_Helados.jpg" },
   { id: "combos",         label: "Cookie Jar",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/808f0498b_CookieJaar.png" },
-  { id: "especialidades", label: "Especiales",   image: null },
+  { id: "especialidades", label: "Especiales",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7b7dae157_image.jpeg" },
   { id: "cafe",           label: "Café",         image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0107c0b2c_image.png" },
 ];
 
