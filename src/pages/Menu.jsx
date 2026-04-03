@@ -41,7 +41,7 @@ const FAMILY_CARDS = [
   { id: "combos",         label: "Cookie Jar",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6dd912084_cookie-jaar-img.jpg" },
   { id: "especialidades", label: "Especiales",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png" },
   { id: "cafe",           label: "Café",         image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e15d81047_Coffee.png" },
-  { id: "bebidas",        label: "Otras bebidas", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/bebidas.png" },
+  { id: "bebidas",        label: "Otras bebidas", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/26de2b565_image.png" },
 ];
 
 function CategoryIcons({ activeCategory, onSelect }) {
