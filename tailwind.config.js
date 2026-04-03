@@ -11,7 +11,9 @@ module.exports = {
   theme: {
   	extend: {
   		fontFamily: {
-  			nunito: ['var(--font-nunito)']
+  			nunito: ['var(--font-nunito)'],
+  			playfair: ['"Playfair Display"', 'serif'],
+  			dm: ['"DM Sans"', 'sans-serif'],
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
