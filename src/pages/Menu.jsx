@@ -89,7 +89,7 @@ function FamilyCarousel({ productCounts, onSelect }) {
             onClick={() => onSelect(fam.id)}
             style={{
               flexShrink: 0, width: 180, height: 140, borderRadius: 28,
-              background: FAMILY_GRADIENTS[idx % FAMILY_GRADIENTS.length],
+              background: "transparent",
               border: "none", cursor: "pointer", position: "relative",
               overflow: "hidden", display: "flex", alignItems: "flex-end",
               padding: "0 0 16px 16px", scrollSnapAlign: "start",
