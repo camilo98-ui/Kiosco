@@ -6,13 +6,15 @@ import { motion, AnimatePresence } from "framer-motion";
 const QUICK_COMBOS = [
   {
     id: "c1",
-    title: "El Clásico Refrescante",
-    tagline: "Malteada + Agua",
-    badgeText: "⚡ Más pedido",
-    bg: "linear-gradient(160deg, #F8BBD9 0%, #FCE4EC 100%)",
+    title: "Banana Split + Malteada",
+    tagline: "Especialidad icónica Popsy",
+    badgeText: "🍌 Icónico",
+    bg: "linear-gradient(160deg, #FFE0B2 0%, #FFF3E0 100%)",
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/103909990_b92afaf3f13c522e822bec1847b69a0d.png",
+    price: 37800,
     items: [
-      { fallbackName: "Fresa Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
-      { fallbackName: "Agua Botella Pequeña", category: "bebidas", price: 2500, emoji: "💧" },
+      { fallbackName: "Banana Split", category: "especialidades", price: 19900, emoji: "🍌" },
+      { fallbackName: "Malteada", category: "malteadas", price: 19900, emoji: "🥤" },
     ],
   },
   {
@@ -82,6 +84,15 @@ function findProduct(products, item) {
 }
 
 function ComboImage({ realItems, combo }) {
+  // Si el combo tiene una imagen personalizada, mostrarla primero
+  if (combo.image) {
+    return (
+      <div style={{ width: "100%", height: 140, display: "flex", alignItems: "center", justifyContent: "center", background: "transparent" }}>
+        <img src={combo.image} alt={combo.title} style={{ height: "100%", width: "100%", objectFit: "contain", filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.25))" }} />
+      </div>
+    );
+  }
+
   const imgs = realItems.map(p => p?.image_url).filter(Boolean);
 
   if (imgs.length === 0) {
@@ -113,7 +124,7 @@ function ComboImage({ realItems, combo }) {
 function ComboCard({ combo, products, onAddMultiple }) {
   const [added, setAdded] = useState(false);
   const realItems = combo.items.map(item => findProduct(products, item));
-  const totalReal = realItems.reduce((sum, p, i) => sum + (p ? p.price : combo.items[i].price), 0);
+  const totalReal = combo.price || realItems.reduce((sum, p, i) => sum + (p ? p.price : combo.items[i].price), 0);
 
   const handleClick = () => {
     realItems.forEach(p => { if (p) onAddMultiple(p); });
