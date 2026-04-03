@@ -156,10 +156,7 @@ function ComboCard({ combo, products, onAddMultiple }) {
         {combo.badgeText}
       </span>
 
-      {/* Contenedor con imagen en primer plano */}
-      <div style={{ position: "relative", flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <ComboImage realItems={realItems} combo={combo} />
-      </div>
+      <ComboImage realItems={realItems} combo={combo} />
 
       {/* Título y tagline */}
       <p style={{ fontSize: 15, fontWeight: 900, color: "#1A0A10", margin: 0, lineHeight: 1.25 }}>{combo.title}</p>
