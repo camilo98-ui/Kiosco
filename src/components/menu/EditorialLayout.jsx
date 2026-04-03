@@ -464,7 +464,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
       setCustomizerProduct(product);
     } else if (category === "especialidades" && product.name.toLowerCase().includes("banana split")) {
       setBananaSplitProduct(product);
-    } else if (category === "helados") {
+    } else if (category === "helados" && product.name.toLowerCase().includes("maxi cono")) {
       setHeladoProduct(product);
     } else {
       onAdd(product);
