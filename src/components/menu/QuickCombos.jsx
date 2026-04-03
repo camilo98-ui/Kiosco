@@ -251,10 +251,11 @@ export default function QuickCombos({ products, onAddMultiple }) {
   const trackRef = useRef(null);
   const posRef = useRef(0);
   const animRef = useRef(null);
-  const pausedRef = useRef(false);
-  const dragRef = useRef({ isDragging: false, startX: 0, startPos: 0 });
+  const interactingRef = useRef(false);
+  const dragStartX = useRef(0);
+  const dragStartPos = useRef(0);
 
-  const CARD_WIDTH = 212; // 200px card + 12px gap
+  const CARD_WIDTH = 212;
   const total = QUICK_COMBOS.length;
 
   useEffect(() => {
@@ -262,8 +263,8 @@ export default function QuickCombos({ products, onAddMultiple }) {
     if (!track) return;
 
     const animate = () => {
-      if (!pausedRef.current && !dragRef.current.isDragging) {
-        posRef.current += 0.4; // velocidad lenta tipo carrusel
+      if (!interactingRef.current) {
+        posRef.current += 0.4;
         if (posRef.current >= CARD_WIDTH * total) posRef.current = 0;
         track.style.transform = `translateX(-${posRef.current}px)`;
       }
@@ -273,24 +274,38 @@ export default function QuickCombos({ products, onAddMultiple }) {
     return () => cancelAnimationFrame(animRef.current);
   }, [total]);
 
-  // Drag / touch
+  // Mouse drag
   const onMouseDown = (e) => {
-    dragRef.current = { isDragging: true, startX: e.clientX, startPos: posRef.current };
-    pausedRef.current = true;
+    interactingRef.current = true;
+    dragStartX.current = e.clientX;
+    dragStartPos.current = posRef.current;
   };
   const onMouseMove = (e) => {
-    if (!dragRef.current.isDragging) return;
-    const diff = dragRef.current.startX - e.clientX;
-    posRef.current = Math.max(0, dragRef.current.startPos + diff);
+    if (!interactingRef.current) return;
+    const diff = dragStartX.current - e.clientX;
+    posRef.current = Math.max(0, dragStartPos.current + diff);
     if (trackRef.current) trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
   };
-  const onMouseUp = () => { dragRef.current.isDragging = false; pausedRef.current = false; };
+  const onMouseUp = () => { interactingRef.current = false; };
 
   useEffect(() => {
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
     return () => { document.removeEventListener("mousemove", onMouseMove); document.removeEventListener("mouseup", onMouseUp); };
   }, []);
+
+  // Touch handlers
+  const onTouchStart = (e) => {
+    interactingRef.current = true;
+    dragStartX.current = e.touches[0].clientX;
+    dragStartPos.current = posRef.current;
+  };
+  const onTouchMove = (e) => {
+    const diff = dragStartX.current - e.touches[0].clientX;
+    posRef.current = Math.max(0, dragStartPos.current + diff);
+    if (trackRef.current) trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
+  };
+  const onTouchEnd = () => { interactingRef.current = false; };
 
   if (!products || products.length === 0) return null;
 
@@ -317,9 +332,9 @@ export default function QuickCombos({ products, onAddMultiple }) {
       <div
         style={{ overflow: "hidden", paddingBottom: 16, cursor: "grab" }}
         onMouseDown={onMouseDown}
-        onTouchStart={(e) => { pausedRef.current = true; dragRef.current = { isDragging: true, startX: e.touches[0].clientX, startPos: posRef.current }; }}
-        onTouchMove={(e) => { const diff = dragRef.current.startX - e.touches[0].clientX; posRef.current = Math.max(0, dragRef.current.startPos + diff); if (trackRef.current) trackRef.current.style.transform = `translateX(-${posRef.current}px)`; }}
-        onTouchEnd={() => { dragRef.current.isDragging = false; pausedRef.current = false; }}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
       >
         <div
           ref={trackRef}
