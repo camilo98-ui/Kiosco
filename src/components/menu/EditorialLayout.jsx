@@ -423,9 +423,9 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
           )}
         </div>
       </div>
-      <div style={{ width: 90, height: 90, background: bg, flexShrink: 0, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ width: 110, height: 110, background: bg, flexShrink: 0, position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         {product.image_url && !imgError ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: 90, height: 90, objectFit: "cover" }} />
+          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
           <span style={{ fontSize: 40 }}>{product.emoji || "🌟"}</span>
         )}
