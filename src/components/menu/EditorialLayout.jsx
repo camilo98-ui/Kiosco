@@ -405,11 +405,11 @@ function CafeCard({ product, onAdd, addedFlash, bg }) {
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
       style={{ border: "1.5px solid #F0E4EA", borderRadius: 20, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
-      <div style={{ background: bg, height: 80, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+      <div style={{ background: bg, height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
         {product.image_url && !imgError ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
         ) : (
-          <span style={{ fontSize: 32 }}>{product.emoji || "☕"}</span>
+          <span style={{ fontSize: 40 }}>{product.emoji || "☕"}</span>
         )}
         {tag && product.tag !== "none" && (
           <span style={{ position: "absolute", top: 5, left: 5, fontSize: 7, background: "#E8F5E9", color: "#2E7D32", borderRadius: 10, padding: "1px 6px", fontWeight: 800 }}>Nuevo</span>
