@@ -96,7 +96,7 @@ function FamilyCarousel({ productCounts, onSelect }) {
             }}
           >
             {fam.image && (
-              <img src={fam.image} alt={fam.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.55, filter: fam.id === "cafe" ? "hue-rotate(50deg) saturate(0.8)" : "none" }} />
+              <img src={fam.image} alt={fam.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.55 }} />
             )}
             <div style={{ position: "absolute", top: 12, right: 12, width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}>
               <ChevronRight size={16} color="#fff" />
