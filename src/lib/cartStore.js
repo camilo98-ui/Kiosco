@@ -16,8 +16,9 @@ export function useCart() {
     return () => globalListeners.delete(listener);
   });
 
-  const addItem = useCallback((product) => {
-    const existing = globalCart.find((i) => i.product_id === product.id && !i.notes);
+  const addItem = useCallback((product, notes = "") => {
+    // Items con notas de personalización siempre se agregan como nuevos
+    const existing = !notes ? globalCart.find((i) => i.product_id === product.id && !i.notes) : null;
     if (existing) {
       existing.quantity += 1;
       globalCart = [...globalCart];
@@ -29,7 +30,7 @@ export function useCart() {
           product_name: product.name,
           price: product.price,
           quantity: 1,
-          notes: "",
+          notes: notes || "",
         },
       ];
     }

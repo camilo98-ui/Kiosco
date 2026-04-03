@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
+import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
 
 // ─── Ordenamiento comercial dinámico ───────────────────────────────
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
@@ -446,14 +447,29 @@ function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 // ─── EXPORT PRINCIPAL ───────────────────────────────────────────────
 
 export default function EditorialLayout({ products, category, onAdd, addedFlash }) {
+  const [customizerProduct, setCustomizerProduct] = useState(null);
+
   if (!products || products.length === 0) return null;
 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
+  // Para malteadas, interceptar el onAdd para abrir el customizer
+  const handleAdd = (product) => {
+    if (category === "malteadas") {
+      setCustomizerProduct(product);
+    } else {
+      onAdd(product);
+    }
+  };
+
+  const handleCustomizerAdd = (productWithPrice, notes) => {
+    onAdd({ ...productWithPrice, notes });
+  };
+
   // Ordenamiento comercial dinámico aplicado antes de pasar a cada layout
   const sortedProducts = sortProductsCommercially(products);
-  const layoutProps = { products: sortedProducts, onAdd, addedFlash, bg, catLabel };
+  const layoutProps = { products: sortedProducts, onAdd: handleAdd, addedFlash, bg, catLabel };
 
   const renderLayout = () => {
     switch (category) {
@@ -466,17 +482,25 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   };
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={category}
-        initial={{ opacity: 0, x: 16 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -16 }}
-        transition={{ duration: 0.2 }}
-        style={{ paddingBottom: 8 }}
-      >
-        {renderLayout()}
-      </motion.div>
-    </AnimatePresence>
+    <>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={category}
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -16 }}
+          transition={{ duration: 0.2 }}
+          style={{ paddingBottom: 8 }}
+        >
+          {renderLayout()}
+        </motion.div>
+      </AnimatePresence>
+      <MalteadaCustomizer
+        product={customizerProduct}
+        open={!!customizerProduct}
+        onClose={() => setCustomizerProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+    </>
   );
 }

@@ -240,8 +240,8 @@ export default function Menu() {
     }
   };
 
-  const handleAddProduct = useCallback((product) => {
-    addItem(product);
+  const handleAddProduct = useCallback((product, notes = "") => {
+    addItem(product, notes);
     setAddedFlash(product.id);
     setTimeout(() => setAddedFlash(null), 600);
     if (product.category !== "adiciones") {
