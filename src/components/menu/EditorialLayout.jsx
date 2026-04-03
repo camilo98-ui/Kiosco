@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
 import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
 import BananaSplitCustomizer from "@/components/menu/BananaSplitCustomizer";
+import HeladoCustomizer from "@/components/menu/HeladoCustomizer";
 
 // ─── Ordenamiento comercial dinámico ───────────────────────────────
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
@@ -450,6 +451,7 @@ function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 export default function EditorialLayout({ products, category, onAdd, addedFlash }) {
   const [customizerProduct, setCustomizerProduct] = useState(null);
   const [bananaSplitProduct, setBananaSplitProduct] = useState(null);
+  const [heladoProduct, setHeladoProduct] = useState(null);
 
   if (!products || products.length === 0) return null;
 
@@ -462,6 +464,8 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
       setCustomizerProduct(product);
     } else if (category === "especialidades" && product.name.toLowerCase().includes("banana split")) {
       setBananaSplitProduct(product);
+    } else if (category === "helados") {
+      setHeladoProduct(product);
     } else {
       onAdd(product);
     }
@@ -509,6 +513,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
         product={bananaSplitProduct}
         open={!!bananaSplitProduct}
         onClose={() => setBananaSplitProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <HeladoCustomizer
+        product={heladoProduct}
+        open={!!heladoProduct}
+        onClose={() => setHeladoProduct(null)}
         onAdd={handleCustomizerAdd}
       />
     </>
