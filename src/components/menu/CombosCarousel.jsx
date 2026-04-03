@@ -5,57 +5,68 @@ const COMBOS = [
   {
     id: 1,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c2b4b2bf3_SegundaMalteada16Oz-30dedescuento.png",
-    alt: "Segunda Malteada 16 Oz - 30% de descuento",
+    title: "Segunda Malteada 16 Oz",
+    price: "30% de descuento",
   },
   {
     id: 2,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c6fd8dce_Malteada16OzCharlieBrownie37800.png",
-    alt: "Malteada 16 Oz Charlie Brownie 37.800",
+    title: "Malteada 16 Oz Charlie Brownie",
+    price: "$37.800",
   },
   {
     id: 3,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d7bb62cd8_Malteada16OzBananaSplit37800.png",
-    alt: "Malteada 16 Oz Banana Split 37.800",
+    title: "Malteada 16 Oz Banana Split",
+    price: "$37.800",
   },
   {
     id: 4,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/717fb959c_Malteada16OzBananaSplit.png",
-    alt: "Malteada 16 Oz Banana Split",
+    title: "Malteada 16 Oz Banana Split",
+    price: "",
   },
   {
     id: 5,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa4c65c0f_ComboLitrodeheladoBrownie8Und.png",
-    alt: "Combo Litro de helado Brownie 8 Und",
+    title: "Combo Litro de helado Brownie",
+    price: "8 unidades",
   },
   {
     id: 6,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9ac7460da_CompraunaTarrinaoLitroyllevasotraTarrinaconel30dedescuento.png",
-    alt: "Compra una Tarrina o Litro y lleva otra Tarrina con el 30% de descuento",
+    title: "Compra una Tarrina o Litro",
+    price: "Lleva otra con 30% descuento",
   },
   {
     id: 7,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e54977063_TortaTarrinaOLitro.png",
-    alt: "Torta Tarrina O Litro",
+    title: "Torta Tarrina O Litro",
+    price: "",
   },
   {
     id: 8,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c196fbb03_Combo2TarrinasCajadeCono.png",
-    alt: "Combo 2 Tarrinas Caja de Cono",
+    title: "Combo 2 Tarrinas",
+    price: "Caja de Cono",
   },
   {
     id: 9,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d8375425b_2LitrosdeHeladoCajaConoBrowniex8unidades.png",
-    alt: "2 Litros de Helado Caja Cono Brownie x8 unidades",
+    title: "2 Litros de Helado Caja Cono Brownie",
+    price: "x8 unidades",
   },
   {
     id: 10,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/74c450f21_ComboLitroCajaCono2Toppings.png",
-    alt: "Combo Litro Caja Cono 2 Toppings",
+    title: "Combo Litro Caja Cono",
+    price: "2 Toppings",
   },
   {
     id: 11,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/09347eafa_CompraunLitroyllevaunLitrooTarrinaconel30dto.png",
-    alt: "Compra un Litro y lleva un Litro o Tarrina con el 30% dto",
+    title: "Compra un Litro",
+    price: "Lleva otro con 30% dto",
   },
 ];
 
@@ -117,15 +128,22 @@ export default function CombosCarousel() {
           >
             <img
               src={combo.image}
-              alt={combo.alt}
+              alt={combo.title}
               className="w-full object-cover"
               style={{ display: "block", height: "auto", objectPosition: "center" }}
             />
           </motion.div>
         </AnimatePresence>
-        <p style={{ fontSize: 13, fontWeight: 600, color: "#2D1A22", marginTop: 12, marginBottom: 0, lineHeight: 1.4 }}>
-          {combo.alt}
-        </p>
+        <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: "#2D1A22", margin: 0, lineHeight: 1.4 }}>
+            {combo.title}
+          </p>
+          {combo.price && (
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#C2185B", margin: 0 }}>
+              {combo.price}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Dots */}
