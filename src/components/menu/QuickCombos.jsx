@@ -1,150 +1,173 @@
-import React, { useState } from "react";
-import { Zap, ShoppingCart, ChevronRight } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Zap, ShoppingCart } from "lucide-react";
 import { formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Combos con nombres EXACTOS del catálogo real
-// Cada item tiene: productName (exacto), price, emoji
 const QUICK_COMBOS = [
   {
     id: "c1",
     title: "El Clásico Refrescante",
-    tagline: "Lo que todos piden 🔥",
+    tagline: "Malteada + Agua",
     badgeText: "⚡ Más pedido",
-    badgeColor: "#B5175A",
-    bg: "linear-gradient(135deg, #6D1B4E 0%, #B5175A 100%)",
-    textColor: "#fff",
+    bg: "linear-gradient(160deg, #7B1340 0%, #C2185B 100%)",
     items: [
-      { productName: "Malteada Fresa Gourmet", fallbackName: "Fresa Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
-      { productName: "Agua Botella Pequeña", fallbackName: "Agua Botella Pequeña", category: "bebidas", price: 2500, emoji: "💧" },
+      { fallbackName: "Fresa Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
+      { fallbackName: "Agua Botella Pequeña", category: "bebidas", price: 2500, emoji: "💧" },
     ],
-    savingsText: "Combo perfecto · $22.400",
   },
   {
     id: "c2",
     title: "Cookie & Malteada",
-    tagline: "Galleta + Malteada soñada 🍪",
+    tagline: "Galleta Cookies + Malteada Choco",
     badgeText: "💛 Favorito",
-    badgeColor: "#E65100",
-    bg: "linear-gradient(135deg, #4A148C 0%, #7B1FA2 100%)",
-    textColor: "#fff",
+    bg: "linear-gradient(160deg, #4A148C 0%, #7B1FA2 100%)",
     items: [
-      { productName: "Galleta Cookies and Cream", fallbackName: "Galleta Cookies and Cream", category: "galletas", price: 12900, emoji: "🍪" },
-      { productName: "Malteada Chocolate Gourmet", fallbackName: "Chocolate Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
+      { fallbackName: "Galleta Cookies and Cream", category: "galletas", price: 12900, emoji: "🍪" },
+      { fallbackName: "Chocolate Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
     ],
-    savingsText: "Dulce total · $32.800",
   },
   {
     id: "c3",
     title: "Brownie Power",
-    tagline: "Especialidad + Malteada 🌟",
+    tagline: "Brownie c/Helado + Malteada",
     badgeText: "🌟 Top combo",
-    badgeColor: "#2E7D32",
-    bg: "linear-gradient(135deg, #1B5E20 0%, #388E3C 100%)",
-    textColor: "#fff",
+    bg: "linear-gradient(160deg, #1B5E20 0%, #388E3C 100%)",
     items: [
-      { productName: "Brownie con Helado", fallbackName: "Brownie con Helado", category: "especialidades", price: 14900, emoji: "🍫" },
-      { productName: "Malteada Brownie", fallbackName: "Brownie", category: "malteadas", price: 19900, emoji: "🥤" },
+      { fallbackName: "Brownie con Helado", category: "especialidades", price: 14900, emoji: "🍫" },
+      { fallbackName: "Brownie", category: "malteadas", price: 19900, emoji: "🥤" },
     ],
-    savingsText: "Intenso y delicioso · $34.800",
   },
   {
     id: "c4",
-    title: "Maxi Cono + Refrescante",
-    tagline: "El grande con bebida 🍦",
+    title: "Maxi Cono + Gaseosa",
+    tagline: "Grande + Bebida refrescante",
     badgeText: "✨ Recomendado",
-    badgeColor: "#1565C0",
-    bg: "linear-gradient(135deg, #0D47A1 0%, #1976D2 100%)",
-    textColor: "#fff",
+    bg: "linear-gradient(160deg, #0D47A1 0%, #1976D2 100%)",
     items: [
-      { productName: "Maxi Cono", fallbackName: "Maxi Cono", category: "helados", price: 14900, emoji: "🍦" },
-      { productName: "Gaseosa", fallbackName: "Gaseosa", category: "bebidas", price: 4900, emoji: "🥤" },
+      { fallbackName: "Maxi Cono", category: "helados", price: 14900, emoji: "🍦" },
+      { fallbackName: "Gaseosa", category: "bebidas", price: 4900, emoji: "🥤" },
     ],
-    savingsText: "Grande y refrescante · $19.800",
   },
   {
     id: "c5",
     title: "Banana Split + Agua",
-    tagline: "Especialidad icónica 🍌",
+    tagline: "Especialidad icónica Popsy",
     badgeText: "🍌 Icónico",
-    badgeColor: "#F57F17",
-    bg: "linear-gradient(135deg, #E65100 0%, #FF8F00 100%)",
-    textColor: "#fff",
+    bg: "linear-gradient(160deg, #E65100 0%, #FF8F00 100%)",
     items: [
-      { productName: "Banana Split", fallbackName: "Banana Split", category: "especialidades", price: 17900, emoji: "🍌" },
-      { productName: "Agua Botella Pequeña", fallbackName: "Agua Botella Pequeña", category: "bebidas", price: 2500, emoji: "💧" },
+      { fallbackName: "Banana Split", category: "especialidades", price: 17900, emoji: "🍌" },
+      { fallbackName: "Agua Botella Pequeña", category: "bebidas", price: 2500, emoji: "💧" },
     ],
-    savingsText: "Clásico gourmet · $20.400",
   },
   {
     id: "c6",
-    title: "Sundae Doble + Galleta",
-    tagline: "Doble felicidad 🎉",
+    title: "Sundae + Galleta Choco",
+    tagline: "Doble sabor, doble felicidad",
     badgeText: "🎉 Especial",
-    badgeColor: "#6A1B9A",
-    bg: "linear-gradient(135deg, #880E4F 0%, #C2185B 100%)",
-    textColor: "#fff",
+    bg: "linear-gradient(160deg, #880E4F 0%, #C2185B 100%)",
     items: [
-      { productName: "Sundae 2 Sabores", fallbackName: "Sundae 2 Sabores", category: "especialidades", price: 14900, emoji: "🍨" },
-      { productName: "Galleta Triple Choco", fallbackName: "Galleta Triple Choco", category: "galletas", price: 12900, emoji: "🍪" },
+      { fallbackName: "Sundae 2 Sabores", category: "especialidades", price: 14900, emoji: "🍨" },
+      { fallbackName: "Galleta Triple Choco", category: "galletas", price: 12900, emoji: "🍪" },
     ],
-    savingsText: "Para compartir · $27.800",
   },
   {
     id: "c7",
-    title: "Malteada + Galletita",
-    tagline: "El dúo perfecto 🍪🥤",
-    badgeText: "💫 Nuevo",
-    badgeColor: "#00695C",
-    bg: "linear-gradient(135deg, #004D40 0%, #00897B 100%)",
-    textColor: "#fff",
+    title: "Arequipe + Pistacho",
+    tagline: "Malteada Arequipe + Galleta",
+    badgeText: "💫 Premium",
+    bg: "linear-gradient(160deg, #004D40 0%, #00897B 100%)",
     items: [
-      { productName: "Malteada Arequipe Gourmet", fallbackName: "Arequipe Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
-      { productName: "Galleta Pistacho", fallbackName: "Galleta Pistacho", category: "galletas", price: 14900, emoji: "🍪" },
+      { fallbackName: "Arequipe Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
+      { fallbackName: "Galleta Pistacho", category: "galletas", price: 14900, emoji: "🍪" },
     ],
-    savingsText: "Sabores únicos · $34.800",
   },
   {
     id: "c8",
-    title: "Helado 2 Sabores + Agua",
-    tagline: "Clásico Popsy sin falla 🍦",
+    title: "Helado Clásico + Agua",
+    tagline: "2 sabores + Botella grande",
     badgeText: "❤️ Básico ideal",
-    badgeColor: "#C62828",
-    bg: "linear-gradient(135deg, #3E2723 0%, #6D4C41 100%)",
-    textColor: "#fff",
+    bg: "linear-gradient(160deg, #3E2723 0%, #6D4C41 100%)",
     items: [
-      { productName: "Helado 2 Sabores", fallbackName: "Helado 2 Sabores", category: "helados", price: 9900, emoji: "🍦" },
-      { productName: "Agua Botella Grande", fallbackName: "Agua Botella Grande", category: "bebidas", price: 5900, emoji: "💧" },
+      { fallbackName: "Helado 2 Sabores", category: "helados", price: 9900, emoji: "🍦" },
+      { fallbackName: "Agua Botella Grande", category: "bebidas", price: 5900, emoji: "💧" },
     ],
-    savingsText: "Simple y rico · $15.800",
   },
 ];
 
-// Busca el producto real o devuelve un producto simulado
 function findProduct(products, item) {
   if (!products) return null;
-  // Intenta nombre exacto primero
-  let found = products.find(p =>
-    p.name.toLowerCase() === item.productName.toLowerCase() && p.is_available !== false
-  );
-  // Si no, busca por nombre del fallback (sin "Malteada " al inicio)
-  if (!found) {
-    found = products.find(p =>
-      p.name.toLowerCase().includes(item.fallbackName.toLowerCase()) &&
+  return products.find(
+    p => p.name.toLowerCase().includes(item.fallbackName.toLowerCase()) &&
       p.category === item.category &&
       p.is_available !== false
+  ) || null;
+}
+
+// Imagen compuesta: muestra las 2 fotos de los productos superpuestas
+function ComboImage({ realItems, combo }) {
+  const imgs = realItems.map(p => p?.image_url).filter(Boolean);
+
+  if (imgs.length === 0) {
+    // Solo emojis si no hay fotos
+    return (
+      <div style={{ width: "100%", height: 110, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+        {combo.items.map((item, i) => (
+          <span key={i} style={{ fontSize: 44 }}>{item.emoji}</span>
+        ))}
+      </div>
     );
   }
-  return found || null;
+
+  if (imgs.length === 1) {
+    return (
+      <div style={{ width: "100%", height: 110, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <img src={imgs[0]} alt="" style={{ height: 100, width: 100, objectFit: "contain", filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.35))" }} />
+      </div>
+    );
+  }
+
+  // 2 imágenes: la segunda más pequeña y desplazada
+  return (
+    <div style={{ width: "100%", height: 110, position: "relative" }}>
+      {/* Imagen 1 — izquierda/centro */}
+      <img
+        src={imgs[0]}
+        alt=""
+        style={{
+          position: "absolute",
+          left: "10%",
+          bottom: 0,
+          height: 100,
+          width: 100,
+          objectFit: "contain",
+          filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.4))",
+          zIndex: 2,
+        }}
+      />
+      {/* Imagen 2 — derecha, algo más pequeña y elevada */}
+      <img
+        src={imgs[1]}
+        alt=""
+        style={{
+          position: "absolute",
+          right: "4%",
+          bottom: 8,
+          height: 75,
+          width: 75,
+          objectFit: "contain",
+          filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.3))",
+          zIndex: 1,
+          opacity: 0.92,
+        }}
+      />
+    </div>
+  );
 }
 
 function ComboCard({ combo, products, onAddMultiple }) {
   const [added, setAdded] = useState(false);
-
   const realItems = combo.items.map(item => findProduct(products, item));
-  const totalReal = realItems.reduce((sum, p, i) =>
-    sum + (p ? p.price : combo.items[i].price), 0
-  );
+  const totalReal = realItems.reduce((sum, p, i) => sum + (p ? p.price : combo.items[i].price), 0);
 
   const handleClick = () => {
     realItems.forEach(p => { if (p) onAddMultiple(p); });
@@ -159,102 +182,61 @@ function ComboCard({ combo, products, onAddMultiple }) {
       style={{
         flexShrink: 0,
         width: 200,
-        borderRadius: 22,
+        borderRadius: 24,
         background: combo.bg,
         border: "none",
         cursor: "pointer",
-        padding: "16px 14px 14px",
+        padding: "12px 14px 14px",
         textAlign: "left",
         position: "relative",
-        scrollSnapAlign: "start",
         display: "flex",
         flexDirection: "column",
-        gap: 8,
+        gap: 6,
         overflow: "hidden",
-        boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
+        boxShadow: "0 6px 20px rgba(0,0,0,0.22)",
       }}
     >
-      {/* Círculo decorativo de fondo */}
-      <div style={{ position: "absolute", top: -20, right: -20, width: 100, height: 100, borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
-      <div style={{ position: "absolute", bottom: -30, left: -10, width: 80, height: 80, borderRadius: "50%", background: "rgba(255,255,255,0.06)" }} />
+      {/* Círculos decorativos */}
+      <div style={{ position: "absolute", top: -25, right: -25, width: 110, height: 110, borderRadius: "50%", background: "rgba(255,255,255,0.07)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: -30, left: -15, width: 90, height: 90, borderRadius: "50%", background: "rgba(255,255,255,0.05)", pointerEvents: "none" }} />
 
       {/* Badge */}
       <span style={{
-        alignSelf: "flex-start",
-        fontSize: 9, fontWeight: 800, color: "#fff",
-        background: "rgba(0,0,0,0.25)",
-        borderRadius: 20, padding: "3px 8px",
-        backdropFilter: "blur(4px)",
+        alignSelf: "flex-start", fontSize: 9, fontWeight: 800, color: "#fff",
+        background: "rgba(0,0,0,0.28)", borderRadius: 20, padding: "3px 9px",
+        backdropFilter: "blur(4px)", position: "relative", zIndex: 3,
       }}>
         {combo.badgeText}
       </span>
 
-      {/* Emojis de items */}
-      <div style={{ display: "flex", gap: 4, fontSize: 26, lineHeight: 1 }}>
-        {combo.items.map((item, i) => (
-          <span key={i}>{item.emoji}</span>
-        ))}
-      </div>
+      {/* Imagen compuesta de los productos reales */}
+      <ComboImage realItems={realItems} combo={combo} />
 
-      {/* Título */}
-      <div>
-        <p style={{ fontSize: 14, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1.25 }}>
-          {combo.title}
-        </p>
-        <p style={{ fontSize: 10, color: "rgba(255,255,255,0.75)", margin: "3px 0 0", lineHeight: 1.3 }}>
-          {combo.tagline}
-        </p>
-      </div>
+      {/* Título y tagline */}
+      <p style={{ fontSize: 13, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1.25 }}>
+        {combo.title}
+      </p>
+      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.72)", margin: 0, lineHeight: 1.3 }}>
+        {combo.tagline}
+      </p>
 
-      {/* Items del combo */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-        {combo.items.map((item, i) => (
-          <div key={i} style={{ display: "flex", alignItems: "center", gap: 5 }}>
-            <div style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(255,255,255,0.6)", flexShrink: 0 }} />
-            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.85)", margin: 0, lineHeight: 1.2 }}>
-              {item.fallbackName}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Footer */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4 }}>
+      {/* Footer precio + botón */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
         <div>
-          <p style={{ fontSize: 8, color: "rgba(255,255,255,0.6)", margin: 0 }}>total combo</p>
+          <p style={{ fontSize: 8, color: "rgba(255,255,255,0.55)", margin: 0 }}>total combo</p>
           <p style={{ fontSize: 18, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1 }}>
             {formatCOP(totalReal)}
           </p>
         </div>
         <AnimatePresence mode="wait">
           {added ? (
-            <motion.div
-              key="check"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              style={{
-                width: 36, height: 36, borderRadius: "50%",
-                background: "rgba(255,255,255,0.9)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 18,
-              }}
-            >
+            <motion.div key="check" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
+              style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: "#333" }}>
               ✓
             </motion.div>
           ) : (
-            <motion.div
-              key="cart"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              style={{
-                width: 36, height: 36, borderRadius: "50%",
-                background: "rgba(255,255,255,0.25)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                border: "1.5px solid rgba(255,255,255,0.5)",
-              }}
-            >
+            <motion.div key="cart" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
+              style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", border: "1.5px solid rgba(255,255,255,0.45)" }}>
               <ShoppingCart size={15} color="#fff" />
             </motion.div>
           )}
@@ -264,19 +246,63 @@ function ComboCard({ combo, products, onAddMultiple }) {
   );
 }
 
+// Carrusel automático lento
 export default function QuickCombos({ products, onAddMultiple }) {
+  const trackRef = useRef(null);
+  const posRef = useRef(0);
+  const animRef = useRef(null);
+  const pausedRef = useRef(false);
+  const dragRef = useRef({ isDragging: false, startX: 0, startPos: 0 });
+
+  const CARD_WIDTH = 212; // 200px card + 12px gap
+  const total = QUICK_COMBOS.length;
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const animate = () => {
+      if (!pausedRef.current && !dragRef.current.isDragging) {
+        posRef.current += 0.4; // velocidad lenta tipo carrusel
+        if (posRef.current >= CARD_WIDTH * total) posRef.current = 0;
+        track.style.transform = `translateX(-${posRef.current}px)`;
+      }
+      animRef.current = requestAnimationFrame(animate);
+    };
+    animRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animRef.current);
+  }, [total]);
+
+  // Drag / touch
+  const onMouseDown = (e) => {
+    dragRef.current = { isDragging: true, startX: e.clientX, startPos: posRef.current };
+    pausedRef.current = true;
+  };
+  const onMouseMove = (e) => {
+    if (!dragRef.current.isDragging) return;
+    const diff = dragRef.current.startX - e.clientX;
+    posRef.current = Math.max(0, dragRef.current.startPos + diff);
+    if (trackRef.current) trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
+  };
+  const onMouseUp = () => { dragRef.current.isDragging = false; pausedRef.current = false; };
+
+  useEffect(() => {
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    return () => { document.removeEventListener("mousemove", onMouseMove); document.removeEventListener("mouseup", onMouseUp); };
+  }, []);
+
   if (!products || products.length === 0) return null;
+
+  // Duplicamos los combos para loop infinito
+  const doubled = [...QUICK_COMBOS, ...QUICK_COMBOS];
 
   return (
     <div style={{ background: "#fff", marginTop: 10 }}>
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{
-            width: 28, height: 28, borderRadius: "50%",
-            background: "linear-gradient(135deg, #B5175A, #E91E8C)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
+          <div style={{ width: 28, height: 28, borderRadius: "50%", background: "linear-gradient(135deg, #B5175A, #E91E8C)", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Zap size={14} color="#fff" />
           </div>
           <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Arma tu combo</p>
@@ -284,28 +310,30 @@ export default function QuickCombos({ products, onAddMultiple }) {
         <span style={{ fontSize: 11, color: "#BBA8B0", fontWeight: 500 }}>1 clic y listo</span>
       </div>
       <p style={{ fontSize: 12, color: "#BBA8B0", margin: "2px 16px 12px", lineHeight: 1.4 }}>
-        Combos pensados para llevar más por menos 🎯
+        Combos pensados para llevar más 🎯
       </p>
 
-      {/* Scroll horizontal */}
-      <div style={{
-        display: "flex",
-        overflowX: "auto",
-        gap: 12,
-        paddingLeft: 16,
-        paddingRight: 16,
-        paddingBottom: 16,
-        scrollbarWidth: "none",
-        scrollSnapType: "x mandatory",
-      }}>
-        {QUICK_COMBOS.map((combo) => (
-          <ComboCard
-            key={combo.id}
-            combo={combo}
-            products={products}
-            onAddMultiple={onAddMultiple}
-          />
-        ))}
+      {/* Carrusel automático */}
+      <div
+        style={{ overflow: "hidden", paddingBottom: 16, cursor: "grab" }}
+        onMouseDown={onMouseDown}
+        onTouchStart={(e) => { pausedRef.current = true; dragRef.current = { isDragging: true, startX: e.touches[0].clientX, startPos: posRef.current }; }}
+        onTouchMove={(e) => { const diff = dragRef.current.startX - e.touches[0].clientX; posRef.current = Math.max(0, dragRef.current.startPos + diff); if (trackRef.current) trackRef.current.style.transform = `translateX(-${posRef.current}px)`; }}
+        onTouchEnd={() => { dragRef.current.isDragging = false; pausedRef.current = false; }}
+      >
+        <div
+          ref={trackRef}
+          style={{ display: "flex", gap: 12, paddingLeft: 16, paddingRight: 16, width: "max-content" }}
+        >
+          {doubled.map((combo, i) => (
+            <ComboCard
+              key={`${combo.id}-${i}`}
+              combo={combo}
+              products={products}
+              onAddMultiple={onAddMultiple}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
