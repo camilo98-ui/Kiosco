@@ -62,6 +62,12 @@ const BANNERS = [
     alt: "Nuevo cono Fiore",
     category: "helados",
   },
+  {
+    id: 11,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/b46dcf67f_2180415.png",
+    alt: "Las más cremosas del menú Cookie Jaar",
+    category: "combos",
+  },
 ];
 
 export default function PromoBanners({ onCategorySelect }) {
