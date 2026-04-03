@@ -132,7 +132,7 @@ function MostOrdered({ products, onAdd }) {
   );
 }
 
-function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
+function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept, setEditingProduct }) {
   return (
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
       <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)" }}>
@@ -154,6 +154,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={onAddProduct} />
+      <ProductImageEditModal open={!!editingProduct} product={editingProduct} onClose={() => setEditingProduct(null)} onSave={() => refetchProducts()} />
     </div>
   );
 }
@@ -290,6 +291,7 @@ export default function Menu() {
         upsellMsg={upsellMsg}
         setUpsellMsg={setUpsellMsg}
         handleUpsellAccept={handleUpsellAccept}
+        setEditingProduct={setEditingProduct}
       />
     );
   }
