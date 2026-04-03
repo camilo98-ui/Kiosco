@@ -48,7 +48,8 @@ const EXTRAS = [
   { name: "Sprinkles", price: 3100 },
 ];
 
-const SECTIONS = ["sabor1", "sabor2", "extras"];
+const MAX_TOPPINGS = 2;
+const SECTIONS = ["sabor1", "sabor2", "toppings"];
 
 function AccordionSection({ title, required, open, onToggle, children, badge }) {
   return (
@@ -100,23 +101,19 @@ function RadioOption({ label, selected, onSelect }) {
   );
 }
 
-function CheckOption({ label, price, selected, onToggle }) {
+function CheckOption({ label, selected, onToggle, disabled }) {
   return (
     <button
-      onClick={onToggle}
+      onClick={!disabled ? onToggle : undefined}
       style={{
         width: "100%", display: "flex", alignItems: "center",
         justifyContent: "space-between", padding: "12px 16px",
-        background: "none", border: "none", cursor: "pointer", textAlign: "left",
-        borderBottom: "1px solid #F9F0F4",
+        background: "none", border: "none", cursor: disabled ? "not-allowed" : "pointer",
+        textAlign: "left", borderBottom: "1px solid #F9F0F4",
+        opacity: disabled ? 0.45 : 1,
       }}
     >
-      <div>
-        <span style={{ fontSize: 13, color: "#1A0A10" }}>{label}</span>
-        <span style={{ fontSize: 11, color: "#C2185B", marginLeft: 6, fontWeight: 700 }}>
-          + {formatCOP(price)}
-        </span>
-      </div>
+      <span style={{ fontSize: 13, color: "#1A0A10" }}>{label}</span>
       <div style={{
         width: 22, height: 22, borderRadius: 5,
         border: selected ? "none" : "2px solid #DDD",
@@ -134,7 +131,7 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
   const [openSection, setOpenSection] = useState("sabor1");
   const [sabor1, setSabor1] = useState(null);
   const [sabor2, setSabor2] = useState(null);
-  const [extras, setExtras] = useState([]);
+  const [toppings, setToppings] = useState([]);
 
   const advanceToNext = (current) => {
     const idx = SECTIONS.indexOf(current);
@@ -142,28 +139,29 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
     if (next) setTimeout(() => setOpenSection(next), 200);
   };
 
-  const toggleExtra = (name, price) => {
-    setExtras(prev =>
-      prev.find(e => e.name === name)
-        ? prev.filter(e => e.name !== name)
-        : [...prev, { name, price }]
-    );
+  const toggleTopping = (name) => {
+    setToppings(prev => {
+      if (prev.includes(name)) return prev.filter(t => t !== name);
+      if (prev.length >= MAX_TOPPINGS) return prev;
+      const next = [...prev, name];
+      if (next.length === MAX_TOPPINGS) advanceToNext("toppings");
+      return next;
+    });
   };
 
-  const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
-  const total = (product?.price || 0) + extrasTotal;
+  const total = product?.price || 0;
 
-  const allRequired = sabor1 && sabor2;
+  const allRequired = sabor1 && sabor2 && toppings.length === MAX_TOPPINGS;
 
   const handleConfirm = () => {
     if (!allRequired) return;
     const notes = [
       `Sabores: ${sabor1}, ${sabor2}`,
-      extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
+      `Toppings incluidos: ${toppings.join(", ")}`,
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
-    setSabor1(null); setSabor2(null); setExtras([]);
+    setSabor1(null); setSabor2(null); setToppings([]);
     setOpenSection("sabor1");
     onClose();
   };
@@ -222,19 +220,20 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
         </AccordionSection>
 
         <AccordionSection
-          title="Elige Tus Extras"
-          required={false}
-          open={openSection === "extras"}
-          onToggle={() => setOpenSection(s => s === "extras" ? null : "extras")}
+          title="Elige 2 Toppings Incluidos"
+          required
+          open={openSection === "toppings"}
+          onToggle={() => setOpenSection(s => s === "toppings" ? null : "toppings")}
+          badge={`${toppings.length}/${MAX_TOPPINGS}`}
         >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Opcionales · puedes elegir varios</p>
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona {MAX_TOPPINGS} opciones · ¡van incluidas!</p>
           {EXTRAS.map(e => (
             <CheckOption
               key={e.name}
-              label={`Adición ${e.name}`}
-              price={e.price}
-              selected={!!extras.find(x => x.name === e.name)}
-              onToggle={() => toggleExtra(e.name, e.price)}
+              label={e.name}
+              selected={toppings.includes(e.name)}
+              onToggle={() => toggleTopping(e.name)}
+              disabled={!toppings.includes(e.name) && toppings.length >= MAX_TOPPINGS}
             />
           ))}
         </AccordionSection>
@@ -242,7 +241,7 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
           {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige dos sabores para continuar
+              * Elige dos sabores y dos toppings para continuar
             </p>
           )}
           <button
