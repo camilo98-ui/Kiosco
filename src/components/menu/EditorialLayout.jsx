@@ -7,6 +7,7 @@ import MalteadaCustomizer12oz from "@/components/menu/MalteadaCustomizer12oz";
 import BananaSplitCustomizer from "@/components/menu/BananaSplitCustomizer";
 import HeladoCustomizer from "@/components/menu/HeladoCustomizer";
 import MaxiConoCustomizer from "@/components/menu/MaxiConoCustomizer";
+import GranizadoCustomizer from "@/components/menu/GranizadoCustomizer";
 
 // ─── Ordenamiento comercial dinámico ───────────────────────────────
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
@@ -503,6 +504,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   const [bananaSplitProduct, setBananaSplitProduct] = useState(null);
   const [heladoProduct, setHeladoProduct] = useState(null);
   const [maxiConoProduct, setMaxiConoProduct] = useState(null);
+  const [granizadoProduct, setGranizadoProduct] = useState(null);
 
   if (!products || products.length === 0) return null;
 
@@ -523,6 +525,8 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
       setMaxiConoProduct(product);
     } else if (category === "helados" && product.name.includes("2") && product.name.toLowerCase().includes("sabor")) {
       setMaxiConoProduct(product);
+    } else if (category === "granizados" && product.name.toLowerCase().includes("granizado")) {
+      setGranizadoProduct(product);
     } else {
       onAdd(product);
     }
@@ -589,6 +593,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
         product={maxiConoProduct}
         open={!!maxiConoProduct}
         onClose={() => setMaxiConoProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <GranizadoCustomizer
+        product={granizadoProduct}
+        open={!!granizadoProduct}
+        onClose={() => setGranizadoProduct(null)}
         onAdd={handleCustomizerAdd}
       />
     </>
