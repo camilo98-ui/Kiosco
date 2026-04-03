@@ -70,28 +70,6 @@ const QUICK_COMBOS = [
       { fallbackName: "Galleta Triple Choco", category: "galletas", price: 12900, emoji: "🍪" },
     ],
   },
-  {
-    id: "c7",
-    title: "Arequipe + Pistacho",
-    tagline: "Malteada Arequipe + Galleta",
-    badgeText: "💫 Premium",
-    bg: "linear-gradient(160deg, #004D40 0%, #00897B 100%)",
-    items: [
-      { fallbackName: "Arequipe Gourmet", category: "malteadas", price: 19900, emoji: "🥤" },
-      { fallbackName: "Galleta Pistacho", category: "galletas", price: 14900, emoji: "🍪" },
-    ],
-  },
-  {
-    id: "c8",
-    title: "Helado Clásico + Agua",
-    tagline: "2 sabores + Botella grande",
-    badgeText: "❤️ Básico ideal",
-    bg: "linear-gradient(160deg, #3E2723 0%, #6D4C41 100%)",
-    items: [
-      { fallbackName: "Helado 2 Sabores", category: "helados", price: 9900, emoji: "🍦" },
-      { fallbackName: "Agua Botella Grande", category: "bebidas", price: 5900, emoji: "💧" },
-    ],
-  },
 ];
 
 function findProduct(products, item) {
@@ -103,16 +81,14 @@ function findProduct(products, item) {
   ) || null;
 }
 
-// Imagen compuesta: muestra las 2 fotos de los productos superpuestas
 function ComboImage({ realItems, combo }) {
   const imgs = realItems.map(p => p?.image_url).filter(Boolean);
 
   if (imgs.length === 0) {
-    // Solo emojis si no hay fotos
     return (
-      <div style={{ width: "100%", height: 110, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+      <div style={{ width: "100%", height: 120, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
         {combo.items.map((item, i) => (
-          <span key={i} style={{ fontSize: 44 }}>{item.emoji}</span>
+          <span key={i} style={{ fontSize: 52 }}>{item.emoji}</span>
         ))}
       </div>
     );
@@ -120,46 +96,16 @@ function ComboImage({ realItems, combo }) {
 
   if (imgs.length === 1) {
     return (
-      <div style={{ width: "100%", height: 110, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <img src={imgs[0]} alt="" style={{ height: 100, width: 100, objectFit: "contain", filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.35))" }} />
+      <div style={{ width: "100%", height: 120, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <img src={imgs[0]} alt="" style={{ height: 110, width: 110, objectFit: "contain", filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.35))" }} />
       </div>
     );
   }
 
-  // 2 imágenes: la segunda más pequeña y desplazada
   return (
-    <div style={{ width: "100%", height: 110, position: "relative" }}>
-      {/* Imagen 1 — izquierda/centro */}
-      <img
-        src={imgs[0]}
-        alt=""
-        style={{
-          position: "absolute",
-          left: "10%",
-          bottom: 0,
-          height: 100,
-          width: 100,
-          objectFit: "contain",
-          filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.4))",
-          zIndex: 2,
-        }}
-      />
-      {/* Imagen 2 — derecha, algo más pequeña y elevada */}
-      <img
-        src={imgs[1]}
-        alt=""
-        style={{
-          position: "absolute",
-          right: "4%",
-          bottom: 8,
-          height: 75,
-          width: 75,
-          objectFit: "contain",
-          filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.3))",
-          zIndex: 1,
-          opacity: 0.92,
-        }}
-      />
+    <div style={{ width: "100%", height: 120, position: "relative" }}>
+      <img src={imgs[0]} alt="" style={{ position: "absolute", left: "10%", bottom: 0, height: 110, width: 110, objectFit: "contain", filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.4))", zIndex: 2 }} />
+      <img src={imgs[1]} alt="" style={{ position: "absolute", right: "4%", bottom: 10, height: 80, width: 80, objectFit: "contain", filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.3))", zIndex: 1, opacity: 0.92 }} />
     </div>
   );
 }
@@ -176,17 +122,13 @@ function ComboCard({ combo, products, onAddMultiple }) {
   };
 
   return (
-    <motion.button
-      whileTap={{ scale: 0.96 }}
+    <motion.div
       onClick={handleClick}
       style={{
-        flexShrink: 0,
-        width: 200,
         borderRadius: 24,
         background: combo.bg,
-        border: "none",
         cursor: "pointer",
-        padding: "12px 14px 14px",
+        padding: "14px 16px 16px",
         textAlign: "left",
         position: "relative",
         display: "flex",
@@ -194,123 +136,83 @@ function ComboCard({ combo, products, onAddMultiple }) {
         gap: 6,
         overflow: "hidden",
         boxShadow: "0 6px 20px rgba(0,0,0,0.22)",
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
       }}
+      whileTap={{ scale: 0.98 }}
     >
       {/* Círculos decorativos */}
-      <div style={{ position: "absolute", top: -25, right: -25, width: 110, height: 110, borderRadius: "50%", background: "rgba(255,255,255,0.07)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: -25, right: -25, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.07)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: -30, left: -15, width: 90, height: 90, borderRadius: "50%", background: "rgba(255,255,255,0.05)", pointerEvents: "none" }} />
 
       {/* Badge */}
-      <span style={{
-        alignSelf: "flex-start", fontSize: 9, fontWeight: 800, color: "#fff",
-        background: "rgba(0,0,0,0.28)", borderRadius: 20, padding: "3px 9px",
-        backdropFilter: "blur(4px)", position: "relative", zIndex: 3,
-      }}>
+      <span style={{ alignSelf: "flex-start", fontSize: 9, fontWeight: 800, color: "#fff", background: "rgba(0,0,0,0.28)", borderRadius: 20, padding: "3px 9px", backdropFilter: "blur(4px)", position: "relative", zIndex: 3 }}>
         {combo.badgeText}
       </span>
 
-      {/* Imagen compuesta de los productos reales */}
+      {/* Imagen compuesta */}
       <ComboImage realItems={realItems} combo={combo} />
 
       {/* Título y tagline */}
-      <p style={{ fontSize: 13, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1.25 }}>
-        {combo.title}
-      </p>
-      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.72)", margin: 0, lineHeight: 1.3 }}>
-        {combo.tagline}
-      </p>
+      <p style={{ fontSize: 15, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1.25 }}>{combo.title}</p>
+      <p style={{ fontSize: 11, color: "rgba(255,255,255,0.72)", margin: 0, lineHeight: 1.3 }}>{combo.tagline}</p>
 
-      {/* Footer precio + botón */}
+      {/* Footer */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
         <div>
-          <p style={{ fontSize: 8, color: "rgba(255,255,255,0.55)", margin: 0 }}>total combo</p>
-          <p style={{ fontSize: 18, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1 }}>
-            {formatCOP(totalReal)}
-          </p>
+          <p style={{ fontSize: 9, color: "rgba(255,255,255,0.55)", margin: 0 }}>total combo</p>
+          <p style={{ fontSize: 20, fontWeight: 900, color: "#fff", margin: 0, lineHeight: 1 }}>{formatCOP(totalReal)}</p>
         </div>
         <AnimatePresence mode="wait">
           {added ? (
             <motion.div key="check" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-              style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: "#333" }}>
+              style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, color: "#333" }}>
               ✓
             </motion.div>
           ) : (
             <motion.div key="cart" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-              style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", border: "1.5px solid rgba(255,255,255,0.45)" }}>
-              <ShoppingCart size={15} color="#fff" />
+              style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", border: "1.5px solid rgba(255,255,255,0.45)" }}>
+              <ShoppingCart size={17} color="#fff" />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-    </motion.button>
+    </motion.div>
   );
 }
 
-// Carrusel automático lento
 export default function QuickCombos({ products, onAddMultiple }) {
-  const trackRef = useRef(null);
-  const posRef = useRef(0);
-  const animRef = useRef(null);
-  const interactingRef = useRef(false);
-  const dragStartX = useRef(0);
-  const dragStartPos = useRef(0);
+  const [active, setActive] = useState(0);
+  const startX = useRef(null);
+  const timerRef = useRef(null);
 
-  const CARD_WIDTH = 212;
-  const total = QUICK_COMBOS.length;
+  const startTimer = () => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setActive(a => (a + 1) % QUICK_COMBOS.length);
+    }, 3000);
+  };
 
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const animate = () => {
-      if (!interactingRef.current) {
-        posRef.current += 0.4;
-        if (posRef.current >= CARD_WIDTH * total) posRef.current = 0;
-        track.style.transform = `translateX(-${posRef.current}px)`;
-      }
-      animRef.current = requestAnimationFrame(animate);
-    };
-    animRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animRef.current);
-  }, [total]);
-
-  // Mouse drag
-  const onMouseDown = (e) => {
-    interactingRef.current = true;
-    dragStartX.current = e.clientX;
-    dragStartPos.current = posRef.current;
-  };
-  const onMouseMove = (e) => {
-    if (!interactingRef.current) return;
-    const diff = dragStartX.current - e.clientX;
-    posRef.current = Math.max(0, dragStartPos.current + diff);
-    if (trackRef.current) trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
-  };
-  const onMouseUp = () => { interactingRef.current = false; };
-
-  useEffect(() => {
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-    return () => { document.removeEventListener("mousemove", onMouseMove); document.removeEventListener("mouseup", onMouseUp); };
+    startTimer();
+    return () => clearInterval(timerRef.current);
   }, []);
 
-  // Touch handlers
-  const onTouchStart = (e) => {
-    interactingRef.current = true;
-    dragStartX.current = e.touches[0].clientX;
-    dragStartPos.current = posRef.current;
+  const goTo = (i) => { setActive(i); startTimer(); };
+
+  const handleTouchStart = (e) => { startX.current = e.touches[0].clientX; };
+  const handleTouchEnd = (e) => {
+    if (startX.current === null) return;
+    const diff = startX.current - e.changedTouches[0].clientX;
+    if (diff > 40) goTo((active + 1) % QUICK_COMBOS.length);
+    else if (diff < -40) goTo((active - 1 + QUICK_COMBOS.length) % QUICK_COMBOS.length);
+    startX.current = null;
   };
-  const onTouchMove = (e) => {
-    const diff = dragStartX.current - e.touches[0].clientX;
-    posRef.current = Math.max(0, dragStartPos.current + diff);
-    if (trackRef.current) trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
-  };
-  const onTouchEnd = () => { interactingRef.current = false; };
 
   if (!products || products.length === 0) return null;
 
-  // Duplicamos los combos para loop infinito
-  const doubled = [...QUICK_COMBOS, ...QUICK_COMBOS];
+  const combo = QUICK_COMBOS[active];
 
   return (
     <div style={{ background: "#fff", marginTop: 10 }}>
@@ -324,31 +226,45 @@ export default function QuickCombos({ products, onAddMultiple }) {
         </div>
         <span style={{ fontSize: 11, color: "#BBA8B0", fontWeight: 500 }}>1 clic y listo</span>
       </div>
-      <p style={{ fontSize: 12, color: "#BBA8B0", margin: "2px 16px 12px", lineHeight: 1.4 }}>
-        Combos pensados para llevar más 🎯
-      </p>
 
-      {/* Carrusel automático */}
+      {/* Slide */}
       <div
-        style={{ overflow: "hidden", paddingBottom: 16, cursor: "grab" }}
-        onMouseDown={onMouseDown}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
+        style={{ padding: "10px 16px 0", touchAction: "pan-y" }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
-        <div
-          ref={trackRef}
-          style={{ display: "flex", gap: 12, paddingLeft: 16, paddingRight: 16, width: "max-content" }}
-        >
-          {doubled.map((combo, i) => (
-            <ComboCard
-              key={`${combo.id}-${i}`}
-              combo={combo}
-              products={products}
-              onAddMultiple={onAddMultiple}
-            />
-          ))}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={combo.id}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            <ComboCard combo={combo} products={products} onAddMultiple={onAddMultiple} />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Dots */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "10px 0 16px" }}>
+        {QUICK_COMBOS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            style={{
+              height: 4,
+              width: i === active ? 14 : 4,
+              borderRadius: 4,
+              background: i === active ? "#C2185B" : "#EDD8E4",
+              transition: "all 0.25s ease",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              flexShrink: 0,
+            }}
+          />
+        ))}
       </div>
     </div>
   );
