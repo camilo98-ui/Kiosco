@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
 import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
+import MalteadaCustomizer12oz from "@/components/menu/MalteadaCustomizer12oz";
 import BananaSplitCustomizer from "@/components/menu/BananaSplitCustomizer";
 import HeladoCustomizer from "@/components/menu/HeladoCustomizer";
 
@@ -319,27 +320,74 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
 }
 
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
+  const [selectedSize, setSelectedSize] = React.useState("16oz");
   const [showAll, setShowAll] = React.useState(false);
   const available = products.filter(p => p.is_available !== false);
-  const carouselProducts = available.slice(0, 8);
-  const restProducts = available.slice(8);
+
+  const by12oz = available.filter(p => p.name.includes("15oz"));
+  const by16oz = available.filter(p => p.name.includes("16oz"));
 
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} onViewAll={() => setShowAll(!showAll)} />
+
+      {/* Size Selector Buttons */}
+      <div style={{ display: "flex", gap: 10, paddingLeft: 14, paddingRight: 14, marginBottom: 16 }}>
+        <button
+          onClick={() => setSelectedSize("12oz")}
+          style={{
+            flex: 1, height: 50, borderRadius: 16,
+            background: selectedSize === "12oz" ? "#C2185B" : "#FFF0F5",
+            color: selectedSize === "12oz" ? "#fff" : "#C2185B",
+            fontSize: 14, fontWeight: 900, border: "none", cursor: "pointer",
+            transition: "all 0.2s",
+          }}
+        >
+          Malteadas 12oz (15oz)
+        </button>
+        <button
+          onClick={() => setSelectedSize("16oz")}
+          style={{
+            flex: 1, height: 50, borderRadius: 16,
+            background: selectedSize === "16oz" ? "#C2185B" : "#FFF0F5",
+            color: selectedSize === "16oz" ? "#fff" : "#C2185B",
+            fontSize: 14, fontWeight: 900, border: "none", cursor: "pointer",
+            transition: "all 0.2s",
+          }}
+        >
+          Malteadas 16oz
+        </button>
+      </div>
+
+      {/* Show products based on selected size */}
       {!showAll ? (
         <>
-          <AutoCarousel products={carouselProducts} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-          {restProducts.length > 0 && <Separator label={catLabel} />}
-          {restProducts.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
-              {restProducts.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
-            </div>
+          {selectedSize === "12oz" && by12oz.length > 0 && (
+            <>
+              <AutoCarousel products={by12oz.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+              {by12oz.length > 8 && <Separator label="Más 12oz" />}
+              {by12oz.length > 8 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
+                  {by12oz.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+                </div>
+              )}
+            </>
+          )}
+          {selectedSize === "16oz" && by16oz.length > 0 && (
+            <>
+              <AutoCarousel products={by16oz.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+              {by16oz.length > 8 && <Separator label="Más 16oz" />}
+              {by16oz.length > 8 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
+                  {by16oz.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+                </div>
+              )}
+            </>
           )}
         </>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-          {available.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+          {(selectedSize === "12oz" ? by12oz : by16oz).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
         </div>
       )}
     </>
@@ -450,6 +498,7 @@ function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 
 export default function EditorialLayout({ products, category, onAdd, addedFlash }) {
   const [customizerProduct, setCustomizerProduct] = useState(null);
+  const [customizer12ozProduct, setCustomizer12ozProduct] = useState(null);
   const [bananaSplitProduct, setBananaSplitProduct] = useState(null);
   const [heladoProduct, setHeladoProduct] = useState(null);
 
@@ -461,7 +510,11 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   // Interceptar onAdd según categoría/producto
   const handleAdd = (product) => {
     if (category === "malteadas") {
-      setCustomizerProduct(product);
+      if (product.name.includes("15oz")) {
+        setCustomizer12ozProduct(product);
+      } else {
+        setCustomizerProduct(product);
+      }
     } else if (category === "especialidades" && product.name.toLowerCase().includes("banana split")) {
       setBananaSplitProduct(product);
     } else if (category === "helados" && (product.name.toLowerCase().includes("maxi cono") || product.name.toLowerCase().includes("maxicono"))) {
@@ -507,6 +560,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
         product={customizerProduct}
         open={!!customizerProduct}
         onClose={() => setCustomizerProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <MalteadaCustomizer12oz
+        product={customizer12ozProduct}
+        open={!!customizer12ozProduct}
+        onClose={() => setCustomizer12ozProduct(null)}
         onAdd={handleCustomizerAdd}
       />
       <BananaSplitCustomizer
