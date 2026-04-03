@@ -138,6 +138,8 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
   const [crack, setCrack] = useState(null);
   const [extras, setExtras] = useState([]);
 
+  const SECTIONS = ["salsa", "chantilly", "crack", "extras"];
+
   const toggleExtra = (name, price) => {
     setExtras(prev =>
       prev.find(e => e.name === name)
@@ -147,6 +149,12 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
   };
 
   const toggle = (section) => setOpenSection(s => s === section ? null : section);
+
+  const advanceToNext = (currentSection) => {
+    const idx = SECTIONS.indexOf(currentSection);
+    const next = SECTIONS[idx + 1];
+    if (next) setTimeout(() => setOpenSection(next), 200);
+  };
 
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
   const crackPrice = CHOCOLATE_CRACK.find(c => c.label === crack)?.price || 0;
@@ -201,7 +209,7 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
         >
           <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
           {SALSAS.map(s => (
-            <RadioOption key={s} label={s} price={0} selected={salsa === s} onSelect={() => setSalsa(s)} />
+            <RadioOption key={s} label={s} price={0} selected={salsa === s} onSelect={() => { setSalsa(s); advanceToNext("salsa"); }} />
           ))}
         </AccordionSection>
 
@@ -213,7 +221,7 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
         >
           <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
           {CHANTILLY.map(c => (
-            <RadioOption key={c} label={c} price={0} selected={chantilly === c} onSelect={() => setChantilly(c)} />
+            <RadioOption key={c} label={c} price={0} selected={chantilly === c} onSelect={() => { setChantilly(c); advanceToNext("chantilly"); }} />
           ))}
         </AccordionSection>
 
@@ -225,7 +233,7 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
         >
           <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
           {CHOCOLATE_CRACK.map(c => (
-            <RadioOption key={c.label} label={c.label} price={c.price} selected={crack === c.label} onSelect={() => setCrack(c.label)} />
+            <RadioOption key={c.label} label={c.label} price={c.price} selected={crack === c.label} onSelect={() => { setCrack(c.label); advanceToNext("crack"); }} />
           ))}
         </AccordionSection>
 
