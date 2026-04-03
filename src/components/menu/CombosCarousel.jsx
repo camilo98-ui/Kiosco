@@ -84,14 +84,16 @@ const COMBOS = [
 
 export default function CombosCarousel({ onAdd }) {
   const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const startX = useRef(null);
 
   useEffect(() => {
+    if (isPaused) return;
     const timer = setInterval(() => {
       setActive((a) => (a + 1) % COMBOS.length);
     }, 3000);
     return () => clearInterval(timer);
-  }, []);
+  }, [isPaused]);
 
   const goTo = (i) => {
     setActive(i);
@@ -131,8 +133,16 @@ export default function CombosCarousel({ onAdd }) {
       </p>
 
       <div
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        onTouchStart={(e) => {
+          handleTouchStart(e);
+          setIsPaused(true);
+        }}
+        onTouchEnd={(e) => {
+          handleTouchEnd(e);
+          setIsPaused(false);
+        }}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         style={{ cursor: "grab", paddingLeft: 16, paddingRight: 16 }}
       >
         <AnimatePresence mode="wait">
@@ -143,13 +153,13 @@ export default function CombosCarousel({ onAdd }) {
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
             onClick={handleComboClick}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", maxHeight: 200 }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer" }}
           >
             <img
               src={combo.image}
               alt={combo.title}
-              className="w-full object-cover"
-              style={{ display: "block", height: 200, objectPosition: "center" }}
+              className="w-full object-contain"
+              style={{ display: "block", objectPosition: "center" }}
             />
           </motion.div>
         </AnimatePresence>
