@@ -90,7 +90,7 @@ export default function CombosCarousel({ onAdd }) {
   const dragRef = useRef({ isDragging: false, startX: 0, startPos: 0 });
 
   const doubled = [...COMBOS, ...COMBOS];
-  const cardWidth = 300;
+  const cardWidth = 140;
 
   const handleMouseDown = (e) => {
     dragRef.current = {
@@ -179,17 +179,15 @@ export default function CombosCarousel({ onAdd }) {
                 cursor: "pointer",
               }}
             >
-              <div style={{ borderRadius: 18, overflow: "hidden", background: "#fff", border: "1.5px solid #F0E4EA", aspectRatio: "1", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ background: "#fff", height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", borderRadius: 22 }}>
                 <img
                   src={combo.image}
                   alt={combo.title}
-                  style={{ width: "90%", height: "90%", objectFit: "contain", objectPosition: "center", display: "block" }}
+                  style={{ width: "100%", height: "100%", objectFit: "contain" }}
                 />
               </div>
-              <div style={{ marginTop: 6, paddingRight: 4 }}>
-                <p style={{ fontSize: 11, fontWeight: 600, color: "#2D1A22", margin: 0, lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                  {combo.title}
-                </p>
+              <div style={{ padding: "8px 10px 10px" }}>
+                <p style={{ fontSize: 11, fontWeight: 800, color: "#2D1A22", margin: 0, lineHeight: 1.3 }}>{combo.title}</p>
                 {combo.price && (
                   <p style={{ fontSize: 12, fontWeight: 700, color: "#C2185B", margin: "2px 0 0" }}>
                     {combo.price}
