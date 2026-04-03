@@ -123,6 +123,9 @@ export default function CombosCarousel() {
             />
           </motion.div>
         </AnimatePresence>
+        <p style={{ fontSize: 13, fontWeight: 600, color: "#2D1A22", marginTop: 12, marginBottom: 0, lineHeight: 1.4 }}>
+          {combo.alt}
+        </p>
       </div>
 
       {/* Dots */}
