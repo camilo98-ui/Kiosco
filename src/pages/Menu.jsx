@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { useCart } from "@/lib/cartStore";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
-import { Search, ShoppingBag, Loader2, ChevronRight, ChevronLeft } from "lucide-react";
+import { Search, ShoppingBag, Loader2, ChevronRight, ChevronLeft, Home } from "lucide-react";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import SearchModal from "@/components/menu/SearchModal";
 import PromoBanners from "@/components/menu/PromoBanners";
@@ -161,11 +161,13 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
   return (
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
       <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)" }}>
-
+        <button onClick={onBack} style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.2)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+          <Home size={20} color="#fff" />
+        </button>
         <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
           {CATEGORIES.find(c => c.id === activeCategory)?.label}
         </span>
-
+        <div style={{ width: 44 }} />
       </div>
       <div className="pb-36 pt-2">
         <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} />
