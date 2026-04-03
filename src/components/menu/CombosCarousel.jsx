@@ -83,117 +83,122 @@ const COMBOS = [
 ];
 
 export default function CombosCarousel({ onAdd }) {
-  const [active, setActive] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const startX = useRef(null);
+  const trackRef = useRef(null);
+  const animRef = useRef(null);
+  const posRef = useRef(0);
+  const pausedRef = useRef(false);
+  const dragRef = useRef({ isDragging: false, startX: 0, startPos: 0 });
 
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      setActive((a) => (a + 1) % COMBOS.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [isPaused]);
+  const doubled = [...COMBOS, ...COMBOS];
+  const cardWidth = 200;
 
-  const goTo = (i) => {
-    setActive(i);
+  const handleMouseDown = (e) => {
+    dragRef.current = {
+      isDragging: true,
+      startX: e.clientX,
+      startPos: posRef.current,
+    };
+    pausedRef.current = true;
   };
 
-  const handleTouchStart = (e) => {
-    startX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e) => {
-    if (startX.current === null) return;
-    const diff = startX.current - e.changedTouches[0].clientX;
-    if (diff > 40) setActive((active + 1) % COMBOS.length);
-    else if (diff < -40) setActive((active - 1 + COMBOS.length) % COMBOS.length);
-    startX.current = null;
-  };
-
-  const handleComboClick = () => {
-    const combo = COMBOS[active];
-    if (onAdd) {
-      onAdd({
-        id: `combo-${combo.id}`,
-        name: combo.title,
-        price: 0,
-        category: "combos",
-        emoji: "🎁",
-      });
+  const handleMouseMove = (e) => {
+    if (!dragRef.current.isDragging) return;
+    const diff = dragRef.current.startX - e.clientX;
+    const totalWidth = cardWidth * COMBOS.length;
+    posRef.current = dragRef.current.startPos + diff;
+    if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
+    if (posRef.current >= totalWidth) posRef.current -= totalWidth;
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
     }
   };
 
-  const combo = COMBOS[active];
+  const handleMouseUp = () => {
+    dragRef.current.isDragging = false;
+    pausedRef.current = false;
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const totalWidth = cardWidth * COMBOS.length;
+
+    const animate = () => {
+      if (!pausedRef.current) {
+        posRef.current += 0.5;
+        if (posRef.current >= totalWidth) posRef.current = 0;
+        track.style.transform = `translateX(-${posRef.current}px)`;
+      }
+      animRef.current = requestAnimationFrame(animate);
+    };
+    animRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animRef.current);
+  }, []);
 
   return (
-    <div style={{ background: "#fff", marginTop: 10 }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px", paddingTop: 16 }}>
+    <div style={{ background: "#fff", marginTop: 10, padding: "16px 0" }}>
+      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px", paddingTop: 4 }}>
         Combos
       </p>
 
       <div
-        onTouchStart={(e) => {
-          handleTouchStart(e);
-          setIsPaused(true);
-        }}
-        onTouchEnd={(e) => {
-          handleTouchEnd(e);
-          setIsPaused(false);
-        }}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        style={{ cursor: "grab", paddingLeft: 16, paddingRight: 16 }}
+        style={{ overflow: "hidden", paddingLeft: 14, paddingBottom: 4, cursor: "grab" }}
+        onMouseDown={handleMouseDown}
+        onTouchStart={() => { pausedRef.current = true; }}
+        onTouchEnd={() => { pausedRef.current = false; }}
+        onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
+        onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={combo.id}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            onClick={handleComboClick}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer" }}
-          >
-            <img
-              src={combo.image}
-              alt={combo.title}
-              className="w-full object-contain"
-              style={{ display: "block", objectPosition: "center" }}
-            />
-          </motion.div>
-        </AnimatePresence>
-        <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 3 }}>
-          <p style={{ fontSize: 12, fontWeight: 600, color: "#2D1A22", margin: 0, lineHeight: 1.3 }}>
-            {combo.title}
-          </p>
-          {combo.price && (
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#C2185B", margin: 0 }}>
-              {combo.price}
-            </p>
-          )}
+        <div ref={trackRef} style={{ display: "flex", gap: 10, width: "max-content" }}>
+          {doubled.map((combo, i) => (
+            <div
+              key={`${combo.id}-${i}`}
+              onClick={() => {
+                if (onAdd) {
+                  onAdd({
+                    id: `combo-${combo.id}`,
+                    name: combo.title,
+                    price: 0,
+                    category: "combos",
+                    emoji: "🎁",
+                  });
+                }
+              }}
+              style={{
+                width: cardWidth,
+                flexShrink: 0,
+                cursor: "pointer",
+              }}
+            >
+              <div style={{ borderRadius: 12, overflow: "hidden", background: "#f5f5f5" }}>
+                <img
+                  src={combo.image}
+                  alt={combo.title}
+                  style={{ width: "100%", height: 150, objectFit: "contain", objectPosition: "center", display: "block" }}
+                />
+              </div>
+              <div style={{ marginTop: 6, paddingRight: 4 }}>
+                <p style={{ fontSize: 11, fontWeight: 600, color: "#2D1A22", margin: 0, lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {combo.title}
+                </p>
+                {combo.price && (
+                  <p style={{ fontSize: 12, fontWeight: 700, color: "#C2185B", margin: "2px 0 0" }}>
+                    {combo.price}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-
-      {/* Dots */}
-      <div className="flex items-center justify-center gap-1 mt-2 pb-4">
-        {COMBOS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            style={{
-              height: 4,
-              width: i === active ? 14 : 4,
-              borderRadius: 4,
-              background: i === active ? "#C2185B" : "#EDD8E4",
-              transition: "all 0.25s ease",
-              border: "none",
-              padding: 0,
-              flexShrink: 0,
-              cursor: "pointer",
-            }}
-          />
-        ))}
       </div>
     </div>
   );
