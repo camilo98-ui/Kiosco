@@ -102,7 +102,7 @@ function FamilyCarousel({ productCounts, onSelect }) {
               <ChevronRight size={16} color="#fff" />
             </div>
             <div style={{ position: "relative", zIndex: 1 }}>
-              <p style={{ fontSize: 18, fontWeight: 700, color: "#fff", margin: 0, lineHeight: 1.2 }}>{fam.label}</p>
+              <p style={{ fontSize: 18, fontWeight: 700, color: "#B5175A", margin: 0, lineHeight: 1.2 }}>{fam.label}</p>
               <p style={{ fontSize: 12, color: "rgba(255,255,255,0.75)", margin: 0 }}>{productCounts[fam.id] || 0} opciones</p>
             </div>
           </button>
