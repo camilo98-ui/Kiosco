@@ -88,22 +88,22 @@ function FamilyCarousel({ productCounts, onSelect }) {
             key={fam.id}
             onClick={() => onSelect(fam.id)}
             style={{
-              flexShrink: 0, width: 120, height: 84, borderRadius: 16,
+              flexShrink: 0, width: 180, height: 140, borderRadius: 28,
               background: FAMILY_GRADIENTS[idx % FAMILY_GRADIENTS.length],
               border: "none", cursor: "pointer", position: "relative",
               overflow: "hidden", display: "flex", alignItems: "flex-end",
-              padding: "0 0 10px 10px", scrollSnapAlign: "start",
+              padding: "0 0 16px 16px", scrollSnapAlign: "start",
             }}
           >
             {fam.image && (
               <img src={fam.image} alt={fam.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.55 }} />
             )}
-            <div style={{ position: "absolute", top: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}>
-              <ChevronRight size={12} color="#fff" />
+            <div style={{ position: "absolute", top: 12, right: 12, width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}>
+              <ChevronRight size={16} color="#fff" />
             </div>
             <div style={{ position: "relative", zIndex: 1 }}>
-              <p style={{ fontSize: 12, fontWeight: 700, color: "#fff", margin: 0, lineHeight: 1.2 }}>{fam.label}</p>
-              <p style={{ fontSize: 9, color: "rgba(255,255,255,0.75)", margin: 0 }}>{productCounts[fam.id] || 0} opciones</p>
+              <p style={{ fontSize: 18, fontWeight: 700, color: "#fff", margin: 0, lineHeight: 1.2 }}>{fam.label}</p>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.75)", margin: 0 }}>{productCounts[fam.id] || 0} opciones</p>
             </div>
           </button>
         ))}
