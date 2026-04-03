@@ -35,10 +35,10 @@ const ITEM_BG = [
 
 const FAMILY_CARDS = [
   { id: "malteadas",      label: "Malteadas",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7f68abf79_image.png" },
-  { id: "helados",        label: "Helados",      image: null },
-  { id: "combos",         label: "Cookie Jar",   image: null },
+  { id: "helados",        label: "Helados",      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/f595fcc04_Helados.jpg" },
+  { id: "combos",         label: "Cookie Jar",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/808f0498b_CookieJaar.png" },
   { id: "especialidades", label: "Especiales",   image: null },
-  { id: "cafe",           label: "Café",         image: null },
+  { id: "cafe",           label: "Café",         image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/89f6f2a8f_150929101049-black-coffee-stock-removebg-preview.png" },
 ];
 
 function CategoryIcons({ activeCategory, onSelect }) {
@@ -81,7 +81,7 @@ function FamilyCarousel({ productCounts, onSelect }) {
         <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Explorar familias</p>
         <button style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#B5175A" }}>Ver todo</button>
       </div>
-      <div style={{ display: "flex", overflowX: "auto", gap: 10, paddingLeft: 16, paddingRight: 16, scrollbarWidth: "none" }}>
+      <div style={{ display: "flex", overflowX: "auto", gap: 10, paddingLeft: 16, paddingRight: 16, scrollbarWidth: "none", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
         {FAMILY_CARDS.map((fam, idx) => (
           <button
             key={fam.id}
@@ -91,7 +91,7 @@ function FamilyCarousel({ productCounts, onSelect }) {
               background: FAMILY_GRADIENTS[idx % FAMILY_GRADIENTS.length],
               border: "none", cursor: "pointer", position: "relative",
               overflow: "hidden", display: "flex", alignItems: "flex-end",
-              padding: "0 0 10px 10px",
+              padding: "0 0 10px 10px", scrollSnapAlign: "start",
             }}
           >
             {fam.image && (
