@@ -38,6 +38,30 @@ const BANNERS = [
     alt: "¡Arma el plan, nosotros ponemos el combo!",
     category: "combos",
   },
+  {
+    id: 7,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0948c2133_21803262319banner_arma_tu_vaso_website_1920x8001.png",
+    alt: "Arma tu vaso",
+    category: "combos",
+  },
+  {
+    id: 8,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/133545960_21803162318banner_combos_website_1920x8001.png",
+    alt: "Para compartir y repetir",
+    category: "combos",
+  },
+  {
+    id: 9,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/48bd8d0e7_21803062313banner_malteadas_crack_website_1920x8002.jpg",
+    alt: "Hazle crack tu malteada",
+    category: "malteadas",
+  },
+  {
+    id: 10,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/218c5c252_Capturadepantalla2026-04-03101638.jpg",
+    alt: "Nuevo cono Fiore",
+    category: "helados",
+  },
 ];
 
 export default function PromoBanners({ onCategorySelect }) {
