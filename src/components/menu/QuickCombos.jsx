@@ -220,16 +220,7 @@ export default function QuickCombos({ products, onAddMultiple }) {
 
   return (
     <div style={{ background: "#fff", marginTop: 10 }}>
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: "50%", background: "linear-gradient(135deg, #B5175A, #E91E8C)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Zap size={14} color="#fff" />
-          </div>
-          <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Arma tu combo</p>
-        </div>
-        <span style={{ fontSize: 11, color: "#BBA8B0", fontWeight: 500 }}>1 clic y listo</span>
-      </div>
+
 
       {/* Slide */}
       <div
