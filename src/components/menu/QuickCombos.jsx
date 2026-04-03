@@ -87,9 +87,7 @@ function ComboImage({ realItems, combo }) {
   // Si el combo tiene una imagen personalizada, mostrarla primero
   if (combo.image) {
     return (
-      <div style={{ width: "100%", height: 140, display: "flex", alignItems: "center", justifyContent: "center", background: "transparent" }}>
-        <img src={combo.image} alt={combo.title} style={{ height: "100%", width: "100%", objectFit: "contain", filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.25))" }} />
-      </div>
+      <img src={combo.image} alt={combo.title} style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", objectFit: "contain", filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.3))", position: "relative", zIndex: 2 }} />
     );
   }
 
@@ -158,8 +156,10 @@ function ComboCard({ combo, products, onAddMultiple }) {
         {combo.badgeText}
       </span>
 
-      {/* Imagen compuesta */}
-      <ComboImage realItems={realItems} combo={combo} />
+      {/* Contenedor con imagen en primer plano */}
+      <div style={{ position: "relative", flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <ComboImage realItems={realItems} combo={combo} />
+      </div>
 
       {/* Título y tagline */}
       <p style={{ fontSize: 15, fontWeight: 900, color: "#1A0A10", margin: 0, lineHeight: 1.25 }}>{combo.title}</p>
