@@ -87,7 +87,7 @@ function ComboImage({ realItems, combo }) {
   // Si el combo tiene una imagen personalizada, mostrarla primero
   if (combo.image) {
     return (
-      <img src={combo.image} alt={combo.title} style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", objectFit: "contain", filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.3))", position: "relative", zIndex: 2 }} />
+      <img src={combo.image} alt={combo.title} style={{ width: "100%", height: "auto", objectFit: "cover", mixBlendMode: "multiply", marginLeft: "-16px", marginRight: "-16px", marginTop: "-6px" }} />
     );
   }
 
