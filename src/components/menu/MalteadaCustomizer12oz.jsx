@@ -199,14 +199,17 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
         className="rounded-t-3xl"
         style={{ background: "#FFFCFD", border: "none", maxHeight: "90vh", overflowY: "auto", padding: 0 }}
       >
-        <div style={{ padding: "20px 16px 12px", borderBottom: "1px solid #F0E4EA" }}>
-          <p style={{ fontSize: 11, color: "#BBA8B0", margin: "0 0 4px", fontWeight: 600 }}>Personalizando</p>
-          <SheetTitle style={{ fontSize: 18, fontWeight: 900, color: "#1A0A10", margin: 0 }}>
-            {product.name}
-          </SheetTitle>
-          <p style={{ fontSize: 13, color: "#C2185B", fontWeight: 700, margin: "4px 0 0" }}>
-            Desde {formatCOP(product.price)}
-          </p>
+        <div style={{ padding: "20px 16px 12px", borderBottom: "1px solid #F0E4EA", display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 11, color: "#BBA8B0", margin: "0 0 4px", fontWeight: 600 }}>Personalizando</p>
+            <SheetTitle style={{ fontSize: 18, fontWeight: 900, color: "#1A0A10", margin: 0 }}>
+              {product.name}
+            </SheetTitle>
+            <p style={{ fontSize: 13, color: "#C2185B", fontWeight: 700, margin: "4px 0 0" }}>
+              Desde {formatCOP(product.price)}
+            </p>
+          </div>
+          <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/a0d317afe_79f3b9bd54ee3606ec4c387dc430de3d.png" alt="12oz" style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 8, flexShrink: 0 }} />
         </div>
 
         <AccordionSection
