@@ -239,6 +239,7 @@ export default function QuickCombos({ products, onAddMultiple }) {
         style={{ padding: "10px 16px 0", touchAction: "pan-y" }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        onClick={(e) => e.stopPropagation()}
       >
         <AnimatePresence mode="wait">
           <motion.div
