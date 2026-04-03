@@ -29,6 +29,7 @@ const SABORES_HELADO = [
 ];
 
 const EXTRAS = [
+  { name: "Agua", price: 3000 },
   { name: "Gomas Ositos", price: 3100 },
   { name: "Cerezas", price: 3100 },
   { name: "M&M's", price: 3100 },
