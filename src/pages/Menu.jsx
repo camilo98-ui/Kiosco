@@ -18,7 +18,6 @@ import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
 import HeaderLine from "@/components/menu/HeaderLine";
 import CombosCarousel from "@/components/menu/CombosCarousel";
-import ProductImageEditModal from "@/components/menu/ProductImageEditModal";
 
 const FAMILY_GRADIENTS = [
   "linear-gradient(135deg, #6D1B4E, #B5175A)",
@@ -132,7 +131,7 @@ function MostOrdered({ products, onAdd }) {
   );
 }
 
-function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept, setEditingProduct, editingProduct, refetchProducts }) {
+function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
   return (
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
       <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)" }}>
@@ -145,7 +144,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
         <div style={{ width: 44 }} />
       </div>
       <div className="pb-36 pt-2">
-        <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} onEditImage={setEditingProduct} />
+        <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} />
         {suggestedProducts.length > 0 && <SuggestedRow products={suggestedProducts} onAdd={onAdd} />}
       </div>
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
@@ -154,7 +153,6 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={onAddProduct} />
-      <ProductImageEditModal open={!!editingProduct} product={editingProduct} onClose={() => setEditingProduct(null)} onSave={() => refetchProducts()} />
     </div>
   );
 }
@@ -171,13 +169,12 @@ export default function Menu() {
   const [addedFlash, setAddedFlash] = useState(null);
   const [lastAdded, setLastAdded] = useState(null);
   const [showAdditionsUpsell, setShowAdditionsUpsell] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
   const { addItem, cart, clearCart, total, itemCount } = useCart();
 
-  const { data: products = [], isLoading, refetch: refetchProducts } = useQuery({
+  const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.list("sort_order", 200),
   });
@@ -291,9 +288,6 @@ export default function Menu() {
         upsellMsg={upsellMsg}
         setUpsellMsg={setUpsellMsg}
         handleUpsellAccept={handleUpsellAccept}
-        setEditingProduct={setEditingProduct}
-        editingProduct={editingProduct}
-        refetchProducts={refetchProducts}
       />
     );
   }
@@ -345,7 +339,6 @@ export default function Menu() {
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={handleAddProduct} />
-      <ProductImageEditModal open={!!editingProduct} product={editingProduct} onClose={() => setEditingProduct(null)} onSave={() => refetchProducts()} />
     </div>
   );
 }
