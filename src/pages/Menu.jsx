@@ -16,6 +16,7 @@ import CheckoutDialog from "@/components/menu/CheckoutDialog";
 import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
 import HeaderLine from "@/components/menu/HeaderLine";
+import QuickCombos from "@/components/menu/QuickCombos";
 
 const FAMILY_GRADIENTS = [
   "linear-gradient(135deg, #6D1B4E, #B5175A)",
@@ -352,6 +353,7 @@ export default function Menu() {
           <CategoryIcons activeCategory={activeCategory} onSelect={setActiveCategory} />
         </div>
         <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
+        <QuickCombos products={products} onAddMultiple={handleAddProduct} />
         {isLoading ? (
           <div className="flex justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#B5175A" }} />
