@@ -39,8 +39,6 @@ export default function Menu() {
   const logoClickTimer = useRef(null);
   const { addItem, cart, clearCart, total, itemCount } = useCart();
 
-
-
   // Banner contextual según hora del día
   const contextBanner = React.useMemo(() => {
     const h = new Date().getHours();
@@ -221,7 +219,6 @@ export default function Menu() {
             fontSize: 12, fontWeight: 700, color: "#C2185B", lineHeight: 1.5, cursor: "pointer"
           }}
         >
-          {/* Cono minimalista de bola */}
           <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
             <circle cx="7" cy="5" r="4.5" stroke="#C2185B" strokeWidth="1.2" fill="none" />
             <path d="M 3.5 9 L 7 17 L 10.5 9" stroke="#C2185B" strokeWidth="1.2" strokeLinejoin="round" fill="none" />
@@ -308,10 +305,10 @@ export default function Menu() {
 
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
 
-      <SearchModal 
-        open={searchOpen} 
-        onClose={() => setSearchOpen(false)} 
-        products={products} 
+      <SearchModal
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        products={products}
         onAddProduct={handleAddProduct}
       />
     </div>
