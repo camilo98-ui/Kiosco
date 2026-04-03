@@ -3,17 +3,12 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { useCart } from "@/lib/cartStore";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
-import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShoppingBag, Loader2 } from "lucide-react";
+import { Search, ShoppingBag, Loader2, ChevronRight } from "lucide-react";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import SearchModal from "@/components/menu/SearchModal";
-
-// Componentes nuevos premium
 import PromoBanners from "@/components/menu/PromoBanners";
-import StageCard from "@/components/menu/StageCard";
 import EditorialLayout from "@/components/menu/EditorialLayout";
 import SuggestedRow from "@/components/menu/SuggestedRow";
-import PremiumCategoryTabs from "@/components/menu/PremiumCategoryTabs";
 import PremiumCartBar from "@/components/menu/PremiumCartBar";
 import AdditionsUpsell from "@/components/menu/AdditionsUpsell";
 import UpsellBanner from "@/components/menu/UpsellBanner";
@@ -22,8 +17,177 @@ import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
 import HeaderLine from "@/components/menu/HeaderLine";
 
+const FAMILY_GRADIENTS = [
+  "linear-gradient(135deg, #6D1B4E, #B5175A)",
+  "linear-gradient(135deg, #7B3A00, #C97B30)",
+  "linear-gradient(135deg, #3A2000, #7B5A1A)",
+  "linear-gradient(135deg, #1A3A6D, #2A6DB5)",
+  "linear-gradient(135deg, #1A2A1A, #2E7D32)",
+];
+
+const ITEM_BG = [
+  "linear-gradient(135deg, #6D1B4E, #B5175A)",
+  "linear-gradient(135deg, #7B3A00, #C97B30)",
+  "linear-gradient(135deg, #1A3A6D, #2A6DB5)",
+  "linear-gradient(135deg, #1A2A1A, #2E7D32)",
+  "linear-gradient(135deg, #3A2000, #7B5A1A)",
+];
+
+const FAMILY_CARDS = [
+  { id: "malteadas",      label: "Malteadas" },
+  { id: "helados",        label: "Helados" },
+  { id: "combos",         label: "Cookie Jar" },
+  { id: "especialidades", label: "Especiales" },
+  { id: "cafe",           label: "Café" },
+];
+
+// ── Categorías con iconos circulares ─────────────────────────────────
+function CategoryIcons({ activeCategory, onSelect }) {
+  return (
+    <div style={{ background: "#fff", padding: "18px 16px 16px" }}>
+      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 14px" }}>Categorías</p>
+      <div style={{ display: "flex", overflowX: "auto", gap: 18, scrollbarWidth: "none", paddingBottom: 2 }}>
+        {CATEGORIES.map((cat) => {
+          const isActive = activeCategory === cat.id;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => onSelect(cat.id)}
+              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, flexShrink: 0, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            >
+              <div style={{
+                width: 56, height: 56, borderRadius: "50%",
+                background: isActive ? "#FFF0F5" : "#F5F5F5",
+                border: isActive ? "2.5px solid #B5175A" : "2px solid transparent",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 24, transition: "all 0.15s ease",
+              }}>
+                {cat.emoji}
+              </div>
+              <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, color: isActive ? "#B5175A" : "#8A7880", whiteSpace: "nowrap" }}>
+                {cat.label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── Carrusel de familias ─────────────────────────────────────────────
+function FamilyCarousel({ productCounts, onSelect }) {
+  return (
+    <div style={{ background: "#fff", padding: "18px 0 16px", marginTop: 10 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
+        <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Explorar familias</p>
+        <button style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#B5175A" }}>Ver todo</button>
+      </div>
+      <div style={{ display: "flex", overflowX: "auto", gap: 10, paddingLeft: 16, paddingRight: 16, scrollbarWidth: "none" }}>
+        {FAMILY_CARDS.map((fam, idx) => (
+          <button
+            key={fam.id}
+            onClick={() => onSelect(fam.id)}
+            style={{
+              flexShrink: 0, width: 120, height: 84, borderRadius: 16,
+              background: FAMILY_GRADIENTS[idx % FAMILY_GRADIENTS.length],
+              border: "none", cursor: "pointer", position: "relative",
+              overflow: "hidden", display: "flex", alignItems: "flex-end",
+              padding: "0 0 10px 10px",
+            }}
+          >
+            <div style={{ position: "absolute", top: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <ChevronRight size={12} color="#fff" />
+            </div>
+            <div>
+              <p style={{ fontSize: 12, fontWeight: 700, color: "#fff", margin: 0, lineHeight: 1.2 }}>{fam.label}</p>
+              <p style={{ fontSize: 9, color: "rgba(255,255,255,0.75)", margin: 0 }}>{productCounts[fam.id] || 0} opciones</p>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Lo más pedido ────────────────────────────────────────────────────
+function MostOrderedItem({ product, idx, onAdd }) {
+  const [imgError, setImgError] = useState(false);
+  return (
+    <button
+      onClick={() => onAdd(product)}
+      style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%" }}
+    >
+      <div style={{ width: 52, height: 52, borderRadius: 14, background: ITEM_BG[idx % ITEM_BG.length], display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
+        {product.image_url && !imgError ? (
+          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : (
+          <span style={{ fontSize: 24 }}>{product.emoji || "🍦"}</span>
+        )}
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{ fontSize: 13, fontWeight: 600, color: "#1A0A10", margin: 0, lineHeight: 1.3 }}>{product.name}</p>
+        <p style={{ fontSize: 11, color: "#BBA8B0", margin: "2px 0 0" }}>
+          {CATEGORIES.find(c => c.id === product.category)?.label} · {formatCOP(product.price)}
+        </p>
+      </div>
+      <ChevronRight size={16} color="#DDD" style={{ flexShrink: 0 }} />
+    </button>
+  );
+}
+
+function MostOrdered({ products, onAdd }) {
+  const top = useMemo(() =>
+    [...products].filter(p => p.tag === "mas_vendido" && p.is_available !== false).slice(0, 8),
+    [products]
+  );
+  if (top.length === 0) return null;
+  return (
+    <div style={{ background: "#fff", marginTop: 10 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
+        <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Lo más pedido</p>
+        <button style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#B5175A" }}>Ver todo</button>
+      </div>
+      {top.map((product, idx) => (
+        <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} />
+      ))}
+      <div style={{ height: 8 }} />
+    </div>
+  );
+}
+
+// ── Vista de categoría ───────────────────────────────────────────────
+function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
+  return (
+    <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
+      <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)" }}>
+        <button onClick={onBack} style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 20, padding: "5px 12px", color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+          ← Inicio
+        </button>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
+          {CATEGORIES.find(c => c.id === activeCategory)?.label}
+        </span>
+        <button onClick={() => setSearchOpen(true)} style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+          <Search size={14} color="#fff" />
+        </button>
+      </div>
+      <div className="pb-36 pt-2">
+        <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} />
+        {suggestedProducts.length > 0 && <SuggestedRow products={suggestedProducts} onAdd={onAdd} />}
+      </div>
+      <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
+      {showAdditionsUpsell && <AdditionsUpsell lastAdded={lastAdded} additions={productsByCategory["adiciones"] || []} onAdd={onAdd} onDismiss={() => setShowAdditionsUpsell(false)} />}
+      <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
+      <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
+      <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={onAddProduct} />
+    </div>
+  );
+}
+
+// ── PÁGINA PRINCIPAL ─────────────────────────────────────────────────
 export default function Menu() {
-  const [activeCategory, setActiveCategory] = useState("combos");
+  const [activeCategory, setActiveCategory] = useState(null);
   const [upsellMsg, setUpsellMsg] = useState(null);
   const [upsellTarget, setUpsellTarget] = useState(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -39,16 +203,6 @@ export default function Menu() {
   const logoClickTimer = useRef(null);
   const { addItem, cart, clearCart, total, itemCount } = useCart();
 
-  // Banner contextual según hora del día
-  const contextBanner = React.useMemo(() => {
-    const h = new Date().getHours();
-    if (h >= 6 && h < 11)  return { text: "☀️ ¡Buenos días! Empieza con un café Popsy", category: "cafe" };
-    if (h >= 11 && h < 14) return { text: "🍦 Hora del almuerzo — ¡combos especiales hoy!", category: "combos" };
-    if (h >= 14 && h < 17) return { text: "🥤 Tarde perfecta para una malteada fría", category: "malteadas" };
-    if (h >= 17 && h < 20) return { text: "🍭 ¡Antojo de algo dulce? Mira las paletas", category: "paletas_packs" };
-    return { text: "🌙 ¡Noche de helados! El sabor perfecto te espera", category: "helados" };
-  }, []);
-
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.list("sort_order", 200),
@@ -57,26 +211,23 @@ export default function Menu() {
   const productsByCategory = useMemo(() => {
     const map = {};
     CATEGORIES.forEach((c) => (map[c.id] = []));
-    products.forEach((p) => {
-      if (map[p.category]) map[p.category].push(p);
-    });
+    products.forEach((p) => { if (map[p.category]) map[p.category].push(p); });
+    return map;
+  }, [products]);
+
+  const productCounts = useMemo(() => {
+    const map = {};
+    products.forEach(p => { map[p.category] = (map[p.category] || 0) + 1; });
     return map;
   }, [products]);
 
   const categoryProducts = useMemo(() => {
-    return (productsByCategory[activeCategory] || []).filter((p) => p.is_available !== false);
+    if (!activeCategory) return [];
+    return (productsByCategory[activeCategory] || []).filter(p => p.is_available !== false);
   }, [productsByCategory, activeCategory]);
 
-  const featuredProducts = useMemo(() => {
-    const top = categoryProducts.filter((p) => p.tag === "mas_vendido");
-    const rest = categoryProducts.filter((p) => p.tag !== "mas_vendido");
-    return [...top, ...rest];
-  }, [categoryProducts]);
-
   const suggestedProducts = useMemo(() => {
-    return products
-      .filter((p) => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false)
-      .slice(0, 6);
+    return products.filter(p => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false).slice(0, 6);
   }, [products, activeCategory]);
 
   const handleLogoClick = () => {
@@ -86,39 +237,32 @@ export default function Menu() {
       logoClickCount.current = 0;
       setHiddenMenuOpen(true);
     } else {
-      logoClickTimer.current = setTimeout(() => {
-        logoClickCount.current = 0;
-      }, 2000);
+      logoClickTimer.current = setTimeout(() => { logoClickCount.current = 0; }, 2000);
     }
   };
 
-  const handleAddProduct = useCallback(
-    (product) => {
-      addItem(product);
-      setAddedFlash(product.id);
-      setTimeout(() => setAddedFlash(null), 600);
-
-      if (product.category !== "adiciones") {
-        clearTimeout(upsellTimer.current);
-        setShowAdditionsUpsell(false);
-        upsellTimer.current = setTimeout(() => {
-          setLastAdded(product);
-          setShowAdditionsUpsell(true);
-          setTimeout(() => setShowAdditionsUpsell(false), 8000);
-        }, 700);
-      }
-
-      const rule = UPSELL_RULES[product.category];
-      if (rule && product.category === "adiciones") {
-        upsellTimer.current = setTimeout(() => {
-          setUpsellMsg(rule.message);
-          setUpsellTarget(rule.targetCategory);
-          setTimeout(() => setUpsellMsg(null), 6000);
-        }, 800);
-      }
-    },
-    [addItem]
-  );
+  const handleAddProduct = useCallback((product) => {
+    addItem(product);
+    setAddedFlash(product.id);
+    setTimeout(() => setAddedFlash(null), 600);
+    if (product.category !== "adiciones") {
+      clearTimeout(upsellTimer.current);
+      setShowAdditionsUpsell(false);
+      upsellTimer.current = setTimeout(() => {
+        setLastAdded(product);
+        setShowAdditionsUpsell(true);
+        setTimeout(() => setShowAdditionsUpsell(false), 8000);
+      }, 700);
+    }
+    const rule = UPSELL_RULES[product.category];
+    if (rule && product.category === "adiciones") {
+      upsellTimer.current = setTimeout(() => {
+        setUpsellMsg(rule.message);
+        setUpsellTarget(rule.targetCategory);
+        setTimeout(() => setUpsellMsg(null), 6000);
+      }, 800);
+    }
+  }, [addItem]);
 
   const handleUpsellAccept = () => {
     if (upsellTarget) setActiveCategory(upsellTarget);
@@ -132,19 +276,11 @@ export default function Menu() {
     const order = await base44.entities.Order.create({
       order_number: nextNum,
       customer_name: name,
-      items: cart.map((i) => ({
-        product_id: i.product_id,
-        product_name: i.product_name,
-        price: i.price,
-        quantity: i.quantity,
-        notes: i.notes,
-      })),
+      items: cart.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes })),
       total,
       status: "pendiente",
     });
-    await base44.entities.Settings.update(settings[0].id, {
-      value: String(nextNum + 1),
-    });
+    await base44.entities.Settings.update(settings[0].id, { value: String(nextNum + 1) });
     clearCart();
     setCheckoutOpen(false);
     setConfirmedOrder({ ...order, order_number: nextNum, customer_name: name, items: cart, total });
@@ -152,51 +288,66 @@ export default function Menu() {
   };
 
   if (confirmedOrder) {
+    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} />;
+  }
+
+  // Vista de categoría
+  if (activeCategory) {
     return (
-      <ConfirmationScreen
-        order={confirmedOrder}
-        onNewOrder={() => setConfirmedOrder(null)}
+      <CategoryView
+        activeCategory={activeCategory}
+        categoryProducts={categoryProducts}
+        suggestedProducts={suggestedProducts}
+        onAdd={handleAddProduct}
+        addedFlash={addedFlash}
+        onBack={() => setActiveCategory(null)}
+        searchOpen={searchOpen}
+        setSearchOpen={setSearchOpen}
+        products={products}
+        onAddProduct={handleAddProduct}
+        checkoutOpen={checkoutOpen}
+        setCheckoutOpen={setCheckoutOpen}
+        handleCheckout={handleCheckout}
+        isSubmitting={isSubmitting}
+        hiddenMenuOpen={hiddenMenuOpen}
+        setHiddenMenuOpen={setHiddenMenuOpen}
+        productsByCategory={productsByCategory}
+        showAdditionsUpsell={showAdditionsUpsell}
+        setShowAdditionsUpsell={setShowAdditionsUpsell}
+        lastAdded={lastAdded}
+        upsellMsg={upsellMsg}
+        setUpsellMsg={setUpsellMsg}
+        handleUpsellAccept={handleUpsellAccept}
       />
     );
   }
 
+  // Vista HOME
   return (
-    <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
+    <div className="min-h-screen" style={{ background: "#F7F3F5" }}>
 
-      {/* ── HEADER COMPACTO ── */}
+      {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20 flex items-center justify-between pl-0 pr-3"
-        style={{
-          height: 56,
-          background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)",
-          position: "sticky",
-          overflow: "hidden",
-        }}
+        style={{ height: 56, background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)", overflow: "hidden" }}
       >
-        {/* Línea animada inteligente */}
         <HeaderLine hasCart={itemCount > 0} />
-        {/* Izquierda: logo blanco */}
         <PopsyLogo onClick={handleLogoClick} size="normal" dark />
-
-        {/* Derecha: íconos blancos */}
         <div className="flex items-center gap-2">
           <button
             onClick={() => setSearchOpen(true)}
-            className="flex items-center justify-center hover:opacity-80 transition-opacity"
+            className="flex items-center justify-center"
             style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
           >
-            <Search size={14} style={{ color: "#fff" }} />
+            <Search size={14} color="#fff" />
           </button>
           <button
-            className="flex items-center justify-center hover:opacity-80 transition-opacity relative"
+            className="flex items-center justify-center relative"
             style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}
           >
-            <ShoppingBag size={14} style={{ color: "#fff" }} />
+            <ShoppingBag size={14} color="#fff" />
             {itemCount > 0 && (
-              <span
-                className="absolute -top-1 -right-1 font-black flex items-center justify-center"
-                style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#B5175A", fontSize: 8 }}
-              >
+              <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#B5175A", fontSize: 8 }}>
                 {itemCount}
               </span>
             )}
@@ -204,113 +355,41 @@ export default function Menu() {
         </div>
       </div>
 
-      {/* ── CONTENIDO SCROLLABLE ── */}
-      <div className="pb-36 -mt-2">
+      {/* ── CONTENIDO ── */}
+      <div style={{ paddingBottom: 120 }}>
 
-        {/* ── BANNER CONTEXTUAL POR HORA ── */}
-        <button
-          onClick={() => setActiveCategory(contextBanner.category)}
-          style={{
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 7,
-            width: "100%", textAlign: "center",
-            background: "transparent",
-            border: "none",
-            padding: "14px 16px",
-            fontSize: 12, fontWeight: 700, color: "#C2185B", lineHeight: 1.5, cursor: "pointer"
-          }}
-        >
-          <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-            <circle cx="7" cy="5" r="4.5" stroke="#C2185B" strokeWidth="1.2" fill="none" />
-            <path d="M 3.5 9 L 7 17 L 10.5 9" stroke="#C2185B" strokeWidth="1.2" strokeLinejoin="round" fill="none" />
-          </svg>
-          {contextBanner.text.replace(/^[\p{Emoji}\s]+/u, "").trim()}
-        </button>
-
-        {/* ── BANNERS PROMOCIONALES ── */}
-        <div className="pt-3">
+        {/* ── BANNER CARRUSEL ── */}
+        <div style={{ background: "#fff", padding: "14px 12px 12px" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
 
-        {/* ── TABS DE CATEGORÍAS ── */}
-        <PremiumCategoryTabs activeCategory={activeCategory} onSelect={setActiveCategory} />
-
-        {/* ── PRODUCTOS ── */}
-        <div className="pt-4">
-          {isLoading ? (
-            <div className="flex justify-center py-16">
-              <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C2185B" }} />
-            </div>
-          ) : activeCategory === "combos" ? (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCategory}
-                initial={{ opacity: 0, x: 16 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -16 }}
-                transition={{ duration: 0.2 }}
-              >
-                <p
-                  className="uppercase font-extrabold tracking-widest px-5 mb-3"
-                  style={{ fontSize: 8, color: "#BBA8B0", letterSpacing: "2px" }}
-                >
-                  {CATEGORIES.find((c) => c.id === activeCategory)?.label} · {categoryProducts.length} disponibles
-                </p>
-                <StageCard
-                  products={featuredProducts}
-                  onAdd={handleAddProduct}
-                  addedFlash={addedFlash}
-                />
-              </motion.div>
-            </AnimatePresence>
-          ) : (
-            <EditorialLayout
-              products={categoryProducts}
-              category={activeCategory}
-              onAdd={handleAddProduct}
-              addedFlash={addedFlash}
-            />
-          )}
+        {/* ── CATEGORÍAS ── */}
+        <div style={{ marginTop: 10 }}>
+          <CategoryIcons activeCategory={activeCategory} onSelect={setActiveCategory} />
         </div>
 
-        {/* ── TAMBIÉN TE PUEDE GUSTAR ── */}
-        {!isLoading && suggestedProducts.length > 0 && (
-          <SuggestedRow products={suggestedProducts} onAdd={handleAddProduct} />
+        {/* ── EXPLORAR FAMILIAS ── */}
+        <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
+
+        {/* ── LO MÁS PEDIDO ── */}
+        {isLoading ? (
+          <div className="flex justify-center py-16">
+            <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#B5175A" }} />
+          </div>
+        ) : (
+          <MostOrdered products={products} onAdd={handleAddProduct} />
         )}
       </div>
 
-      {/* ── OVERLAYS Y MODALES ── */}
+      {/* ── OVERLAYS ── */}
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
-
       {showAdditionsUpsell && (
-        <AdditionsUpsell
-          lastAdded={lastAdded}
-          additions={productsByCategory["adiciones"] || []}
-          onAdd={handleAddProduct}
-          onDismiss={() => setShowAdditionsUpsell(false)}
-        />
+        <AdditionsUpsell lastAdded={lastAdded} additions={productsByCategory["adiciones"] || []} onAdd={handleAddProduct} onDismiss={() => setShowAdditionsUpsell(false)} />
       )}
-
-      <UpsellBanner
-        message={upsellMsg}
-        onDismiss={() => setUpsellMsg(null)}
-        onAccept={handleUpsellAccept}
-      />
-
-      <CheckoutDialog
-        open={checkoutOpen}
-        onClose={() => setCheckoutOpen(false)}
-        onConfirm={handleCheckout}
-        isLoading={isSubmitting}
-      />
-
+      <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
+      <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
-
-      <SearchModal
-        open={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        products={products}
-        onAddProduct={handleAddProduct}
-      />
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={handleAddProduct} />
     </div>
   );
 }
