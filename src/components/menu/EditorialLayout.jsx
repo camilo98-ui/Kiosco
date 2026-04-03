@@ -540,6 +540,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
     switch (category) {
       case "helados":       return <HeladosLayout {...layoutProps} />;
       case "malteadas":     return <MalteadasLayout {...layoutProps} />;
+      case "granizados":    return <EspecialesLayout {...layoutProps} />;
       case "especialidades": return <EspecialesLayout {...layoutProps} />;
       case "cafe":          return <CafeLayout {...layoutProps} />;
       default:              return <DefaultLayout {...layoutProps} />;

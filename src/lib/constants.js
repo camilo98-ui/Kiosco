@@ -2,6 +2,7 @@ export const CATEGORIES = [
   { id: "combos", label: "Combos", emoji: "🔝" },
   { id: "helados", label: "Helados", emoji: "🍦" },
   { id: "malteadas", label: "Malteadas", emoji: "🥤" },
+  { id: "granizados", label: "Granizados", emoji: "🧊" },
   { id: "especialidades", label: "Especiales", emoji: "🌟" },
   { id: "cafe", label: "Café", emoji: "☕" },
   { id: "galletas", label: "Galletas", emoji: "🍪" },
