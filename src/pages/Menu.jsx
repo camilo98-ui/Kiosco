@@ -10,6 +10,7 @@ import PromoBanners from "@/components/menu/PromoBanners";
 import EditorialLayout from "@/components/menu/EditorialLayout";
 import SuggestedRow from "@/components/menu/SuggestedRow";
 import PremiumCartBar from "@/components/menu/PremiumCartBar";
+import CategoryGrid from "@/components/menu/CategoryGrid";
 import AdditionsUpsell from "@/components/menu/AdditionsUpsell";
 import UpsellBanner from "@/components/menu/UpsellBanner";
 import CheckoutDialog from "@/components/menu/CheckoutDialog";
@@ -77,37 +78,9 @@ function CategoryIcons({ activeCategory, onSelect }) {
 
 function FamilyCarousel({ productCounts, onSelect }) {
   return (
-    <div style={{ background: "#fff", padding: "18px 0 16px", marginTop: 10 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
-        <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Explorar categorías</p>
-        <button style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#B5175A" }}>Ver todo</button>
-      </div>
-      <div style={{ display: "flex", overflowX: "auto", gap: 10, paddingLeft: 16, paddingRight: 16, scrollbarWidth: "none", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
-        {FAMILY_CARDS.map((fam, idx) => (
-          <button
-            key={fam.id}
-            onClick={() => onSelect(fam.id)}
-            style={{
-              flexShrink: 0, width: 180, height: 140, borderRadius: 28,
-              background: "transparent",
-              border: "none", cursor: "pointer", position: "relative",
-              overflow: "hidden", display: "flex", alignItems: "flex-end",
-              padding: "0 0 16px 16px", scrollSnapAlign: "start",
-            }}
-          >
-            {fam.image && (
-              <img src={fam.image} alt={fam.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 1 }} />
-            )}
-            <div style={{ position: "absolute", top: 12, right: 12, width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}>
-              <ChevronRight size={16} color="#fff" />
-            </div>
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <p style={{ fontSize: 18, fontWeight: 700, color: "#B5175A", margin: 0, lineHeight: 1.2 }}>{fam.label}</p>
-              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.75)", margin: 0 }}>{productCounts[fam.id] || 0} opciones</p>
-            </div>
-          </button>
-        ))}
-      </div>
+    <div style={{ background: "#fff", padding: "14px 0", marginTop: 10 }}>
+      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px" }}>Explorar categorías</p>
+      <CategoryGrid categories={FAMILY_CARDS} productCounts={productCounts} onSelect={onSelect} />
     </div>
   );
 }
