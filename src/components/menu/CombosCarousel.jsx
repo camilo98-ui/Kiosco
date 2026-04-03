@@ -70,7 +70,7 @@ const COMBOS = [
   },
 ];
 
-export default function CombosCarousel() {
+export default function CombosCarousel({ onAdd }) {
   const [active, setActive] = useState(0);
   const startX = useRef(null);
   const timerRef = useRef(null);
@@ -102,6 +102,19 @@ export default function CombosCarousel() {
     if (diff > 40) goTo((active + 1) % COMBOS.length);
     else if (diff < -40) goTo((active - 1 + COMBOS.length) % COMBOS.length);
     startX.current = null;
+  };
+
+  const handleComboClick = () => {
+    const combo = COMBOS[active];
+    if (onAdd) {
+      onAdd({
+        id: `combo-${combo.id}`,
+        name: combo.title,
+        price: 0,
+        category: "combos",
+        emoji: "🎁",
+      });
+    }
   };
 
   const combo = COMBOS[active];
