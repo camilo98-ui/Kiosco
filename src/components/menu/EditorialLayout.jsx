@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Edit2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
 import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
@@ -73,14 +73,16 @@ function SectionHeader({ label, count, onViewAll }) {
   );
 }
 
-function HorizontalCard({ product, onAdd, addedFlash, bg }) {
+function HorizontalCard({ product, onAdd, addedFlash, bg, onEditImage }) {
   const isFlash = addedFlash === product.id;
   const [imgError, setImgError] = React.useState(false);
+  const [showEdit, setShowEdit] = React.useState(false);
   return (
     <motion.div
       animate={isFlash ? { scale: 0.98 } : { scale: 1 }}
       transition={{ duration: 0.15 }}
-      style={{ border: "1.5px solid #F0E4EA", borderRadius: 18, background: "#fff", height: 72, display: "flex", alignItems: "center", overflow: "hidden" }}
+      onMouseEnter={() => setShowEdit(true)} onMouseLeave={() => setShowEdit(false)}
+      style={{ border: "1.5px solid #F0E4EA", borderRadius: 18, background: "#fff", height: 72, display: "flex", alignItems: "center", overflow: "hidden", position: "relative" }}
     >
       <div style={{ width: 72, height: 72, background: bg, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {product.image_url && !imgError ? (
@@ -99,7 +101,11 @@ function HorizontalCard({ product, onAdd, addedFlash, bg }) {
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, paddingRight: 12 }}>
         <span style={{ fontSize: 12, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
-        {product.is_available !== false && (
+        {showEdit ? (
+          <button onClick={() => onEditImage?.(product)} style={{ width: 22, height: 22, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(194,24,91,0.3)", cursor: "pointer" }}>
+            <Edit2 size={11} />
+          </button>
+        ) : product.is_available !== false && (
           <button onClick={() => onAdd(product)} style={{ width: 22, height: 22, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(194,24,91,0.3)", cursor: "pointer" }}>
             <Plus size={11} />
           </button>
@@ -121,13 +127,20 @@ function Separator({ label }) {
 
 // ─── Layout: HELADOS (asimétrico editorial) ─────────────────────────
 
-function TallCard({ product, onAdd, addedFlash, bg }) {
+function TallCard({ product, onAdd, addedFlash, bg, onEditImage }) {
   const tag = TAG_CONFIG[product.tag];
   const isFlash = addedFlash === product.id;
+  const [showEdit, setShowEdit] = React.useState(false);
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
+      onMouseEnter={() => setShowEdit(true)} onMouseLeave={() => setShowEdit(false)}
       style={{ flex: 1.4, border: "1.5px solid #F0E4EA", borderRadius: 22, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
       <ProductImageBox product={product} bg={bg} size={120} emojiSize={50} />
+      {showEdit && (
+        <button onClick={() => onEditImage?.(product)} style={{ position: "absolute", top: 8, right: 8, width: 28, height: 28, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 2 }}>
+          <Edit2 size={14} />
+        </button>
+      )}
       {tag && product.tag !== "none" && (
         <span style={{ position: "absolute", top: 8, left: 8, fontSize: 8, background: "#C2185B", color: "#fff", borderRadius: 20, padding: "2px 7px", fontWeight: 900 }}>{tag.label}</span>
       )}
@@ -150,19 +163,28 @@ function TallCard({ product, onAdd, addedFlash, bg }) {
   );
 }
 
-function SmallCard({ product, onAdd, addedFlash, bg }) {
+function SmallCard({ product, onAdd, addedFlash, bg, onEditImage }) {
   const tag = TAG_CONFIG[product.tag];
   const isFlash = addedFlash === product.id;
+  const [showEdit, setShowEdit] = React.useState(false);
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
+      onMouseEnter={() => setShowEdit(true)} onMouseLeave={() => setShowEdit(false)}
       style={{ flex: 1, border: "1.5px solid #F0E4EA", borderRadius: 18, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
       <ProductImageBox product={product} bg={bg} size={58} emojiSize={28} />
+      {showEdit && (
+        <button onClick={() => onEditImage?.(product)} style={{ position: "absolute", top: 4, right: 4, width: 18, height: 18, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 2 }}>
+          <Edit2 size={10} />
+        </button>
+      )}
+      {!showEdit && (
+        <button onClick={() => onAdd(product)} style={{ position: "absolute", top: 4, right: 4, width: 18, height: 18, borderRadius: "50%", background: "#fff", border: "1.5px solid #C2185B", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+          <Plus size={10} color="#C2185B" />
+        </button>
+      )}
       {tag && product.tag === "recomendado" && (
         <span style={{ position: "absolute", top: 4, left: 4, fontSize: 7, background: "#FFF9C4", color: "#7B6A00", borderRadius: 10, padding: "1px 5px", fontWeight: 800 }}>⭐ Chef</span>
       )}
-      <button onClick={() => onAdd(product)} style={{ position: "absolute", top: 4, right: 4, width: 18, height: 18, borderRadius: "50%", background: "#fff", border: "1.5px solid #C2185B", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-        <Plus size={10} color="#C2185B" />
-      </button>
       <div style={{ padding: "6px 8px 8px" }}>
         <p style={{ fontSize: 8, fontWeight: 700, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
         <p style={{ fontSize: 10, fontWeight: 900, color: "#C2185B", marginTop: 2 }}>{formatCOP(product.price)}</p>
@@ -171,7 +193,7 @@ function SmallCard({ product, onAdd, addedFlash, bg }) {
   );
 }
 
-function HeladosLayout({ products, onAdd, addedFlash, bg, catLabel }) {
+function HeladosLayout({ products, onAdd, addedFlash, bg, catLabel, onEditImage }) {
   const available = products.filter(p => p.is_available !== false);
   const topProducts = available.slice(0, 3);
   const restProducts = available.slice(3);
@@ -183,10 +205,10 @@ function HeladosLayout({ products, onAdd, addedFlash, bg, catLabel }) {
       <SectionHeader label={catLabel} count={available.length} />
       {tallProduct && (
         <div style={{ display: "flex", gap: 8, paddingLeft: 14, paddingRight: 14, marginBottom: 10 }}>
-          <TallCard product={tallProduct} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+          <TallCard product={tallProduct} onAdd={onAdd} addedFlash={addedFlash} bg={bg} onEditImage={onEditImage} />
           {smallProducts.length > 0 && (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
-              {smallProducts.map(p => <SmallCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+              {smallProducts.map(p => <SmallCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} onEditImage={onEditImage} />)}
             </div>
           )}
         </div>
@@ -194,7 +216,7 @@ function HeladosLayout({ products, onAdd, addedFlash, bg, catLabel }) {
       {restProducts.length > 0 && <Separator label={catLabel} />}
       {restProducts.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-          {restProducts.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+          {restProducts.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} onEditImage={onEditImage} />)}
         </div>
       )}
     </>
@@ -318,7 +340,7 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
   );
 }
 
-function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
+function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel, onEditImage }) {
   const [showAll, setShowAll] = React.useState(false);
   const available = products.filter(p => p.is_available !== false);
   const carouselProducts = available.slice(0, 8);
@@ -333,13 +355,13 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
           {restProducts.length > 0 && <Separator label={catLabel} />}
           {restProducts.length > 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
-              {restProducts.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+              {restProducts.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} onEditImage={onEditImage} />)}
             </div>
           )}
         </>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-          {available.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+          {available.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} onEditImage={onEditImage} />)}
         </div>
       )}
     </>
@@ -348,13 +370,15 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 
 // ─── Layout: ESPECIALES (lista editorial imagen derecha) ────────────
 
-function EspecialesCard({ product, onAdd, addedFlash, bg }) {
+function EspecialesCard({ product, onAdd, addedFlash, bg, onEditImage }) {
   const tag = TAG_CONFIG[product.tag];
   const isFlash = addedFlash === product.id;
   const [imgError, setImgError] = React.useState(false);
+  const [showEdit, setShowEdit] = React.useState(false);
   return (
     <motion.div animate={isFlash ? { scale: 0.98 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ border: "1.5px solid #F0E4EA", borderRadius: 18, background: "#fff", height: 90, display: "flex", alignItems: "center", overflow: "hidden" }}>
+      onMouseEnter={() => setShowEdit(true)} onMouseLeave={() => setShowEdit(false)}
+      style={{ border: "1.5px solid #F0E4EA", borderRadius: 18, background: "#fff", height: 90, display: "flex", alignItems: "center", overflow: "hidden", position: "relative" }}>
       <div style={{ flex: 1, padding: "0 14px", display: "flex", flexDirection: "column", gap: 3 }}>
         {tag && product.tag !== "none" && (
           <span style={{ fontSize: 8, background: "#C2185B", color: "#fff", borderRadius: 20, padding: "1px 7px", fontWeight: 900, alignSelf: "flex-start" }}>{tag.label}</span>
@@ -366,7 +390,11 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
         }
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <span style={{ fontSize: 14, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
-          {product.is_available !== false && (
+          {showEdit ? (
+            <button onClick={() => onEditImage?.(product)} style={{ width: 24, height: 24, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+              <Edit2 size={12} />
+            </button>
+          ) : product.is_available !== false && (
             <button onClick={() => onAdd(product)} style={{ width: 24, height: 24, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
               <Plus size={12} />
             </button>
@@ -384,13 +412,13 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
   );
 }
 
-function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
+function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel, onEditImage }) {
   const available = products.filter(p => p.is_available !== false);
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} />
       <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-        {available.map(p => <EspecialesCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+        {available.map(p => <EspecialesCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} onEditImage={onEditImage} />)}
       </div>
     </>
   );
@@ -398,12 +426,14 @@ function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 
 // ─── Layout: CAFÉ (grid 2 columnas) ─────────────────────────────────
 
-function CafeCard({ product, onAdd, addedFlash, bg }) {
+function CafeCard({ product, onAdd, addedFlash, bg, onEditImage }) {
   const tag = TAG_CONFIG[product.tag];
   const isFlash = addedFlash === product.id;
   const [imgError, setImgError] = React.useState(false);
+  const [showEdit, setShowEdit] = React.useState(false);
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
+      onMouseEnter={() => setShowEdit(true)} onMouseLeave={() => setShowEdit(false)}
       style={{ border: "1.5px solid #F0E4EA", borderRadius: 20, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
       <div style={{ background: bg, height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
         {product.image_url && !imgError ? (
@@ -419,7 +449,11 @@ function CafeCard({ product, onAdd, addedFlash, bg }) {
         <p style={{ fontSize: 10, fontWeight: 700, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
         <p style={{ fontSize: 11, fontWeight: 900, color: "#C2185B", marginTop: 3 }}>{formatCOP(product.price)}</p>
       </div>
-      {product.is_available !== false && (
+      {showEdit ? (
+        <button onClick={() => onEditImage?.(product)} style={{ position: "absolute", bottom: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+          <Edit2 size={11} />
+        </button>
+      ) : product.is_available !== false && (
         <button onClick={() => onAdd(product)} style={{ position: "absolute", bottom: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
           <Plus size={11} />
         </button>
@@ -428,13 +462,13 @@ function CafeCard({ product, onAdd, addedFlash, bg }) {
   );
 }
 
-function CafeLayout({ products, onAdd, addedFlash, bg, catLabel }) {
+function CafeLayout({ products, onAdd, addedFlash, bg, catLabel, onEditImage }) {
   const available = products.filter(p => p.is_available !== false);
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} />
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, paddingLeft: 14, paddingRight: 14 }}>
-        {available.map(p => <CafeCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+        {available.map(p => <CafeCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} onEditImage={onEditImage} />)}
       </div>
     </>
   );
@@ -442,13 +476,13 @@ function CafeLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 
 // ─── Layout: DEFAULT (helados-style) ────────────────────────────────
 
-function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel }) {
-  return <HeladosLayout products={products} onAdd={onAdd} addedFlash={addedFlash} bg={bg} catLabel={catLabel} />;
+function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel, onEditImage }) {
+  return <HeladosLayout products={products} onAdd={onAdd} addedFlash={addedFlash} bg={bg} catLabel={catLabel} onEditImage={onEditImage} />;
 }
 
 // ─── EXPORT PRINCIPAL ───────────────────────────────────────────────
 
-export default function EditorialLayout({ products, category, onAdd, addedFlash }) {
+export default function EditorialLayout({ products, category, onAdd, addedFlash, onEditImage }) {
   const [customizerProduct, setCustomizerProduct] = useState(null);
   const [bananaSplitProduct, setBananaSplitProduct] = useState(null);
   const [heladoProduct, setHeladoProduct] = useState(null);
@@ -480,13 +514,19 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   const layoutProps = { products: sortedProducts, onAdd: handleAdd, addedFlash, bg, catLabel };
 
   const renderLayout = () => {
-    switch (category) {
-      case "helados":       return <HeladosLayout {...layoutProps} />;
-      case "malteadas":     return <MalteadasLayout {...layoutProps} />;
-      case "especialidades": return <EspecialesLayout {...layoutProps} />;
-      case "cafe":          return <CafeLayout {...layoutProps} />;
-      default:              return <DefaultLayout {...layoutProps} />;
-    }
+    return (
+      <>
+        {(() => {
+          switch (category) {
+            case "helados":       return <HeladosLayout {...layoutProps} onEditImage={onEditImage} />;
+            case "malteadas":     return <MalteadasLayout {...layoutProps} onEditImage={onEditImage} />;
+            case "especialidades": return <EspecialesLayout {...layoutProps} onEditImage={onEditImage} />;
+            case "cafe":          return <CafeLayout {...layoutProps} onEditImage={onEditImage} />;
+            default:              return <DefaultLayout {...layoutProps} onEditImage={onEditImage} />;
+          }
+        })()}
+      </>
+    );
   };
 
   return (
