@@ -324,7 +324,7 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   const [showAll, setShowAll] = React.useState(false);
   const available = products.filter(p => p.is_available !== false);
 
-  const by12oz = available.filter(p => p.name.includes("15oz"));
+  const by12oz = available.filter(p => p.name.includes("12oz"));
   const by16oz = available.filter(p => p.name.includes("16oz"));
 
   return (
@@ -510,7 +510,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   // Interceptar onAdd según categoría/producto
   const handleAdd = (product) => {
     if (category === "malteadas") {
-      if (product.name.includes("15oz")) {
+      if (product.name.includes("12oz")) {
         setCustomizer12ozProduct(product);
       } else {
         setCustomizerProduct(product);
