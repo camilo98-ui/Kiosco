@@ -237,10 +237,17 @@ export default function Menu() {
   }, [products, activeCategory]);
 
   const handleAddProduct = useCallback((product, notes = "") => {
-    addItem(product, notes);
-    setAddedFlash(product.id);
+    const productToAdd = {
+      product_id: product.product_id || product.id,
+      product_name: product.product_name || product.name || product.title,
+      price: product.price,
+      quantity: 1,
+      notes: notes || "",
+    };
+    addItem(productToAdd, notes);
+    setAddedFlash(product.product_id || product.id);
     setTimeout(() => setAddedFlash(null), 600);
-    setLastAdded(product);
+    setLastAdded(productToAdd);
     const rule = UPSELL_RULES[product.category];
     if (rule && product.category === "adiciones") {
       upsellTimer.current = setTimeout(() => {
