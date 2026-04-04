@@ -28,12 +28,12 @@ function ComboCard({ combo, onAdd }) {
         padding: 0,
       }}
     >
-      <div style={{ position: "relative", height: 150, overflow: "hidden", borderRadius: "20px 20px 0 0", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "relative", height: 150, overflow: "hidden", borderRadius: "20px 20px 0 0", background: "#FFF0F5" }}>
         <img
           src={combo.image}
           alt={combo.title}
           draggable={false}
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", pointerEvents: "none" }}
+          style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block", pointerEvents: "none" }}
         />
         <span style={{
           position: "absolute", top: 9, right: 9,

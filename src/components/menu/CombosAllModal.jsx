@@ -80,7 +80,7 @@ export default function CombosAllModal({ open, onClose, onAdd }) {
                       <img
                         src={combo.image}
                         alt={combo.title}
-                        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+                        style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }}
                       />
                       <span
                         style={{
