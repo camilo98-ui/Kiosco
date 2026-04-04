@@ -1,6 +1,7 @@
-import React, { useState, useRef, useCallback, useMemo } from "react";
+import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
+import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { useCart } from "@/lib/cartStore";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
 import { Search, ShoppingBag, Loader2, ChevronRight, Home } from "lucide-react";
@@ -172,6 +173,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
 }
 
 export default function Menu() {
+  useSwipeNavigation();
   const [activeCategory, setActiveCategory] = useState(null);
   const [upsellMsg, setUpsellMsg] = useState(null);
   const [upsellTarget, setUpsellTarget] = useState(null);

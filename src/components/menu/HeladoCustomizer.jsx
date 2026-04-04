@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { toast } from "sonner";
 import { formatCOP } from "@/lib/constants";
 
 const SABORES_HELADO = [
@@ -182,6 +183,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
+    toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     setSabores([]); setExtras([]);
     setOpenSection("sabor");
     setTimeout(() => onClose(), 150);

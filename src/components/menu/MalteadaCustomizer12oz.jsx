@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ChevronDown, ChevronUp, Plus } from "lucide-react";
+import { toast } from "sonner";
 import { formatCOP } from "@/lib/constants";
 
 const SALSAS = [
@@ -185,6 +186,7 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
+    toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     setSalsa(null); setSabor(null); setCrack(null); setExtras([]);
     setOpenSection("salsa");
     setTimeout(() => onClose(), 150);

@@ -414,6 +414,7 @@ function PendingOrderCard({ order, onMark, isLoading }) {
 // ── Main page ──────────────────────────────────────────────────────────────────
 
 export default function Datafono() {
+  useSwipeNavigation();
   const [activeTab, setActiveTab] = useState("menu"); // "menu" | "cobrar"
   const [cartItems, setCartItems] = useState([]);
   const [customerName, setCustomerName] = useState("");

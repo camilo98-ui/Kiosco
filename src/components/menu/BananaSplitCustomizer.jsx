@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
 import { formatCOP } from "@/lib/constants";
 
 // ── Datos ────────────────────────────────────────────────────────────
@@ -252,6 +253,7 @@ export default function BananaSplitCustomizer({ product, open, onClose, onAdd })
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
+    toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     setSabores([]); setSalsas([]); setChantilly(null); setExtras([]);
     setOpenSection("sabores");
     setTimeout(() => onClose(), 150);

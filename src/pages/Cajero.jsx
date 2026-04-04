@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import CajeroOrderCard from "@/components/orders/CajeroOrderCard";
 import DaySummary from "@/components/orders/DaySummary";
 import PopsyLogo from "@/components/menu/PopsyLogo";
@@ -125,6 +126,7 @@ function OrderDetailModal({ order, onClose, onFinalize }) {
 }
 
 export default function Cajero() {
+  useSwipeNavigation();
   const [showSummary, setShowSummary] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [posAlert, setPosAlert] = useState(null);

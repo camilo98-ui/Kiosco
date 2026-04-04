@@ -195,15 +195,21 @@ export default function CajeroOrderCard({ order, onFinalize }) {
             </div>
 
             {/* Personalización */}
-            {item.notes && (
-              <div style={{ fontSize: 9, color: "#666", lineHeight: 1.3 }}>
-                {item.notes.split("|").map((line, j) => (
-                  <p key={j} style={{ margin: "1px 0", padding: "1px 0" }}>
-                    {line.trim()}
-                  </p>
-                ))}
-              </div>
-            )}
+             {item.notes && (
+               <div style={{ fontSize: 9, color: "#666", lineHeight: 1.3 }}>
+                 {item.notes.split("|").map((line, j) => {
+                   const [key, ...rest] = line.split(":");
+                   const value = rest.join(":").trim();
+                   const isSabor = key.trim().toLowerCase().includes("sabor");
+                   const isAdicion = key.trim().toLowerCase().includes("adición");
+                   return (
+                     <p key={j} style={{ margin: "1px 0", padding: "1px 0", color: isAdicion ? "#E91B8B" : "#666", fontStyle: "italic" }}>
+                       {key.trim()}: <strong>{value}</strong>
+                     </p>
+                   );
+                 })}
+               </div>
+             )}
           </div>
         ))}
       </div>

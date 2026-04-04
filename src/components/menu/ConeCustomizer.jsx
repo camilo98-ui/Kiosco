@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { toast } from "sonner";
 import { formatCOP } from "@/lib/constants";
 
 const EXTRAS = [
@@ -70,6 +71,7 @@ export default function ConeCustomizer({ product, open, onClose, onAdd }) {
   const handleConfirm = () => {
     const notes = extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : "";
     onAdd({ ...product, price: total }, notes);
+    toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     setExtras([]);
     setTimeout(() => onClose(), 150);
   };

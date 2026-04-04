@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ChevronDown, ChevronUp, Plus, Check } from "lucide-react";
+import { toast } from "sonner";
 import { formatCOP } from "@/lib/constants";
 
 // ── Datos fijos de personalización ─────────────────────────────────
@@ -182,6 +183,7 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
 
     // Agregar el producto base con precio total (base + crack + extras)
     onAdd({ ...product, price: total }, notes);
+    toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     // Reset
     setSalsa(null); setChantilly(null); setCrack(null); setExtras([]);
     setOpenSection("salsa");
