@@ -298,7 +298,7 @@ export default function Menu() {
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20 flex items-center justify-between pl-0 pr-3"
-        style={{ height: 56, background: "linear-gradient(135deg, #C2185B 0%, #E91B8B 60%, #4DB6AC 100%)", overflow: "hidden" }}
+        style={{ height: 56, background: "linear-gradient(90deg, #E91B8B 0%, #E91B8B 55%, #FF6EB4 100%)", overflow: "hidden" }}
       >
         <HeaderLine hasCart={itemCount > 0} />
         <PopsyLogo onClick={handleLogoClick} size="normal" dark />
