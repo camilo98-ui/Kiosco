@@ -16,7 +16,7 @@ export default function WaterUpsell({ onAdd, onSkip }) {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
-        transition={{ duration: 0.05, ease: "easeOut" }}
+        transition={{ duration: 0.01, ease: "easeOut" }}
         style={{
           background: "#fff", borderRadius: "24px 24px 0 0",
           width: "100%", maxWidth: 480,

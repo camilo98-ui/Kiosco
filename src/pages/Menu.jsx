@@ -269,21 +269,22 @@ export default function Menu() {
   }, [upsellTarget]);
 
   const handleCheckoutStart = useCallback((name) => {
-    setCheckoutOpen(false);
     setPendingCheckoutName(name);
-    // Mostrar agua INMEDIATAMENTE sin condicionales
     setShowWaterUpsell(true);
+    setCheckoutOpen(false);
   }, []);
 
   const handleWaterAdd = useCallback(() => {
+    if (!pendingCheckoutName) return;
     const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
-    setShowWaterUpsell(false);
     doCheckout(pendingCheckoutName, [waterItem]);
+    setShowWaterUpsell(false);
   }, [pendingCheckoutName]);
 
   const handleWaterSkip = useCallback(() => {
-    setShowWaterUpsell(false);
+    if (!pendingCheckoutName) return;
     doCheckout(pendingCheckoutName, []);
+    setShowWaterUpsell(false);
   }, [pendingCheckoutName]);
 
   const doCheckout = async (name, extraItems = []) => {
