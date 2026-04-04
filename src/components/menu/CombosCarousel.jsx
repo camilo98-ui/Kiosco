@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const CARD_GRADIENTS = [
   "linear-gradient(135deg, #FFE0D0 0%, #FFB89A 100%)",
@@ -17,37 +17,31 @@ const CARD_GRADIENTS = [
 ];
 
 const COMBOS = [
-  { id: 1,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c2b4b2bf3_SegundaMalteada16Oz-30dedescuento.png",          title: "Segunda Malteada 16 Oz",              price: "30% de descuento",            badge: "Oferta",  badgeColor: "#D85A30" },
-  { id: 2,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c6fd8dce_Malteada16OzCharlieBrownie37800.png",              title: "Malteada 16 Oz Charlie Brownie",      price: "$37.800",                     badge: "Top",     badgeColor: "#EF9F27" },
-  { id: 3,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d7bb62cd8_Malteada16OzBananaSplit37800.png",                 title: "Malteada 16 Oz Banana Split",         price: "$37.800",                     badge: "Top",     badgeColor: "#EF9F27" },
-  { id: 4,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/717fb959c_Malteada16OzBananaSplit.png",                      title: "Malteada 16 Oz Banana Split",         price: "",                            badge: "Nuevo",   badgeColor: "#3B6D11" },
-  { id: 5,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa4c65c0f_ComboLitrodeheladoBrownie8Und.png",                title: "Combo Litro de helado Brownie",       price: "8 unidades",                  badge: "8 uds",   badgeColor: "#3B6D11" },
-  { id: 6,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9ac7460da_CompraunaTarrinaoLitroyllevasotraTarrinaconel30dedescuento.png", title: "Compra una Tarrina o Litro", price: "30% de descuento",    badge: "Oferta",  badgeColor: "#D85A30" },
-  { id: 7,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e54977063_TortaTarrinaOLitro.png",                           title: "Torta Tarrina O Litro",               price: "",                            badge: "Nuevo",   badgeColor: "#3B6D11" },
-  { id: 8,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c196fbb03_Combo2TarrinasCajadeCono.png",                     title: "Combo 2 Tarrinas",                    price: "Caja de Cono",                badge: "Combo",   badgeColor: "#D85A30" },
-  { id: 9,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d8375425b_2LitrosdeHeladoCajaConoBrowniex8unidades.png",     title: "2 Litros Caja Cono Brownie",          price: "x8 unidades",                 badge: "8 uds",   badgeColor: "#3B6D11" },
-  { id: 10, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/74c450f21_ComboLitroCajaCono2Toppings.png",                  title: "Combo Litro Caja Cono",               price: "2 Toppings",                  badge: "Combo",   badgeColor: "#D85A30" },
-  { id: 11, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/09347eafa_CompraunLitroyllevaunLitrooTarrinaconel30dto.png", title: "Compra un Litro",                     price: "30% dto en otro",             badge: "Oferta",  badgeColor: "#D85A30" },
-  { id: 12, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/46a819092_Americano9ONZGalletaRedvelvet20800.png",           title: "Americano + Galleta Red Velvet",      price: "$20.800",                     badge: "Nuevo",   badgeColor: "#3B6D11" },
-  { id: 13, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0ffc145bd_Maletada16OzAgua25800.png",                       title: "Malteada 16 Oz + Agua",               price: "$25.800",                     badge: "Top",     badgeColor: "#EF9F27" },
+  { id: 1,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c2b4b2bf3_SegundaMalteada16Oz-30dedescuento.png",          title: "Segunda Malteada 16 Oz",              price: "30% de descuento",            badge: "Oferta" },
+  { id: 2,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c6fd8dce_Malteada16OzCharlieBrownie37800.png",              title: "Malteada 16 Oz Charlie Brownie",      price: "$37.800",                     badge: "Top"   },
+  { id: 3,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d7bb62cd8_Malteada16OzBananaSplit37800.png",                 title: "Malteada 16 Oz Banana Split",         price: "$37.800",                     badge: "Top"   },
+  { id: 4,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/717fb959c_Malteada16OzBananaSplit.png",                      title: "Malteada 16 Oz Banana Split",         price: "",                            badge: "Nuevo" },
+  { id: 5,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa4c65c0f_ComboLitrodeheladoBrownie8Und.png",                title: "Combo Litro de helado Brownie",       price: "8 unidades",                  badge: "8 uds" },
+  { id: 6,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9ac7460da_CompraunaTarrinaoLitroyllevasotraTarrinaconel30dedescuento.png", title: "Compra una Tarrina o Litro", price: "30% de descuento", badge: "Oferta" },
+  { id: 7,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e54977063_TortaTarrinaOLitro.png",                           title: "Torta Tarrina O Litro",               price: "",                            badge: "Nuevo" },
+  { id: 8,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c196fbb03_Combo2TarrinasCajadeCono.png",                     title: "Combo 2 Tarrinas",                    price: "Caja de Cono",                badge: "Combo" },
+  { id: 9,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d8375425b_2LitrosdeHeladoCajaConoBrowniex8unidades.png",     title: "2 Litros Caja Cono Brownie",          price: "x8 unidades",                 badge: "8 uds" },
+  { id: 10, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/74c450f21_ComboLitroCajaCono2Toppings.png",                  title: "Combo Litro Caja Cono",               price: "2 Toppings",                  badge: "Combo" },
+  { id: 11, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/09347eafa_CompraunLitroyllevaunLitrooTarrinaconel30dto.png", title: "Compra un Litro",                     price: "30% dto en otro",             badge: "Oferta" },
+  { id: 12, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/46a819092_Americano9ONZGalletaRedvelvet20800.png",           title: "Americano + Galleta Red Velvet",      price: "$20.800",                     badge: "Nuevo" },
+  { id: 13, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0ffc145bd_Maletada16OzAgua25800.png",                       title: "Malteada 16 Oz + Agua",               price: "$25.800",                     badge: "Top"   },
 ];
 
 const CARD_WIDTH = 150;
 const GAP = 12;
 const CARD_STEP = CARD_WIDTH + GAP;
-const AUTOPLAY_INTERVAL = 3000;
-const PAUSE_AFTER_DRAG = 5000;
 
-function ComboCard({ combo, onAdd }) {
-  const [hovered, setHovered] = useState(false);
+function ComboCard({ combo }) {
   const isPrice = combo.price && combo.price.startsWith("$");
   const isPromo = combo.price && !isPrice;
 
   return (
     <div
-      onClick={() => onAdd && onAdd({ id: `combo-${combo.id}`, name: combo.title, price: 0, category: "combos", emoji: "🎁" })}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       style={{
         width: CARD_WIDTH,
         flexShrink: 0,
@@ -55,10 +49,7 @@ function ComboCard({ combo, onAdd }) {
         border: "1.5px solid #F0E4EA",
         background: "#fff",
         overflow: "hidden",
-        cursor: "pointer",
-        boxShadow: hovered ? "0 8px 24px rgba(194,24,91,0.18)" : "0 2px 8px rgba(194,24,91,0.08)",
-        transform: hovered ? "translateY(-5px)" : "translateY(0px)",
-        transition: "transform 0.25s ease, box-shadow 0.25s ease",
+        boxShadow: "0 2px 8px rgba(194,24,91,0.08)",
         userSelect: "none",
         WebkitUserSelect: "none",
       }}
@@ -75,7 +66,6 @@ function ComboCard({ combo, onAdd }) {
           background: "#C41E6A", color: "#fff",
           fontSize: 9, fontWeight: 800,
           borderRadius: 20, padding: "3px 8px",
-          letterSpacing: "0.3px",
           boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
         }}>
           {combo.badge}
@@ -91,7 +81,7 @@ function ComboCard({ combo, onAdd }) {
           {combo.title}
         </p>
         {isPrice && (
-          <p style={{ fontSize: 14, fontWeight: 900, color: "#C41E6A", margin: "4px 0 0", lineHeight: 1 }}>
+          <p style={{ fontSize: 14, fontWeight: 900, color: "#C41E6A", margin: "4px 0 0" }}>
             {combo.price}
           </p>
         )}
@@ -106,162 +96,97 @@ function ComboCard({ combo, onAdd }) {
 }
 
 export default function CombosCarousel({ onAdd }) {
-  const containerRef = useRef(null);
+  const trackRef = useRef(null);
+  const animRef = useRef(null);
+  const posRef = useRef(0);
+  const pausedRef = useRef(false);
+  const dragRef = useRef({ isDragging: false, startX: 0, startPos: 0 });
+  const resumeTimerRef = useRef(null);
   const [activeIdx, setActiveIdx] = useState(0);
 
-  // Refs for drag state (no re-render needed)
-  const isDragging = useRef(false);
-  const dragStartX = useRef(0);
-  const dragCurrentX = useRef(0);
-  const isManualDrag = useRef(false); // true while finger/mouse is actively down
+  const doubled = [...COMBOS, ...COMBOS];
+  const totalWidth = CARD_STEP * COMBOS.length;
 
-  // Autoplay timer ref
-  const autoplayRef = useRef(null);
-  const resumeRef = useRef(null);
-
-  const totalCards = COMBOS.length;
-
-  // Scroll container to a given index with smooth transition
-  const scrollToIndex = useCallback((idx, transition = "0.5s ease-in-out") => {
-    const container = containerRef.current;
-    if (!container) return;
-    // Clamp index
-    const clamped = ((idx % totalCards) + totalCards) % totalCards;
-    container.style.scrollBehavior = "auto";
-    // Use scrollLeft to move (scroll-snap handles snapping)
-    const target = clamped * CARD_STEP;
-    container.style.transition = "none";
-    // scrollTo with behavior smooth doesn't support custom timing, so we manually set scrollLeft
-    // We'll use a CSS trick: disable scroll-snap temporarily for smooth transition
-    container.scrollTo({ left: target, behavior: "smooth" });
-    setActiveIdx(clamped);
-  }, [totalCards]);
-
-  // Start autoplay
-  const startAutoplay = useCallback(() => {
-    clearInterval(autoplayRef.current);
-    autoplayRef.current = setInterval(() => {
-      if (isManualDrag.current) return; // never interrupt active drag
-      setActiveIdx(prev => {
-        const next = (prev + 1) % totalCards;
-        const container = containerRef.current;
-        if (container) {
-          container.scrollTo({ left: next * CARD_STEP, behavior: "smooth" });
-        }
-        return next;
-      });
-    }, AUTOPLAY_INTERVAL);
-  }, [totalCards]);
-
-  // Pause autoplay, optionally resume after delay
-  const pauseAutoplay = useCallback((resumeAfter = 0) => {
-    clearInterval(autoplayRef.current);
-    clearTimeout(resumeRef.current);
-    if (resumeAfter > 0) {
-      resumeRef.current = setTimeout(() => {
-        if (!isManualDrag.current) startAutoplay();
-      }, resumeAfter);
-    }
-  }, [startAutoplay]);
-
-  useEffect(() => {
-    startAutoplay();
-    return () => {
-      clearInterval(autoplayRef.current);
-      clearTimeout(resumeRef.current);
-    };
-  }, [startAutoplay]);
-
-  // Sync activeIdx with scroll position on scroll end
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const onScroll = () => {
-      const idx = Math.round(container.scrollLeft / CARD_STEP);
-      setActiveIdx(((idx % totalCards) + totalCards) % totalCards);
-    };
-    container.addEventListener("scroll", onScroll, { passive: true });
-    return () => container.removeEventListener("scroll", onScroll);
-  }, [totalCards]);
-
-  // ── Touch events ──────────────────────────────────────────────────
-  const handleTouchStart = (e) => {
-    isManualDrag.current = true;
-    dragStartX.current = e.touches[0].clientX;
-    pauseAutoplay(0);
-  };
-
-  const handleTouchMove = (e) => {
-    dragCurrentX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    isManualDrag.current = false;
-    const deltaX = dragStartX.current - dragCurrentX.current;
-    const container = containerRef.current;
-    if (!container) { pauseAutoplay(PAUSE_AFTER_DRAG); return; }
-
-    if (Math.abs(deltaX) > 50) {
-      const direction = deltaX > 0 ? 1 : -1;
-      const next = ((activeIdx + direction) % totalCards + totalCards) % totalCards;
-      container.scrollTo({ left: next * CARD_STEP, behavior: "smooth" });
-      setActiveIdx(next);
-    }
-    pauseAutoplay(PAUSE_AFTER_DRAG);
-  };
-
-  // ── Mouse events ──────────────────────────────────────────────────
+  // Mouse drag handlers
   const handleMouseDown = (e) => {
-    isManualDrag.current = true;
-    isDragging.current = true;
-    dragStartX.current = e.clientX;
-    dragCurrentX.current = e.clientX;
-    pauseAutoplay(0);
-    if (containerRef.current) containerRef.current.style.cursor = "grabbing";
+    dragRef.current = { isDragging: true, startX: e.clientX, startPos: posRef.current };
+    pausedRef.current = true;
+    if (trackRef.current) trackRef.current.style.cursor = "grabbing";
   };
 
   const handleMouseMove = (e) => {
-    if (!isDragging.current) return;
-    dragCurrentX.current = e.clientX;
-    // Live drag scroll
-    const container = containerRef.current;
-    if (container) {
-      const delta = dragStartX.current - e.clientX;
-      container.scrollLeft = activeIdx * CARD_STEP + delta;
+    if (!dragRef.current.isDragging) return;
+    const diff = dragRef.current.startX - e.clientX;
+    posRef.current = dragRef.current.startPos + diff;
+    if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
+    if (posRef.current >= totalWidth) posRef.current -= totalWidth;
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
     }
   };
 
-  const handleMouseUp = (e) => {
-    if (!isDragging.current) return;
-    isDragging.current = false;
-    isManualDrag.current = false;
-    if (containerRef.current) containerRef.current.style.cursor = "grab";
-
-    const deltaX = dragStartX.current - dragCurrentX.current;
-    const container = containerRef.current;
-    if (!container) { pauseAutoplay(PAUSE_AFTER_DRAG); return; }
-
-    if (Math.abs(deltaX) > 50) {
-      const direction = deltaX > 0 ? 1 : -1;
-      const next = ((activeIdx + direction) % totalCards + totalCards) % totalCards;
-      container.scrollTo({ left: next * CARD_STEP, behavior: "smooth" });
-      setActiveIdx(next);
-    } else {
-      // Snap back to current
-      container.scrollTo({ left: activeIdx * CARD_STEP, behavior: "smooth" });
-    }
-    pauseAutoplay(PAUSE_AFTER_DRAG);
+  const handleMouseUp = () => {
+    dragRef.current.isDragging = false;
+    if (trackRef.current) trackRef.current.style.cursor = "grab";
+    // Resume after 5 seconds
+    clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 5000);
   };
 
-  // Attach mousemove/mouseup to window so drag works outside container
   useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [activeIdx]);
+  }, []);
+
+  // Touch handlers
+  const touchStartX = useRef(0);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    pausedRef.current = true;
+    clearTimeout(resumeTimerRef.current);
+  };
+
+  const handleTouchMove = (e) => {
+    const diff = touchStartX.current - e.touches[0].clientX;
+    posRef.current += diff * 0.4;
+    if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
+    if (posRef.current >= totalWidth) posRef.current -= totalWidth;
+    touchStartX.current = e.touches[0].clientX;
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 5000);
+  };
+
+  // Continuous animation loop
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const animate = () => {
+      if (!pausedRef.current) {
+        posRef.current += 0.6;
+        if (posRef.current >= totalWidth) posRef.current = 0;
+        track.style.transform = `translateX(-${posRef.current}px)`;
+        setActiveIdx(Math.round(posRef.current / CARD_STEP) % COMBOS.length);
+      }
+      animRef.current = requestAnimationFrame(animate);
+    };
+    animRef.current = requestAnimationFrame(animate);
+    return () => {
+      cancelAnimationFrame(animRef.current);
+      clearTimeout(resumeTimerRef.current);
+    };
+  }, []);
 
   return (
     <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
@@ -269,45 +194,20 @@ export default function CombosCarousel({ onAdd }) {
         Combos
       </p>
 
-      {/* Scroll container with scroll-snap */}
       <div
-        ref={containerRef}
+        style={{ overflow: "hidden", paddingLeft: 16, paddingBottom: 4, cursor: "grab" }}
+        onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        onMouseDown={handleMouseDown}
-        style={{
-          display: "flex",
-          gap: GAP,
-          paddingLeft: 16,
-          paddingBottom: 4,
-          paddingRight: 16,
-          overflowX: "scroll",
-          scrollSnapType: "x mandatory",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          cursor: "grab",
-          WebkitOverflowScrolling: "touch",
-        }}
+        onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
+        onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
       >
-        <style>{`
-          .combos-carousel::-webkit-scrollbar { display: none; }
-          .combos-carousel > div { scroll-snap-align: start; }
-        `}</style>
-        {COMBOS.map((combo) => (
-          <div
-            key={combo.id}
-            style={{ scrollSnapAlign: "start", flexShrink: 0 }}
-          >
-            <ComboCard
-              combo={combo}
-              gradient={CARD_GRADIENTS[(combo.id - 1) % CARD_GRADIENTS.length]}
-              onAdd={onAdd}
-            />
-          </div>
-        ))}
-        {/* Spacer so last card snaps properly */}
-        <div style={{ flexShrink: 0, width: 4 }} />
+        <div ref={trackRef} style={{ display: "flex", gap: GAP, width: "max-content" }}>
+          {doubled.map((combo, i) => (
+            <ComboCard key={`${combo.id}-${i}`} combo={combo} onAdd={onAdd} />
+          ))}
+        </div>
       </div>
 
       {/* Dots */}
@@ -315,19 +215,12 @@ export default function CombosCarousel({ onAdd }) {
         {COMBOS.map((_, idx) => (
           <div
             key={idx}
-            onClick={() => {
-              pauseAutoplay(PAUSE_AFTER_DRAG);
-              const container = containerRef.current;
-              if (container) container.scrollTo({ left: idx * CARD_STEP, behavior: "smooth" });
-              setActiveIdx(idx);
-            }}
             style={{
               width: activeIdx === idx ? 16 : 6,
               height: 6,
               borderRadius: 3,
               background: activeIdx === idx ? "#C41E6A" : "#F9C6E0",
               transition: "all 0.3s ease",
-              cursor: "pointer",
             }}
           />
         ))}
