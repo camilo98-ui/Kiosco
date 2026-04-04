@@ -269,15 +269,15 @@ export default function Menu() {
   }, [upsellTarget]);
 
   const handleCheckoutStart = useCallback((name) => {
-    setPendingCheckoutName(name);
     setCheckoutOpen(false);
-    // Mostrar agua inmediatamente sin delay
+    // Mostrar agua INMEDIATAMENTE
     setShowWaterUpsell(true);
+    setPendingCheckoutName(name);
   }, []);
 
   const handleWaterAdd = useCallback(() => {
-    setShowWaterUpsell(false);
     const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
+    setShowWaterUpsell(false);
     doCheckout(pendingCheckoutName, [waterItem]);
   }, [pendingCheckoutName]);
 
