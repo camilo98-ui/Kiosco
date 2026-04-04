@@ -391,10 +391,16 @@ function PendingOrderCard({ order, onMark, isLoading }) {
         <span style={{ fontSize: 16, fontWeight: 800, color: MAGENTA }}>{formatCOP(order.total)}</span>
       </div>
       {order.items?.map((item, i) => (
-        <p key={i} style={{ fontSize: 12, color: "#777", margin: "2px 0" }}>
-          {item.quantity}× {item.product_name}
-          {item.notes && <span style={{ color: "#BBBBBB" }}> · {item.notes}</span>}
-        </p>
+      <div key={i} style={{ fontSize: 12, color: "#777", margin: "4px 0 6px" }}>
+        <p style={{ margin: 0, fontWeight: 700 }}>{item.quantity}× {item.product_name}</p>
+        {item.notes && (
+          <div style={{ fontSize: 11, color: "#999", marginTop: 2, paddingLeft: 12 }}>
+            {item.notes.split("|").map((line, j) => (
+              <p key={j} style={{ margin: "1px 0", fontStyle: "italic" }}>• {line.trim()}</p>
+            ))}
+          </div>
+        )}
+      </div>
       ))}
       <button
         onClick={() => onMark(order.id)}

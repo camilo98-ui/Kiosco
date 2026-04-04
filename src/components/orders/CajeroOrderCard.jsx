@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { formatCOP } from "@/lib/constants";
 import { CheckCircle, AlertTriangle } from "lucide-react";
 import moment from "moment";
+import ProductDetailLine from "@/components/menu/ProductDetailLine";
 
 const STATUS_STYLES = {
   pendiente: {
@@ -195,21 +196,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
             </div>
 
             {/* Personalización */}
-             {item.notes && (
-               <div style={{ fontSize: 9, color: "#666", lineHeight: 1.3 }}>
-                 {item.notes.split("|").map((line, j) => {
-                   const [key, ...rest] = line.split(":");
-                   const value = rest.join(":").trim();
-                   const isSabor = key.trim().toLowerCase().includes("sabor");
-                   const isAdicion = key.trim().toLowerCase().includes("adición");
-                   return (
-                     <p key={j} style={{ margin: "1px 0", padding: "1px 0", color: isAdicion ? "#C41E6A" : "#666", fontStyle: "italic" }}>
-                       {key.trim()}: <strong>{value}</strong>
-                     </p>
-                   );
-                 })}
-               </div>
-             )}
+            <ProductDetailLine item={item} />
           </div>
         ))}
       </div>

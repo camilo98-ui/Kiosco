@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
@@ -14,7 +14,6 @@ import GenericCustomizer from "@/components/menu/GenericCustomizer";
 import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
 
-// ─── Ordenamiento comercial dinámico ───────────────────────────────
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
 
 export function sortProductsCommercially(products) {
@@ -26,7 +25,6 @@ export function sortProductsCommercially(products) {
   });
 }
 
-// Descripciones cortas por tipo de tag
 function getProductHint(product) {
   if (product.tag === "mas_vendido") return "El favorito de nuestros clientes";
   if (product.tag === "recomendado") return "Selección del chef Popsy";
@@ -34,7 +32,6 @@ function getProductHint(product) {
   return null;
 }
 
-// Fondos por categoría
 const CATEGORY_BG = {
   helados: "#FFF0F5",
   malteadas: "#F3E8FF",
@@ -49,8 +46,6 @@ const CATEGORY_BG = {
   bebidas: "#F0FAFF",
   adiciones: "#FFFAF0",
 };
-
-// ─── Componentes base ───────────────────────────────────────────────
 
 function ProductImageBox({ product, bg, size = 120, emojiSize = 50 }) {
   const [imgError, setImgError] = React.useState(false);
@@ -68,15 +63,12 @@ function ProductImageBox({ product, bg, size = 120, emojiSize = 50 }) {
   );
 }
 
-function SectionHeader({ label, count, onViewAll }) {
+function SectionHeader({ label, count }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 14, paddingRight: 14, marginBottom: 10 }}>
       <p style={{ fontSize: 9, fontWeight: 800, color: "#BBA8B0", textTransform: "uppercase", letterSpacing: "1.5px" }}>
         {label} · {count} disponibles
       </p>
-      <button onClick={onViewAll} style={{ fontSize: 9, color: "#C41E6A", fontWeight: 700, background: "none", border: "none", cursor: "pointer" }}>
-        Ver todos →
-      </button>
     </div>
   );
 }
@@ -117,18 +109,6 @@ function HorizontalCard({ product, onAdd, addedFlash, bg }) {
     </motion.div>
   );
 }
-
-function Separator({ label }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, paddingLeft: 14, paddingRight: 14, margin: "10px 0" }}>
-      <div style={{ flex: 1, height: 1, background: "#F0E4EA" }} />
-      <p style={{ fontSize: 8, color: "#DDD", textTransform: "uppercase", letterSpacing: "1px", whiteSpace: "nowrap" }}>Más {label}</p>
-      <div style={{ flex: 1, height: 1, background: "#F0E4EA" }} />
-    </div>
-  );
-}
-
-// ─── Layout: HELADOS (asimétrico editorial) ─────────────────────────
 
 function TallCard({ product, onAdd, addedFlash, bg }) {
   const tag = TAG_CONFIG[product.tag];
@@ -203,7 +183,6 @@ function HeladosLayout({ products, onAdd, addedFlash, bg, catLabel }) {
           )}
         </div>
       )}
-      {restProducts.length > 0 && <Separator label={catLabel} />}
       {restProducts.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
           {restProducts.map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
@@ -212,8 +191,6 @@ function HeladosLayout({ products, onAdd, addedFlash, bg, catLabel }) {
     </>
   );
 }
-
-// ─── Layout: MALTEADAS (carrusel horizontal showcase) ───────────────
 
 function MalteadaCard({ product, onAdd, addedFlash, bg }) {
   const tag = TAG_CONFIG[product.tag];
@@ -255,7 +232,6 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
   const pausedRef = React.useRef(false);
   const dragRef = React.useRef({ isDragging: false, startX: 0, startPos: 0 });
 
-  // Duplicamos para loop infinito
   const doubled = [...products, ...products];
 
   const handleMouseDown = (e) => {
@@ -332,7 +308,6 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
 
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   const [selectedSize, setSelectedSize] = React.useState("16oz");
-  const [showAll, setShowAll] = React.useState(false);
   const available = products.filter(p => p.is_available !== false);
 
   const by12oz = available.filter(p => p.name.includes("12oz"));
@@ -340,7 +315,7 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 
   return (
     <>
-      <SectionHeader label={catLabel} count={available.length} onViewAll={() => setShowAll(!showAll)} />
+      <SectionHeader label={catLabel} count={available.length} />
 
       {/* Size Selector Buttons */}
       <div style={{ display: "flex", gap: 10, paddingLeft: 14, paddingRight: 14, marginBottom: 16 }}>
@@ -363,42 +338,29 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
         ))}
       </div>
 
-      {/* Show products based on selected size */}
-      {!showAll ? (
+      {selectedSize === "12oz" && by12oz.length > 0 && (
         <>
-          {selectedSize === "12oz" && by12oz.length > 0 && (
-            <>
-              <AutoCarousel products={by12oz.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-              {by12oz.length > 8 && <Separator label="Más 12oz" />}
-              {by12oz.length > 8 && (
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
-                  {by12oz.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
-                </div>
-              )}
-            </>
-          )}
-          {selectedSize === "16oz" && by16oz.length > 0 && (
-            <>
-              <AutoCarousel products={by16oz.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-              {by16oz.length > 8 && <Separator label="Más 16oz" />}
-              {by16oz.length > 8 && (
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
-                  {by16oz.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
-                </div>
-              )}
-            </>
+          <AutoCarousel products={by12oz.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+          {by12oz.length > 8 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
+              {by12oz.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+            </div>
           )}
         </>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-          {(selectedSize === "12oz" ? by12oz : by16oz).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
-        </div>
+      )}
+      {selectedSize === "16oz" && by16oz.length > 0 && (
+        <>
+          <AutoCarousel products={by16oz.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+          {by16oz.length > 8 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
+              {by16oz.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+            </div>
+          )}
+        </>
       )}
     </>
   );
 }
-
-// ─── Layout: ESPECIALES (lista editorial imagen derecha) ────────────
 
 function EspecialesCard({ product, onAdd, addedFlash, bg }) {
   const tag = TAG_CONFIG[product.tag];
@@ -437,7 +399,6 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
 }
 
 function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
-  // Filtrar: eliminar granizados de especialidades
   const available = products.filter(p => p.is_available !== false && p.category !== "granizados");
   return (
     <>
@@ -448,8 +409,6 @@ function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
     </>
   );
 }
-
-// ─── Layout: CAFÉ (grid 2 columnas) ─────────────────────────────────
 
 function CafeCard({ product, onAdd, addedFlash, bg }) {
   const tag = TAG_CONFIG[product.tag];
@@ -493,13 +452,9 @@ function CafeLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   );
 }
 
-// ─── Layout: DEFAULT (helados-style) ────────────────────────────────
-
 function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   return <HeladosLayout products={products} onAdd={onAdd} addedFlash={addedFlash} bg={bg} catLabel={catLabel} />;
 }
-
-// ─── EXPORT PRINCIPAL ───────────────────────────────────────────────
 
 export default function EditorialLayout({ products, category, onAdd, addedFlash }) {
   const [customizerProduct, setCustomizerProduct] = useState(null);
@@ -518,7 +473,6 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
-  // Interceptar onAdd según categoría/producto
   const handleAdd = (product) => {
     if (category === "malteadas") {
       if (product.name.includes("12oz")) {
@@ -529,7 +483,6 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
     } else if (category === "especialidades" && product.name.toLowerCase().includes("banana split")) {
       setBananaSplitProduct(product);
     } else if (category === "especialidades") {
-      // Todos los demás productos de especialidades usan el customizer de sabores
       setEspecialidadesProduct(product);
     } else if (category === "helados" && (product.name.toLowerCase().includes("maxi cono") || product.name.toLowerCase().includes("maxicono"))) {
       setMaxiConoProduct(product);
@@ -554,7 +507,6 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
     onAdd({ ...productWithPrice, notes });
   };
 
-  // Ordenamiento comercial dinámico aplicado antes de pasar a cada layout
   const sortedProducts = sortProductsCommercially(products);
   const layoutProps = { products: sortedProducts, onAdd: handleAdd, addedFlash, bg, catLabel };
 
