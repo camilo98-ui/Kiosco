@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { ArrowLeft, CreditCard, Plus, Minus, X, CheckCircle2, ShoppingBag } from "lucide-react";
+import { ArrowLeft, CreditCard, Plus, Minus, X, CheckCircle2, ShoppingBag, Search } from "lucide-react";
 import { formatCOP, CATEGORIES } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -61,13 +61,17 @@ function ProductCard({ product, onAdd, flashId }) {
 function MenuView({ onAddItem }) {
   const [activeCat, setActiveCat] = useState(CATEGORIES[0]?.id || "malteadas");
   const [flashId, setFlashId] = useState(null);
+  const [search, setSearch] = useState("");
 
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.list("sort_order", 200),
   });
 
-  const catProducts = products.filter(p => p.category === activeCat && p.is_available !== false);
+  const isSearching = search.trim().length > 0;
+  const displayProducts = isSearching
+    ? products.filter(p => p.is_available !== false && p.name.toLowerCase().includes(search.toLowerCase()))
+    : products.filter(p => p.category === activeCat && p.is_available !== false);
 
   const handleAdd = (product) => {
     onAddItem(product);
@@ -77,31 +81,59 @@ function MenuView({ onAddItem }) {
 
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-      {/* Category tabs */}
-      <div style={{
-        display: "flex", gap: 8, padding: "10px 16px",
-        overflowX: "auto", scrollbarWidth: "none", background: "#fff",
-        borderBottom: "1px solid #FFE4F3", flexShrink: 0,
-      }}>
-        {CATEGORIES.map(cat => (
-          <button
-            key={cat.id}
-            onClick={() => setActiveCat(cat.id)}
+
+      {/* Search bar */}
+      <div style={{ padding: "10px 16px 6px", background: "#fff", flexShrink: 0 }}>
+        <div style={{
+          display: "flex", alignItems: "center", gap: 8,
+          background: "#FFF0F8", borderRadius: 12,
+          padding: "8px 12px", border: "1.5px solid #FFE4F3",
+        }}>
+          <Search size={15} color={MAGENTA} />
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Buscar producto..."
             style={{
-              flexShrink: 0,
-              padding: "6px 14px",
-              borderRadius: 20,
-              fontSize: 12, fontWeight: 700,
-              border: "none", cursor: "pointer",
-              background: activeCat === cat.id ? MAGENTA : "#FFE4F3",
-              color: activeCat === cat.id ? "#fff" : MAGENTA,
-              transition: "all 0.18s ease",
+              flex: 1, background: "none", border: "none", outline: "none",
+              fontSize: 13, color: "#1A1A1A", fontFamily: "'Poppins', sans-serif",
             }}
-          >
-            {cat.emoji} {cat.label}
-          </button>
-        ))}
+          />
+          {search && (
+            <button onClick={() => setSearch("")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}>
+              <X size={14} color="#BBBBBB" />
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* Category tabs — hidden while searching */}
+      {!isSearching && (
+        <div style={{
+          display: "flex", gap: 8, padding: "6px 16px 10px",
+          overflowX: "auto", scrollbarWidth: "none", background: "#fff",
+          borderBottom: "1px solid #FFE4F3", flexShrink: 0,
+        }}>
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCat(cat.id)}
+              style={{
+                flexShrink: 0,
+                padding: "6px 14px",
+                borderRadius: 20,
+                fontSize: 12, fontWeight: 700,
+                border: "none", cursor: "pointer",
+                background: activeCat === cat.id ? MAGENTA : "#FFE4F3",
+                color: activeCat === cat.id ? "#fff" : MAGENTA,
+                transition: "all 0.18s ease",
+              }}
+            >
+              {cat.emoji} {cat.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Products grid */}
       <div style={{
@@ -109,13 +141,13 @@ function MenuView({ onAddItem }) {
         display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10,
         alignContent: "start",
       }}>
-        {catProducts.length === 0 ? (
+        {displayProducts.length === 0 ? (
           <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px 0", color: "#CCCCCC" }}>
-            <p style={{ fontSize: 32 }}>🍦</p>
-            <p style={{ fontWeight: 600, fontSize: 13 }}>Sin productos en esta categoría</p>
+            <p style={{ fontSize: 32 }}>🔍</p>
+            <p style={{ fontWeight: 600, fontSize: 13 }}>{isSearching ? "Sin resultados para esa búsqueda" : "Sin productos en esta categoría"}</p>
           </div>
         ) : (
-          catProducts.map(p => (
+          displayProducts.map(p => (
             <ProductCard key={p.id} product={p} onAdd={handleAdd} flashId={flashId} />
           ))
         )}
