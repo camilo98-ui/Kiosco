@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { useCart } from "@/lib/cartStore";
@@ -331,6 +332,11 @@ export default function Menu() {
   }
 
   if (activeCategory) {
+    const allowedCategories = ["helados", "malteadas", "granizados", "especialidades", "cafe", "bebidas", "galletas", "paletas_packs", "para_llevar", "tortas", "regalos"];
+    if (!allowedCategories.includes(activeCategory)) {
+      setActiveCategory(null);
+      return null;
+    }
     return (
       <CategoryView
         activeCategory={activeCategory}
@@ -357,7 +363,7 @@ export default function Menu() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F7F3F5" }}>
+    <div className="min-h-screen" style={{ background: "#FFFAF9" }}>
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20"
@@ -377,17 +383,23 @@ export default function Menu() {
 
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
-        <div style={{ background: "#fff", padding: "10px 0 0" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "#fff", padding: "10px 0 0" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
-        </div>
-        <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
-        <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+          <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+          <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
+        </motion.div>
         {isLoading ? (
           <div className="flex justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C41E6A" }} />
           </div>
         ) : (
-          <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} />
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }}>
+            <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} />
+          </motion.div>
         )}
       </div>
 

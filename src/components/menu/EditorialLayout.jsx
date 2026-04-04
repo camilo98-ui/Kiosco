@@ -344,30 +344,23 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 
       {/* Size Selector Buttons */}
       <div style={{ display: "flex", gap: 10, paddingLeft: 14, paddingRight: 14, marginBottom: 16 }}>
-        <button
-          onClick={() => setSelectedSize("12oz")}
-          style={{
-            flex: 1, height: 50, borderRadius: 16,
-            background: selectedSize === "12oz" ? "#C41E6A" : "#FFF0F5",
-            color: selectedSize === "12oz" ? "#fff" : "#C41E6A",
-            fontSize: 14, fontWeight: 900, border: "none", cursor: "pointer",
-            transition: "all 0.2s",
-          }}
-        >
-          Malteadas 12oz
-        </button>
-        <button
-          onClick={() => setSelectedSize("16oz")}
-          style={{
-            flex: 1, height: 50, borderRadius: 16,
-            background: selectedSize === "16oz" ? "#C41E6A" : "#FFF0F5",
-            color: selectedSize === "16oz" ? "#fff" : "#C41E6A",
-            fontSize: 14, fontWeight: 900, border: "none", cursor: "pointer",
-            transition: "all 0.2s",
-          }}
-        >
-          Malteadas 16oz
-        </button>
+        {["12oz", "16oz"].map(size => (
+          <motion.button
+            key={size}
+            onClick={() => setSelectedSize(size)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              flex: 1, height: 50, borderRadius: 16,
+              background: selectedSize === size ? "#C41E6A" : "#FFF0F5",
+              color: selectedSize === size ? "#fff" : "#C41E6A",
+              fontSize: 14, fontWeight: 900, border: "none", cursor: "pointer",
+              transition: "all 0.2s",
+            }}
+          >
+            Malteadas {size}
+          </motion.button>
+        ))}
       </div>
 
       {/* Show products based on selected size */}

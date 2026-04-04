@@ -35,6 +35,8 @@ export default function PremiumCartBar({ onCheckout }) {
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 40, opacity: 0 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={() => setOpen(true)}
           className="fixed z-30 flex items-center justify-between active:scale-[0.98] transition-transform"
           style={{
@@ -54,12 +56,14 @@ export default function PremiumCartBar({ onCheckout }) {
           {/* Izquierda: círculo contador + texto */}
           <div className="flex flex-col items-start gap-0">
             <div className="flex items-center gap-3">
-              <div
+              <motion.div
                 className="flex items-center justify-center font-black"
                 style={{ width: 32, height: 32, borderRadius: "50%", background: "#fff", color: "#E91B8B", fontSize: 14 }}
+                animate={{ scale: [1, 1.15, 1] }}
+                transition={{ duration: 0.5, type: "spring", stiffness: 300 }}
               >
                 {itemCount}
-              </div>
+              </motion.div>
               <span className="font-black text-white" style={{ fontSize: 15 }}>Ver mi pedido</span>
             </div>
             {getIncentive(total) && (
