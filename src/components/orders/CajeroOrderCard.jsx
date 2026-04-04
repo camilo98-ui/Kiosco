@@ -169,23 +169,23 @@ export default function CajeroOrderCard({ order, onFinalize }) {
       <div style={{ height: "0.5px", background: "#F0F0F0" }} />
 
       {/* Ítems con detalle */}
-      <div style={{ maxHeight: 120, overflowY: "auto", paddingRight: 6 }}>
+      <div style={{ maxHeight: 160, overflowY: "auto", paddingRight: 6 }}>
         {order.items?.map((item, i) => (
           <div key={i} style={{
             background: "#FAFAFA",
             border: "1px solid #F0F0F0",
             borderRadius: 8,
-            padding: "8px 10px",
-            marginBottom: 6,
+            padding: "10px 12px",
+            marginBottom: 8,
           }}>
             {/* Nombre del producto */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 4 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 4, marginBottom: 4 }}>
               <div style={{ flex: 1 }}>
-                <span style={{ fontSize: 12, fontWeight: 800, color: "#1A1A1A", lineHeight: 1.2 }}>
+                <span style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", lineHeight: 1.2 }}>
                   {item.quantity > 1 ? `${item.quantity}× ` : ""}{item.product_name}
                 </span>
               </div>
-              <span style={{ fontSize: 11, fontWeight: 700, color: "#C41E6A", flexShrink: 0, whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#C41E6A", flexShrink: 0, whiteSpace: "nowrap" }}>
                 {formatCOP(item.price * item.quantity)}
               </span>
             </div>
