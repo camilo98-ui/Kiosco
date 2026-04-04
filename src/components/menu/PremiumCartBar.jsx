@@ -5,6 +5,7 @@ import { Minus, Plus, Trash2, MessageSquare, Droplet } from "lucide-react";
 import { useCart } from "@/lib/cartStore";
 import { formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
+import ProductDetailLine from "@/components/menu/ProductDetailLine";
 
 // Umbrales de incentivo para aumentar ticket
 const INCENTIVE_THRESHOLDS = [
@@ -43,7 +44,7 @@ export default function PremiumCartBar({ onCheckout }) {
             maxWidth: 480,
             marginLeft: "auto",
             marginRight: "auto",
-            background: "#E91B8B",
+            background: "#C41E6A",
             borderRadius: 18,
             padding: "12px 18px",
             boxShadow: "0 6px 24px rgba(233,27,139,0.4)",
@@ -105,7 +106,8 @@ export default function PremiumCartBar({ onCheckout }) {
                     <p className="font-bold text-sm truncate" style={{ color: "#2D1A22" }}>
                       {item.product_name}
                     </p>
-                    <p className="font-black text-sm" style={{ color: "#E91B8B" }}>
+                    <ProductDetailLine item={item} />
+                    <p className="font-black text-sm" style={{ color: "#C41E6A", marginTop: 4 }}>
                        {formatCOP(item.price * item.quantity)}
                      </p>
                   </div>
@@ -197,7 +199,7 @@ export default function PremiumCartBar({ onCheckout }) {
                className="w-full font-black text-white transition-opacity hover:opacity-90 active:scale-[0.98]"
                style={{
                  height: 56, borderRadius: 18,
-                 background: "#E91B8B",
+                 background: "#C41E6A",
                  fontSize: 15,
                  boxShadow: "0 4px 16px rgba(233,27,139,0.35)",
                }}

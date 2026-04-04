@@ -203,7 +203,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
                    const isSabor = key.trim().toLowerCase().includes("sabor");
                    const isAdicion = key.trim().toLowerCase().includes("adición");
                    return (
-                     <p key={j} style={{ margin: "1px 0", padding: "1px 0", color: isAdicion ? "#E91B8B" : "#666", fontStyle: "italic" }}>
+                     <p key={j} style={{ margin: "1px 0", padding: "1px 0", color: isAdicion ? "#C41E6A" : "#666", fontStyle: "italic" }}>
                        {key.trim()}: <strong>{value}</strong>
                      </p>
                    );

@@ -45,7 +45,7 @@ export default function WaterUpsell({ onAdd, onSkip }) {
           onClick={onAdd}
           style={{
             width: "100%", height: 52, borderRadius: 16,
-            background: "#E91B8B", color: "#fff",
+            background: "#C41E6A", color: "#fff",
             fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer",
             boxShadow: "0 4px 16px rgba(233,27,139,0.35)",
             fontFamily: "'Poppins', sans-serif",

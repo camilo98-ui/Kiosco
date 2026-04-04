@@ -11,8 +11,8 @@
     --font-nunito: 'Nunito', sans-serif;
     --font-poppins: 'Poppins', sans-serif;
 
-    /* Paleta Popsy oficial — blanco + fucsia + pasteles */
-    --background: 0 0% 98%;
+    /* Paleta Popsy oficial — blanco + magenta oscuro + pasteles */
+    --background: 0 0% 99%;
     --foreground: 340 15% 18%;
 
     --card: 0 0% 100%;
@@ -21,7 +21,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 340 15% 18%;
 
-    /* Fucsia Popsy principal */
+    /* Magenta Popsy oscuro principal */
     --primary: 333 73% 45%;
     --primary-foreground: 0 0% 100%;
 

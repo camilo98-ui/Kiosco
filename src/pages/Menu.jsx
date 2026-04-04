@@ -1,10 +1,11 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { useCart } from "@/lib/cartStore";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
-import { Search, ShoppingBag, Loader2, ChevronRight, Home } from "lucide-react";
+import { Search, Loader2, ChevronRight, ArrowLeft } from "lucide-react";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import SearchModal from "@/components/menu/SearchModal";
 import PromoBanners from "@/components/menu/PromoBanners";
@@ -85,7 +86,7 @@ function CategoryIcons({ activeCategory, onSelect }) {
 function FamilyCarousel({ productCounts, onSelect }) {
   return (
     <div style={{ background: "#fff", padding: "10px 0 14px", marginTop: 2 }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px" }}>Explorar categorías</p>
+      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px" }}>¿Qué se te antoja? 🍦</p>
       <CategoryGrid categories={FAMILY_CARDS} productCounts={productCounts} onSelect={onSelect} />
     </div>
   );
@@ -125,7 +126,7 @@ function MostOrdered({ products, onAdd, onShowAll }) {
   return (
     <div style={{ background: "#fff", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Lo más pedido</p>
+      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Los favoritos de todos 🔥</p>
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
       </div>
       {top.map((product, idx) => (
@@ -153,7 +154,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
     <div className="min-h-screen" style={{ background: "#FFFCFD" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)" }}>
         <button onClick={onBack} style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.2)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-          <Home size={20} color="#fff" />
+          <ArrowLeft size={20} color="#fff" />
         </button>
         <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
           {CATEGORIES.find(c => c.id === activeCategory)?.label}
@@ -188,7 +189,6 @@ export default function Menu() {
   const [showMostOrdered, setShowMostOrdered] = useState(false);
   const [showCombosAll, setShowCombosAll] = useState(false);
   const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
-  const [cartOpen, setCartOpen] = useState(false);
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
@@ -248,6 +248,18 @@ export default function Menu() {
     setAddedFlash(product.product_id || product.id);
     setTimeout(() => setAddedFlash(null), 600);
     setLastAdded(productToAdd);
+    
+    // Toast feedback
+    toast.success(`✓ ${productToAdd.product_name} agregado`, {
+      style: {
+        background: "#C41E6A",
+        color: "#fff",
+        border: "none",
+        borderRadius: "12px",
+      },
+      duration: 1500,
+    });
+    
     const rule = UPSELL_RULES[product.category];
     if (rule && product.category === "adiciones") {
       upsellTimer.current = setTimeout(() => {
@@ -357,19 +369,9 @@ export default function Menu() {
           <div style={{ width: "45%", minWidth: 120 }}>
             <PopsyLogo onClick={handleLogoClick} size="normal" dark />
           </div>
-          <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6, justifyContent: "flex-end" }}>
-            <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
-              <Search size={16} color="#fff" />
-            </button>
-            <button onClick={() => setCartOpen(true)} className="flex items-center justify-center relative" style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", touchAction: "manipulation", transition: "all 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
-              <ShoppingBag size={16} color="#fff" />
-              {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", color: "#C41E6A", fontSize: 9 }}>
-                  {itemCount}
-                </span>
-              )}
-            </button>
-          </div>
+          <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
+            <Search size={16} color="#fff" />
+          </button>
         </div>
       </div>
 

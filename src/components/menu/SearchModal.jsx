@@ -4,9 +4,12 @@ import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { formatCOP } from "@/lib/constants";
 import { motion } from "framer-motion";
+import { useCart } from "@/lib/cartStore";
+import { toast } from "sonner";
 
 export default function SearchModal({ open, onClose, products, onAddProduct }) {
   const [query, setQuery] = useState("");
+  const { addItem } = useCart();
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
@@ -17,7 +20,17 @@ export default function SearchModal({ open, onClose, products, onAddProduct }) {
   }, [query, products]);
 
   const handleAdd = (product) => {
+    // Llamar a onAddProduct que abre customizers si es necesario
     onAddProduct(product);
+    toast.success(`✓ ${product.name} agregado`, {
+      style: {
+        background: "#C41E6A",
+        color: "#fff",
+        border: "none",
+        borderRadius: "12px",
+      },
+      duration: 1500,
+    });
     setQuery("");
     onClose();
   };

@@ -55,7 +55,7 @@ export default function CombosAllModal({ open, onClose, onAdd }) {
 
             {/* Grid de combos */}
             <div style={{ flex: 1, overflowY: "auto", padding: "16px" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 12 }}>
                 {COMBOS.map((combo) => (
                   <button
                     key={combo.id}
@@ -80,7 +80,8 @@ export default function CombosAllModal({ open, onClose, onAdd }) {
                       <img
                         src={combo.image}
                         alt={combo.title}
-                        style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+                        loading="lazy"
                       />
                       <span
                         style={{
@@ -93,6 +94,7 @@ export default function CombosAllModal({ open, onClose, onAdd }) {
                           fontWeight: 800,
                           borderRadius: 12,
                           padding: "2px 6px",
+                          transform: "rotate(-2deg)",
                         }}
                       >
                         {combo.badge}

@@ -12,6 +12,7 @@ import GranizadoCustomizer from "@/components/menu/GranizadoCustomizer";
 import ConeCustomizer from "@/components/menu/ConeCustomizer";
 import GenericCustomizer from "@/components/menu/GenericCustomizer";
 import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer";
+import ProductDetailLine from "@/components/menu/ProductDetailLine";
 
 // ─── Ordenamiento comercial dinámico ───────────────────────────────
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
@@ -135,8 +136,10 @@ function TallCard({ product, onAdd, addedFlash, bg }) {
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
       onClick={() => product.is_available !== false && onAdd(product)}
-      style={{ flex: 1.4, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: product.is_available !== false ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
-      <ProductImageBox product={product} bg={bg} size={120} emojiSize={50} />
+      style={{ flex: 1.4, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(196,30,106,0.06)", cursor: product.is_available !== false ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
+      <div style={{ height: 120, display: "flex", alignItems: "center", justifyContent: "center", background: bg, overflow: "hidden" }}>
+        <ProductImageBox product={product} bg={bg} size={120} emojiSize={50} />
+      </div>
       {tag && product.tag !== "none" && (
         <span style={{ position: "absolute", top: 8, left: 8, fontSize: 8, background: "#C41E6A", color: "#fff", borderRadius: 20, padding: "2px 7px", fontWeight: 900 }}>{tag.label}</span>
       )}
@@ -441,7 +444,8 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
 }
 
 function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
-  const available = products.filter(p => p.is_available !== false);
+  // Filtrar: eliminar granizados de especialidades
+  const available = products.filter(p => p.is_available !== false && p.category !== "granizados");
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} />

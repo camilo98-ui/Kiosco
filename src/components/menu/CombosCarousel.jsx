@@ -166,7 +166,7 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
     <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
         <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: 0 }}>
-          Combos
+          Combos que enamoran 💕
         </p>
         <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A", padding: 0 }}>
           Ver todos →
@@ -174,7 +174,7 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
       </div>
 
       <div
-        style={{ overflow: "hidden", paddingLeft: 16, paddingBottom: 4, cursor: "grab" }}
+        style={{ overflowX: "scroll", overflowY: "hidden", paddingLeft: 16, paddingBottom: 4, cursor: "grab", touchAction: "pan-x", WebkitOverflowScrolling: "touch" }}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -182,7 +182,7 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
         onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
         onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
       >
-        <div ref={trackRef} style={{ display: "flex", gap: GAP, width: "max-content" }}>
+        <div ref={trackRef} style={{ display: "flex", gap: GAP, width: "max-content", willChange: "transform" }}>
           {doubled.map((combo, i) => (
             <ComboCard key={`${combo.id}-${i}`} combo={combo} onAdd={onAdd} />
           ))}
