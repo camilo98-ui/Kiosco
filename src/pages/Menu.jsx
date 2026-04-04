@@ -11,7 +11,6 @@ import EditorialLayout from "@/components/menu/EditorialLayout";
 import SuggestedRow from "@/components/menu/SuggestedRow";
 import PremiumCartBar from "@/components/menu/PremiumCartBar";
 import CategoryGrid from "@/components/menu/CategoryGrid";
-import AdditionsUpsell from "@/components/menu/AdditionsUpsell";
 import UpsellBanner from "@/components/menu/UpsellBanner";
 import CheckoutDialog from "@/components/menu/CheckoutDialog";
 import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
@@ -135,7 +134,7 @@ function MostOrdered({ products, onAdd }) {
   );
 }
 
-function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
+function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
   const touchStartX = useRef(null);
 
   const handleTouchStart = (e) => {
@@ -164,7 +163,6 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
         {suggestedProducts.length > 0 && <SuggestedRow products={suggestedProducts} onAdd={onAdd} />}
       </div>
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
-      {showAdditionsUpsell && <AdditionsUpsell lastAdded={lastAdded} additions={productsByCategory["adiciones"] || []} onAdd={onAdd} onDismiss={() => setShowAdditionsUpsell(false)} />}
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
@@ -184,7 +182,6 @@ export default function Menu() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addedFlash, setAddedFlash] = useState(null);
   const [lastAdded, setLastAdded] = useState(null);
-  const [showAdditionsUpsell, setShowAdditionsUpsell] = useState(false);
   const [showMostOrdered, setShowMostOrdered] = useState(false);
   const [showWaterUpsell, setShowWaterUpsell] = useState(false);
   const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
@@ -235,15 +232,7 @@ export default function Menu() {
     addItem(product, notes);
     setAddedFlash(product.id);
     setTimeout(() => setAddedFlash(null), 600);
-    if (product.category !== "adiciones") {
-      clearTimeout(upsellTimer.current);
-      setShowAdditionsUpsell(false);
-      upsellTimer.current = setTimeout(() => {
-        setLastAdded(product);
-        setShowAdditionsUpsell(true);
-        setTimeout(() => setShowAdditionsUpsell(false), 8000);
-      }, 700);
-    }
+    setLastAdded(product);
     const rule = UPSELL_RULES[product.category];
     if (rule && product.category === "adiciones") {
       upsellTimer.current = setTimeout(() => {
@@ -321,10 +310,6 @@ export default function Menu() {
         isSubmitting={isSubmitting}
         hiddenMenuOpen={hiddenMenuOpen}
         setHiddenMenuOpen={setHiddenMenuOpen}
-        productsByCategory={productsByCategory}
-        showAdditionsUpsell={showAdditionsUpsell}
-        setShowAdditionsUpsell={setShowAdditionsUpsell}
-        lastAdded={lastAdded}
         upsellMsg={upsellMsg}
         setUpsellMsg={setUpsellMsg}
         handleUpsellAccept={handleUpsellAccept}
@@ -391,7 +376,6 @@ export default function Menu() {
 
       {/* ── OVERLAYS ── */}
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
-      {showAdditionsUpsell && <AdditionsUpsell lastAdded={lastAdded} additions={productsByCategory["adiciones"] || []} onAdd={handleAddProduct} onDismiss={() => setShowAdditionsUpsell(false)} />}
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
