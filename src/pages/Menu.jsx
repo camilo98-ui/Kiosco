@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { useCart } from "@/lib/cartStore";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
-import { Search, ShoppingBag, Loader2, ChevronRight, ChevronLeft, Home } from "lucide-react";
+import { Search, ShoppingBag, Loader2, ChevronRight, Home } from "lucide-react";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import SearchModal from "@/components/menu/SearchModal";
 import PromoBanners from "@/components/menu/PromoBanners";
@@ -136,8 +136,20 @@ function MostOrdered({ products, onAdd }) {
 }
 
 function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
+  const touchStartX = useRef(null);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartX.current;
+    if (diff > 60) onBack();
+    touchStartX.current = null;
+  };
+
   return (
-    <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
+    <div className="min-h-screen" style={{ background: "#FFFCFD" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)" }}>
         <button onClick={onBack} style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.2)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
           <Home size={20} color="#fff" />
@@ -324,22 +336,39 @@ export default function Menu() {
     <div className="min-h-screen" style={{ background: "#F7F3F5" }}>
       {/* ── HEADER ── */}
       <div
-        className="sticky top-0 z-20 flex items-center justify-between pl-0 pr-3"
-        style={{ height: 56, background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}
+        className="sticky top-0 z-20"
+        style={{ background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}
       >
         <HeaderLine hasCart={itemCount > 0} />
-        <PopsyLogo onClick={handleLogoClick} size="normal" dark />
-        <div className="flex items-center gap-2">
-          <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}>
-            <Search size={14} color="#fff" />
-          </button>
-          <button className="flex items-center justify-center relative" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}>
+        {/* Fila logo + carrito */}
+        <div className="flex items-center justify-between pl-0 pr-3" style={{ height: 48 }}>
+          <PopsyLogo onClick={handleLogoClick} size="normal" dark />
+          <button className="flex items-center justify-center relative" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)", border: "none", cursor: "pointer" }}>
             <ShoppingBag size={14} color="#fff" />
             {itemCount > 0 && (
               <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#C41E6A", fontSize: 8 }}>
                 {itemCount}
               </span>
             )}
+          </button>
+        </div>
+        {/* Barra de búsqueda siempre visible */}
+        <div style={{ padding: "0 12px 10px" }}>
+          <button
+            onClick={() => setSearchOpen(true)}
+            style={{
+              width: "100%", height: 36, borderRadius: 20,
+              background: "rgba(255,255,255,0.22)",
+              border: "1px solid rgba(255,255,255,0.35)",
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "0 14px", cursor: "pointer",
+              textAlign: "left",
+            }}
+          >
+            <Search size={14} color="rgba(255,255,255,0.8)" />
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", fontFamily: "'Poppins', sans-serif" }}>
+              Buscar productos...
+            </span>
           </button>
         </div>
       </div>

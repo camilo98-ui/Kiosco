@@ -28,8 +28,19 @@ const SABORES_HELADO = [
   "Snickers Almond Gourmet",
 ];
 
+const SALSAS = [
+  "Salsa Arequipe",
+  "Salsa De Caramelo",
+  "Salsa De Chocolate",
+  "Salsa De Fresa",
+  "Salsa De Frutas",
+  "Salsa De Mora",
+  "Salsa Cereza Italiana",
+];
+
+const CHANTILLY = ["Con Crema Chantilly", "Sin Crema Chantilly"];
+
 const EXTRAS = [
-  { name: "Agua", price: 3000 },
   { name: "Gomas Ositos", price: 3100 },
   { name: "Cerezas", price: 3100 },
   { name: "M&M's", price: 3100 },
@@ -37,7 +48,6 @@ const EXTRAS = [
   { name: "Fresas", price: 3100 },
   { name: "Durazno", price: 3100 },
   { name: "Mini Masmelos", price: 3100 },
-  { name: "Chantilly", price: 2900 },
   { name: "Chips De Chocolate", price: 3100 },
   { name: "Brownie", price: 3100 },
   { name: "Galleta Oreo", price: 3100 },
@@ -49,8 +59,7 @@ const EXTRAS = [
   { name: "Sprinkles", price: 3100 },
 ];
 
-const SECTIONS = ["sabor", "extras"];
-const MAX_SABORES = 1; // Default para helados normales
+const SECTIONS = ["sabor", "salsa", "chantilly", "extras"];
 
 function AccordionSection({ title, required, open, onToggle, children, badge }) {
   return (
@@ -70,9 +79,7 @@ function AccordionSection({ title, required, open, onToggle, children, badge }) 
               Obligatorio
             </span>
           )}
-          {badge && (
-            <span style={{ fontSize: 10, color: "#C41E6A", fontWeight: 700 }}>{badge}</span>
-          )}
+          {badge && <span style={{ fontSize: 10, color: "#C41E6A", fontWeight: 700 }}>{badge}</span>}
         </div>
         <span style={{ fontSize: 18, color: "#BBA8B0" }}>{open ? "∧" : "∨"}</span>
       </button>
@@ -115,9 +122,11 @@ function CheckOption({ label, price, selected, onToggle }) {
     >
       <div>
         <span style={{ fontSize: 13, color: "#1A0A10" }}>{label}</span>
-        <span style={{ fontSize: 11, color: "#C41E6A", marginLeft: 6, fontWeight: 700 }}>
-          + {formatCOP(price)}
-        </span>
+        {price > 0 && (
+          <span style={{ fontSize: 11, color: "#C41E6A", marginLeft: 6, fontWeight: 700 }}>
+            + {formatCOP(price)}
+          </span>
+        )}
       </div>
       <div style={{
         width: 22, height: 22, borderRadius: 5,
@@ -135,6 +144,8 @@ function CheckOption({ label, price, selected, onToggle }) {
 export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
   const [openSection, setOpenSection] = useState("sabor");
   const [sabor, setSabor] = useState(null);
+  const [salsa, setSalsa] = useState(null);
+  const [chantilly, setChantilly] = useState(null);
   const [extras, setExtras] = useState([]);
 
   const advanceToNext = (current) => {
@@ -153,16 +164,19 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
 
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
   const total = (product?.price || 0) + extrasTotal;
+  const allRequired = sabor && salsa && chantilly;
 
   const handleConfirm = () => {
-    if (!sabor) return;
+    if (!allRequired) return;
     const notes = [
       `Sabor: ${sabor}`,
+      `Salsa: ${salsa}`,
+      `Chantilly: ${chantilly}`,
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
-    setSabor(null); setExtras([]);
+    setSabor(null); setSalsa(null); setChantilly(null); setExtras([]);
     setOpenSection("sabor");
     onClose();
   };
@@ -205,12 +219,48 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           ))}
         </AccordionSection>
 
+        {/* Salsa */}
+        <AccordionSection
+          title="Elige Tu Salsa"
+          required
+          open={openSection === "salsa"}
+          onToggle={() => setOpenSection(s => s === "salsa" ? null : "salsa")}
+        >
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
+          {SALSAS.map(s => (
+            <RadioOption
+              key={s}
+              label={s}
+              selected={salsa === s}
+              onSelect={() => { setSalsa(s); advanceToNext("salsa"); }}
+            />
+          ))}
+        </AccordionSection>
+
+        {/* Chantilly */}
+        <AccordionSection
+          title="¿Deseas Crema Chantilly?"
+          required
+          open={openSection === "chantilly"}
+          onToggle={() => setOpenSection(s => s === "chantilly" ? null : "chantilly")}
+        >
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
+          {CHANTILLY.map(c => (
+            <RadioOption
+              key={c}
+              label={c}
+              selected={chantilly === c}
+              onSelect={() => { setChantilly(c); advanceToNext("chantilly"); }}
+            />
+          ))}
+        </AccordionSection>
+
         {/* Extras */}
         <AccordionSection
           title="Elige Tus Extras"
           required={false}
-          open={true}
-          onToggle={() => {}}
+          open={openSection === "extras"}
+          onToggle={() => setOpenSection(s => s === "extras" ? null : "extras")}
         >
           <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Opcionales · puedes elegir varios</p>
           {EXTRAS.map(e => (
@@ -226,21 +276,21 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
 
         {/* Footer */}
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
-          {!sabor && (
+          {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige un sabor para continuar
+              * Elige sabor, salsa y chantilly para continuar
             </p>
           )}
           <button
             onClick={handleConfirm}
-            disabled={!sabor}
+            disabled={!allRequired}
             style={{
               width: "100%", height: 56, borderRadius: 18,
-              background: sabor ? "#C41E6A" : "#EDD8E4",
-              color: sabor ? "#fff" : "#BBA8B0",
+              background: allRequired ? "#C41E6A" : "#EDD8E4",
+              color: allRequired ? "#fff" : "#BBA8B0",
               fontSize: 15, fontWeight: 900, border: "none",
-              cursor: sabor ? "pointer" : "not-allowed",
-              boxShadow: sabor ? "0 4px 16px rgba(194,24,91,0.35)" : "none",
+              cursor: allRequired ? "pointer" : "not-allowed",
+              boxShadow: allRequired ? "0 4px 16px rgba(194,24,91,0.35)" : "none",
               transition: "all 0.2s",
             }}
           >
