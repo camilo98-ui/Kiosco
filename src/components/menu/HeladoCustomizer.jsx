@@ -17,19 +17,15 @@ const SABORES_HELADO = [
   "Cubeta Vainilla",
 ];
 
-const SALSAS = [
-  "Salsa Arequipe",
-  "Salsa De Caramelo",
-  "Salsa De Chocolate",
-  "Salsa De Fresa",
-  "Salsa De Frutas",
-  "Salsa De Mora",
-  "Salsa Cereza Italiana",
-];
-
-const CHANTILLY = ["Con Crema Chantilly", "Sin Crema Chantilly"];
-
 const EXTRAS = [
+  { name: "Salsa Arequipe", price: 3100 },
+  { name: "Salsa De Caramelo", price: 3100 },
+  { name: "Salsa De Chocolate", price: 3100 },
+  { name: "Salsa De Fresa", price: 3100 },
+  { name: "Salsa De Frutas", price: 3100 },
+  { name: "Salsa De Mora", price: 3100 },
+  { name: "Salsa Cereza Italiana", price: 3100 },
+  { name: "Crema Chantilly", price: 3100 },
   { name: "Gomas Ositos", price: 3100 },
   { name: "Cerezas", price: 3100 },
   { name: "M&M's", price: 3100 },
@@ -136,11 +132,9 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
 
   const [openSection, setOpenSection] = useState("sabor");
   const [sabores, setSabores] = useState([]);
-  const [salsa, setSalsa] = useState(null);
-  const [chantilly, setChantilly] = useState(null);
   const [extras, setExtras] = useState([]);
 
-  const SECTIONS = ["sabor", "salsa", "chantilly", "extras"];
+  const SECTIONS = ["sabor", "extras"];
 
   const advanceToNext = (current) => {
     const idx = SECTIONS.indexOf(current);
@@ -168,19 +162,17 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
 
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
   const total = (product?.price || 0) + extrasTotal;
-  const allRequired = sabores.length === maxSabores && salsa && chantilly;
+  const allRequired = sabores.length === maxSabores;
 
   const handleConfirm = () => {
     if (!allRequired) return;
     const notes = [
       `Sabor: ${sabores.join(", ")}`,
-      `Salsa: ${salsa}`,
-      `Chantilly: ${chantilly}`,
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
-    setSabores([]); setSalsa(null); setChantilly(null); setExtras([]);
+    setSabores([]); setExtras([]);
     setOpenSection("sabor");
     onClose();
   };
@@ -237,42 +229,6 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           ))}
         </AccordionSection>
 
-        {/* Salsa */}
-        <AccordionSection
-          title="Elige Tu Salsa"
-          required
-          open={openSection === "salsa"}
-          onToggle={() => setOpenSection(s => s === "salsa" ? null : "salsa")}
-        >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
-          {SALSAS.map(s => (
-            <RadioOption
-              key={s}
-              label={s}
-              selected={salsa === s}
-              onSelect={() => { setSalsa(s); advanceToNext("salsa"); }}
-            />
-          ))}
-        </AccordionSection>
-
-        {/* Chantilly */}
-        <AccordionSection
-          title="¿Deseas Crema Chantilly?"
-          required
-          open={openSection === "chantilly"}
-          onToggle={() => setOpenSection(s => s === "chantilly" ? null : "chantilly")}
-        >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
-          {CHANTILLY.map(c => (
-            <RadioOption
-              key={c}
-              label={c}
-              selected={chantilly === c}
-              onSelect={() => { setChantilly(c); advanceToNext("chantilly"); }}
-            />
-          ))}
-        </AccordionSection>
-
         {/* Extras */}
         <AccordionSection
           title="Elige Tus Extras"
@@ -280,7 +236,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           open={openSection === "extras"}
           onToggle={() => setOpenSection(s => s === "extras" ? null : "extras")}
         >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Opcionales · tienen costo adicional</p>
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Salsas, Chantilly y más · tienen costo adicional</p>
           {EXTRAS.map(e => (
             <CheckOption
               key={e.name}
@@ -296,7 +252,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
           {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige {maxSabores === 2 ? "2 sabores" : "sabor"}, salsa y chantilly para continuar
+              * Elige {maxSabores === 2 ? "2 sabores" : "1 sabor"} para continuar
             </p>
           )}
           <button
