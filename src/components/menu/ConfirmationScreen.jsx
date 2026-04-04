@@ -68,6 +68,14 @@ export default function ConfirmationScreen({ order, onNewOrder }) {
           </p>
         </div>
 
+        <div className="rounded-2xl p-3 border border-blue-200 bg-blue-50 flex items-center gap-3">
+          <span className="text-2xl">💧</span>
+          <div className="text-left flex-1">
+            <p className="font-bold text-sm text-foreground">¿Quieres agregar agua?</p>
+            <p className="text-xs text-muted-foreground">{formatCOP(3500)}</p>
+          </div>
+        </div>
+
         <Button
           onClick={onNewOrder}
           className="w-full h-14 text-base font-black rounded-2xl bg-primary hover:bg-primary/90 text-white"

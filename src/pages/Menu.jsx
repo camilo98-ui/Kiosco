@@ -186,7 +186,6 @@ export default function Menu() {
   const [addedFlash, setAddedFlash] = useState(null);
   const [lastAdded, setLastAdded] = useState(null);
   const [showMostOrdered, setShowMostOrdered] = useState(false);
-  const [showWaterUpsell, setShowWaterUpsell] = useState(false);
   const [showCombosAll, setShowCombosAll] = useState(false);
   const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
@@ -269,23 +268,9 @@ export default function Menu() {
   }, [upsellTarget]);
 
   const handleCheckoutStart = useCallback((name) => {
-    setPendingCheckoutName(name);
-    setShowWaterUpsell(true);
     setCheckoutOpen(false);
+    doCheckout(name, []);
   }, []);
-
-  const handleWaterAdd = useCallback(() => {
-    if (!pendingCheckoutName) return;
-    const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
-    doCheckout(pendingCheckoutName, [waterItem]);
-    setShowWaterUpsell(false);
-  }, [pendingCheckoutName]);
-
-  const handleWaterSkip = useCallback(() => {
-    if (!pendingCheckoutName) return;
-    doCheckout(pendingCheckoutName, []);
-    setShowWaterUpsell(false);
-  }, [pendingCheckoutName]);
 
   const doCheckout = async (name, extraItems = []) => {
     const cartSnapshot = [...cart, ...extraItems];
@@ -400,13 +385,10 @@ export default function Menu() {
       {/* ── OVERLAYS ── */}
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
-      {!showWaterUpsell && <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />}
+      <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={handleAddProduct} />
       <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
-      {showWaterUpsell && (
-        <WaterUpsell onAdd={handleWaterAdd} onSkip={handleWaterSkip} />
-      )}
       {showMostOrdered && (
         <MostOrderedAll products={products} onAdd={(p) => { handleAddProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
       )}
