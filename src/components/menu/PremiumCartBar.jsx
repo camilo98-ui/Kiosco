@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import { Minus, Plus, Trash2, MessageSquare } from "lucide-react";
+import { Minus, Plus, Trash2, MessageSquare, Droplet } from "lucide-react";
 import { useCart } from "@/lib/cartStore";
 import { formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,9 +19,10 @@ function getIncentive(total) {
 }
 
 export default function PremiumCartBar({ onCheckout }) {
-  const { cart, updateQuantity, removeItem, updateNotes, total, itemCount } = useCart();
+  const { cart, updateQuantity, removeItem, updateNotes, total, itemCount, addItem } = useCart();
   const [open, setOpen] = useState(false);
   const [editingNotes, setEditingNotes] = useState(null);
+  const hasWater = cart.some(item => item.product_id === "water");
 
   if (itemCount === 0) return null;
 
@@ -170,6 +171,22 @@ export default function PremiumCartBar({ onCheckout }) {
               </div>
             ))}
           </div>
+
+          {!hasWater && (
+            <button
+              onClick={() => {
+                addItem({ product_id: "water", product_name: "Agua", price: 3500, category: "bebidas", emoji: "💧" });
+                setTimeout(() => setOpen(false), 200);
+              }}
+              className="w-full rounded-xl p-3 mb-3 bg-blue-50 border border-blue-200 flex items-center gap-2 hover:bg-blue-100 transition-colors"
+            >
+              <Droplet size={16} style={{ color: "#1E88E5" }} />
+              <span className="flex-1 text-left font-bold text-sm" style={{ color: "#1E88E5" }}>
+                Agregar agua · {formatCOP(3500)}
+              </span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#64B5F6" }}>+</span>
+            </button>
+          )}
 
           <div className="mt-4 pt-4" style={{ borderTop: "1.5px solid #F0E4EA" }}>
              <div className="flex justify-between font-black mb-4 px-1" style={{ fontSize: 20 }}>
