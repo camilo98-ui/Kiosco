@@ -122,7 +122,7 @@ function MostOrdered({ products, onAdd }) {
     <div style={{ background: "#fff", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
         <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Lo más pedido</p>
-        <button style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#B5175A" }}>Ver todo</button>
+        <button style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#E91B8B" }}>Ver todo</button>
       </div>
       {top.map((product, idx) => (
         <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} />
@@ -135,7 +135,7 @@ function MostOrdered({ products, onAdd }) {
 function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, productsByCategory, showAdditionsUpsell, setShowAdditionsUpsell, lastAdded, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
   return (
     <div className="min-h-screen" style={{ background: "#FFFCFD" }}>
-      <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)" }}>
+      <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #E91B8B 0%, #E91B8B 55%, #FF6EB4 100%)" }}>
         <button onClick={onBack} style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.2)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
           <Home size={20} color="#fff" />
         </button>
@@ -298,7 +298,7 @@ export default function Menu() {
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20 flex items-center justify-between pl-0 pr-3"
-        style={{ height: 56, background: "linear-gradient(90deg, #B5175A 0%, #B5175A 55%, #5BA8A0 100%)", overflow: "hidden" }}
+        style={{ height: 56, background: "linear-gradient(90deg, #E91B8B 0%, #E91B8B 55%, #FF6EB4 100%)", overflow: "hidden" }}
       >
         <HeaderLine hasCart={itemCount > 0} />
         <PopsyLogo onClick={handleLogoClick} size="normal" dark />
@@ -309,7 +309,7 @@ export default function Menu() {
           <button className="flex items-center justify-center relative" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)" }}>
             <ShoppingBag size={14} color="#fff" />
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#B5175A", fontSize: 8 }}>
+              <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#E91B8B", fontSize: 8 }}>
                 {itemCount}
               </span>
             )}
@@ -326,7 +326,7 @@ export default function Menu() {
         <CombosCarousel onAdd={handleAddProduct} />
         {isLoading ? (
           <div className="flex justify-center py-16">
-            <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#B5175A" }} />
+            <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#E91B8B" }} />
           </div>
         ) : (
           <MostOrdered products={products} onAdd={handleAddProduct} />

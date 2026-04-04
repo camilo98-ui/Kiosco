@@ -71,7 +71,7 @@ function SectionHeader({ label, count, onViewAll }) {
       <p style={{ fontSize: 9, fontWeight: 800, color: "#BBA8B0", textTransform: "uppercase", letterSpacing: "1.5px" }}>
         {label} · {count} disponibles
       </p>
-      <button onClick={onViewAll} style={{ fontSize: 9, color: "#C2185B", fontWeight: 700, background: "none", border: "none", cursor: "pointer" }}>
+      <button onClick={onViewAll} style={{ fontSize: 9, color: "#E91B8B", fontWeight: 700, background: "none", border: "none", cursor: "pointer" }}>
         Ver todos →
       </button>
     </div>
@@ -85,7 +85,7 @@ function HorizontalCard({ product, onAdd, addedFlash, bg }) {
     <motion.div
       animate={isFlash ? { scale: 0.98 } : { scale: 1 }}
       transition={{ duration: 0.15 }}
-      style={{ border: "1.5px solid #F0E4EA", borderRadius: 18, background: "#fff", height: 72, display: "flex", alignItems: "center", overflow: "hidden" }}
+      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, background: "#fff", height: 72, display: "flex", alignItems: "center", overflow: "hidden", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}
     >
       <div style={{ width: 72, height: 72, background: bg, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {product.image_url && !imgError ? (
@@ -103,9 +103,9 @@ function HorizontalCard({ product, onAdd, addedFlash, bg }) {
         }
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, paddingRight: 12 }}>
-        <span style={{ fontSize: 12, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
+        <span style={{ fontSize: 12, fontWeight: 800, color: "#E91B8B" }}>{formatCOP(product.price)}</span>
         {product.is_available !== false && (
-          <button onClick={() => onAdd(product)} style={{ width: 22, height: 22, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(194,24,91,0.3)", cursor: "pointer" }}>
+          <button onClick={() => onAdd(product)} style={{ width: 22, height: 22, borderRadius: "50%", background: "#E91B8B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(233,27,139,0.25)", cursor: "pointer" }}>
             <Plus size={11} />
           </button>
         )}
@@ -131,10 +131,10 @@ function TallCard({ product, onAdd, addedFlash, bg }) {
   const isFlash = addedFlash === product.id;
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ flex: 1.4, border: "1.5px solid #F0E4EA", borderRadius: 22, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
+      style={{ flex: 1.4, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
       <ProductImageBox product={product} bg={bg} size={120} emojiSize={50} />
       {tag && product.tag !== "none" && (
-        <span style={{ position: "absolute", top: 8, left: 8, fontSize: 8, background: "#C2185B", color: "#fff", borderRadius: 20, padding: "2px 7px", fontWeight: 900 }}>{tag.label}</span>
+        <span style={{ position: "absolute", top: 8, left: 8, fontSize: 8, background: "#E91B8B", color: "#fff", borderRadius: 20, padding: "2px 7px", fontWeight: 900 }}>{tag.label}</span>
       )}
       <div style={{ padding: "10px", flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
         <p style={{ fontSize: 12, fontWeight: 800, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
@@ -143,9 +143,9 @@ function TallCard({ product, onAdd, addedFlash, bg }) {
           : <p style={{ fontSize: 8, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
         }
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto", paddingTop: 6 }}>
-          <span style={{ fontSize: 14, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
+          <span style={{ fontSize: 14, fontWeight: 800, color: "#E91B8B" }}>{formatCOP(product.price)}</span>
           {product.is_available !== false && (
-            <button onClick={() => onAdd(product)} style={{ width: 24, height: 24, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(194,24,91,0.35)", cursor: "pointer" }}>
+            <button onClick={() => onAdd(product)} style={{ width: 24, height: 24, borderRadius: "50%", background: "#E91B8B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(233,27,139,0.25)", cursor: "pointer" }}>
               <Plus size={13} />
             </button>
           )}
@@ -160,17 +160,17 @@ function SmallCard({ product, onAdd, addedFlash, bg }) {
   const isFlash = addedFlash === product.id;
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ flex: 1, border: "1.5px solid #F0E4EA", borderRadius: 18, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
+      style={{ flex: 1, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
       <ProductImageBox product={product} bg={bg} size={58} emojiSize={28} />
       {tag && product.tag === "recomendado" && (
         <span style={{ position: "absolute", top: 4, left: 4, fontSize: 7, background: "#FFF9C4", color: "#7B6A00", borderRadius: 10, padding: "1px 5px", fontWeight: 800 }}>⭐ Chef</span>
       )}
-      <button onClick={() => onAdd(product)} style={{ position: "absolute", top: 4, right: 4, width: 18, height: 18, borderRadius: "50%", background: "#fff", border: "1.5px solid #C2185B", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-        <Plus size={10} color="#C2185B" />
+      <button onClick={() => onAdd(product)} style={{ position: "absolute", top: 4, right: 4, width: 18, height: 18, borderRadius: "50%", background: "#E91B8B", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+        <Plus size={10} color="#fff" />
       </button>
       <div style={{ padding: "6px 8px 8px" }}>
-        <p style={{ fontSize: 8, fontWeight: 700, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
-        <p style={{ fontSize: 10, fontWeight: 900, color: "#C2185B", marginTop: 2 }}>{formatCOP(product.price)}</p>
+        <p style={{ fontSize: 8, fontWeight: 600, color: "#2D2D2D", lineHeight: 1.3 }}>{product.name}</p>
+        <p style={{ fontSize: 10, fontWeight: 800, color: "#E91B8B", marginTop: 2 }}>{formatCOP(product.price)}</p>
       </div>
     </motion.div>
   );
@@ -214,7 +214,7 @@ function MalteadaCard({ product, onAdd, addedFlash, bg }) {
   const [imgError, setImgError] = React.useState(false);
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ width: 140, flexShrink: 0, border: "1.5px solid #F0E4EA", borderRadius: 22, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
+      style={{ width: 140, flexShrink: 0, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
       <div style={{ background: bg, height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
         {product.image_url && !imgError ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -222,16 +222,16 @@ function MalteadaCard({ product, onAdd, addedFlash, bg }) {
           <span style={{ fontSize: 44 }}>{product.emoji || "🥤"}</span>
         )}
         {tag && product.tag !== "none" && (
-          <span style={{ position: "absolute", top: 6, left: 6, fontSize: 8, background: "#C2185B", color: "#fff", borderRadius: 20, padding: "2px 7px", fontWeight: 900 }}>{tag.label}</span>
+          <span style={{ position: "absolute", top: 6, left: 6, fontSize: 8, background: "#E91B8B", color: "#fff", borderRadius: 20, padding: "2px 7px", fontWeight: 900 }}>{tag.label}</span>
         )}
       </div>
       <div style={{ padding: "8px 10px 10px", flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
         <p style={{ fontSize: 11, fontWeight: 800, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
         <p style={{ fontSize: 8, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto", paddingTop: 6 }}>
-          <span style={{ fontSize: 13, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
+          <span style={{ fontSize: 13, fontWeight: 800, color: "#E91B8B" }}>{formatCOP(product.price)}</span>
           {product.is_available !== false && (
-            <button onClick={() => onAdd(product)} style={{ width: 24, height: 24, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(194,24,91,0.35)", cursor: "pointer" }}>
+            <button onClick={() => onAdd(product)} style={{ width: 24, height: 24, borderRadius: "50%", background: "#E91B8B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(233,27,139,0.25)", cursor: "pointer" }}>
               <Plus size={12} />
             </button>
           )}
@@ -341,8 +341,8 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
           onClick={() => setSelectedSize("12oz")}
           style={{
             flex: 1, height: 50, borderRadius: 16,
-            background: selectedSize === "12oz" ? "#C2185B" : "#FFF0F5",
-            color: selectedSize === "12oz" ? "#fff" : "#C2185B",
+            background: selectedSize === "12oz" ? "#E91B8B" : "#FFF0F5",
+            color: selectedSize === "12oz" ? "#fff" : "#E91B8B",
             fontSize: 14, fontWeight: 900, border: "none", cursor: "pointer",
             transition: "all 0.2s",
           }}
@@ -353,8 +353,8 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
           onClick={() => setSelectedSize("16oz")}
           style={{
             flex: 1, height: 50, borderRadius: 16,
-            background: selectedSize === "16oz" ? "#C2185B" : "#FFF0F5",
-            color: selectedSize === "16oz" ? "#fff" : "#C2185B",
+            background: selectedSize === "16oz" ? "#E91B8B" : "#FFF0F5",
+            color: selectedSize === "16oz" ? "#fff" : "#E91B8B",
             fontSize: 14, fontWeight: 900, border: "none", cursor: "pointer",
             transition: "all 0.2s",
           }}
@@ -406,10 +406,10 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
   const [imgError, setImgError] = React.useState(false);
   return (
     <motion.div animate={isFlash ? { scale: 0.98 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ border: "1.5px solid #F0E4EA", borderRadius: 18, background: "#fff", height: 90, display: "flex", alignItems: "center", overflow: "hidden" }}>
+      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, background: "#fff", height: 90, display: "flex", alignItems: "center", overflow: "hidden", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
       <div style={{ flex: 1, padding: "0 14px", display: "flex", flexDirection: "column", gap: 3 }}>
         {tag && product.tag !== "none" && (
-          <span style={{ fontSize: 8, background: "#C2185B", color: "#fff", borderRadius: 20, padding: "1px 7px", fontWeight: 900, alignSelf: "flex-start" }}>{tag.label}</span>
+          <span style={{ fontSize: 8, background: "#E91B8B", color: "#fff", borderRadius: 20, padding: "1px 7px", fontWeight: 900, alignSelf: "flex-start" }}>{tag.label}</span>
         )}
         <p style={{ fontSize: 13, fontWeight: 700, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
         {getProductHint(product)
@@ -417,9 +417,9 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
           : <p style={{ fontSize: 9, color: "#BBA8B0" }}>{product.is_available !== false ? "Disponible" : "Agotado"}</p>
         }
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 14, fontWeight: 900, color: "#C2185B" }}>{formatCOP(product.price)}</span>
+          <span style={{ fontSize: 14, fontWeight: 800, color: "#E91B8B" }}>{formatCOP(product.price)}</span>
           {product.is_available !== false && (
-            <button onClick={() => onAdd(product)} style={{ width: 24, height: 24, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+            <button onClick={() => onAdd(product)} style={{ width: 24, height: 24, borderRadius: "50%", background: "#E91B8B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 2px 8px rgba(233,27,139,0.25)" }}>
               <Plus size={12} />
             </button>
           )}
@@ -456,7 +456,7 @@ function CafeCard({ product, onAdd, addedFlash, bg }) {
   const [imgError, setImgError] = React.useState(false);
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ border: "1.5px solid #F0E4EA", borderRadius: 20, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column" }}>
+      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
       <div style={{ background: bg, height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
         {product.image_url && !imgError ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -469,10 +469,10 @@ function CafeCard({ product, onAdd, addedFlash, bg }) {
       </div>
       <div style={{ padding: "8px 10px 30px" }}>
         <p style={{ fontSize: 10, fontWeight: 700, color: "#2D1A22", lineHeight: 1.3 }}>{product.name}</p>
-        <p style={{ fontSize: 11, fontWeight: 900, color: "#C2185B", marginTop: 3 }}>{formatCOP(product.price)}</p>
+        <p style={{ fontSize: 11, fontWeight: 800, color: "#E91B8B", marginTop: 3 }}>{formatCOP(product.price)}</p>
       </div>
       {product.is_available !== false && (
-        <button onClick={() => onAdd(product)} style={{ position: "absolute", bottom: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: "#C2185B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+        <button onClick={() => onAdd(product)} style={{ position: "absolute", bottom: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: "#E91B8B", color: "#fff", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 2px 6px rgba(233,27,139,0.25)" }}>
           <Plus size={11} />
         </button>
       )}

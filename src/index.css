@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,6 +9,7 @@
 @layer base {
   :root {
     --font-nunito: 'Nunito', sans-serif;
+    --font-poppins: 'Poppins', sans-serif;
 
     /* Paleta Popsy oficial — blanco + fucsia + pasteles */
     --background: 0 0% 98%;
@@ -83,7 +85,9 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-nunito;
+    @apply bg-background text-foreground;
+    font-family: 'Poppins', sans-serif;
+    color: #2D2D2D;
   }
 }
 
