@@ -71,7 +71,7 @@ function ComboCard({ combo, gradient, onAdd }) {
         {/* Badge */}
         <span style={{
           position: "absolute", top: 9, right: 9,
-          background: combo.badgeColor, color: "#fff",
+          background: "#E91B8B", color: "#fff",
           fontSize: 9, fontWeight: 800,
           borderRadius: 20, padding: "3px 8px",
           letterSpacing: "0.3px",
