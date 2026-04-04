@@ -49,11 +49,11 @@ function ComboCard({ combo, gradient, onAdd }) {
         width: CARD_WIDTH,
         flexShrink: 0,
         borderRadius: 20,
-        border: "1.5px solid #f2d6c8",
+        border: "1.5px solid #F0E4EA",
         background: "#fff",
         overflow: "hidden",
         cursor: "pointer",
-        boxShadow: hovered ? "0 8px 24px rgba(216,90,48,0.18)" : "0 2px 8px rgba(216,90,48,0.08)",
+        boxShadow: hovered ? "0 8px 24px rgba(194,24,91,0.18)" : "0 2px 8px rgba(194,24,91,0.08)",
         transform: hovered ? "translateY(-5px)" : "translateY(0px)",
         transition: "transform 0.25s ease, box-shadow 0.25s ease",
       }}
@@ -84,7 +84,7 @@ function ComboCard({ combo, gradient, onAdd }) {
       {/* Info zone */}
       <div style={{ padding: "8px 10px 12px" }}>
         <p style={{
-          fontSize: 12, fontWeight: 800, color: "#3C1A0A",
+          fontSize: 12, fontWeight: 800, color: "#2D1A22",
           margin: 0, lineHeight: 1.3,
           display: "-webkit-box", WebkitLineClamp: 2,
           WebkitBoxOrient: "vertical", overflow: "hidden",
@@ -92,12 +92,12 @@ function ComboCard({ combo, gradient, onAdd }) {
           {combo.title}
         </p>
         {isPrice && (
-          <p style={{ fontSize: 14, fontWeight: 900, color: "#E91B8B", margin: "4px 0 0", lineHeight: 1 }}>
+          <p style={{ fontSize: 14, fontWeight: 900, color: "#C2185B", margin: "4px 0 0", lineHeight: 1 }}>
             {combo.price}
           </p>
         )}
         {isPromo && (
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#E91B8B", margin: "4px 0 0", lineHeight: 1.3 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#C2185B", margin: "4px 0 0", lineHeight: 1.3 }}>
             {combo.price}
           </p>
         )}
