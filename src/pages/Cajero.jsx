@@ -199,13 +199,13 @@ export default function Cajero() {
         </div>
       </div>
 
-      <div style={{ maxWidth: "100%", margin: "0 auto", padding: 16, display: "flex", gap: 16 }}>
+      <div style={{ width: "100%", padding: 16, display: "flex", gap: 16 }}>
          {/* Sidebar: Summary (desktop) */}
          <div style={{ width: 300, flexShrink: 0 }}>
            {showSummary && <DaySummary orders={orders} />}
          </div>
 
-         {/* Main: Orders grid */}
+         {/* Main: Orders grid — Full width */}
          <div style={{ flex: 1 }}>
            {activeOrders.length === 0 ? (
              <div style={{ textAlign: "center", paddingTop: 80, color: "#999" }}>
@@ -215,7 +215,7 @@ export default function Cajero() {
            ) : (
              <div style={{
                display: "grid",
-               gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+               gridTemplateColumns: "repeat(4, 1fr)",
                gap: 16,
              }}>
                {activeOrders.map((order) => (

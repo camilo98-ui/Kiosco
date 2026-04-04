@@ -172,7 +172,7 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
     onAdd({ ...product, price: total }, notes);
     setSabor1(null); setSabor2(null); setToppings([]);
     setOpenSection("sabor1");
-    onClose();
+    setTimeout(() => onClose(), 150);
   };
 
   if (!product) return null;

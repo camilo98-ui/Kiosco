@@ -42,10 +42,11 @@ export default function PremiumCartBar({ onCheckout }) {
             maxWidth: 480,
             marginLeft: "auto",
             marginRight: "auto",
-            background: "#C2185B",
+            background: "#E91B8B",
             borderRadius: 18,
             padding: "12px 18px",
-            boxShadow: "0 6px 24px rgba(194,24,91,0.4)",
+            boxShadow: "0 6px 24px rgba(233,27,139,0.4)",
+            touchAction: "manipulation",
           }}
         >
           {/* Izquierda: círculo contador + texto */}
@@ -53,7 +54,7 @@ export default function PremiumCartBar({ onCheckout }) {
             <div className="flex items-center gap-3">
               <div
                 className="flex items-center justify-center font-black"
-                style={{ width: 32, height: 32, borderRadius: "50%", background: "#fff", color: "#C2185B", fontSize: 14 }}
+                style={{ width: 32, height: 32, borderRadius: "50%", background: "#fff", color: "#E91B8B", fontSize: 14 }}
               >
                 {itemCount}
               </div>
@@ -103,35 +104,35 @@ export default function PremiumCartBar({ onCheckout }) {
                     <p className="font-bold text-sm truncate" style={{ color: "#2D1A22" }}>
                       {item.product_name}
                     </p>
-                    <p className="font-black text-sm" style={{ color: "#C2185B" }}>
-                      {formatCOP(item.price * item.quantity)}
-                    </p>
+                    <p className="font-black text-sm" style={{ color: "#E91B8B" }}>
+                       {formatCOP(item.price * item.quantity)}
+                     </p>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
                     <button
-                      onClick={() => updateQuantity(index, item.quantity - 1)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ background: "#fff", border: "1.5px solid #F0E4EA" }}
-                    >
-                      <Minus className="w-3 h-3" style={{ color: "#2D1A22" }} />
-                    </button>
-                    <span className="font-black w-6 text-center" style={{ color: "#2D1A22" }}>
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(index, item.quantity + 1)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ background: "#C2185B" }}
-                    >
-                      <Plus className="w-3 h-3 text-white" />
-                    </button>
-                    <button
-                      onClick={() => removeItem(index)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center ml-1"
-                      style={{ color: "#C2185B" }}
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </button>
+                       onClick={() => updateQuantity(index, item.quantity - 1)}
+                       className="w-8 h-8 rounded-full flex items-center justify-center"
+                       style={{ background: "#fff", border: "1.5px solid #F0E4EA" }}
+                     >
+                       <Minus className="w-3 h-3" style={{ color: "#999" }} />
+                     </button>
+                     <span className="font-black w-6 text-center" style={{ color: "#2D1A22" }}>
+                       {item.quantity}
+                     </span>
+                     <button
+                       onClick={() => updateQuantity(index, item.quantity + 1)}
+                       className="w-8 h-8 rounded-full flex items-center justify-center"
+                       style={{ background: "#E91B8B" }}
+                     >
+                       <Plus className="w-3 h-3 text-white" />
+                     </button>
+                     <button
+                       onClick={() => removeItem(index)}
+                       className="w-8 h-8 rounded-full flex items-center justify-center ml-1"
+                       style={{ color: "#CCC" }}
+                     >
+                       <Trash2 className="w-3 h-3" />
+                     </button>
                   </div>
                 </div>
                 {editingNotes === index ? (
@@ -144,12 +145,12 @@ export default function PremiumCartBar({ onCheckout }) {
                       autoFocus
                     />
                     <button
-                      className="text-xs mt-1 font-bold"
-                      style={{ color: "#C2185B" }}
-                      onClick={() => setEditingNotes(null)}
-                    >
-                      Listo ✓
-                    </button>
+                       className="text-xs mt-1 font-bold"
+                       style={{ color: "#E91B8B" }}
+                       onClick={() => setEditingNotes(null)}
+                     >
+                       Listo ✓
+                     </button>
                   </div>
                 ) : (
                   <button
@@ -171,23 +172,23 @@ export default function PremiumCartBar({ onCheckout }) {
           </div>
 
           <div className="mt-4 pt-4" style={{ borderTop: "1.5px solid #F0E4EA" }}>
-            <div className="flex justify-between font-black mb-4 px-1" style={{ fontSize: 20 }}>
-              <span style={{ color: "#2D1A22" }}>Total</span>
-              <span style={{ color: "#C2185B" }}>{formatCOP(total)}</span>
-            </div>
-            <button
-              className="w-full font-black text-white transition-opacity hover:opacity-90 active:scale-[0.98]"
-              style={{
-                height: 56, borderRadius: 18,
-                background: "#C2185B",
-                fontSize: 15,
-                boxShadow: "0 4px 16px rgba(194,24,91,0.35)",
-              }}
-              onClick={() => { setOpen(false); onCheckout(); }}
-            >
-              ¡Confirmar pedido! 🎉
-            </button>
-          </div>
+             <div className="flex justify-between font-black mb-4 px-1" style={{ fontSize: 20 }}>
+               <span style={{ color: "#2D1A22" }}>Total</span>
+               <span style={{ color: "#E91B8B" }}>{formatCOP(total)}</span>
+             </div>
+             <button
+               className="w-full font-black text-white transition-opacity hover:opacity-90 active:scale-[0.98]"
+               style={{
+                 height: 56, borderRadius: 18,
+                 background: "#E91B8B",
+                 fontSize: 15,
+                 boxShadow: "0 4px 16px rgba(233,27,139,0.35)",
+               }}
+               onClick={() => { setOpen(false); onCheckout(); }}
+             >
+               ¡Confirmar pedido! 🎉
+             </button>
+           </div>
         </SheetContent>
       </Sheet>
     </>

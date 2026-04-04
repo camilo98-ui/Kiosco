@@ -254,7 +254,7 @@ export default function BananaSplitCustomizer({ product, open, onClose, onAdd })
     onAdd({ ...product, price: total }, notes);
     setSabores([]); setSalsas([]); setChantilly(null); setExtras([]);
     setOpenSection("sabores");
-    onClose();
+    setTimeout(() => onClose(), 150);
   };
 
   if (!product) return null;

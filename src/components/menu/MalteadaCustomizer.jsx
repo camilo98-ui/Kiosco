@@ -185,7 +185,7 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
     // Reset
     setSalsa(null); setChantilly(null); setCrack(null); setExtras([]);
     setOpenSection("salsa");
-    onClose();
+    setTimeout(() => onClose(), 150);
   };
 
   if (!product) return null;

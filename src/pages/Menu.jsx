@@ -277,15 +277,13 @@ export default function Menu() {
 
   const handleWaterAdd = () => {
     setShowWaterUpsell(false);
-    setTimeout(() => {
-      const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
-      doCheckout(pendingCheckoutName, [waterItem]);
-    }, 100);
+    const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
+    doCheckout(pendingCheckoutName, [waterItem]);
   };
 
   const handleWaterSkip = () => {
     setShowWaterUpsell(false);
-    setTimeout(() => doCheckout(pendingCheckoutName, []), 100);
+    doCheckout(pendingCheckoutName, []);
   };
 
   const handleCheckout = handleCheckoutStart;
@@ -328,36 +326,24 @@ export default function Menu() {
         style={{ background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}
       >
         <HeaderLine hasCart={itemCount > 0} />
-        {/* Fila logo + carrito */}
-        <div className="flex items-center justify-between pl-0 pr-3" style={{ height: 48, gap: 12 }}>
-          <PopsyLogo onClick={handleLogoClick} size="normal" dark />
-          <button onClick={() => setCartOpen(true)} className="flex items-center justify-center relative" style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", padding: 0, minWidth: 40, transition: "all 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
-            <ShoppingBag size={16} color="#fff" />
-            {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", color: "#C41E6A", fontSize: 9 }}>
-                {itemCount}
-              </span>
-            )}
-          </button>
-        </div>
-        {/* Barra de búsqueda siempre visible */}
-        <div style={{ padding: "0 12px 10px", flex: 1 }}>
-          <button
-            onClick={() => setSearchOpen(true)}
-            style={{
-              width: "100%", height: 36, borderRadius: 20,
-              background: "rgba(255,255,255,0.22)",
-              border: "1px solid rgba(255,255,255,0.35)",
-              display: "flex", alignItems: "center", gap: 8,
-              padding: "0 14px", cursor: "pointer",
-              textAlign: "left",
-            }}
-          >
-            <Search size={14} color="rgba(255,255,255,0.8)" />
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", fontFamily: "'Poppins', sans-serif" }}>
-              Buscar productos...
-            </span>
-          </button>
+        {/* Fila logo + carrito + búsqueda compacta */}
+        <div className="flex items-center justify-between pl-0 pr-3 gap-2" style={{ height: 48 }}>
+          <div style={{ width: "45%", minWidth: 120 }}>
+            <PopsyLogo onClick={handleLogoClick} size="normal" dark />
+          </div>
+          <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6, justifyContent: "flex-end" }}>
+            <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
+              <Search size={16} color="#fff" />
+            </button>
+            <button onClick={() => setCartOpen(true)} className="flex items-center justify-center relative" style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", touchAction: "manipulation", transition: "all 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
+              <ShoppingBag size={16} color="#fff" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", color: "#C41E6A", fontSize: 9 }}>
+                  {itemCount}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

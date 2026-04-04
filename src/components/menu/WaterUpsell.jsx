@@ -16,7 +16,7 @@ export default function WaterUpsell({ onAdd, onSkip }) {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
         style={{
           background: "#fff", borderRadius: "24px 24px 0 0",
           width: "100%", maxWidth: 480,
@@ -29,7 +29,7 @@ export default function WaterUpsell({ onAdd, onSkip }) {
         <img
           src={WATER_IMAGE}
           alt="Agua Popsy"
-          style={{ width: 160, height: 160, objectFit: "contain" }}
+          style={{ width: 200, height: 200, objectFit: "contain", mixBlendMode: "multiply" }}
         />
 
         <div style={{ textAlign: "center" }}>

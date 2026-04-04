@@ -71,7 +71,7 @@ export default function ConeCustomizer({ product, open, onClose, onAdd }) {
     const notes = extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : "";
     onAdd({ ...product, price: total }, notes);
     setExtras([]);
-    onClose();
+    setTimeout(() => onClose(), 150);
   };
 
   if (!product) return null;

@@ -187,7 +187,7 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
     onAdd({ ...product, price: total }, notes);
     setSalsa(null); setSabor(null); setCrack(null); setExtras([]);
     setOpenSection("salsa");
-    onClose();
+    setTimeout(() => onClose(), 150);
   };
 
   if (!product) return null;

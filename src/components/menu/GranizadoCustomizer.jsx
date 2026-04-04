@@ -151,7 +151,7 @@ export default function GranizadoCustomizer({ product, open, onClose, onAdd }) {
     onAdd({ ...product, price: total }, notes);
     setSabores([]); setSalsa(null); setExtras([]);
     setOpenSection("sabores");
-    onClose();
+    setTimeout(() => onClose(), 150);
   };
 
   if (!product) return null;

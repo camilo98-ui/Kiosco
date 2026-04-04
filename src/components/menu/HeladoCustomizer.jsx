@@ -184,7 +184,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
     onAdd({ ...product, price: total }, notes);
     setSabores([]); setExtras([]);
     setOpenSection("sabor");
-    onClose();
+    setTimeout(() => onClose(), 150);
   };
 
   if (!product) return null;
