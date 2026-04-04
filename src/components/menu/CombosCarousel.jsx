@@ -153,7 +153,7 @@ export default function CombosCarousel({ onAdd }) {
 
   const handleTouchMove = (e) => {
     const diff = touchStartX.current - e.touches[0].clientX;
-    posRef.current += diff * 0.4;
+    posRef.current += diff;
     if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
     if (posRef.current >= totalWidth) posRef.current -= totalWidth;
     touchStartX.current = e.touches[0].clientX;
@@ -174,7 +174,7 @@ export default function CombosCarousel({ onAdd }) {
 
     const animate = () => {
       if (!pausedRef.current) {
-        posRef.current += 0.6;
+        posRef.current += 0.9;
         if (posRef.current >= totalWidth) posRef.current = 0;
         track.style.transform = `translateX(-${posRef.current}px)`;
         setActiveIdx(Math.round(posRef.current / CARD_STEP) % COMBOS.length);

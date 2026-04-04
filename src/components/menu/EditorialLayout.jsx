@@ -85,7 +85,8 @@ function HorizontalCard({ product, onAdd, addedFlash, bg }) {
     <motion.div
       animate={isFlash ? { scale: 0.98 } : { scale: 1 }}
       transition={{ duration: 0.15 }}
-      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, background: "#fff", height: 72, display: "flex", alignItems: "center", overflow: "hidden", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}
+      onClick={() => product.is_available !== false && onAdd(product)}
+      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, background: "#fff", height: 72, display: "flex", alignItems: "center", overflow: "hidden", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: product.is_available !== false ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}
     >
       <div style={{ width: 72, height: 72, background: bg, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {product.image_url && !imgError ? (
@@ -131,7 +132,8 @@ function TallCard({ product, onAdd, addedFlash, bg }) {
   const isFlash = addedFlash === product.id;
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ flex: 1.4, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
+      onClick={() => product.is_available !== false && onAdd(product)}
+      style={{ flex: 1.4, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: product.is_available !== false ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
       <ProductImageBox product={product} bg={bg} size={120} emojiSize={50} />
       {tag && product.tag !== "none" && (
         <span style={{ position: "absolute", top: 8, left: 8, fontSize: 8, background: "#C41E6A", color: "#fff", borderRadius: 20, padding: "2px 7px", fontWeight: 900 }}>{tag.label}</span>

@@ -18,6 +18,8 @@ import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
 import HeaderLine from "@/components/menu/HeaderLine";
 import CombosCarousel from "@/components/menu/CombosCarousel";
+import MostOrderedAll from "@/components/menu/MostOrderedAll";
+import WaterUpsell from "@/components/menu/WaterUpsell";
 
 const FAMILY_GRADIENTS = [
   "linear-gradient(135deg, #6D1B4E, #B5175A)",
@@ -43,6 +45,7 @@ const FAMILY_CARDS = [
   { id: "especialidades", label: "Especiales",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png" },
   { id: "cafe",           label: "Café",         image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e15d81047_Coffee.png" },
   { id: "bebidas",        label: "Otras bebidas", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/26de2b565_image.png" },
+  { id: "para_llevar",   label: "Para llevar",   image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa4c65c0f_ComboLitrodeheladoBrownie8Und.png" },
 ];
 
 function CategoryIcons({ activeCategory, onSelect }) {
@@ -92,7 +95,7 @@ function MostOrderedItem({ product, idx, onAdd }) {
   return (
     <button
       onClick={() => onAdd(product)}
-      style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%" }}
+      style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}
     >
       <div style={{ width: 52, height: 52, borderRadius: 14, background: ITEM_BG[idx % ITEM_BG.length], display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
         {product.image_url && !imgError ? (
@@ -121,8 +124,8 @@ function MostOrdered({ products, onAdd }) {
   return (
     <div style={{ background: "#fff", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
-        <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Lo más pedido</p>
-        <button style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
+      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Lo más pedido</p>
+      <button onClick={() => setShowMostOrdered(true)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
       </div>
       {top.map((product, idx) => (
         <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} />
@@ -170,6 +173,9 @@ export default function Menu() {
   const [addedFlash, setAddedFlash] = useState(null);
   const [lastAdded, setLastAdded] = useState(null);
   const [showAdditionsUpsell, setShowAdditionsUpsell] = useState(false);
+  const [showMostOrdered, setShowMostOrdered] = useState(false);
+  const [showWaterUpsell, setShowWaterUpsell] = useState(false);
+  const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -241,23 +247,44 @@ export default function Menu() {
     setUpsellMsg(null);
   };
 
-  const handleCheckout = async (name) => {
+  const handleCheckoutStart = (name) => {
+    setPendingCheckoutName(name);
+    setCheckoutOpen(false);
+    setShowWaterUpsell(true);
+  };
+
+  const doCheckout = async (name, extraItems = []) => {
     setIsSubmitting(true);
+    const cartSnapshot = [...cart, ...extraItems];
+    const orderTotal = cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
     const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
     const nextNum = parseInt(settings[0]?.value || "101");
     const order = await base44.entities.Order.create({
       order_number: nextNum,
       customer_name: name,
-      items: cart.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes })),
-      total,
+      items: cartSnapshot.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes })),
+      total: orderTotal,
       status: "pendiente",
     });
     await base44.entities.Settings.update(settings[0].id, { value: String(nextNum + 1) });
     clearCart();
-    setCheckoutOpen(false);
-    setConfirmedOrder({ ...order, order_number: nextNum, customer_name: name, items: cart, total });
+    setConfirmedOrder({ ...order, order_number: nextNum, customer_name: name, items: cartSnapshot, total: orderTotal });
     setIsSubmitting(false);
+    setPendingCheckoutName(null);
   };
+
+  const handleWaterAdd = () => {
+    setShowWaterUpsell(false);
+    const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
+    doCheckout(pendingCheckoutName, [waterItem]);
+  };
+
+  const handleWaterSkip = () => {
+    setShowWaterUpsell(false);
+    doCheckout(pendingCheckoutName, []);
+  };
+
+  const handleCheckout = handleCheckoutStart;
 
   if (confirmedOrder) {
     return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} />;
@@ -340,6 +367,12 @@ export default function Menu() {
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={handleAddProduct} />
+      {showWaterUpsell && (
+        <WaterUpsell onAdd={handleWaterAdd} onSkip={handleWaterSkip} />
+      )}
+      {showMostOrdered && (
+        <MostOrderedAll products={products} onAdd={(p) => { handleAddProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
+      )}
     </div>
   );
 }

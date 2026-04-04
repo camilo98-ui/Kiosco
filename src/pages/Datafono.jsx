@@ -311,27 +311,62 @@ function ConfirmModal({ total, name, onCancel, onConfirm, isLoading }) {
 
 // ── Success animation ──────────────────────────────────────────────────────────
 
-function SuccessFlash({ onDone }) {
+function SuccessFlash({ onDone, orderNum }) {
   React.useEffect(() => {
-    const t = setTimeout(onDone, 1800);
+    const t = setTimeout(onDone, 3000);
     return () => clearTimeout(t);
   }, []);
 
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 70,
-      background: "rgba(255,255,255,0.95)",
+      background: "#fff",
       display: "flex", alignItems: "center", justifyContent: "center",
-      flexDirection: "column", gap: 12,
+      flexDirection: "column", gap: 8, padding: 32,
     }}>
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ type: "spring", stiffness: 400, damping: 18 }}
+        style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
       >
-        <CheckCircle2 size={80} color="#4CAF50" strokeWidth={1.5} />
+        <CheckCircle2 size={64} color="#4CAF50" strokeWidth={1.5} />
+        <p style={{ fontSize: 15, fontWeight: 600, color: "#4CAF50", margin: 0 }}>¡Cobrado con éxito!</p>
       </motion.div>
-      <p style={{ fontSize: 18, fontWeight: 800, color: "#1A1A1A" }}>¡Cobrado con éxito!</p>
+
+      {orderNum && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          style={{ textAlign: "center", marginTop: 16 }}
+        >
+          <p style={{ fontSize: 13, color: "#999", margin: "0 0 4px" }}>Número de ticket</p>
+          <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 80, fontWeight: 800, color: "#1A1A1A", lineHeight: 1, margin: 0 }}>
+            #{orderNum}
+          </p>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 4,
+            background: "#E8F0FF", color: "#1A56DB", border: "1px solid #1A56DB",
+            borderRadius: 20, fontSize: 12, fontWeight: 700,
+            padding: "4px 12px", marginTop: 10,
+          }}>
+            💳 Datáfono
+          </div>
+        </motion.div>
+      )}
+
+      <button
+        onClick={onDone}
+        style={{
+          marginTop: 32, padding: "12px 32px", borderRadius: 16,
+          background: MAGENTA, color: "#fff", border: "none",
+          fontSize: 14, fontWeight: 700, cursor: "pointer",
+          fontFamily: "'Poppins', sans-serif",
+        }}
+      >
+        Nuevo pedido
+      </button>
     </div>
   );
 }
@@ -385,6 +420,7 @@ export default function Datafono() {
   const [cartOpen, setCartOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [successOrderNum, setSuccessOrderNum] = useState(null);
   const queryClient = useQueryClient();
 
   const { data: pendingOrders = [] } = useQuery({
@@ -421,12 +457,13 @@ export default function Datafono() {
         payment_method: "tarjeta",
       });
       await base44.entities.Settings.update(settings[0].id, { value: String(nextNum + 1) });
-      return order;
+      return { order, orderNum: nextNum };
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["orders-datafono-pending"] });
       queryClient.invalidateQueries({ queryKey: ["orders-cajero"] });
       setConfirmOpen(false);
+      setSuccessOrderNum(data.orderNum);
       setShowSuccess(true);
     },
   });
@@ -628,7 +665,7 @@ export default function Datafono() {
 
       {/* Success flash */}
       <AnimatePresence>
-        {showSuccess && <SuccessFlash onDone={handleSuccessDone} />}
+        {showSuccess && <SuccessFlash onDone={handleSuccessDone} orderNum={successOrderNum} />}
       </AnimatePresence>
     </div>
   );
