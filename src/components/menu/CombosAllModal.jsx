@@ -60,7 +60,10 @@ export default function CombosAllModal({ open, onClose, onAdd }) {
                   <button
                     key={combo.id}
                     onClick={() => {
-                      onAdd({ ...combo, name: combo.title });
+                      const price = combo.displayPrice?.startsWith("$") 
+                        ? parseInt(combo.displayPrice.replace(/[^\d]/g, "")) 
+                        : 0;
+                      onAdd({ ...combo, product_name: combo.title, product_id: combo.id, price, name: combo.title });
                       setTimeout(() => onClose(), 100);
                     }}
                     style={{
@@ -73,11 +76,11 @@ export default function CombosAllModal({ open, onClose, onAdd }) {
                       boxShadow: "0 2px 8px rgba(194,24,91,0.08)",
                     }}
                   >
-                    <div style={{ position: "relative", height: 120, overflow: "hidden", background: "#FFF0F5" }}>
+                    <div style={{ position: "relative", height: 120, overflow: "hidden", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <img
                         src={combo.image}
                         alt={combo.title}
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }}
                       />
                       <span
                         style={{

@@ -28,12 +28,12 @@ function ComboCard({ combo, onAdd }) {
         padding: 0,
       }}
     >
-      <div style={{ position: "relative", height: 150, overflow: "hidden", borderRadius: "20px 20px 0 0" }}>
+      <div style={{ position: "relative", height: 150, overflow: "hidden", borderRadius: "20px 20px 0 0", background: "#FFF0F5" }}>
         <img
           src={combo.image}
           alt={combo.title}
           draggable={false}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+          style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block", pointerEvents: "none" }}
         />
         <span style={{
           position: "absolute", top: 9, right: 9,
@@ -69,7 +69,7 @@ function ComboCard({ combo, onAdd }) {
         );
         }
 
-export default function CombosCarousel({ onAdd }) {
+export default function CombosCarousel({ onAdd, onOpenAll }) {
   const trackRef = useRef(null);
   const animRef = useRef(null);
   const posRef = useRef(0);
@@ -168,7 +168,7 @@ export default function CombosCarousel({ onAdd }) {
         <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: 0 }}>
           Combos
         </p>
-        <button onClick={() => document.dispatchEvent(new CustomEvent("openCombosModal"))} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A", padding: 0 }}>
+        <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A", padding: 0 }}>
           Ver todos →
         </button>
       </div>
