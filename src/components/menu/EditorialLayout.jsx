@@ -6,6 +6,7 @@ import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
 import MalteadaCustomizer12oz from "@/components/menu/MalteadaCustomizer12oz";
 import BananaSplitCustomizer from "@/components/menu/BananaSplitCustomizer";
 import HeladoCustomizer from "@/components/menu/HeladoCustomizer";
+import HeladoJuniorCustomizer from "@/components/menu/HeladoJuniorCustomizer";
 import MaxiConoCustomizer from "@/components/menu/MaxiConoCustomizer";
 import GranizadoCustomizer from "@/components/menu/GranizadoCustomizer";
 import ConeCustomizer from "@/components/menu/ConeCustomizer";
@@ -507,6 +508,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   const [customizer12ozProduct, setCustomizer12ozProduct] = useState(null);
   const [bananaSplitProduct, setBananaSplitProduct] = useState(null);
   const [heladoProduct, setHeladoProduct] = useState(null);
+  const [heladoJuniorProduct, setHeladoJuniorProduct] = useState(null);
   const [maxiConoProduct, setMaxiConoProduct] = useState(null);
   const [granizadoProduct, setGranizadoProduct] = useState(null);
   const [coneProduct, setConeProduct] = useState(null);
@@ -533,6 +535,8 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
       setHeladoProduct(product);
     } else if (category === "helados" && product.name.toLowerCase().includes("gourmet")) {
       setHeladoProduct(product);
+    } else if (category === "helados" && product.name.toLowerCase().includes("junior")) {
+      setHeladoJuniorProduct(product);
     } else if (category === "granizados" && product.name.toLowerCase().includes("granizado")) {
       setGranizadoProduct(product);
     } else if (product.name.toLowerCase().includes("cono") && !product.name.toLowerCase().includes("maxi")) {
@@ -599,6 +603,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
         product={heladoProduct}
         open={!!heladoProduct}
         onClose={() => setHeladoProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <HeladoJuniorCustomizer
+        product={heladoJuniorProduct}
+        open={!!heladoJuniorProduct}
+        onClose={() => setHeladoJuniorProduct(null)}
         onAdd={handleCustomizerAdd}
       />
       <MaxiConoCustomizer
