@@ -52,15 +52,16 @@ export default function PremiumCartBar({ onCheckout }) {
             boxShadow: "0 6px 24px rgba(233,27,139,0.4)",
             touchAction: "manipulation",
           }}
+          data-cart-icon
         >
           {/* Izquierda: círculo contador + texto */}
           <div className="flex flex-col items-start gap-0">
             <div className="flex items-center gap-3">
               <motion.div
                 className="flex items-center justify-center font-black"
-                style={{ width: 32, height: 32, borderRadius: "50%", background: "#fff", color: "#E91B8B", fontSize: 14 }}
-                animate={{ scale: [1, 1.15, 1] }}
-                transition={{ duration: 0.5, type: "spring", stiffness: 300 }}
+                style={{ width: 32, height: 32, borderRadius: "50%", background: "#fff", color: "#E91B8B", fontSize: 14, willChange: "transform" }}
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 0.35, type: "spring" }}
               >
                 {itemCount}
               </motion.div>

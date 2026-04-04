@@ -250,15 +250,25 @@ export default function Menu() {
     setTimeout(() => setAddedFlash(null), 600);
     setLastAdded(productToAdd);
     
+    // Animación del carrito + toast
+    const cartIcon = document.querySelector('[data-cart-icon]');
+    if (cartIcon) {
+      cartIcon.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.4)' },
+        { transform: 'scale(1)' }
+      ], { duration: 400, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' });
+    }
+    
     // Toast feedback
-    toast.success(`✓ ${productToAdd.product_name} agregado`, {
+    toast.success(`✓ ${productToAdd.product_name} agregado al pedido`, {
       style: {
         background: "#C41E6A",
         color: "#fff",
         border: "none",
         borderRadius: "12px",
       },
-      duration: 1500,
+      duration: 1800,
     });
     
     const rule = UPSELL_RULES[product.category];
@@ -332,7 +342,7 @@ export default function Menu() {
   }
 
   if (activeCategory) {
-    const allowedCategories = ["helados", "malteadas", "granizados", "especialidades", "cafe", "bebidas", "galletas", "paletas_packs", "para_llevar", "tortas", "regalos"];
+    const allowedCategories = ["helados", "malteadas", "granizados", "especialidades", "cafe", "bebidas", "galletas", "paletas_packs", "para_llevar", "tortas", "regalos", "combos"];
     if (!allowedCategories.includes(activeCategory)) {
       setActiveCategory(null);
       return null;
@@ -375,7 +385,7 @@ export default function Menu() {
           <div style={{ width: "45%", minWidth: 120 }}>
             <PopsyLogo onClick={handleLogoClick} size="normal" dark />
           </div>
-          <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
+          <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", transition: "all 0.2s", willChange: "transform" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
             <Search size={16} color="#fff" />
           </button>
         </div>
@@ -383,10 +393,10 @@ export default function Menu() {
 
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "#fff", padding: "10px 0 0" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "#fff", padding: "10px 0 12px" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ marginTop: 0 }}>
           <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>

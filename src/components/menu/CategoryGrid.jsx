@@ -107,15 +107,6 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             >
               {category.label}
             </p>
-            <p
-              style={{
-                fontSize: 12,
-                color: "rgba(255,255,255,0.75)",
-                margin: "4px 0 0",
-              }}
-            >
-              {productCounts[category.id] || 0} opciones
-            </p>
           </div>
         </button>
       ))}

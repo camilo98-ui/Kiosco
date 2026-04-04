@@ -116,27 +116,46 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
     };
   }, []);
 
-  // Touch handlers
+  // Touch handlers — scroll horizontal definitivo
   const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const touchStartTime = useRef(0);
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    touchStartTime.current = Date.now();
     pausedRef.current = true;
     clearTimeout(resumeTimerRef.current);
   };
 
   const handleTouchMove = (e) => {
-    const diff = touchStartX.current - e.touches[0].clientX;
-    posRef.current += diff;
-    if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
-    if (posRef.current >= totalWidth) posRef.current -= totalWidth;
-    touchStartX.current = e.touches[0].clientX;
-    if (trackRef.current) {
-      trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
+    const deltaX = touchStartX.current - e.touches[0].clientX;
+    const deltaY = touchStartY.current - e.touches[0].clientY;
+    
+    // Detectar si es scroll horizontal claro
+    if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && Math.abs(deltaX) > 15) {
+      e.preventDefault();
+      posRef.current += deltaX;
+      if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
+      if (posRef.current >= totalWidth) posRef.current -= totalWidth;
+      touchStartX.current = e.touches[0].clientX;
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
+      }
     }
   };
 
   const handleTouchEnd = () => {
+    const duration = Date.now() - touchStartTime.current;
+    const deltaX = Math.abs(touchStartX.current - e?.changedTouches?.[0]?.clientX || 0);
+    const deltaY = Math.abs(touchStartY.current - e?.changedTouches?.[0]?.clientY || 0);
+    
+    // Solo permitir navegación si fue tap muy limpio
+    if (deltaX < 8 && deltaY < 8 && duration < 200) {
+      // Permitir tap normal
+    }
+    
     clearTimeout(resumeTimerRef.current);
     resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 500);
   };
@@ -169,18 +188,21 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
           Combos que enamoran 💕
         </p>
         <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A", padding: 0 }}>
-          Ver todos →
+          Ver todos
         </button>
       </div>
 
       <div
-        style={{ overflowX: "scroll", overflowY: "hidden", paddingLeft: 16, paddingBottom: 4, cursor: "grab", touchAction: "pan-x", WebkitOverflowScrolling: "touch" }}
+        style={{ overflowX: "scroll", overflowY: "hidden", paddingLeft: 16, paddingBottom: 4, cursor: "grab", touchAction: "pan-x", WebkitOverflowScrolling: "touch", willChange: "transform", contain: "layout" }}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
         onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
+        ref={(el) => {
+          if (el) el.addEventListener('touchmove', handleTouchMove, { passive: false });
+        }}
       >
         <div ref={trackRef} style={{ display: "flex", gap: GAP, width: "max-content", willChange: "transform" }}>
           {doubled.map((combo, i) => (

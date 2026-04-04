@@ -80,6 +80,7 @@ function HorizontalCard({ product, onAdd, addedFlash, bg }) {
     <motion.div
       animate={isFlash ? { scale: 0.98 } : { scale: 1 }}
       transition={{ duration: 0.15 }}
+      whileTap={{ scale: 0.95 }}
       onClick={() => product.is_available !== false && onAdd(product)}
       style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, background: "#fff", height: 72, display: "flex", alignItems: "center", overflow: "hidden", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: product.is_available !== false ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}
     >
@@ -114,7 +115,7 @@ function TallCard({ product, onAdd, addedFlash, bg }) {
   const tag = TAG_CONFIG[product.tag];
   const isFlash = addedFlash === product.id;
   return (
-    <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
+    <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }} whileTap={{ scale: 0.95 }}
       onClick={() => product.is_available !== false && onAdd(product)}
       style={{ flex: 1.4, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(196,30,106,0.06)", cursor: product.is_available !== false ? "pointer" : "default", WebkitTapHighlightColor: "transparent" }}>
       <div style={{ height: 120, display: "flex", alignItems: "center", justifyContent: "center", background: bg, overflow: "hidden" }}>
@@ -146,8 +147,7 @@ function SmallCard({ product, onAdd, addedFlash, bg }) {
   const tag = TAG_CONFIG[product.tag];
   const isFlash = addedFlash === product.id;
   return (
-    <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ flex: 1, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
+    <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }} whileTap={{ scale: 0.95 }} onClick={() => onAdd(product)} style={{ flex: 1, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: "pointer" }}>
       <ProductImageBox product={product} bg={bg} size={58} emojiSize={28} />
       {tag && product.tag === "recomendado" && (
         <span style={{ position: "absolute", top: 4, left: 4, fontSize: 7, background: "#FFF9C4", color: "#7B6A00", borderRadius: 10, padding: "1px 5px", fontWeight: 800 }}>⭐ Chef</span>
@@ -174,14 +174,14 @@ function HeladosLayout({ products, onAdd, addedFlash, bg, catLabel }) {
     <>
       <SectionHeader label={catLabel} count={available.length} />
       {tallProduct && (
-        <div style={{ display: "flex", gap: 8, paddingLeft: 14, paddingRight: 14, marginBottom: 10 }}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} style={{ display: "flex", gap: 8, paddingLeft: 14, paddingRight: 14, marginBottom: 10 }}>
           <TallCard product={tallProduct} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
           {smallProducts.length > 0 && (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
               {smallProducts.map(p => <SmallCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
             </div>
           )}
-        </div>
+        </motion.div>
       )}
       {restProducts.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
@@ -197,8 +197,8 @@ function MalteadaCard({ product, onAdd, addedFlash, bg }) {
   const isFlash = addedFlash === product.id;
   const [imgError, setImgError] = React.useState(false);
   return (
-    <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ width: 140, flexShrink: 0, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
+    <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }} whileTap={{ scale: 0.95 }} onClick={() => onAdd(product)}
+      style={{ width: 140, flexShrink: 0, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: "pointer" }}>
       <div style={{ background: bg, height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
         {product.image_url && !imgError ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -297,7 +297,7 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
       onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
       onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
     >
-      <div ref={trackRef} style={{ display: "flex", gap: 10, width: "max-content" }}>
+      <div ref={trackRef} style={{ display: "flex", gap: 10, width: "max-content", willChange: "transform", contain: "layout" }}>
         {doubled.map((p, i) => (
           <MalteadaCard key={`${p.id}-${i}`} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
         ))}
@@ -367,8 +367,8 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
   const isFlash = addedFlash === product.id;
   const [imgError, setImgError] = React.useState(false);
   return (
-    <motion.div animate={isFlash ? { scale: 0.98 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, background: "#fff", height: 90, display: "flex", alignItems: "center", overflow: "hidden", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
+    <motion.div animate={isFlash ? { scale: 0.98 } : { scale: 1 }} transition={{ duration: 0.15 }} whileTap={{ scale: 0.95 }} onClick={() => onAdd(product)}
+      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, background: "#fff", height: 90, display: "flex", alignItems: "center", overflow: "hidden", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: "pointer" }}>
       <div style={{ flex: 1, padding: "0 14px", display: "flex", flexDirection: "column", gap: 3 }}>
         {tag && product.tag !== "none" && (
           <span style={{ fontSize: 8, background: "#C41E6A", color: "#fff", borderRadius: 20, padding: "1px 7px", fontWeight: 900, alignSelf: "flex-start" }}>{tag.label}</span>
@@ -415,8 +415,8 @@ function CafeCard({ product, onAdd, addedFlash, bg }) {
   const isFlash = addedFlash === product.id;
   const [imgError, setImgError] = React.useState(false);
   return (
-    <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }}
-      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)" }}>
+    <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }} whileTap={{ scale: 0.95 }} onClick={() => onAdd(product)}
+      style={{ border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: "pointer" }}>
       <div style={{ background: bg, height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
         {product.image_url && !imgError ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />

@@ -168,28 +168,23 @@ export default function CajeroOrderCard({ order, onFinalize }) {
 
       <div style={{ height: "0.5px", background: "#F0F0F0" }} />
 
-      {/* Ítems con detalle completo — Mejorado para desktop */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+      {/* Ítems con detalle */}
+      <div style={{ maxHeight: 120, overflowY: "auto", paddingRight: 6 }}>
         {order.items?.map((item, i) => (
           <div key={i} style={{
             background: "#FAFAFA",
             border: "1px solid #F0F0F0",
             borderRadius: 8,
             padding: "8px 10px",
+            marginBottom: 6,
           }}>
             {/* Nombre del producto */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 4, marginBottom: item.notes ? 4 : 0 }}>
-              <span style={{ fontSize: 12, fontWeight: 800, color: "#1A1A1A", flex: 1, lineHeight: 1.2 }}>
-                {item.quantity > 1 && (
-                  <span style={{
-                    display: "inline-block", background: "#C41E6A", color: "#fff",
-                    borderRadius: 4, fontSize: 10, fontWeight: 800, padding: "1px 4px", marginRight: 4,
-                  }}>
-                    ×{item.quantity}
-                  </span>
-                )}
-                {item.product_name}
-              </span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 4 }}>
+              <div style={{ flex: 1 }}>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "#1A1A1A", lineHeight: 1.2 }}>
+                  {item.quantity > 1 ? `${item.quantity}× ` : ""}{item.product_name}
+                </span>
+              </div>
               <span style={{ fontSize: 11, fontWeight: 700, color: "#C41E6A", flexShrink: 0, whiteSpace: "nowrap" }}>
                 {formatCOP(item.price * item.quantity)}
               </span>

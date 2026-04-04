@@ -5,68 +5,79 @@ const BANNERS = [
   {
     id: 1,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/5006fd68f_image.png",
-    alt: "Para llevar en cualquier momento",
+    alt: "Para llevar siempre",
     category: "para_llevar",
+    bannerText: "Para llevar",
   },
   {
     id: 2,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0c2252efa_image.png",
-    alt: "Domicilio Gratis por compras iguales o superiores a $40.000",
+    alt: "Domicilio Gratis",
     category: "malteadas",
+    bannerText: "Domicilio Gratis",
   },
   {
     id: 3,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/05dec2b30_image.png",
-    alt: "Nuevo helado con Yogo Yoo sabor fresa",
+    alt: "Nuevo Yogo Yoo",
     category: "helados",
+    bannerText: "Nuevo sabor",
   },
   {
     id: 4,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9502d6914_image.png",
-    alt: "¡Doble o nada! 2 bolas de helado Gourmet",
+    alt: "Doble o Nada",
     category: "helados",
+    bannerText: "Doble o Nada",
   },
   {
     id: 5,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/8afa4278b_image.png",
-    alt: "1 tarrina con helado + 1 Popsy Toy por $58.900",
+    alt: "Combo Plus",
     category: "combos",
+    bannerText: "Combo Plus",
   },
   {
     id: 6,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/df199d449_image.png",
-    alt: "¡Arma el plan, nosotros ponemos el combo!",
+    alt: "Arma tu combo",
     category: "combos",
+    bannerText: "Arma tu combo",
   },
   {
     id: 7,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0948c2133_21803262319banner_arma_tu_vaso_website_1920x8001.png",
     alt: "Arma tu vaso",
     category: "combos",
+    bannerText: "Arma tu vaso",
   },
   {
     id: 8,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/133545960_21803162318banner_combos_website_1920x8001.png",
-    alt: "Para compartir y repetir",
+    alt: "Para compartir",
     category: "combos",
+    bannerText: "Para compartir",
   },
   {
     id: 9,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/48bd8d0e7_21803062313banner_malteadas_crack_website_1920x8002.jpg",
-    alt: "Hazle crack tu malteada",
+    alt: "Malteadas Crack",
     category: "malteadas",
+    bannerText: "Malteadas Crack",
   },
   {
     id: 10,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/218c5c252_Capturadepantalla2026-04-03101638.jpg",
-    alt: "Nuevo cono Fiore",
+    alt: "Nuevo Fiore",
     category: "helados",
+    bannerText: "Nuevo Fiore",
   },
   {
     id: 11,
     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/b46dcf67f_2180415.png",
-    alt: "Las más cremosas del menú Cookie Jaar",
+    alt: "Cookie Jar",
     category: "combos",
+    bannerText: "Cookie Jar",
   },
 ];
 
@@ -130,23 +141,25 @@ export default function PromoBanners({ onCategorySelect }) {
         </AnimatePresence>
       </div>
 
-      {/* Dots */}
-      <div className="flex items-center justify-center gap-2 mt-2">
+      {/* Dots — máximo 5 visibles */}
+      <div className="flex items-center justify-center gap-2 mt-2" style={{ overflow: "hidden", maxWidth: "150px", margin: "0 auto" }}>
         {BANNERS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            style={{
-              height: 6,
-              width: i === active ? 20 : 6,
-              borderRadius: 6,
-              background: i === active ? "#C41E6A" : "#F5C0DC",
-              transition: "all 0.3s ease",
-              border: "none",
-              padding: 0,
-              flexShrink: 0,
-            }}
-          />
+          i < 5 && (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              style={{
+                height: 8,
+                width: i === active ? 22 : 8,
+                borderRadius: 4,
+                background: i === active ? "#C41E6A" : "#F5C0DC",
+                transition: "all 0.3s ease",
+                border: "none",
+                padding: 0,
+                flexShrink: 0,
+              }}
+            />
+          )
         ))}
       </div>
     </div>
