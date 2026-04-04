@@ -529,8 +529,8 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
       setBananaSplitProduct(product);
     } else if (category === "helados" && (product.name.toLowerCase().includes("maxi cono") || product.name.toLowerCase().includes("maxicono"))) {
       setMaxiConoProduct(product);
-    } else if (category === "helados" && product.name.includes("2") && product.name.toLowerCase().includes("sabor")) {
-      setMaxiConoProduct(product);
+    } else if (category === "helados" && product.name.toLowerCase().includes("exclusivo")) {
+      setHeladoProduct(product);
     } else if (category === "granizados" && product.name.toLowerCase().includes("granizado")) {
       setGranizadoProduct(product);
     } else if (product.name.toLowerCase().includes("cono") && !product.name.toLowerCase().includes("maxi")) {

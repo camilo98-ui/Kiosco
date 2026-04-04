@@ -3,29 +3,18 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { formatCOP } from "@/lib/constants";
 
 const SABORES_HELADO = [
-  "Yogo Yogo Fresa",
-  "Arequipe Gourmet",
-  "Brownie Gourmet",
-  "Cherry Mania",
-  "Chocolate Gourmet",
-  "Chocolate Belga",
-  "Crema Limón",
-  "Fresa Gourmet",
-  "M&M's",
-  "Mandarina Gourmet",
-  "Milky Way Gourmet",
-  "Mocaccino Juan Valdez",
-  "Oreo",
-  "Ron Con Pasas Gourmet",
-  "Vainilla Gourmet",
-  "Vainilla Chips",
-  "Vainilla Francesa Gourmet",
-  "Nieve Limón",
-  "Nieve Mandarina",
-  "Nieve Maracuyá",
-  "Yogurt De Cereza Italiana",
-  "Chicle Gourmet",
-  "Snickers Almond Gourmet",
+  "Cubeta Arequipe",
+  "Cubeta Chocolate Belga",
+  "Cubeta Chocolate",
+  "Cubeta Fresa",
+  "Cubeta Frutos Del Bosque",
+  "Cubeta Nieves Limón",
+  "Cubeta Mandarina",
+  "Cubeta Nieves Mandarina",
+  "Cubeta Nieves Maracuyá",
+  "Cubeta Ron Pasas",
+  "Cubeta Vainilla Francesa",
+  "Cubeta Vainilla",
 ];
 
 const SALSAS = [
@@ -58,8 +47,6 @@ const EXTRAS = [
   { name: "Macadamia", price: 3100 },
   { name: "Sprinkles", price: 3100 },
 ];
-
-const SECTIONS = ["sabor", "salsa", "chantilly", "extras"];
 
 function AccordionSection({ title, required, open, onToggle, children, badge }) {
   return (
@@ -109,15 +96,16 @@ function RadioOption({ label, selected, onSelect }) {
   );
 }
 
-function CheckOption({ label, price, selected, onToggle }) {
+function CheckOption({ label, price, selected, onToggle, disabled }) {
   return (
     <button
-      onClick={onToggle}
+      onClick={!disabled ? onToggle : undefined}
       style={{
         width: "100%", display: "flex", alignItems: "center",
         justifyContent: "space-between", padding: "12px 16px",
-        background: "none", border: "none", cursor: "pointer", textAlign: "left",
-        borderBottom: "1px solid #F9F0F4",
+        background: "none", border: "none", cursor: disabled ? "not-allowed" : "pointer",
+        textAlign: "left", borderBottom: "1px solid #F9F0F4",
+        opacity: disabled ? 0.45 : 1,
       }}
     >
       <div>
@@ -142,16 +130,32 @@ function CheckOption({ label, price, selected, onToggle }) {
 }
 
 export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
+  // Detectar si el producto permite 2 sabores
+  const maxSabores = product?.name?.toLowerCase().includes("2 sabor") ||
+    product?.name?.toLowerCase().includes("2sabor") ? 2 : 1;
+
   const [openSection, setOpenSection] = useState("sabor");
-  const [sabor, setSabor] = useState(null);
+  const [sabores, setSabores] = useState([]);
   const [salsa, setSalsa] = useState(null);
   const [chantilly, setChantilly] = useState(null);
   const [extras, setExtras] = useState([]);
+
+  const SECTIONS = ["sabor", "salsa", "chantilly", "extras"];
 
   const advanceToNext = (current) => {
     const idx = SECTIONS.indexOf(current);
     const next = SECTIONS[idx + 1];
     if (next) setTimeout(() => setOpenSection(next), 200);
+  };
+
+  const toggleSabor = (s) => {
+    setSabores(prev => {
+      if (prev.includes(s)) return prev.filter(x => x !== s);
+      if (prev.length >= maxSabores) return prev;
+      const next = [...prev, s];
+      if (next.length === maxSabores) advanceToNext("sabor");
+      return next;
+    });
   };
 
   const toggleExtra = (name, price) => {
@@ -164,19 +168,19 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
 
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
   const total = (product?.price || 0) + extrasTotal;
-  const allRequired = sabor && salsa && chantilly;
+  const allRequired = sabores.length === maxSabores && salsa && chantilly;
 
   const handleConfirm = () => {
     if (!allRequired) return;
     const notes = [
-      `Sabor: ${sabor}`,
+      `Sabor: ${sabores.join(", ")}`,
       `Salsa: ${salsa}`,
       `Chantilly: ${chantilly}`,
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
-    setSabor(null); setSalsa(null); setChantilly(null); setExtras([]);
+    setSabores([]); setSalsa(null); setChantilly(null); setExtras([]);
     setOpenSection("sabor");
     onClose();
   };
@@ -201,21 +205,35 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           </p>
         </div>
 
-        {/* Sabor */}
+        {/* Sabor(es) */}
         <AccordionSection
-          title="Elige El Sabor De Helado"
+          title={maxSabores === 2 ? "Elige Los 2 Sabores De Helado" : "Elige El Sabor De Helado"}
           required
           open={openSection === "sabor"}
           onToggle={() => setOpenSection(s => s === "sabor" ? null : "sabor")}
+          badge={maxSabores === 2 ? `${sabores.length}/${maxSabores}` : null}
         >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>
+            Selecciona {maxSabores === 2 ? "2 opciones" : "1 opción"}
+          </p>
           {SABORES_HELADO.map(s => (
-            <RadioOption
-              key={s}
-              label={s}
-              selected={sabor === s}
-              onSelect={() => { setSabor(s); advanceToNext("sabor"); }}
-            />
+            maxSabores === 1 ? (
+              <RadioOption
+                key={s}
+                label={s}
+                selected={sabores.includes(s)}
+                onSelect={() => { setSabores([s]); advanceToNext("sabor"); }}
+              />
+            ) : (
+              <CheckOption
+                key={s}
+                label={s}
+                price={0}
+                selected={sabores.includes(s)}
+                onToggle={() => toggleSabor(s)}
+                disabled={!sabores.includes(s) && sabores.length >= maxSabores}
+              />
+            )
           ))}
         </AccordionSection>
 
@@ -262,7 +280,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           open={openSection === "extras"}
           onToggle={() => setOpenSection(s => s === "extras" ? null : "extras")}
         >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Opcionales · puedes elegir varios</p>
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Opcionales · tienen costo adicional</p>
           {EXTRAS.map(e => (
             <CheckOption
               key={e.name}
@@ -278,7 +296,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
           {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige sabor, salsa y chantilly para continuar
+              * Elige {maxSabores === 2 ? "2 sabores" : "sabor"}, salsa y chantilly para continuar
             </p>
           )}
           <button
