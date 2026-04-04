@@ -3,18 +3,20 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { formatCOP } from "@/lib/constants";
 
 const SABORES_HELADO = [
-  "Cubeta Arequipe",
-  "Cubeta Chocolate Belga",
-  "Cubeta Chocolate",
-  "Cubeta Fresa",
-  "Cubeta Frutos Del Bosque",
-  "Cubeta Nieves Limón",
-  "Cubeta Mandarina",
-  "Cubeta Nieves Mandarina",
-  "Cubeta Nieves Maracuyá",
-  "Cubeta Ron Pasas",
-  "Cubeta Vainilla Francesa",
-  "Cubeta Vainilla",
+  "Cubeta Yogo Yogo Fresa",
+  "Cubeta Brownie",
+  "Cubeta Cherry Mania",
+  "Cubeta Crema Limón",
+  "Cubeta MM",
+  "Cubeta Macadamia",
+  "Cubeta Milky Way",
+  "Cubeta Mocaccino",
+  "Cubeta Oreo",
+  "Cubeta Vainilla Chips",
+  "Cubeta Arroz Con Leche",
+  "Cubeta Yogurt De Cereza Italiana",
+  "Cubeta Chicle",
+  "Cubeta Snickers Almond",
 ];
 
 const EXTRAS = [
