@@ -107,7 +107,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
     <div style={{
       background: "#FFFFFF",
       border: "0.5px solid #EBEBEB",
-      borderLeft: `4px solid ${st.borderColor}`,
+      borderLeft: `4px solid ${order.payment_method === "tarjeta" ? "#1A56DB" : st.borderColor}`,
       borderRadius: 16,
       padding: 12,
       display: "flex",
@@ -125,14 +125,26 @@ export default function CajeroOrderCard({ order, onFinalize }) {
         )}
       </div>
 
-      {/* Badge de estado */}
-      <div style={{
-        display: "inline-flex", alignSelf: "flex-start",
-        ...st.badge,
-        borderRadius: 20, fontSize: 11, fontWeight: 700,
-        padding: "3px 10px",
-      }}>
-        {st.label}
+      {/* Badge de estado + badge datáfono */}
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+        <div style={{
+          display: "inline-flex", alignSelf: "flex-start",
+          ...st.badge,
+          borderRadius: 20, fontSize: 11, fontWeight: 700,
+          padding: "3px 10px",
+        }}>
+          {st.label}
+        </div>
+        {order.payment_method === "tarjeta" && (
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 4,
+            background: "#E8F0FF", color: "#1A56DB", border: "1px solid #1A56DB",
+            borderRadius: 20, fontSize: 11, fontWeight: 700,
+            padding: "3px 10px",
+          }}>
+            💳 Datáfono
+          </div>
+        )}
       </div>
 
       {/* Cliente */}
