@@ -11,6 +11,7 @@ import MaxiConoCustomizer from "@/components/menu/MaxiConoCustomizer";
 import GranizadoCustomizer from "@/components/menu/GranizadoCustomizer";
 import ConeCustomizer from "@/components/menu/ConeCustomizer";
 import GenericCustomizer from "@/components/menu/GenericCustomizer";
+import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer";
 
 // ─── Ordenamiento comercial dinámico ───────────────────────────────
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
@@ -513,6 +514,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   const [granizadoProduct, setGranizadoProduct] = useState(null);
   const [coneProduct, setConeProduct] = useState(null);
   const [genericProduct, setGenericProduct] = useState(null);
+  const [especialidadesProduct, setEspecialidadesProduct] = useState(null);
 
   if (!products || products.length === 0) return null;
 
@@ -529,6 +531,9 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
       }
     } else if (category === "especialidades" && product.name.toLowerCase().includes("banana split")) {
       setBananaSplitProduct(product);
+    } else if (category === "especialidades") {
+      // Todos los demás productos de especialidades usan el customizer de sabores
+      setEspecialidadesProduct(product);
     } else if (category === "helados" && (product.name.toLowerCase().includes("maxi cono") || product.name.toLowerCase().includes("maxicono"))) {
       setMaxiConoProduct(product);
     } else if (category === "helados" && product.name.toLowerCase().includes("exclusivo")) {
@@ -633,6 +638,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
         product={genericProduct}
         open={!!genericProduct}
         onClose={() => setGenericProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <EspecialidadesCustomizer
+        product={especialidadesProduct}
+        open={!!especialidadesProduct}
+        onClose={() => setEspecialidadesProduct(null)}
         onAdd={handleCustomizerAdd}
       />
     </>

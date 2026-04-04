@@ -17,8 +17,10 @@ export function useCart() {
   });
 
   const addItem = useCallback((product, notes = "") => {
+    const productId = product.product_id || product.id;
+    const productName = product.product_name || product.name || product.title;
     // Items con notas de personalización siempre se agregan como nuevos
-    const existing = !notes ? globalCart.find((i) => i.product_id === product.id && !i.notes) : null;
+    const existing = !notes ? globalCart.find((i) => i.product_id === productId && !i.notes) : null;
     if (existing) {
       existing.quantity += 1;
       globalCart = [...globalCart];
@@ -26,8 +28,8 @@ export function useCart() {
       globalCart = [
         ...globalCart,
         {
-          product_id: product.id,
-          product_name: product.name || product.title,
+          product_id: productId,
+          product_name: productName,
           price: product.price,
           quantity: 1,
           notes: notes || "",
