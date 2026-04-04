@@ -92,12 +92,12 @@ function ComboCard({ combo, gradient, onAdd }) {
           {combo.title}
         </p>
         {isPrice && (
-          <p style={{ fontSize: 14, fontWeight: 900, color: "#D85A30", margin: "4px 0 0", lineHeight: 1 }}>
+          <p style={{ fontSize: 14, fontWeight: 900, color: "#E91B8B", margin: "4px 0 0", lineHeight: 1 }}>
             {combo.price}
           </p>
         )}
         {isPromo && (
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#3B6D11", margin: "4px 0 0", lineHeight: 1.3 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#E91B8B", margin: "4px 0 0", lineHeight: 1.3 }}>
             {combo.price}
           </p>
         )}
@@ -165,7 +165,7 @@ export default function CombosCarousel({ onAdd }) {
 
   return (
     <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
-      <p style={{ fontSize: 17, fontWeight: 800, color: "#3C1A0A", margin: "0 0 14px 16px" }}>
+      <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: "0 0 14px 16px" }}>
         Combos
       </p>
 
@@ -199,7 +199,7 @@ export default function CombosCarousel({ onAdd }) {
               width: activeIdx === idx ? 16 : 6,
               height: 6,
               borderRadius: 3,
-              background: activeIdx === idx ? "#D85A30" : "#f2d6c8",
+              background: activeIdx === idx ? "#E91B8B" : "#F9C6E0",
               transition: "all 0.3s ease",
             }}
           />
