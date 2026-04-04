@@ -209,7 +209,7 @@ export default function Cajero() {
               <CajeroOrderCard
                 key={order.id}
                 order={order}
-                onClick={() => setSelectedOrder(order)}
+                onFinalize={handleFinalize}
               />
             ))}
           </div>
