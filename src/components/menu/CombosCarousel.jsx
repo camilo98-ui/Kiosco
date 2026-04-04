@@ -71,7 +71,7 @@ function ComboCard({ combo, gradient, onAdd }) {
         {/* Badge */}
         <span style={{
           position: "absolute", top: 9, right: 9,
-          background: "#E91B8B", color: "#fff",
+          background: "#C41E6A", color: "#fff",
           fontSize: 9, fontWeight: 800,
           borderRadius: 20, padding: "3px 8px",
           letterSpacing: "0.3px",
@@ -199,7 +199,7 @@ export default function CombosCarousel({ onAdd }) {
               width: activeIdx === idx ? 16 : 6,
               height: 6,
               borderRadius: 3,
-              background: activeIdx === idx ? "#E91B8B" : "#F9C6E0",
+              background: activeIdx === idx ? "#C41E6A" : "#F9C6E0",
               transition: "all 0.3s ease",
             }}
           />

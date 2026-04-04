@@ -55,7 +55,7 @@ function OrderDetailModal({ order, onClose, onFinalize }) {
             <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 52, fontWeight: 800, color: "#1A1A1A", lineHeight: 1 }}>
               #{order.order_number}
             </div>
-            <p style={{ fontSize: 14, color: "#E91B8B", fontWeight: 700, margin: "4px 0 0" }}>{statusLabel}</p>
+            <p style={{ fontSize: 14, color: "#C41E6A", fontWeight: 700, margin: "4px 0 0" }}>{statusLabel}</p>
           </div>
           <button
             onClick={onClose}
@@ -76,7 +76,7 @@ function OrderDetailModal({ order, onClose, onFinalize }) {
             <div key={i} style={{ padding: "10px 14px", borderBottom: i < order.items.length - 1 ? "1px solid #F5F5F5" : "none" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, fontWeight: 600, color: "#1A1A1A" }}>
                 <span>{item.quantity}× {item.product_name}</span>
-                <span style={{ color: "#E91B8B" }}>{formatCOP(item.price * item.quantity)}</span>
+                <span style={{ color: "#C41E6A" }}>{formatCOP(item.price * item.quantity)}</span>
               </div>
               {item.notes && (
                 <p style={{ fontSize: 11, color: "#999", margin: "3px 0 0 8px", fontStyle: "italic" }}>📝 {item.notes}</p>
@@ -88,7 +88,7 @@ function OrderDetailModal({ order, onClose, onFinalize }) {
         {/* Total */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
           <span style={{ fontSize: 14, color: "#999" }}>Total</span>
-          <span style={{ fontSize: 18, fontWeight: 800, color: "#E91B8B" }}>{formatCOP(order.total)}</span>
+          <span style={{ fontSize: 18, fontWeight: 800, color: "#C41E6A" }}>{formatCOP(order.total)}</span>
         </div>
 
         {/* Acciones */}
@@ -175,7 +175,7 @@ export default function Cajero() {
 
           <div style={{ textAlign: "center" }}>
             <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 18, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1 }}>Cajero</p>
-            <p style={{ fontSize: 13, color: "#E91B8B", fontWeight: 600, margin: "2px 0 0" }}>
+            <p style={{ fontSize: 13, color: "#C41E6A", fontWeight: 600, margin: "2px 0 0" }}>
               {activeOrders.length} pedidos activos
             </p>
           </div>
@@ -184,7 +184,7 @@ export default function Cajero() {
             onClick={() => setShowSummary(!showSummary)}
             style={{ width: 36, height: 36, borderRadius: "50%", background: "#FFF0F7", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
           >
-            <BarChart3 size={18} color="#E91B8B" />
+            <BarChart3 size={18} color="#C41E6A" />
           </button>
         </div>
       </div>

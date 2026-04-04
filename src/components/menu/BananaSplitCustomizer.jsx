@@ -87,12 +87,12 @@ function AccordionSection({ title, required, open, onToggle, children, badge }) 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>{title}</span>
           {required && (
-            <span style={{ fontSize: 10, color: "#C2185B", background: "#FFF0F5", borderRadius: 20, padding: "2px 8px", fontWeight: 700 }}>
+            <span style={{ fontSize: 10, color: "#C41E6A", background: "#FFF0F5", borderRadius: 20, padding: "2px 8px", fontWeight: 700 }}>
               Obligatorio
             </span>
           )}
           {badge && (
-            <span style={{ fontSize: 10, color: "#C2185B", fontWeight: 700 }}>{badge}</span>
+            <span style={{ fontSize: 10, color: "#C41E6A", fontWeight: 700 }}>{badge}</span>
           )}
         </div>
         <span style={{ fontSize: 18, color: "#BBA8B0" }}>{open ? "∧" : "∨"}</span>
@@ -117,7 +117,7 @@ function CheckOption({ label, price, selected, onToggle, disabled }) {
       <div>
         <span style={{ fontSize: 13, color: "#1A0A10" }}>{label}</span>
         {price > 0 && (
-          <span style={{ fontSize: 11, color: "#C2185B", marginLeft: 6, fontWeight: 700 }}>
+          <span style={{ fontSize: 11, color: "#C41E6A", marginLeft: 6, fontWeight: 700 }}>
             + {formatCOP(price)}
           </span>
         )}
@@ -125,7 +125,7 @@ function CheckOption({ label, price, selected, onToggle, disabled }) {
       <div style={{
         width: 22, height: 22, borderRadius: 5,
         border: selected ? "none" : "2px solid #DDD",
-        background: selected ? "#C2185B" : "#fff",
+        background: selected ? "#C41E6A" : "#fff",
         display: "flex", alignItems: "center", justifyContent: "center",
         flexShrink: 0, transition: "all 0.15s",
       }}>
@@ -151,7 +151,7 @@ function CheckOptionSalsa({ label, selected, onToggle, disabled }) {
       <div style={{
         width: 22, height: 22, borderRadius: 5,
         border: selected ? "none" : "2px solid #DDD",
-        background: selected ? "#C2185B" : "#fff",
+        background: selected ? "#C41E6A" : "#fff",
         display: "flex", alignItems: "center", justifyContent: "center",
         flexShrink: 0, transition: "all 0.15s",
       }}>
@@ -175,14 +175,14 @@ function RadioOption({ label, price, selected, onSelect }) {
       <div>
         <span style={{ fontSize: 13, color: "#1A0A10" }}>{label}</span>
         {price > 0 && (
-          <span style={{ fontSize: 11, color: "#C2185B", marginLeft: 6, fontWeight: 700 }}>
+          <span style={{ fontSize: 11, color: "#C41E6A", marginLeft: 6, fontWeight: 700 }}>
             + {formatCOP(price)}
           </span>
         )}
       </div>
       <div style={{
         width: 22, height: 22, borderRadius: "50%",
-        border: selected ? "6px solid #C2185B" : "2px solid #DDD",
+        border: selected ? "6px solid #C41E6A" : "2px solid #DDD",
         background: "#fff", flexShrink: 0, transition: "all 0.15s",
       }} />
     </button>
@@ -268,7 +268,7 @@ export default function BananaSplitCustomizer({ product, open, onClose, onAdd })
           <SheetTitle style={{ fontSize: 18, fontWeight: 900, color: "#1A0A10", margin: 0 }}>
             {product.name}
           </SheetTitle>
-          <p style={{ fontSize: 13, color: "#C2185B", fontWeight: 700, margin: "4px 0 0" }}>
+          <p style={{ fontSize: 13, color: "#C41E6A", fontWeight: 700, margin: "4px 0 0" }}>
             Desde {formatCOP(product.price)}
           </p>
         </div>
@@ -368,7 +368,7 @@ export default function BananaSplitCustomizer({ product, open, onClose, onAdd })
             disabled={!allRequired}
             style={{
               width: "100%", height: 56, borderRadius: 18,
-              background: allRequired ? "#C2185B" : "#EDD8E4",
+              background: allRequired ? "#C41E6A" : "#EDD8E4",
               color: allRequired ? "#fff" : "#BBA8B0",
               fontSize: 15, fontWeight: 900, border: "none",
               cursor: allRequired ? "pointer" : "not-allowed",

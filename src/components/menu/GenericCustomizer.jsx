@@ -36,14 +36,14 @@ function CheckOption({ label, price, selected, onToggle }) {
     >
       <div>
         <span style={{ fontSize: 13, color: "#1A0A10" }}>{label}</span>
-        <span style={{ fontSize: 11, color: "#C2185B", marginLeft: 6, fontWeight: 700 }}>
+        <span style={{ fontSize: 11, color: "#C41E6A", marginLeft: 6, fontWeight: 700 }}>
           + {formatCOP(price)}
         </span>
       </div>
       <div style={{
         width: 22, height: 22, borderRadius: 5,
         border: selected ? "none" : "2px solid #DDD",
-        background: selected ? "#C2185B" : "#fff",
+        background: selected ? "#C41E6A" : "#fff",
         display: "flex", alignItems: "center", justifyContent: "center",
         flexShrink: 0, transition: "all 0.15s",
       }}>
@@ -88,7 +88,7 @@ export default function GenericCustomizer({ product, open, onClose, onAdd }) {
           <SheetTitle style={{ fontSize: 18, fontWeight: 900, color: "#1A0A10", margin: 0 }}>
             {product.name}
           </SheetTitle>
-          <p style={{ fontSize: 13, color: "#C2185B", fontWeight: 700, margin: "4px 0 0" }}>
+          <p style={{ fontSize: 13, color: "#C41E6A", fontWeight: 700, margin: "4px 0 0" }}>
             Desde {formatCOP(product.price)}
           </p>
         </div>
@@ -121,7 +121,7 @@ export default function GenericCustomizer({ product, open, onClose, onAdd }) {
             onClick={handleConfirm}
             style={{
               width: "100%", height: 56, borderRadius: 18,
-              background: "#C2185B",
+              background: "#C41E6A",
               color: "#fff",
               fontSize: 15, fontWeight: 900, border: "none", cursor: "pointer",
               boxShadow: "0 4px 16px rgba(194,24,91,0.35)",

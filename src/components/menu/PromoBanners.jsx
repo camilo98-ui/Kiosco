@@ -140,7 +140,7 @@ export default function PromoBanners({ onCategorySelect }) {
               height: 6,
               width: i === active ? 20 : 6,
               borderRadius: 6,
-              background: i === active ? "#E91B8B" : "#F5C0DC",
+              background: i === active ? "#C41E6A" : "#F5C0DC",
               transition: "all 0.3s ease",
               border: "none",
               padding: 0,

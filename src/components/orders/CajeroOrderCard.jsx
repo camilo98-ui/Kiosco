@@ -9,9 +9,9 @@ const STATUS_STYLES = {
     borderColor: "#F5C842",
   },
   pagado_tarjeta: {
-    badge: { background: "#FFE4F3", color: "#E91B8B", border: "1px solid #E91B8B" },
+    badge: { background: "#FFE4F3", color: "#C41E6A", border: "1px solid #C41E6A" },
     label: "En preparación",
-    borderColor: "#E91B8B",
+    borderColor: "#C41E6A",
   },
   listo: {
     badge: { background: "#E8F5E9", color: "#2E7D32", border: "1px solid #4CAF50" },
@@ -109,7 +109,7 @@ export default function CajeroOrderCard({ order, onClick }) {
 
       {/* Total + tiempo */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 1 }}>
-        <span style={{ fontSize: 14, fontWeight: 800, color: "#E91B8B" }}>{formatCOP(order.total)}</span>
+        <span style={{ fontSize: 14, fontWeight: 800, color: "#C41E6A" }}>{formatCOP(order.total)}</span>
         {order.status !== "finalizado" && (
           <span style={{ fontSize: 11, color: "#999999" }}>{timeStr}</span>
         )}
