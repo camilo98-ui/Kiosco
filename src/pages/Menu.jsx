@@ -319,7 +319,7 @@ export default function Menu() {
 
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
-        <div style={{ background: "#fff", padding: "14px 0 12px" }}>
+        <div style={{ background: "#fff", padding: "0 0 12px", overflow: "visible", position: "relative", zIndex: 5 }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
         <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
