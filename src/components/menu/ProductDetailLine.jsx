@@ -24,14 +24,17 @@ export default function ProductDetailLine({ item }) {
     // Si la nota ya contiene "Sabor", mostrarla tal cual
     lines.push(item.notes);
   } else {
-    // Para otros extras/adiciones
-    lines.push(`Adición: ${item.notes}`);
+    // Para otros extras/adiciones - mostrar todas las líneas del notes
+    const noteLines = item.notes.split("\n").filter(l => l.trim());
+    lines.push(...noteLines);
   }
 
   return (
-    <div style={{ marginTop: 4, fontSize: 12, fontStyle: "italic", color: "#666" }}>
+    <div style={{ marginTop: 3, display: "flex", flexDirection: "column", gap: 1 }}>
       {lines.map((line, i) => (
-        <div key={i}>{line}</div>
+        <div key={i} style={{ fontSize: 10, color: "#666", fontStyle: "italic", lineHeight: 1.3 }}>
+          📝 {line}
+        </div>
       ))}
     </div>
   );
