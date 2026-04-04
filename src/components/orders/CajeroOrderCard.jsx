@@ -26,6 +26,64 @@ const STATUS_STYLES = {
   },
 };
 
+// Parsea las notes en líneas legibles
+// Formato: "Sabor: X | Chantilly: Y | Crack: Z | Extras: A, B"
+function parseNotes(notes) {
+  if (!notes) return [];
+  return notes.split("|").map(s => s.trim()).filter(Boolean);
+}
+
+function OrderItem({ item }) {
+  const lines = parseNotes(item.notes);
+  return (
+    <div style={{
+      background: "#FAFAFA",
+      border: "1px solid #F0F0F0",
+      borderRadius: 10,
+      padding: "8px 10px",
+      marginBottom: 6,
+    }}>
+      {/* Nombre del producto en grande y claro */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 6, marginBottom: lines.length > 0 ? 5 : 0 }}>
+        <span style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", flex: 1, lineHeight: 1.3 }}>
+          {item.quantity > 1 && (
+            <span style={{
+              display: "inline-block", background: "#C41E6A", color: "#fff",
+              borderRadius: 6, fontSize: 11, fontWeight: 800, padding: "1px 6px", marginRight: 6,
+            }}>
+              ×{item.quantity}
+            </span>
+          )}
+          {item.product_name}
+        </span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#C41E6A", flexShrink: 0 }}>
+          {formatCOP(item.price * item.quantity)}
+        </span>
+      </div>
+
+      {/* Personalización línea por línea */}
+      {lines.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 2, paddingLeft: 2 }}>
+          {lines.map((line, i) => {
+            const [key, ...rest] = line.split(":");
+            const value = rest.join(":").trim();
+            return (
+              <div key={i} style={{ display: "flex", gap: 4, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#888", minWidth: 48, textTransform: "uppercase", lineHeight: 1.5, flexShrink: 0 }}>
+                  {key.trim()}:
+                </span>
+                <span style={{ fontSize: 11, color: "#444", lineHeight: 1.4, fontWeight: 500 }}>
+                  {value}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function CajeroOrderCard({ order, onFinalize }) {
   const [elapsed, setElapsed] = useState(0);
 
@@ -46,25 +104,24 @@ export default function CajeroOrderCard({ order, onFinalize }) {
   const canFinalize = order.status === "pendiente" || order.status === "pagado_tarjeta";
 
   return (
-    <div
-      style={{
-        background: "#FFFFFF",
-        border: "0.5px solid #F0F0F0",
-        borderLeft: `4px solid ${st.borderColor}`,
-        borderRadius: 16,
-        padding: 12,
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-      }}
-    >
-      {/* Número de pedido + tiempo */}
+    <div style={{
+      background: "#FFFFFF",
+      border: "0.5px solid #EBEBEB",
+      borderLeft: `4px solid ${st.borderColor}`,
+      borderRadius: 16,
+      padding: 12,
+      display: "flex",
+      flexDirection: "column",
+      gap: 8,
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+    }}>
+      {/* Número + tiempo */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-        <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 42, fontWeight: 800, color: "#1A1A1A", lineHeight: 1 }}>
+        <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 40, fontWeight: 800, color: "#1A1A1A", lineHeight: 1 }}>
           #{order.order_number}
         </div>
         {order.status !== "finalizado" && (
-          <span style={{ fontSize: 12, color: "#999", fontWeight: 600, paddingTop: 4 }}>{timeStr}</span>
+          <span style={{ fontSize: 12, color: "#AAAAAA", fontWeight: 600, paddingTop: 4 }}>{timeStr}</span>
         )}
       </div>
 
@@ -83,31 +140,15 @@ export default function CajeroOrderCard({ order, onFinalize }) {
         👤 {order.customer_name}
       </p>
 
-      {/* Divisor */}
       <div style={{ height: "0.5px", background: "#F0F0F0" }} />
 
-      {/* TODOS los ítems completos */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+      {/* Ítems con detalle completo */}
+      <div>
         {order.items?.map((item, i) => (
-          <div key={i}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 6 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: "#1A1A1A", flex: 1, lineHeight: 1.3 }}>
-                {item.quantity}× {item.product_name}
-              </span>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#C41E6A", flexShrink: 0 }}>
-                {formatCOP(item.price * item.quantity)}
-              </span>
-            </div>
-            {item.notes && (
-              <p style={{ fontSize: 10, color: "#AAA", margin: "2px 0 0 16px", fontStyle: "italic" }}>
-                📝 {item.notes}
-              </p>
-            )}
-          </div>
+          <OrderItem key={i} item={item} />
         ))}
       </div>
 
-      {/* Divisor */}
       <div style={{ height: "0.5px", background: "#F0F0F0" }} />
 
       {/* Total */}
@@ -116,7 +157,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
         <span style={{ fontSize: 15, fontWeight: 800, color: "#C41E6A" }}>{formatCOP(order.total)}</span>
       </div>
 
-      {/* Botón Facturado directo */}
+      {/* Botón directo */}
       {canFinalize && (
         <button
           onClick={() => onFinalize(order)}
@@ -126,7 +167,6 @@ export default function CajeroOrderCard({ order, onFinalize }) {
             color: "#fff",
             fontSize: 13, fontWeight: 700, border: "none", cursor: "pointer",
             display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-            marginTop: 2,
           }}
         >
           {order.status === "pendiente"
