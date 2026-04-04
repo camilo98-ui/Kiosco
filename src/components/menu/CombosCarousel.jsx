@@ -1,44 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
+import { COMBOS_DATA } from "@/lib/combosData";
 
-const CARD_GRADIENTS = [
-  "linear-gradient(135deg, #FFE0D0 0%, #FFB89A 100%)",
-  "linear-gradient(135deg, #FFF3D6 0%, #FFD98A 100%)",
-  "linear-gradient(135deg, #D6F0D6 0%, #A8D8A8 100%)",
-  "linear-gradient(135deg, #FFD6E8 0%, #FFB3D1 100%)",
-  "linear-gradient(135deg, #FFE0D0 0%, #FFC4A0 100%)",
-  "linear-gradient(135deg, #D6E8FF 0%, #A0C4FF 100%)",
-  "linear-gradient(135deg, #F0D6FF 0%, #D4A0FF 100%)",
-  "linear-gradient(135deg, #FFF3D6 0%, #FFD98A 100%)",
-  "linear-gradient(135deg, #D6F0D6 0%, #A8D8A8 100%)",
-  "linear-gradient(135deg, #FFE0D0 0%, #FFB89A 100%)",
-  "linear-gradient(135deg, #FFD6E8 0%, #FFB3D1 100%)",
-  "linear-gradient(135deg, #FFF3D6 0%, #FFD98A 100%)",
-  "linear-gradient(135deg, #D6E8FF 0%, #A0C4FF 100%)",
-];
-
-const COMBOS = [
-  { id: 1,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c2b4b2bf3_SegundaMalteada16Oz-30dedescuento.png",          title: "Segunda Malteada 16 Oz",              price: "30% de descuento",            badge: "Oferta" },
-  { id: 2,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c6fd8dce_Malteada16OzCharlieBrownie37800.png",              title: "Malteada 16 Oz Charlie Brownie",      price: "$37.800",                     badge: "Top"   },
-  { id: 3,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d7bb62cd8_Malteada16OzBananaSplit37800.png",                 title: "Malteada 16 Oz Banana Split",         price: "$37.800",                     badge: "Top"   },
-  { id: 4,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/717fb959c_Malteada16OzBananaSplit.png",                      title: "Malteada 16 Oz Banana Split",         price: "",                            badge: "Nuevo" },
-  { id: 5,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa4c65c0f_ComboLitrodeheladoBrownie8Und.png",                title: "Combo Litro de helado Brownie",       price: "8 unidades",                  badge: "8 uds" },
-  { id: 6,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9ac7460da_CompraunaTarrinaoLitroyllevasotraTarrinaconel30dedescuento.png", title: "Compra una Tarrina o Litro", price: "30% de descuento", badge: "Oferta" },
-  { id: 7,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e54977063_TortaTarrinaOLitro.png",                           title: "Torta Tarrina O Litro",               price: "",                            badge: "Nuevo" },
-  { id: 8,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c196fbb03_Combo2TarrinasCajadeCono.png",                     title: "Combo 2 Tarrinas",                    price: "Caja de Cono",                badge: "Combo" },
-  { id: 9,  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d8375425b_2LitrosdeHeladoCajaConoBrowniex8unidades.png",     title: "2 Litros Caja Cono Brownie",          price: "x8 unidades",                 badge: "8 uds" },
-  { id: 10, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/74c450f21_ComboLitroCajaCono2Toppings.png",                  title: "Combo Litro Caja Cono",               price: "2 Toppings",                  badge: "Combo" },
-  { id: 11, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/09347eafa_CompraunLitroyllevaunLitrooTarrinaconel30dto.png", title: "Compra un Litro",                     price: "30% dto en otro",             badge: "Oferta" },
-  { id: 12, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/46a819092_Americano9ONZGalletaRedvelvet20800.png",           title: "Americano + Galleta Red Velvet",      price: "$20.800",                     badge: "Nuevo" },
-  { id: 13, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0ffc145bd_Maletada16OzAgua25800.png",                       title: "Malteada 16 Oz + Agua",               price: "$25.800",                     badge: "Top"   },
-];
+const COMBOS = COMBOS_DATA;
 
 const CARD_WIDTH = 150;
 const GAP = 12;
 const CARD_STEP = CARD_WIDTH + GAP;
 
 function ComboCard({ combo, onAdd }) {
-  const isPrice = combo.price && combo.price.startsWith("$");
-  const isPromo = combo.price && !isPrice;
+  const isPrice = combo.displayPrice && combo.displayPrice.startsWith("$");
+  const isPromo = combo.displayPrice && !isPrice;
 
   return (
     <button
@@ -85,12 +56,12 @@ function ComboCard({ combo, onAdd }) {
         </p>
         {isPrice && (
           <p style={{ fontSize: 14, fontWeight: 900, color: "#C41E6A", margin: "4px 0 0" }}>
-            {combo.price}
+            {combo.displayPrice}
           </p>
         )}
         {isPromo && (
           <p style={{ fontSize: 10, fontWeight: 700, color: "#C41E6A", margin: "4px 0 0", lineHeight: 1.3 }}>
-            {combo.price}
+            {combo.displayPrice}
           </p>
         )}
         </div>

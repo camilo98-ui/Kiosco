@@ -271,6 +271,7 @@ export default function Menu() {
   const handleCheckoutStart = useCallback((name) => {
     setPendingCheckoutName(name);
     setCheckoutOpen(false);
+    // Mostrar agua inmediatamente sin delay
     setShowWaterUpsell(true);
   }, []);
 
@@ -286,12 +287,12 @@ export default function Menu() {
   }, [pendingCheckoutName]);
 
   const doCheckout = async (name, extraItems = []) => {
-    setIsSubmitting(true);
     const cartSnapshot = [...cart, ...extraItems];
     const orderTotal = cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
     const currentNum = nextOrderNum || 101;
     
     clearCart();
+    // Mostrar ticket inmediatamente
     setConfirmedOrder({
       order_number: currentNum,
       customer_name: name,
@@ -299,12 +300,13 @@ export default function Menu() {
       total: orderTotal,
       id: `temp-${Date.now()}`,
     });
-    setIsSubmitting(false);
     setPendingCheckoutName(null);
+    setIsSubmitting(false);
     
+    // Guardar orden en background sin esperar
     const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
     const settingsId = settings[0]?.id;
-    await Promise.all([
+    Promise.all([
       base44.entities.Order.create({
         order_number: currentNum,
         customer_name: name,
@@ -313,7 +315,7 @@ export default function Menu() {
         status: "pendiente",
       }),
       settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) }),
-    ]);
+    ]).catch(() => {});
     setNextOrderNum(currentNum + 1);
   };
 
