@@ -104,7 +104,7 @@ export default function PromoBanners({ onCategorySelect }) {
   const banner = BANNERS[active];
 
   return (
-    <div className="px-1 mb-0">
+    <div className="px-1 mb-0" style={{ marginBottom: 0 }}>
       <div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -131,17 +131,17 @@ export default function PromoBanners({ onCategorySelect }) {
       </div>
 
       {/* Dots */}
-      <div className="flex items-center justify-center gap-1 mt-1">
+      <div className="flex items-center justify-center gap-2 mt-2">
         {BANNERS.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
             style={{
-              height: 4,
-              width: i === active ? 14 : 4,
-              borderRadius: 4,
-              background: i === active ? "#C2185B" : "#EDD8E4",
-              transition: "all 0.25s ease",
+              height: 6,
+              width: i === active ? 20 : 6,
+              borderRadius: 6,
+              background: i === active ? "#E91B8B" : "#F5C0DC",
+              transition: "all 0.3s ease",
               border: "none",
               padding: 0,
               flexShrink: 0,

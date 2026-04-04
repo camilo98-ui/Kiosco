@@ -80,7 +80,7 @@ function CategoryIcons({ activeCategory, onSelect }) {
 
 function FamilyCarousel({ productCounts, onSelect }) {
   return (
-    <div style={{ background: "#fff", padding: "14px 0", marginTop: 10 }}>
+    <div style={{ background: "#fff", padding: "10px 0 14px", marginTop: 2 }}>
       <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px" }}>Explorar categorías</p>
       <CategoryGrid categories={FAMILY_CARDS} productCounts={productCounts} onSelect={onSelect} />
     </div>
@@ -319,7 +319,7 @@ export default function Menu() {
 
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
-        <div style={{ background: "#fff", padding: "14px 0 12px" }}>
+        <div style={{ background: "#fff", padding: "10px 0 0" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </div>
         <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />

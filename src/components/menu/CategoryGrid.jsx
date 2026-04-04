@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { ChevronRight } from "lucide-react";
+
 
 export default function CategoryGrid({ categories, productCounts, onSelect }) {
   const containerRef = useRef(null);
@@ -84,25 +84,6 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
               background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)",
             }}
           />
-
-          {/* Botón circular con flecha - esquina superior derecha */}
-          <div
-            style={{
-              position: "absolute",
-              top: 12,
-              right: 12,
-              width: 40,
-              height: 40,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.25)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 2,
-            }}
-          >
-            <ChevronRight size={18} color="#fff" />
-          </div>
 
           {/* Texto - esquina inferior izquierda */}
           <div
