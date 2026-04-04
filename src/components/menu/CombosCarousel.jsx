@@ -59,20 +59,23 @@ function ComboCard({ combo, gradient, onAdd }) {
       }}
     >
       {/* Image zone */}
-      <div style={{ position: "relative", height: 110, background: gradient, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{
+        position: "relative", height: 150, overflow: "hidden",
+        borderRadius: "20px 20px 0 0",
+      }}>
         <img
           src={combo.image}
           alt={combo.title}
-          style={{ width: "90%", height: "90%", objectFit: "contain" }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
         {/* Badge */}
         <span style={{
-          position: "absolute", top: 8, right: 8,
+          position: "absolute", top: 9, right: 9,
           background: combo.badgeColor, color: "#fff",
           fontSize: 9, fontWeight: 800,
           borderRadius: 20, padding: "3px 8px",
           letterSpacing: "0.3px",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
         }}>
           {combo.badge}
         </span>
