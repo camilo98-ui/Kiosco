@@ -188,6 +188,7 @@ export default function Menu() {
   const [showWaterUpsell, setShowWaterUpsell] = useState(false);
   const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
+  const [nextOrderNum, setNextOrderNum] = useState(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -197,6 +198,14 @@ export default function Menu() {
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.list("sort_order", 200),
   });
+
+  useEffect(() => {
+    const preloadNextOrderNum = async () => {
+      const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
+      setNextOrderNum(parseInt(settings[0]?.value || "101"));
+    };
+    preloadNextOrderNum();
+  }, []);
 
   const productsByCategory = useMemo(() => {
     const map = {};
@@ -261,20 +270,32 @@ export default function Menu() {
     setIsSubmitting(true);
     const cartSnapshot = [...cart, ...extraItems];
     const orderTotal = cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
-    const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
-    const nextNum = parseInt(settings[0]?.value || "101");
-    const order = await base44.entities.Order.create({
-      order_number: nextNum,
-      customer_name: name,
-      items: cartSnapshot.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes })),
-      total: orderTotal,
-      status: "pendiente",
-    });
-    await base44.entities.Settings.update(settings[0].id, { value: String(nextNum + 1) });
+    const currentNum = nextOrderNum || 101;
+    
     clearCart();
-    setConfirmedOrder({ ...order, order_number: nextNum, customer_name: name, items: cartSnapshot, total: orderTotal });
+    setConfirmedOrder({
+      order_number: currentNum,
+      customer_name: name,
+      items: cartSnapshot,
+      total: orderTotal,
+      id: `temp-${Date.now()}`,
+    });
     setIsSubmitting(false);
     setPendingCheckoutName(null);
+    
+    const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
+    const settingsId = settings[0]?.id;
+    await Promise.all([
+      base44.entities.Order.create({
+        order_number: currentNum,
+        customer_name: name,
+        items: cartSnapshot.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes })),
+        total: orderTotal,
+        status: "pendiente",
+      }),
+      settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) }),
+    ]);
+    setNextOrderNum(currentNum + 1);
   };
 
   const handleWaterAdd = () => {
