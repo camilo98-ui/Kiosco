@@ -137,6 +137,8 @@ export default function Cajero() {
     queryKey: ["orders-cajero"],
     queryFn: () => base44.entities.Order.list("-created_date", 100),
     refetchInterval: 3000,
+    staleTime: 1000,
+    gcTime: 5 * 60 * 1000,
   });
 
   const activeOrders = orders.filter((o) => o.status !== "finalizado");

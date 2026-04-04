@@ -66,6 +66,8 @@ function MenuView({ onAddItem }) {
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.list("sort_order", 200),
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 
   const isSearching = search.trim().length > 0;
@@ -428,6 +430,8 @@ export default function Datafono() {
     queryKey: ["orders-datafono-pending"],
     queryFn: () => base44.entities.Order.filter({ status: "pendiente" }, "-created_date", 50),
     refetchInterval: 3000,
+    staleTime: 1000,
+    gcTime: 5 * 60 * 1000,
   });
 
   const markTarjeta = useMutation({

@@ -197,6 +197,8 @@ export default function Menu() {
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.list("sort_order", 200),
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 
   useEffect(() => {
@@ -229,17 +231,6 @@ export default function Menu() {
     return products.filter(p => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false).slice(0, 6);
   }, [products, activeCategory]);
 
-  const handleLogoClick = () => {
-    logoClickCount.current += 1;
-    clearTimeout(logoClickTimer.current);
-    if (logoClickCount.current >= 5) {
-      logoClickCount.current = 0;
-      setHiddenMenuOpen(true);
-    } else {
-      logoClickTimer.current = setTimeout(() => { logoClickCount.current = 0; }, 2000);
-    }
-  };
-
   const handleAddProduct = useCallback((product, notes = "") => {
     addItem(product, notes);
     setAddedFlash(product.id);
@@ -255,16 +246,38 @@ export default function Menu() {
     }
   }, [addItem]);
 
-  const handleUpsellAccept = () => {
-    if (upsellTarget) setActiveCategory(upsellTarget);
-    setUpsellMsg(null);
+  const handleLogoClick = () => {
+    logoClickCount.current += 1;
+    clearTimeout(logoClickTimer.current);
+    if (logoClickCount.current >= 5) {
+      logoClickCount.current = 0;
+      setHiddenMenuOpen(true);
+    } else {
+      logoClickTimer.current = setTimeout(() => { logoClickCount.current = 0; }, 2000);
+    }
   };
 
-  const handleCheckoutStart = (name) => {
+  const handleUpsellAccept = useCallback(() => {
+    if (upsellTarget) setActiveCategory(upsellTarget);
+    setUpsellMsg(null);
+  }, [upsellTarget]);
+
+  const handleCheckoutStart = useCallback((name) => {
     setPendingCheckoutName(name);
     setCheckoutOpen(false);
     setShowWaterUpsell(true);
-  };
+  }, []);
+
+  const handleWaterAdd = useCallback(() => {
+    setShowWaterUpsell(false);
+    const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
+    doCheckout(pendingCheckoutName, [waterItem]);
+  }, [pendingCheckoutName]);
+
+  const handleWaterSkip = useCallback(() => {
+    setShowWaterUpsell(false);
+    doCheckout(pendingCheckoutName, []);
+  }, [pendingCheckoutName]);
 
   const doCheckout = async (name, extraItems = []) => {
     setIsSubmitting(true);
@@ -296,17 +309,6 @@ export default function Menu() {
       settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) }),
     ]);
     setNextOrderNum(currentNum + 1);
-  };
-
-  const handleWaterAdd = () => {
-    setShowWaterUpsell(false);
-    const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
-    doCheckout(pendingCheckoutName, [waterItem]);
-  };
-
-  const handleWaterSkip = () => {
-    setShowWaterUpsell(false);
-    doCheckout(pendingCheckoutName, []);
   };
 
   const handleCheckout = handleCheckoutStart;
