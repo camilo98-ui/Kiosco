@@ -141,11 +141,15 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
   const SECTIONS = ["salsa", "chantilly", "crack", "extras"];
 
   const toggleExtra = (name, price) => {
-    setExtras(prev =>
-      prev.find(e => e.name === name)
+    setExtras(prev => {
+      const updated = prev.find(e => e.name === name)
         ? prev.filter(e => e.name !== name)
-        : [...prev, { name, price }]
-    );
+        : [...prev, { name, price }];
+      if (updated.length > 0 && openSection !== "extras") {
+        setOpenSection("extras");
+      }
+      return updated;
+    });
   };
 
   const toggle = (section) => setOpenSection(s => s === section ? null : section);
@@ -153,7 +157,11 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
   const advanceToNext = (currentSection) => {
     const idx = SECTIONS.indexOf(currentSection);
     const next = SECTIONS[idx + 1];
-    if (next) setTimeout(() => setOpenSection(next), 200);
+    if (!next) {
+      setTimeout(() => setOpenSection(null), 150);
+    } else {
+      setTimeout(() => setOpenSection(next), 200);
+    }
   };
 
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);

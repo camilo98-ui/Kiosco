@@ -5,7 +5,8 @@ import CajeroOrderCard from "@/components/orders/CajeroOrderCard";
 import DaySummary from "@/components/orders/DaySummary";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle, AlertTriangle, BarChart3, X } from "lucide-react";
+import { ArrowLeft, CheckCircle, AlertTriangle, BarChart3, X, Clock } from "lucide-react";
+import OrderHistory from "@/components/orders/OrderHistory";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { formatCOP, STATUS_CONFIG } from "@/lib/constants";
@@ -125,6 +126,7 @@ function OrderDetailModal({ order, onClose, onFinalize }) {
 
 export default function Cajero() {
   const [showSummary, setShowSummary] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [posAlert, setPosAlert] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const queryClient = useQueryClient();
@@ -180,41 +182,53 @@ export default function Cajero() {
             </p>
           </div>
 
-          <button
-            onClick={() => setShowSummary(!showSummary)}
-            style={{ width: 36, height: 36, borderRadius: "50%", background: "#FFF0F7", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
-          >
-            <BarChart3 size={18} color="#C41E6A" />
-          </button>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              onClick={() => setShowHistory(true)}
+              style={{ width: 36, height: 36, borderRadius: "50%", background: "#F0F7FF", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+            >
+              <Clock size={18} color="#1A56DB" />
+            </button>
+            <button
+              onClick={() => setShowSummary(!showSummary)}
+              style={{ width: 36, height: 36, borderRadius: "50%", background: "#FFF0F7", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+            >
+              <BarChart3 size={18} color="#C41E6A" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: 16 }}>
-        {showSummary && <div style={{ marginBottom: 16 }}><DaySummary orders={orders} /></div>}
+      <div style={{ maxWidth: "100%", margin: "0 auto", padding: 16, display: "flex", gap: 16 }}>
+         {/* Sidebar: Summary (desktop) */}
+         <div style={{ width: 300, flexShrink: 0 }}>
+           {showSummary && <DaySummary orders={orders} />}
+         </div>
 
-        {activeOrders.length === 0 ? (
-          <div style={{ textAlign: "center", paddingTop: 80, color: "#999" }}>
-            <p style={{ fontSize: 40, marginBottom: 8 }}>✨</p>
-            <p style={{ fontWeight: 600 }}>No hay pedidos pendientes</p>
-          </div>
-        ) : (
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 12,
-          }}
-            className="cajero-grid"
-          >
-            {activeOrders.map((order) => (
-              <CajeroOrderCard
-                key={order.id}
-                order={order}
-                onFinalize={handleFinalize}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+         {/* Main: Orders grid */}
+         <div style={{ flex: 1 }}>
+           {activeOrders.length === 0 ? (
+             <div style={{ textAlign: "center", paddingTop: 80, color: "#999" }}>
+               <p style={{ fontSize: 40, marginBottom: 8 }}>✨</p>
+               <p style={{ fontWeight: 600 }}>No hay pedidos pendientes</p>
+             </div>
+           ) : (
+             <div style={{
+               display: "grid",
+               gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+               gap: 16,
+             }}>
+               {activeOrders.map((order) => (
+                 <CajeroOrderCard
+                   key={order.id}
+                   order={order}
+                   onFinalize={handleFinalize}
+                 />
+               ))}
+             </div>
+           )}
+         </div>
+       </div>
 
       {/* Modal detalle */}
       {selectedOrder && (
@@ -222,6 +236,14 @@ export default function Cajero() {
           order={selectedOrder}
           onClose={() => setSelectedOrder(null)}
           onFinalize={handleFinalize}
+        />
+      )}
+
+      {/* Historial */}
+      {showHistory && (
+        <OrderHistory
+          orders={orders}
+          onClose={() => setShowHistory(false)}
         />
       )}
 

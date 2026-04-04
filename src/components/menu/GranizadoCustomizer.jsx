@@ -103,7 +103,11 @@ export default function GranizadoCustomizer({ product, open, onClose, onAdd }) {
   const advanceToNext = (current) => {
     const idx = SECTIONS.indexOf(current);
     const next = SECTIONS[idx + 1];
-    if (next) setTimeout(() => setOpenSection(next), 200);
+    if (!next) {
+      setTimeout(() => setOpenSection(null), 150);
+    } else {
+      setTimeout(() => setOpenSection(next), 200);
+    }
   };
 
   const toggleSabor = (sabor) => {

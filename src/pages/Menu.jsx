@@ -185,6 +185,7 @@ export default function Menu() {
   const [showMostOrdered, setShowMostOrdered] = useState(false);
   const [showWaterUpsell, setShowWaterUpsell] = useState(false);
   const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
+  const [cartOpen, setCartOpen] = useState(false);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -276,13 +277,15 @@ export default function Menu() {
 
   const handleWaterAdd = () => {
     setShowWaterUpsell(false);
-    const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
-    doCheckout(pendingCheckoutName, [waterItem]);
+    setTimeout(() => {
+      const waterItem = { product_id: "water", product_name: "Agua", price: 3500, quantity: 1, notes: "" };
+      doCheckout(pendingCheckoutName, [waterItem]);
+    }, 100);
   };
 
   const handleWaterSkip = () => {
     setShowWaterUpsell(false);
-    doCheckout(pendingCheckoutName, []);
+    setTimeout(() => doCheckout(pendingCheckoutName, []), 100);
   };
 
   const handleCheckout = handleCheckoutStart;
@@ -326,19 +329,19 @@ export default function Menu() {
       >
         <HeaderLine hasCart={itemCount > 0} />
         {/* Fila logo + carrito */}
-        <div className="flex items-center justify-between pl-0 pr-3" style={{ height: 48 }}>
+        <div className="flex items-center justify-between pl-0 pr-3" style={{ height: 48, gap: 12 }}>
           <PopsyLogo onClick={handleLogoClick} size="normal" dark />
-          <button className="flex items-center justify-center relative" style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)", border: "none", cursor: "pointer" }}>
-            <ShoppingBag size={14} color="#fff" />
+          <button onClick={() => setCartOpen(true)} className="flex items-center justify-center relative" style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", padding: 0, minWidth: 40, transition: "all 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
+            <ShoppingBag size={16} color="#fff" />
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 15, height: 15, borderRadius: "50%", background: "#fff", color: "#C41E6A", fontSize: 8 }}>
+              <span className="absolute -top-1 -right-1 font-black flex items-center justify-center" style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", color: "#C41E6A", fontSize: 9 }}>
                 {itemCount}
               </span>
             )}
           </button>
         </div>
         {/* Barra de búsqueda siempre visible */}
-        <div style={{ padding: "0 12px 10px" }}>
+        <div style={{ padding: "0 12px 10px", flex: 1 }}>
           <button
             onClick={() => setSearchOpen(true)}
             style={{

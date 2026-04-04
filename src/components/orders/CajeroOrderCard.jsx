@@ -11,7 +11,7 @@ const STATUS_STYLES = {
   },
   pagado_tarjeta: {
     badge: { background: "#FFE4F3", color: "#C41E6A", border: "1px solid #C41E6A" },
-    label: "En preparación",
+    label: "Pendiente por pagar",
     borderColor: "#C41E6A",
   },
   listo: {
@@ -88,6 +88,8 @@ export default function CajeroOrderCard({ order, onFinalize }) {
   const [elapsed, setElapsed] = useState(0);
 
   const st = STATUS_STYLES[order.status] || STATUS_STYLES.pendiente;
+  const isOvertime = elapsed > 300;
+  const isPagoTarjeta = order.status === "pagado_tarjeta";
 
   useEffect(() => {
     if (order.status === "finalizado") return;
@@ -102,26 +104,35 @@ export default function CajeroOrderCard({ order, onFinalize }) {
   const timeStr = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
   const canFinalize = order.status === "pendiente" || order.status === "pagado_tarjeta";
+  
+  const handleCardClick = () => {
+    if (canFinalize) {
+      onFinalize(order);
+    }
+  };
 
   return (
-    <div style={{
+    <div onClick={handleCardClick} style={{
       background: "#FFFFFF",
       border: "0.5px solid #EBEBEB",
-      borderLeft: `4px solid ${order.payment_method === "tarjeta" ? "#1A56DB" : st.borderColor}`,
+      borderLeft: `4px solid ${isPagoTarjeta ? "#FF4444" : (isOvertime ? "#FF6B6B" : st.borderColor)}`,
       borderRadius: 16,
       padding: 12,
       display: "flex",
       flexDirection: "column",
       gap: 8,
       boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-    }}>
+      cursor: canFinalize ? "pointer" : "default",
+      transition: "all 0.2s",
+      minWidth: 300,
+    }} onMouseEnter={(e) => { if (canFinalize) e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)"; }} onMouseLeave={(e) => { if (canFinalize) e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.05)"; }}>
       {/* Número + tiempo */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
         <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 40, fontWeight: 800, color: "#1A1A1A", lineHeight: 1 }}>
           #{order.order_number}
         </div>
         {order.status !== "finalizado" && (
-          <span style={{ fontSize: 12, color: "#AAAAAA", fontWeight: 600, paddingTop: 4 }}>{timeStr}</span>
+          <span style={{ fontSize: 12, color: isOvertime ? "#FF6B6B" : (isPagoTarjeta ? "#FF4444" : "#AAAAAA"), fontWeight: isOvertime || isPagoTarjeta ? 700 : 600, paddingTop: 4 }}>{timeStr}</span>
         )}
       </div>
 
@@ -129,11 +140,13 @@ export default function CajeroOrderCard({ order, onFinalize }) {
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         <div style={{
           display: "inline-flex", alignSelf: "flex-start",
-          ...st.badge,
+          background: isPagoTarjeta ? "#FFCCCC" : (isOvertime ? "#FFE0E0" : st.badge.background),
+          color: isPagoTarjeta ? "#FF4444" : (isOvertime ? "#FF6B6B" : st.badge.color),
+          border: isPagoTarjeta ? "1px solid #FF4444" : (isOvertime ? "1px solid #FF6B6B" : st.badge.border),
           borderRadius: 20, fontSize: 11, fontWeight: 700,
           padding: "3px 10px",
         }}>
-          {st.label}
+          {isPagoTarjeta ? "Pendiente por pagar" : (isOvertime ? "⏰ Pasó 5 min" : st.label)}
         </div>
         {order.payment_method === "tarjeta" && (
           <div style={{
@@ -154,10 +167,44 @@ export default function CajeroOrderCard({ order, onFinalize }) {
 
       <div style={{ height: "0.5px", background: "#F0F0F0" }} />
 
-      {/* Ítems con detalle completo */}
-      <div>
+      {/* Ítems con detalle completo — Mejorado para desktop */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
         {order.items?.map((item, i) => (
-          <OrderItem key={i} item={item} />
+          <div key={i} style={{
+            background: "#FAFAFA",
+            border: "1px solid #F0F0F0",
+            borderRadius: 8,
+            padding: "8px 10px",
+          }}>
+            {/* Nombre del producto */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 4, marginBottom: item.notes ? 4 : 0 }}>
+              <span style={{ fontSize: 12, fontWeight: 800, color: "#1A1A1A", flex: 1, lineHeight: 1.2 }}>
+                {item.quantity > 1 && (
+                  <span style={{
+                    display: "inline-block", background: "#C41E6A", color: "#fff",
+                    borderRadius: 4, fontSize: 10, fontWeight: 800, padding: "1px 4px", marginRight: 4,
+                  }}>
+                    ×{item.quantity}
+                  </span>
+                )}
+                {item.product_name}
+              </span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#C41E6A", flexShrink: 0, whiteSpace: "nowrap" }}>
+                {formatCOP(item.price * item.quantity)}
+              </span>
+            </div>
+
+            {/* Personalización */}
+            {item.notes && (
+              <div style={{ fontSize: 9, color: "#666", lineHeight: 1.3 }}>
+                {item.notes.split("|").map((line, j) => (
+                  <p key={j} style={{ margin: "1px 0", padding: "1px 0" }}>
+                    {line.trim()}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
       </div>
 
