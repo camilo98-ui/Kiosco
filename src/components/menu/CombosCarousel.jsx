@@ -36,12 +36,13 @@ const CARD_WIDTH = 150;
 const GAP = 12;
 const CARD_STEP = CARD_WIDTH + GAP;
 
-function ComboCard({ combo }) {
+function ComboCard({ combo, onAdd }) {
   const isPrice = combo.price && combo.price.startsWith("$");
   const isPromo = combo.price && !isPrice;
 
   return (
-    <div
+    <button
+      onClick={() => onAdd && onAdd(combo)}
       style={{
         width: CARD_WIDTH,
         flexShrink: 0,
@@ -52,6 +53,8 @@ function ComboCard({ combo }) {
         boxShadow: "0 2px 8px rgba(194,24,91,0.08)",
         userSelect: "none",
         WebkitUserSelect: "none",
+        cursor: "pointer",
+        padding: 0,
       }}
     >
       <div style={{ position: "relative", height: 150, overflow: "hidden", borderRadius: "20px 20px 0 0" }}>
@@ -90,10 +93,10 @@ function ComboCard({ combo }) {
             {combo.price}
           </p>
         )}
-      </div>
-    </div>
-  );
-}
+        </div>
+        </button>
+        );
+        }
 
 export default function CombosCarousel({ onAdd }) {
   const trackRef = useRef(null);
@@ -128,9 +131,9 @@ export default function CombosCarousel({ onAdd }) {
   const handleMouseUp = () => {
     dragRef.current.isDragging = false;
     if (trackRef.current) trackRef.current.style.cursor = "grab";
-    // Resume after 5 seconds
+    // Resume después de 500ms de inactividad
     clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 5000);
+    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 500);
   };
 
   useEffect(() => {
@@ -164,7 +167,7 @@ export default function CombosCarousel({ onAdd }) {
 
   const handleTouchEnd = () => {
     clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 5000);
+    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 500);
   };
 
   // Continuous animation loop
@@ -190,9 +193,14 @@ export default function CombosCarousel({ onAdd }) {
 
   return (
     <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
-      <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: "0 0 14px 16px" }}>
-        Combos
-      </p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
+        <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: 0 }}>
+          Combos
+        </p>
+        <button onClick={() => document.dispatchEvent(new CustomEvent("openCombosModal"))} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A", padding: 0 }}>
+          Ver todos →
+        </button>
+      </div>
 
       <div
         style={{ overflow: "hidden", paddingLeft: 16, paddingBottom: 4, cursor: "grab" }}

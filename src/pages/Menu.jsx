@@ -18,6 +18,7 @@ import ConfirmationScreen from "@/components/menu/ConfirmationScreen";
 import HiddenMenu from "@/components/menu/HiddenMenu";
 import HeaderLine from "@/components/menu/HeaderLine";
 import CombosCarousel from "@/components/menu/CombosCarousel";
+import CombosAllModal from "@/components/menu/CombosAllModal";
 import MostOrderedAll from "@/components/menu/MostOrderedAll";
 import WaterUpsell from "@/components/menu/WaterUpsell";
 
@@ -186,6 +187,7 @@ export default function Menu() {
   const [lastAdded, setLastAdded] = useState(null);
   const [showMostOrdered, setShowMostOrdered] = useState(false);
   const [showWaterUpsell, setShowWaterUpsell] = useState(false);
+  const [showCombosAll, setShowCombosAll] = useState(false);
   const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [nextOrderNum, setNextOrderNum] = useState(null);
@@ -207,6 +209,10 @@ export default function Menu() {
       setNextOrderNum(parseInt(settings[0]?.value || "101"));
     };
     preloadNextOrderNum();
+
+    const handleOpenCombosModal = () => setShowCombosAll(true);
+    document.addEventListener("openCombosModal", handleOpenCombosModal);
+    return () => document.removeEventListener("openCombosModal", handleOpenCombosModal);
   }, []);
 
   const productsByCategory = useMemo(() => {
@@ -394,6 +400,7 @@ export default function Menu() {
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={handleAddProduct} />
+      <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
       {showWaterUpsell && (
         <WaterUpsell onAdd={handleWaterAdd} onSkip={handleWaterSkip} />
       )}
