@@ -116,7 +116,7 @@ function MostOrderedItem({ product, idx, onAdd }) {
   );
 }
 
-function MostOrdered({ products, onAdd }) {
+function MostOrdered({ products, onAdd, onShowAll }) {
   const top = useMemo(() =>
     [...products].filter(p => p.tag === "mas_vendido" && p.is_available !== false).slice(0, 8),
     [products]
@@ -126,7 +126,7 @@ function MostOrdered({ products, onAdd }) {
     <div style={{ background: "#fff", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
       <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Lo más pedido</p>
-      <button onClick={() => setShowMostOrdered(true)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
+      <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
       </div>
       {top.map((product, idx) => (
         <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} />
@@ -393,7 +393,7 @@ export default function Menu() {
             <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C41E6A" }} />
           </div>
         ) : (
-          <MostOrdered products={products} onAdd={handleAddProduct} />
+          <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} />
         )}
       </div>
 
