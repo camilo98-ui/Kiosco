@@ -531,6 +531,8 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
       setMaxiConoProduct(product);
     } else if (category === "helados" && product.name.toLowerCase().includes("exclusivo")) {
       setHeladoProduct(product);
+    } else if (category === "helados" && product.name.toLowerCase().includes("gourmet")) {
+      setHeladoProduct(product);
     } else if (category === "granizados" && product.name.toLowerCase().includes("granizado")) {
       setGranizadoProduct(product);
     } else if (product.name.toLowerCase().includes("cono") && !product.name.toLowerCase().includes("maxi")) {
