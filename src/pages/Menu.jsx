@@ -270,9 +270,9 @@ export default function Menu() {
 
   const handleCheckoutStart = useCallback((name) => {
     setCheckoutOpen(false);
-    // Mostrar agua INMEDIATAMENTE
-    setShowWaterUpsell(true);
     setPendingCheckoutName(name);
+    // Mostrar agua INMEDIATAMENTE sin condicionales
+    setShowWaterUpsell(true);
   }, []);
 
   const handleWaterAdd = useCallback(() => {

@@ -6,11 +6,6 @@ import { COMBOS_DATA } from "@/lib/combosData";
 const COMBOS = COMBOS_DATA;
 
 export default function CombosAllModal({ open, onClose, onAdd }) {
-  useEffect(() => {
-    const handleOpen = () => open === false && onClose === undefined ? undefined : null;
-    document.addEventListener("openCombosModal", onClose ? () => onClose() : () => {});
-    return () => document.removeEventListener("openCombosModal", onClose ? () => onClose() : () => {});
-  }, [onClose]);
 
   return (
     <AnimatePresence>
@@ -65,8 +60,8 @@ export default function CombosAllModal({ open, onClose, onAdd }) {
                   <button
                     key={combo.id}
                     onClick={() => {
-                      onAdd(combo);
-                      onClose();
+                      onAdd({ ...combo, name: combo.title });
+                      setTimeout(() => onClose(), 100);
                     }}
                     style={{
                       border: "1px solid #F0E4EA",

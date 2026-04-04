@@ -13,7 +13,7 @@ function ComboCard({ combo, onAdd }) {
 
   return (
     <button
-      onClick={() => onAdd && onAdd(combo)}
+      onClick={() => onAdd && onAdd({ ...combo, name: combo.title })}
       style={{
         width: CARD_WIDTH,
         flexShrink: 0,
