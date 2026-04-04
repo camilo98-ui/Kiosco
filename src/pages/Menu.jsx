@@ -300,12 +300,12 @@ export default function Menu() {
 
   const handleCheckoutStart = useCallback((name) => {
     setCheckoutOpen(false);
-    doCheckout(name, []);
-  }, []);
+    doCheckout(name, [], total);
+  }, [total]);
 
-  const doCheckout = async (name, extraItems = []) => {
+  const doCheckout = async (name, extraItems = [], passedTotal = 0) => {
     const cartSnapshot = [...cart, ...extraItems];
-    const orderTotal = cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
+    const orderTotal = passedTotal || cartSnapshot.reduce((s, i) => s + (i.price * i.quantity), 0);
     const currentNum = nextOrderNum || 101;
     
     clearCart();
