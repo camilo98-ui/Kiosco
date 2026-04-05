@@ -100,7 +100,7 @@ export default function PremiumCartBar({ onCheckout }) {
           </SheetHeader>
 
           <div className="space-y-2 mt-3">
-            {cart.map((item, index) => (
+            {cart.map((cartItem, index) => (
               <div
                 key={index}
                 className="rounded-2xl p-3"
@@ -109,26 +109,26 @@ export default function PremiumCartBar({ onCheckout }) {
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-sm truncate" style={{ color: "#2D1A22" }}>
-                      {item.product_name}
+                      {cartItem.product_name}
                     </p>
-                    <ProductDetailLine item={item} />
+                    <ProductDetailLine item={cartItem} />
                     <p className="font-black text-sm" style={{ color: "#C41E6A", marginTop: 4 }}>
-                       {formatCOP(item.price * item.quantity)}
+                       {formatCOP(cartItem.price * cartItem.quantity)}
                      </p>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
                     <button
-                       onClick={() => updateQuantity(index, item.quantity - 1)}
+                       onClick={() => updateQuantity(index, cartItem.quantity - 1)}
                        className="w-8 h-8 rounded-full flex items-center justify-center"
                        style={{ background: "#fff", border: "1.5px solid #F0E4EA" }}
                      >
                        <Minus className="w-3 h-3" style={{ color: "#999" }} />
                      </button>
                      <span className="font-black w-6 text-center" style={{ color: "#2D1A22" }}>
-                       {item.quantity}
+                       {cartItem.quantity}
                      </span>
                      <button
-                       onClick={() => updateQuantity(index, item.quantity + 1)}
+                       onClick={() => updateQuantity(index, cartItem.quantity + 1)}
                        className="w-8 h-8 rounded-full flex items-center justify-center"
                        style={{ background: "#E91B8B" }}
                      >
@@ -147,7 +147,7 @@ export default function PremiumCartBar({ onCheckout }) {
                   <div className="mt-2">
                     <Textarea
                       placeholder="Ej: sin nueces, más salsa..."
-                      value={item.notes}
+                      value={cartItem.notes}
                       onChange={(e) => updateNotes(index, e.target.value)}
                       className="text-xs h-14"
                       autoFocus
@@ -161,7 +161,7 @@ export default function PremiumCartBar({ onCheckout }) {
                      </button>
                   </div>
                 ) : (
-                  !item.notes && (
+                  !cartItem.notes && (
                     <button
                       onClick={() => setEditingNotes(index)}
                       className="flex items-center gap-1 mt-1.5"
