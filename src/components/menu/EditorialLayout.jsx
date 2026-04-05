@@ -425,7 +425,14 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
       </div>
 
       {currentList.length > 0 && (
-        <AutoCarousel products={currentList} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+        <>
+          <AutoCarousel products={currentList.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+          {currentList.length > 8 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
+              {currentList.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+            </div>
+          )}
+        </>
       )}
 
       {showAll && (
