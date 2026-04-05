@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+// framer-motion no needed
 
 const BANNERS = [
   {
@@ -119,26 +119,29 @@ export default function PromoBanners({ onCategorySelect }) {
       <div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        style={{ cursor: "grab" }}
+        style={{ cursor: "grab", position: "relative", borderRadius: 16, overflow: "hidden" }}
+        onClick={() => onCategorySelect?.(banner.category)}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={banner.id}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            onClick={() => onCategorySelect?.(banner.category)}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", margin: 0 }}
-          >
-            <img
-              src={banner.image}
-              alt={banner.alt}
-              className="w-full object-cover"
-              style={{ display: "block", height: "auto", objectPosition: "center" }}
-            />
-          </motion.div>
-        </AnimatePresence>
+        {BANNERS.map((b, i) => (
+          <img
+            key={b.id}
+            src={b.image}
+            alt={b.alt}
+            className="w-full object-cover"
+            style={{
+              display: "block",
+              height: "auto",
+              objectPosition: "center",
+              position: i === 0 ? "relative" : "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              opacity: i === active ? 1 : 0,
+              transition: "opacity 0.4s ease",
+              pointerEvents: i === active ? "auto" : "none",
+            }}
+          />
+        ))}
       </div>
 
       {/* Dots — máximo 5 visibles */}

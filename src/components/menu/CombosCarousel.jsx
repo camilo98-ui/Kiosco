@@ -1,8 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { COMBOS_DATA } from "@/lib/combosData";
 
 const COMBOS = COMBOS_DATA;
-
 const CARD_WIDTH = 150;
 const GAP = 12;
 const CARD_STEP = CARD_WIDTH + GAP;
@@ -28,12 +27,26 @@ function ComboCard({ combo, onAdd }) {
         padding: 0,
       }}
     >
-      <div style={{ position: "relative", height: 150, overflow: "hidden", borderRadius: "20px 20px 0 0", background: "#FFF0F5" }}>
+      <div style={{
+        position: "relative",
+        width: CARD_WIDTH,
+        height: CARD_WIDTH,
+        background: "#FFF0F5",
+        borderRadius: "20px 20px 0 0",
+        overflow: "hidden",
+      }}>
         <img
           src={combo.image}
           alt={combo.title}
           draggable={false}
-          style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block", pointerEvents: "none" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+            display: "block",
+            pointerEvents: "none",
+          }}
         />
         <span style={{
           position: "absolute", top: 9, right: 9,
@@ -64,113 +77,129 @@ function ComboCard({ combo, onAdd }) {
             {combo.displayPrice}
           </p>
         )}
-        </div>
-        </button>
-        );
-        }
+      </div>
+    </button>
+  );
+}
 
 export default function CombosCarousel({ onAdd, onOpenAll }) {
   const trackRef = useRef(null);
   const animRef = useRef(null);
   const posRef = useRef(0);
   const pausedRef = useRef(false);
-  const dragRef = useRef({ isDragging: false, startX: 0, startPos: 0 });
   const resumeTimerRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragStartPosRef = useRef(0);
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+  const isHorizontalScrollRef = useRef(null);
   const [activeIdx, setActiveIdx] = useState(0);
 
-  const doubled = [...COMBOS, ...COMBOS];
   const totalWidth = CARD_STEP * COMBOS.length;
+  const doubled = [...COMBOS, ...COMBOS];
 
-  // Mouse drag handlers
-  const handleMouseDown = (e) => {
-    dragRef.current = { isDragging: true, startX: e.clientX, startPos: posRef.current };
+  const pauseFor = useCallback((ms = 1500) => {
     pausedRef.current = true;
-    if (trackRef.current) trackRef.current.style.cursor = "grabbing";
-  };
+    clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, ms);
+  }, []);
 
-  const handleMouseMove = (e) => {
-    if (!dragRef.current.isDragging) return;
-    const diff = dragRef.current.startX - e.clientX;
-    posRef.current = dragRef.current.startPos + diff;
-    if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
-    if (posRef.current >= totalWidth) posRef.current -= totalWidth;
+  const clampPos = useCallback((pos) => {
+    let p = pos % totalWidth;
+    if (p < 0) p += totalWidth;
+    return p;
+  }, [totalWidth]);
+
+  const applyPos = useCallback((pos) => {
+    posRef.current = clampPos(pos);
     if (trackRef.current) {
       trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
     }
-  };
+  }, [clampPos]);
 
-  const handleMouseUp = () => {
-    dragRef.current.isDragging = false;
-    if (trackRef.current) trackRef.current.style.cursor = "grab";
-    // Resume después de 500ms de inactividad
+  // Mouse handlers
+  const handleMouseDown = useCallback((e) => {
+    isDraggingRef.current = true;
+    dragStartXRef.current = e.clientX;
+    dragStartPosRef.current = posRef.current;
+    pausedRef.current = true;
     clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 500);
-  };
+    e.preventDefault();
+  }, []);
 
   useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isDraggingRef.current) return;
+      const diff = dragStartXRef.current - e.clientX;
+      applyPos(dragStartPosRef.current + diff);
+    };
+    const handleMouseUp = () => {
+      if (!isDraggingRef.current) return;
+      isDraggingRef.current = false;
+      pauseFor(1000);
+    };
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [applyPos, pauseFor]);
 
-  // Touch handlers — scroll horizontal definitivo
-  const touchStartX = useRef(0);
-  const touchStartY = useRef(0);
-  const touchStartTime = useRef(0);
-
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
-    touchStartTime.current = Date.now();
+  // Touch handlers
+  const handleTouchStart = useCallback((e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+    isHorizontalScrollRef.current = null;
     pausedRef.current = true;
     clearTimeout(resumeTimerRef.current);
-  };
+    dragStartPosRef.current = posRef.current;
+    dragStartXRef.current = e.touches[0].clientX;
+  }, []);
 
-  const handleTouchMove = (e) => {
-    const deltaX = touchStartX.current - e.touches[0].clientX;
-    const deltaY = touchStartY.current - e.touches[0].clientY;
-    
-    // Detectar si es scroll horizontal claro
-    if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5 && Math.abs(deltaX) > 15) {
-      e.preventDefault();
-      posRef.current += deltaX;
-      if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
-      if (posRef.current >= totalWidth) posRef.current -= totalWidth;
-      touchStartX.current = e.touches[0].clientX;
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
+  const handleTouchMove = useCallback((e) => {
+    const dx = touchStartXRef.current - e.touches[0].clientX;
+    const dy = touchStartYRef.current - e.touches[0].clientY;
+
+    // Determinar dirección solo una vez por gesto
+    if (isHorizontalScrollRef.current === null) {
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        isHorizontalScrollRef.current = Math.abs(dx) > Math.abs(dy);
       }
     }
-  };
 
-  const handleTouchEnd = () => {
-    const duration = Date.now() - touchStartTime.current;
-    const deltaX = Math.abs(touchStartX.current - e?.changedTouches?.[0]?.clientX || 0);
-    const deltaY = Math.abs(touchStartY.current - e?.changedTouches?.[0]?.clientY || 0);
-    
-    // Solo permitir navegación si fue tap muy limpio
-    if (deltaX < 8 && deltaY < 8 && duration < 200) {
-      // Permitir tap normal
+    if (isHorizontalScrollRef.current) {
+      e.preventDefault();
+      applyPos(dragStartPosRef.current + dx);
     }
-    
-    clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, 500);
-  };
+  }, [applyPos]);
 
-  // Continuous animation loop
+  const handleTouchEnd = useCallback(() => {
+    isHorizontalScrollRef.current = null;
+    pauseFor(1500);
+  }, [pauseFor]);
+
+  // Registrar touchmove como non-passive para poder hacer preventDefault
+  const containerRef = useRef(null);
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+    const el = containerRef.current;
+    if (!el) return;
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => el.removeEventListener("touchmove", handleTouchMove);
+  }, [handleTouchMove]);
 
+  // Animation loop
+  useEffect(() => {
     const animate = () => {
-      if (!pausedRef.current) {
-        posRef.current += 0.9;
+      if (!pausedRef.current && trackRef.current) {
+        posRef.current += 0.7;
         if (posRef.current >= totalWidth) posRef.current = 0;
-        track.style.transform = `translateX(-${posRef.current}px)`;
-        setActiveIdx(Math.round(posRef.current / CARD_STEP) % COMBOS.length);
+        trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
+        const idx = Math.round(posRef.current / CARD_STEP) % COMBOS.length;
+        setActiveIdx(prev => prev !== idx ? idx : prev);
       }
       animRef.current = requestAnimationFrame(animate);
     };
@@ -179,7 +208,7 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
       cancelAnimationFrame(animRef.current);
       clearTimeout(resumeTimerRef.current);
     };
-  }, []);
+  }, [totalWidth]);
 
   return (
     <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
@@ -193,18 +222,30 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
       </div>
 
       <div
-        style={{ overflowX: "scroll", overflowY: "hidden", paddingLeft: 16, paddingBottom: 4, cursor: "grab", touchAction: "pan-x", WebkitOverflowScrolling: "touch", willChange: "transform", contain: "layout" }}
+        ref={containerRef}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
-        onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
-        ref={(el) => {
-          if (el) el.addEventListener('touchmove', handleTouchMove, { passive: false });
+        onMouseEnter={() => { if (!isDraggingRef.current) { pausedRef.current = true; } }}
+        onMouseLeave={() => { if (!isDraggingRef.current) { pausedRef.current = false; } }}
+        style={{
+          overflow: "hidden",
+          paddingLeft: 16,
+          paddingBottom: 4,
+          cursor: "grab",
+          userSelect: "none",
+          WebkitUserSelect: "none",
         }}
       >
-        <div ref={trackRef} style={{ display: "flex", gap: GAP, width: "max-content", willChange: "transform" }}>
+        <div
+          ref={trackRef}
+          style={{
+            display: "flex",
+            gap: GAP,
+            width: "max-content",
+            willChange: "transform",
+          }}
+        >
           {doubled.map((combo, i) => (
             <ComboCard key={`${combo.id}-${i}`} combo={combo} onAdd={onAdd} />
           ))}
