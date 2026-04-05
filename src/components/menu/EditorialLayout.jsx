@@ -357,36 +357,43 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
 }
 
 
-function MalteadasSectionHeader({ label, count }) {
-  return (
-    <div style={{ margin: "0 14px 10px", borderRadius: 12, background: "#F3E8FF", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <p style={{ fontSize: 13, fontWeight: 800, color: "#7B3EA4", margin: 0 }}>{label}</p>
-      <span style={{ fontSize: 10, color: "#B48FD8", fontWeight: 600 }}>{count} disponibles</span>
-    </div>
-  );
-}
-
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
+  const [tab, setTab] = React.useState("16oz");
   const available = products.filter(p => p.is_available !== false);
   const malteadas16 = available.filter(p => !p.name.includes("12oz"));
   const malteadas12 = available.filter(p => p.name.includes("12oz"));
 
   return (
     <>
-      {malteadas16.length > 0 && (
-        <div style={{ marginBottom: 20 }}>
-          <MalteadasSectionHeader label="Malteadas 16oz 🥤" count={malteadas16.length} />
-          <AutoCarousel products={malteadas16} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-        </div>
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 10, padding: "0 14px", marginBottom: 14 }}>
+        {[{ key: "16oz", label: "Malteadas 16oz 🥤" }, { key: "12oz", label: "Malteadas 12oz 🧋" }].map(t => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            style={{
+              flex: 1, padding: "10px 0", borderRadius: 14, border: "none", cursor: "pointer",
+              fontWeight: 800, fontSize: 13, fontFamily: "'Poppins', sans-serif",
+              background: tab === t.key ? "#C41E6A" : "#F3E8FF",
+              color: tab === t.key ? "#fff" : "#7B3EA4",
+              boxShadow: tab === t.key ? "0 4px 14px rgba(196,30,106,0.3)" : "none",
+              transition: "all 0.2s",
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Contenido */}
+      {tab === "16oz" && malteadas16.length > 0 && (
+        <AutoCarousel products={malteadas16} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
       )}
-      {malteadas12.length > 0 && (
-        <div style={{ marginBottom: 12 }}>
-          <MalteadasSectionHeader label="Malteadas 12oz 🧋" count={malteadas12.length} />
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-            {malteadas12.map(p => (
-              <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-            ))}
-          </div>
+      {tab === "12oz" && malteadas12.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
+          {malteadas12.map(p => (
+            <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+          ))}
         </div>
       )}
     </>
