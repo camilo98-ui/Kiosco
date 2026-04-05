@@ -359,15 +359,32 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
 
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   const available = products.filter(p => p.is_available !== false);
+  const malteadas16 = available.filter(p => !p.name.includes("12oz"));
+  const malteadas12 = available.filter(p => p.name.includes("12oz"));
 
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} />
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-        {available.map(p => (
-          <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-        ))}
-      </div>
+      {malteadas16.length > 0 && (
+        <>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#BBA8B0", textTransform: "uppercase", letterSpacing: "1px", paddingLeft: 14, marginBottom: 8 }}>
+            Malteadas 16oz 🥤
+          </p>
+          <AutoCarousel products={malteadas16} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+        </>
+      )}
+      {malteadas12.length > 0 && (
+        <div style={{ marginTop: 16 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#BBA8B0", textTransform: "uppercase", letterSpacing: "1px", paddingLeft: 14, marginBottom: 8 }}>
+            Malteadas 12oz 🧋
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
+            {malteadas12.map(p => (
+              <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }
