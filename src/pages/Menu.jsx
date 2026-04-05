@@ -143,7 +143,12 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
   const touchStartX = useRef(null);
 
   const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
+    // Solo registrar si viene del borde izquierdo estricto (< 30px)
+    if (e.touches[0].clientX < 30) {
+      touchStartX.current = e.touches[0].clientX;
+    } else {
+      touchStartX.current = null;
+    }
   };
   const handleTouchEnd = (e) => {
     if (touchStartX.current === null) return;
@@ -388,6 +393,23 @@ export default function Menu() {
           </div>
           <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", transition: "all 0.2s", willChange: "transform" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
             <Search size={16} color="#fff" />
+          </button>
+        </div>
+        {/* Buscador visible permanente */}
+        <div style={{ padding: "6px 12px 10px" }}>
+          <button
+            onClick={() => setSearchOpen(true)}
+            style={{
+              width: "100%", display: "flex", alignItems: "center", gap: 10,
+              background: "rgba(255,255,255,0.18)", borderRadius: 24,
+              padding: "9px 16px", border: "1.5px solid rgba(255,255,255,0.25)",
+              cursor: "pointer", textAlign: "left",
+            }}
+          >
+            <Search size={15} color="rgba(255,255,255,0.85)" />
+            <span style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", fontFamily: "'Poppins', sans-serif", fontWeight: 500 }}>
+              ¿Qué se te antoja hoy?
+            </span>
           </button>
         </div>
       </div>

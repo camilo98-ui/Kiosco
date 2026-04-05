@@ -356,52 +356,27 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
   );
 }
 
-function MalteadasAllModal({ products, onAdd, onClose, bg }) {
-  return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "flex-end", justifyContent: "center" }} onClick={onClose}>
-      <div onClick={e => e.stopPropagation()} style={{ background: "#fff", borderRadius: "24px 24px 0 0", width: "100%", maxWidth: 600, maxHeight: "85vh", display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #F5EAEF", flexShrink: 0 }}>
-          <p style={{ fontSize: 18, fontWeight: 800, color: "#1A1A1A", margin: 0 }}>Todas las Malteadas</p>
-          <button onClick={onClose} style={{ background: "#F5F5F5", border: "none", borderRadius: "50%", width: 36, height: 36, cursor: "pointer", fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
-        </div>
-        <div style={{ flex: 1, overflowY: "auto", padding: "16px", display: "flex", flexDirection: "column", gap: 8 }}>
-          {products.map(p => (
-            <button key={p.id} onClick={() => { onAdd(p); onClose(); }}
-              style={{ display: "flex", alignItems: "center", gap: 12, background: "#FAFAFA", border: "1px solid #F0E4EA", borderRadius: 14, padding: "10px 14px", cursor: "pointer", textAlign: "left", width: "100%" }}>
-              <div style={{ width: 52, height: 52, borderRadius: 12, background: bg, flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                {p.image_url ? <img src={p.image_url} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ fontSize: 24 }}>{p.emoji || "🥤"}</span>}
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3 }}>{p.name}</p>
-              </div>
-              <span style={{ fontSize: 14, fontWeight: 800, color: "#C41E6A", flexShrink: 0 }}>{formatCOP(p.price)}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+
+const MALTEAD_PREVIEW = 8;
 
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   const [selectedSize, setSelectedSize] = React.useState("16oz");
-  const [showAll, setShowAll] = React.useState(false);
+  const [expanded12, setExpanded12] = React.useState(false);
+  const [expanded16, setExpanded16] = React.useState(false);
   const available = products.filter(p => p.is_available !== false);
 
   const by12oz = available.filter(p => p.name.includes("12oz"));
   const by16oz = available.filter(p => p.name.includes("16oz"));
   const currentList = selectedSize === "12oz" ? by12oz : by16oz;
+  const expanded = selectedSize === "12oz" ? expanded12 : expanded16;
+  const setExpanded = selectedSize === "12oz" ? setExpanded12 : setExpanded16;
+
+  const visibleInCarousel = currentList.slice(0, MALTEAD_PREVIEW);
+  const hiddenList = currentList.slice(MALTEAD_PREVIEW);
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: 14, paddingRight: 14, marginBottom: 10 }}>
-        <p style={{ fontSize: 9, fontWeight: 800, color: "#BBA8B0", textTransform: "uppercase", letterSpacing: "1.5px", margin: 0 }}>
-          {catLabel} · {available.length} disponibles
-        </p>
-        <button onClick={() => setShowAll(true)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, color: "#C41E6A", padding: 0 }}>
-          Ver más
-        </button>
-      </div>
+      <SectionHeader label={catLabel} count={available.length} />
 
       {/* Size Selector Buttons */}
       <div style={{ display: "flex", gap: 10, paddingLeft: 14, paddingRight: 14, marginBottom: 16 }}>
@@ -426,17 +401,55 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
 
       {currentList.length > 0 && (
         <>
-          <AutoCarousel products={currentList.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-          {currentList.length > 8 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
-              {currentList.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
+          <AutoCarousel products={visibleInCarousel} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+
+          {/* Listado expandible debajo del carrusel */}
+          <AnimatePresence>
+            {expanded && hiddenList.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.3 }}
+                style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}
+              >
+                {hiddenList.map((p, i) => (
+                  <motion.div
+                    key={p.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                  >
+                    <HorizontalCard product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Botón "Ver más" al fondo */}
+          {hiddenList.length > 0 && (
+            <div style={{ paddingLeft: 14, paddingRight: 14, marginTop: 12 }}>
+              <button
+                onClick={() => setExpanded(!expanded)}
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  border: "1px solid #C41E6A",
+                  borderRadius: 12,
+                  background: "transparent",
+                  color: "#C41E6A",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontFamily: "'Poppins', sans-serif",
+                }}
+              >
+                {expanded ? `Ocultar ▲` : `Ver más malteadas ${selectedSize} (${hiddenList.length} más) ▼`}
+              </button>
             </div>
           )}
         </>
-      )}
-
-      {showAll && (
-        <MalteadasAllModal products={currentList} onAdd={onAdd} onClose={() => setShowAll(false)} bg={bg} />
       )}
     </>
   );
