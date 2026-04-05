@@ -230,74 +230,124 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
   const animRef = React.useRef(null);
   const posRef = React.useRef(0);
   const pausedRef = React.useRef(false);
-  const dragRef = React.useRef({ isDragging: false, startX: 0, startPos: 0 });
+  const isDraggingRef = React.useRef(false);
+  const dragStartXRef = React.useRef(0);
+  const dragStartPosRef = React.useRef(0);
+  const touchStartXRef = React.useRef(0);
+  const touchStartYRef = React.useRef(0);
+  const isHorizontalRef = React.useRef(null);
+  const resumeTimerRef = React.useRef(null);
+  const containerRef = React.useRef(null);
 
+  const CARD_W = 150;
+  const GAP_W = 10;
+  const totalWidth = (CARD_W + GAP_W) * products.length;
   const doubled = [...products, ...products];
 
-  const handleMouseDown = (e) => {
-    dragRef.current = {
-      isDragging: true,
-      startX: e.clientX,
-      startPos: posRef.current,
-    };
+  const pauseFor = (ms = 1500) => {
     pausedRef.current = true;
+    clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => { pausedRef.current = false; }, ms);
   };
 
-  const handleMouseMove = (e) => {
-    if (!dragRef.current.isDragging) return;
-    const diff = dragRef.current.startX - e.clientX;
-    const cardWidth = 150;
-    const totalWidth = cardWidth * products.length;
-    posRef.current = dragRef.current.startPos + diff;
-    if (posRef.current < 0) posRef.current = totalWidth + posRef.current;
-    if (posRef.current >= totalWidth) posRef.current -= totalWidth;
-    if (trackRef.current) {
-      trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
-    }
+  const applyPos = (pos) => {
+    let p = pos % totalWidth;
+    if (p < 0) p += totalWidth;
+    posRef.current = p;
+    if (trackRef.current) trackRef.current.style.transform = `translateX(-${p}px)`;
   };
 
-  const handleMouseUp = () => {
-    dragRef.current.isDragging = false;
-    pausedRef.current = false;
+  // Mouse
+  const handleMouseDown = (e) => {
+    isDraggingRef.current = true;
+    dragStartXRef.current = e.clientX;
+    dragStartPosRef.current = posRef.current;
+    pausedRef.current = true;
+    clearTimeout(resumeTimerRef.current);
+    e.preventDefault();
   };
 
   React.useEffect(() => {
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+    const onMouseMove = (e) => {
+      if (!isDraggingRef.current) return;
+      applyPos(dragStartPosRef.current + (dragStartXRef.current - e.clientX));
     };
-  }, [products.length]);
+    const onMouseUp = () => {
+      if (!isDraggingRef.current) return;
+      isDraggingRef.current = false;
+      pauseFor(1000);
+    };
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [totalWidth]);
+
+  // Touch
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+    dragStartPosRef.current = posRef.current;
+    dragStartXRef.current = e.touches[0].clientX;
+    isHorizontalRef.current = null;
+    pausedRef.current = true;
+    clearTimeout(resumeTimerRef.current);
+  };
+
+  const handleTouchMove = React.useCallback((e) => {
+    const dx = touchStartXRef.current - e.touches[0].clientX;
+    const dy = touchStartYRef.current - e.touches[0].clientY;
+    if (isHorizontalRef.current === null && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+      isHorizontalRef.current = Math.abs(dx) > Math.abs(dy);
+    }
+    if (isHorizontalRef.current) {
+      e.preventDefault();
+      applyPos(dragStartPosRef.current + dx);
+    }
+  }, [totalWidth]);
+
+  const handleTouchEnd = () => {
+    isHorizontalRef.current = null;
+    pauseFor(1500);
+  };
 
   React.useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const cardWidth = 150;
-    const totalWidth = cardWidth * products.length;
+    const el = containerRef.current;
+    if (!el) return;
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => el.removeEventListener("touchmove", handleTouchMove);
+  }, [handleTouchMove]);
 
+  // Animation loop
+  React.useEffect(() => {
     const animate = () => {
-      if (!pausedRef.current) {
+      if (!pausedRef.current && trackRef.current) {
         posRef.current += 0.5;
         if (posRef.current >= totalWidth) posRef.current = 0;
-        track.style.transform = `translateX(-${posRef.current}px)`;
+        trackRef.current.style.transform = `translateX(-${posRef.current}px)`;
       }
       animRef.current = requestAnimationFrame(animate);
     };
     animRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animRef.current);
-  }, [products.length]);
+    return () => {
+      cancelAnimationFrame(animRef.current);
+      clearTimeout(resumeTimerRef.current);
+    };
+  }, [totalWidth]);
 
   return (
     <div
-      style={{ overflow: "hidden", paddingLeft: 14, paddingBottom: 4, cursor: "grab" }}
+      ref={containerRef}
       onMouseDown={handleMouseDown}
-      onTouchStart={() => { pausedRef.current = true; }}
-      onTouchEnd={() => { pausedRef.current = false; }}
-      onMouseEnter={() => { if (!dragRef.current.isDragging) pausedRef.current = true; }}
-      onMouseLeave={() => { if (!dragRef.current.isDragging) pausedRef.current = false; }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onMouseEnter={() => { if (!isDraggingRef.current) pausedRef.current = true; }}
+      onMouseLeave={() => { if (!isDraggingRef.current) pausedRef.current = false; }}
+      style={{ overflow: "hidden", paddingLeft: 14, paddingBottom: 4, cursor: "grab", userSelect: "none", WebkitUserSelect: "none" }}
     >
-      <div ref={trackRef} style={{ display: "flex", gap: 10, width: "max-content", willChange: "transform", contain: "layout" }}>
+      <div ref={trackRef} style={{ display: "flex", gap: GAP_W, width: "max-content", willChange: "transform" }}>
         {doubled.map((p, i) => (
           <MalteadaCard key={`${p.id}-${i}`} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
         ))}
@@ -306,16 +356,52 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
   );
 }
 
+function MalteadasAllModal({ products, onAdd, onClose, bg }) {
+  return (
+    <div style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "flex-end", justifyContent: "center" }} onClick={onClose}>
+      <div onClick={e => e.stopPropagation()} style={{ background: "#fff", borderRadius: "24px 24px 0 0", width: "100%", maxWidth: 600, maxHeight: "85vh", display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #F5EAEF", flexShrink: 0 }}>
+          <p style={{ fontSize: 18, fontWeight: 800, color: "#1A1A1A", margin: 0 }}>Todas las Malteadas</p>
+          <button onClick={onClose} style={{ background: "#F5F5F5", border: "none", borderRadius: "50%", width: 36, height: 36, cursor: "pointer", fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+        </div>
+        <div style={{ flex: 1, overflowY: "auto", padding: "16px", display: "flex", flexDirection: "column", gap: 8 }}>
+          {products.map(p => (
+            <button key={p.id} onClick={() => { onAdd(p); onClose(); }}
+              style={{ display: "flex", alignItems: "center", gap: 12, background: "#FAFAFA", border: "1px solid #F0E4EA", borderRadius: 14, padding: "10px 14px", cursor: "pointer", textAlign: "left", width: "100%" }}>
+              <div style={{ width: 52, height: 52, borderRadius: 12, background: bg, flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                {p.image_url ? <img src={p.image_url} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ fontSize: 24 }}>{p.emoji || "🥤"}</span>}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3 }}>{p.name}</p>
+              </div>
+              <span style={{ fontSize: 14, fontWeight: 800, color: "#C41E6A", flexShrink: 0 }}>{formatCOP(p.price)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   const [selectedSize, setSelectedSize] = React.useState("16oz");
+  const [showAll, setShowAll] = React.useState(false);
   const available = products.filter(p => p.is_available !== false);
 
   const by12oz = available.filter(p => p.name.includes("12oz"));
   const by16oz = available.filter(p => p.name.includes("16oz"));
+  const currentList = selectedSize === "12oz" ? by12oz : by16oz;
 
   return (
     <>
-      <SectionHeader label={catLabel} count={available.length} />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: 14, paddingRight: 14, marginBottom: 10 }}>
+        <p style={{ fontSize: 9, fontWeight: 800, color: "#BBA8B0", textTransform: "uppercase", letterSpacing: "1.5px", margin: 0 }}>
+          {catLabel} · {available.length} disponibles
+        </p>
+        <button onClick={() => setShowAll(true)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, color: "#C41E6A", padding: 0 }}>
+          Ver más
+        </button>
+      </div>
 
       {/* Size Selector Buttons */}
       <div style={{ display: "flex", gap: 10, paddingLeft: 14, paddingRight: 14, marginBottom: 16 }}>
@@ -338,25 +424,12 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
         ))}
       </div>
 
-      {selectedSize === "12oz" && by12oz.length > 0 && (
-        <>
-          <AutoCarousel products={by12oz.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-          {by12oz.length > 8 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
-              {by12oz.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
-            </div>
-          )}
-        </>
+      {currentList.length > 0 && (
+        <AutoCarousel products={currentList} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
       )}
-      {selectedSize === "16oz" && by16oz.length > 0 && (
-        <>
-          <AutoCarousel products={by16oz.slice(0, 8)} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-          {by16oz.length > 8 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}>
-              {by16oz.slice(8).map(p => <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />)}
-            </div>
-          )}
-        </>
+
+      {showAll && (
+        <MalteadasAllModal products={currentList} onAdd={onAdd} onClose={() => setShowAll(false)} bg={bg} />
       )}
     </>
   );
