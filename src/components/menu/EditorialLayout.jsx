@@ -385,16 +385,27 @@ function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
         ))}
       </div>
 
-      {/* Contenido */}
+      {/* Contenido 16oz */}
       {tab === "16oz" && malteadas16.length > 0 && (
-        <AutoCarousel products={malteadas16} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+        <>
+          <AutoCarousel products={malteadas16} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 14 }}>
+            {malteadas16.map(p => (
+              <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+            ))}
+          </div>
+        </>
       )}
+      {/* Contenido 12oz */}
       {tab === "12oz" && malteadas12.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-          {malteadas12.map(p => (
-            <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-          ))}
-        </div>
+        <>
+          <AutoCarousel products={malteadas12} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 14 }}>
+            {malteadas12.map(p => (
+              <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
+            ))}
+          </div>
+        </>
       )}
     </>
   );
