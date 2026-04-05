@@ -514,7 +514,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   };
 
   const handleCustomizerAdd = (productWithPrice, notes) => {
-    onAdd({ ...productWithPrice, notes });
+    onAdd(productWithPrice, notes);
   };
 
   const sortedProducts = sortProductsCommercially(products);
