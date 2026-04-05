@@ -23,6 +23,7 @@ import CombosCarousel from "@/components/menu/CombosCarousel";
 import CombosAllModal from "@/components/menu/CombosAllModal";
 import MostOrderedAll from "@/components/menu/MostOrderedAll";
 import WaterUpsell from "@/components/menu/WaterUpsell";
+import CuantosSon from "@/components/menu/CuantosSon";
 
 const FAMILY_GRADIENTS = [
   "linear-gradient(135deg, #6D1B4E, #B5175A)",
@@ -44,8 +45,7 @@ const FAMILY_CARDS = [
   { id: "malteadas",      label: "Malteadas",      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7f68abf79_image.png" },
   { id: "helados",        label: "Helados",        image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c9474e0e_Helados.png" },
   { id: "combos",         label: "Cookie Jar",     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6dd912084_cookie-jaar-img.jpg" },
-  { id: "granizados",     label: "Granizado Hielo",image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/923ba973b_images2.jpg" },
-  { id: "paletas_packs",  label: "Granizado Suave", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/923ba973b_images2.jpg" },
+  { id: "granizados",     label: "Granizados 🧊",  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/923ba973b_images2.jpg" },
   { id: "especialidades", label: "Especiales",     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png" },
   { id: "cafe",           label: "Café",           image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e15d81047_Coffee.png" },
   { id: "bebidas",        label: "Otras bebidas",  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/26de2b565_image.png" },
@@ -347,8 +347,41 @@ export default function Menu() {
     return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} />;
   }
 
+  if (activeCategory === "granizados") {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center" style={{ background: "#FFFCFD", padding: 32 }}>
+        <div style={{ fontSize: 64, marginBottom: 16 }}>🧊</div>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#1A1A1A", textAlign: "center", margin: "0 0 8px" }}>
+          Granizados
+        </h2>
+        <p style={{ fontSize: 15, color: "#666", textAlign: "center", margin: "0 0 24px", lineHeight: 1.5 }}>
+          Encuentra nuestros granizados en la sección<br />
+          <strong>Para llevar 🛍️</strong>
+        </p>
+        <button
+          onClick={() => setActiveCategory("para_llevar")}
+          style={{
+            background: "#C41E6A", color: "#fff",
+            border: "none", borderRadius: 16, padding: "14px 32px",
+            fontSize: 15, fontWeight: 700, cursor: "pointer",
+            boxShadow: "0 4px 16px rgba(196,30,106,0.35)",
+            fontFamily: "'Poppins', sans-serif",
+          }}
+        >
+          Ir a Para llevar →
+        </button>
+        <button
+          onClick={() => setActiveCategory(null)}
+          style={{ marginTop: 16, background: "none", border: "none", color: "#999", fontSize: 14, cursor: "pointer" }}
+        >
+          ← Volver al inicio
+        </button>
+      </div>
+    );
+  }
+
   if (activeCategory) {
-    const allowedCategories = ["helados", "malteadas", "granizados", "especialidades", "cafe", "bebidas", "galletas", "paletas_packs", "para_llevar", "tortas", "regalos", "combos"];
+    const allowedCategories = ["helados", "malteadas", "especialidades", "cafe", "bebidas", "galletas", "paletas_packs", "para_llevar", "tortas", "regalos", "combos"];
     if (!allowedCategories.includes(activeCategory)) {
       setActiveCategory(null);
       return null;
@@ -434,6 +467,9 @@ export default function Menu() {
             <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} />
           </motion.div>
         )}
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
+          <CuantosSon onAdd={handleAddProduct} />
+        </motion.div>
       </div>
 
       {/* ── OVERLAYS ── */}

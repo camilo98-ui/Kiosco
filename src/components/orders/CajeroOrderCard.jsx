@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { formatCOP } from "@/lib/constants";
 import { CheckCircle, AlertTriangle } from "lucide-react";
 import moment from "moment";
-import ProductDetailLine from "@/components/menu/ProductDetailLine";
+import ProductDetailLine from "@/components/menu/ProductDetailLine.jsx";
 
 const STATUS_STYLES = {
   pendiente: {

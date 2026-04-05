@@ -223,6 +223,11 @@ function CartSheet({ items, customerName, onNameChange, onUpdateQty, onRemove, o
             }}>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3 }}>{item.name}</p>
+                {item.notes && (
+                  <p style={{ fontSize: 11, color: MAGENTA, fontStyle: "italic", margin: "2px 0 0", lineHeight: 1.3 }}>
+                    {item.notes.split("|").slice(0, 2).map(s => s.trim()).join(" · ")}
+                  </p>
+                )}
                 <p style={{ fontSize: 12, color: MAGENTA, fontWeight: 700, margin: "2px 0 0" }}>{formatCOP(item.price)}/u</p>
               </div>
               {/* Qty controls */}
@@ -393,11 +398,21 @@ function PendingOrderCard({ order, onMark, isLoading }) {
       {order.items?.map((item, i) => (
       <div key={i} style={{ fontSize: 12, color: "#777", margin: "4px 0 6px" }}>
         <p style={{ margin: 0, fontWeight: 700 }}>{item.quantity}× {item.product_name}</p>
-        {item.notes && (
-          <div style={{ fontSize: 11, color: "#999", marginTop: 2, paddingLeft: 12 }}>
-            {item.notes.split("|").map((line, j) => (
-              <p key={j} style={{ margin: "1px 0", fontStyle: "italic" }}>• {line.trim()}</p>
-            ))}
+        {item.notes && item.notes !== "💳 Datáfono" && (
+          <div style={{ marginTop: 3, paddingLeft: 8 }}>
+            {item.notes.split("|").map((line, j) => {
+              const colonIdx = line.indexOf(":");
+              const key = colonIdx !== -1 ? line.substring(0, colonIdx).trim() : null;
+              const val = colonIdx !== -1 ? line.substring(colonIdx + 1).trim() : line.trim();
+              const isSabor = key?.toLowerCase() === "sabor";
+              const isExtras = key?.toLowerCase() === "extras";
+              return (
+                <div key={j} style={{ display: "flex", gap: 4, marginBottom: 1 }}>
+                  {key && <span style={{ fontSize: 10, fontWeight: 700, color: isSabor || isExtras ? MAGENTA : "#AAA", flexShrink: 0 }}>{key}:</span>}
+                  <span style={{ fontSize: 11, color: isSabor || isExtras ? MAGENTA : "#888", fontStyle: isSabor ? "italic" : "normal" }}>{val}</span>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

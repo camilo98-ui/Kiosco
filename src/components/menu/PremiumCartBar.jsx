@@ -5,7 +5,7 @@ import { Minus, Plus, Trash2, MessageSquare, Droplet } from "lucide-react";
 import { useCart } from "@/lib/cartStore";
 import { formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
-import ProductDetailLine from "@/components/menu/ProductDetailLine";
+import ProductDetailLine from "@/components/menu/ProductDetailLine.jsx";
 
 // Umbrales de incentivo para aumentar ticket
 const INCENTIVE_THRESHOLDS = [
