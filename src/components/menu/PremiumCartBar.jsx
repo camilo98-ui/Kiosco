@@ -161,19 +161,16 @@ export default function PremiumCartBar({ onCheckout }) {
                      </button>
                   </div>
                 ) : (
-                  <button
-                    onClick={() => setEditingNotes(index)}
-                    className="flex items-center gap-1 mt-1.5"
-                    style={{ fontSize: 11, color: "#BBA8B0" }}
-                  >
-                    <MessageSquare className="w-3 h-3" />
-                    {item.notes || "Agregar nota"}
-                  </button>
-                )}
-                {item.notes && editingNotes !== index && (
-                  <p className="italic mt-1" style={{ fontSize: 11, color: "#BBA8B0" }}>
-                    📝 {item.notes}
-                  </p>
+                  !item.notes && (
+                    <button
+                      onClick={() => setEditingNotes(index)}
+                      className="flex items-center gap-1 mt-1.5"
+                      style={{ fontSize: 11, color: "#BBA8B0" }}
+                    >
+                      <MessageSquare className="w-3 h-3" />
+                      Agregar nota
+                    </button>
+                  )
                 )}
               </div>
             ))}

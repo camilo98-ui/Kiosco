@@ -357,100 +357,17 @@ function AutoCarousel({ products, onAdd, addedFlash, bg }) {
 }
 
 
-const MALTEAD_PREVIEW = 8;
-
 function MalteadasLayout({ products, onAdd, addedFlash, bg, catLabel }) {
-  const [selectedSize, setSelectedSize] = React.useState("16oz");
-  const [expanded12, setExpanded12] = React.useState(false);
-  const [expanded16, setExpanded16] = React.useState(false);
   const available = products.filter(p => p.is_available !== false);
-
-  const by12oz = available.filter(p => p.name.includes("12oz"));
-  const by16oz = available.filter(p => p.name.includes("16oz"));
-  const currentList = selectedSize === "12oz" ? by12oz : by16oz;
-  const expanded = selectedSize === "12oz" ? expanded12 : expanded16;
-  const setExpanded = selectedSize === "12oz" ? setExpanded12 : setExpanded16;
-
-  const visibleInCarousel = currentList.slice(0, MALTEAD_PREVIEW);
-  const hiddenList = currentList.slice(MALTEAD_PREVIEW);
 
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} />
-
-      {/* Size Selector Buttons */}
-      <div style={{ display: "flex", gap: 10, paddingLeft: 14, paddingRight: 14, marginBottom: 16 }}>
-        {["12oz", "16oz"].map(size => (
-          <motion.button
-            key={size}
-            onClick={() => setSelectedSize(size)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            style={{
-              flex: 1, height: 50, borderRadius: 16,
-              background: selectedSize === size ? "#C41E6A" : "#FFF0F5",
-              color: selectedSize === size ? "#fff" : "#C41E6A",
-              fontSize: 14, fontWeight: 900, border: "none", cursor: "pointer",
-              transition: "all 0.2s",
-            }}
-          >
-            Malteadas {size}
-          </motion.button>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
+        {available.map(p => (
+          <HorizontalCard key={p.id} product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
         ))}
       </div>
-
-      {currentList.length > 0 && (
-        <>
-          <AutoCarousel products={visibleInCarousel} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-
-          {/* Listado expandible debajo del carrusel */}
-          <AnimatePresence>
-            {expanded && hiddenList.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.3 }}
-                style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14, marginTop: 8 }}
-              >
-                {hiddenList.map((p, i) => (
-                  <motion.div
-                    key={p.id}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                  >
-                    <HorizontalCard product={p} onAdd={onAdd} addedFlash={addedFlash} bg={bg} />
-                  </motion.div>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Botón "Ver más" al fondo */}
-          {hiddenList.length > 0 && (
-            <div style={{ paddingLeft: 14, paddingRight: 14, marginTop: 12 }}>
-              <button
-                onClick={() => setExpanded(!expanded)}
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  border: "1px solid #C41E6A",
-                  borderRadius: 12,
-                  background: "transparent",
-                  color: "#C41E6A",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  fontFamily: "'Poppins', sans-serif",
-                }}
-              >
-                {expanded ? `Ocultar ▲` : `Ver más malteadas ${selectedSize} (${hiddenList.length} más) ▼`}
-              </button>
-            </div>
-          )}
-        </>
-      )}
     </>
   );
 }
