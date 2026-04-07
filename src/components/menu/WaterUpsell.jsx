@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { formatCOP } from "@/lib/constants";
 
 const WATER_IMAGE = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/26de2b565_image.png";
-const WATER_PRICE = 3500;
+const WATER_PRICE = 5900;
 
 export default function WaterUpsell({ onAdd, onSkip }) {
   return (

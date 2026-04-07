@@ -4,20 +4,20 @@ import { toast } from "sonner";
 import { formatCOP } from "@/lib/constants";
 
 const SABORES_HELADO = [
-  "Cubeta Yogo Yogo Fresa",
-  "Cubeta Brownie",
-  "Cubeta Cherry Mania",
-  "Cubeta Crema Limón",
-  "Cubeta MM",
-  "Cubeta Macadamia",
-  "Cubeta Milky Way",
-  "Cubeta Mocaccino",
-  "Cubeta Oreo",
-  "Cubeta Vainilla Chips",
-  "Cubeta Arroz Con Leche",
-  "Cubeta Yogurt De Cereza Italiana",
-  "Cubeta Chicle",
-  "Cubeta Snickers Almond",
+  "Tarrina Yogo Yogo Fresa",
+  "Tarrina Brownie",
+  "Tarrina Cherry Mania",
+  "Tarrina Crema Limón",
+  "Tarrina MM",
+  "Tarrina Macadamia",
+  "Tarrina Milky Way",
+  "Tarrina Mocaccino",
+  "Tarrina Oreo",
+  "Tarrina Vainilla Chips",
+  "Tarrina Arroz Con Leche",
+  "Tarrina Yogurt De Cereza Italiana",
+  "Tarrina Chicle",
+  "Tarrina Snickers Almond",
 ];
 
 const EXTRAS = [

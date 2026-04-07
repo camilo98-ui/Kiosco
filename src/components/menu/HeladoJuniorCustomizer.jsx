@@ -3,11 +3,11 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { formatCOP } from "@/lib/constants";
 
 const SABORES_JUNIOR = [
-  "Cubeta Chocolate",
-  "Cubeta Fresa",
-  "Cubeta Mandarina",
-  "Cubeta Vainilla",
-  "Cubeta Arequipe",
+  "Tarrina Chocolate",
+  "Tarrina Fresa",
+  "Tarrina Mandarina",
+  "Tarrina Vainilla",
+  "Tarrina Arequipe",
 ];
 
 const EXTRAS = [

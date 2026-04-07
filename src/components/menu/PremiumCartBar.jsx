@@ -189,14 +189,14 @@ export default function PremiumCartBar({ onCheckout }) {
           {!hasWater && (
             <button
               onClick={() => {
-                addItem({ product_id: "water", product_name: "Agua", price: 3500, category: "bebidas", emoji: "💧" });
+                addItem({ product_id: "water", product_name: "Agua", price: 5900, category: "bebidas", emoji: "💧" });
                 setTimeout(() => setOpen(false), 200);
               }}
               className="w-full rounded-xl p-3 mb-3 bg-blue-50 border border-blue-200 flex items-center gap-2 hover:bg-blue-100 transition-colors"
             >
               <Droplet size={16} style={{ color: "#1E88E5" }} />
               <span className="flex-1 text-left font-bold text-sm" style={{ color: "#1E88E5" }}>
-                Agregar agua · {formatCOP(3500)}
+                Agregar agua · {formatCOP(5900)}
               </span>
               <span style={{ fontSize: 12, fontWeight: 700, color: "#64B5F6" }}>+</span>
             </button>
