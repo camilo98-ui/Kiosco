@@ -140,7 +140,7 @@ function MostOrdered({ products, onAdd, onShowAll }) {
   );
 }
 
-function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, upsellMsg, setUpsellMsg, handleUpsellAccept }) {
+function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, upsellMsg, setUpsellMsg, handleUpsellAccept, showParaLlevarUpsell, handleUpsellSkip, handleUpsellAddAndPay }) {
   const touchStartX = useRef(null);
 
   const handleTouchStart = (e) => {
@@ -178,11 +178,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={onAddProduct} />
-      <ParaLlevarUpsell
-        open={showParaLlevarUpsell}
-        onSkip={handleUpsellSkip}
-        onAddAndPay={handleUpsellAddAndPay}
-      />
+      <ParaLlevarUpsell open={showParaLlevarUpsell} onSkip={handleUpsellSkip} onAddAndPay={handleUpsellAddAndPay} />
     </div>
   );
 }
@@ -442,6 +438,9 @@ export default function Menu() {
         upsellMsg={upsellMsg}
         setUpsellMsg={setUpsellMsg}
         handleUpsellAccept={handleUpsellAccept}
+        showParaLlevarUpsell={showParaLlevarUpsell}
+        handleUpsellSkip={handleUpsellSkip}
+        handleUpsellAddAndPay={handleUpsellAddAndPay}
       />
     );
   }
