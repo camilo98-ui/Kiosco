@@ -24,6 +24,7 @@ import CombosAllModal from "@/components/menu/CombosAllModal";
 import MostOrderedAll from "@/components/menu/MostOrderedAll";
 import WaterUpsell from "@/components/menu/WaterUpsell";
 import CuantosSon from "@/components/menu/CuantosSon";
+import ParaLlevarUpsell from "@/components/menu/ParaLlevarUpsell";
 
 const FAMILY_GRADIENTS = [
   "linear-gradient(135deg, #6D1B4E, #B5175A)",
@@ -177,6 +178,11 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={onAddProduct} />
+      <ParaLlevarUpsell
+        open={showParaLlevarUpsell}
+        onSkip={handleUpsellSkip}
+        onAddAndPay={handleUpsellAddAndPay}
+      />
     </div>
   );
 }
@@ -196,6 +202,8 @@ export default function Menu() {
   const [showMostOrdered, setShowMostOrdered] = useState(false);
   const [showCombosAll, setShowCombosAll] = useState(false);
   const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
+  const [showParaLlevarUpsell, setShowParaLlevarUpsell] = useState(false);
+  const [upsellSeenThisSession, setUpsellSeenThisSession] = useState(false);
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
@@ -304,10 +312,24 @@ export default function Menu() {
     setUpsellMsg(null);
   }, [upsellTarget]);
 
+  const hasLitroInCart = useCallback(() => {
+    return cart.some(item =>
+      item.product_name?.toLowerCase().includes("litro") ||
+      item.product_id?.toString().startsWith("litro-")
+    );
+  }, [cart]);
+
   const handleCheckoutStart = useCallback((name) => {
     setCheckoutOpen(false);
-    doCheckout(name, [], total);
-  }, [total]);
+    // Mostrar upsell solo si: no visto esta sesión y no tiene litro ya
+    if (!upsellSeenThisSession && !hasLitroInCart()) {
+      setPendingCheckoutName(name);
+      setShowParaLlevarUpsell(true);
+      setUpsellSeenThisSession(true);
+    } else {
+      doCheckout(name, [], total);
+    }
+  }, [total, upsellSeenThisSession, hasLitroInCart]);
 
   const doCheckout = async (name, extraItems = [], passedTotal = 0) => {
     const cartSnapshot = [...cart, ...extraItems];
@@ -343,6 +365,18 @@ export default function Menu() {
   };
 
   const handleCheckout = handleCheckoutStart;
+
+  const handleUpsellSkip = useCallback(() => {
+    setShowParaLlevarUpsell(false);
+    doCheckout(pendingCheckoutName, [], total);
+    setPendingCheckoutName(null);
+  }, [pendingCheckoutName, total]);
+
+  const handleUpsellAddAndPay = useCallback((litroItem) => {
+    setShowParaLlevarUpsell(false);
+    doCheckout(pendingCheckoutName, [litroItem], total + litroItem.price);
+    setPendingCheckoutName(null);
+  }, [pendingCheckoutName, total]);
 
   if (confirmedOrder) {
     return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} />;
@@ -479,6 +513,11 @@ export default function Menu() {
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={handleAddProduct} />
+      <ParaLlevarUpsell
+        open={showParaLlevarUpsell}
+        onSkip={handleUpsellSkip}
+        onAddAndPay={handleUpsellAddAndPay}
+      />
       <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
       {showMostOrdered && (
         <MostOrderedAll products={products} onAdd={(p) => { handleAddProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
