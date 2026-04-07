@@ -159,7 +159,7 @@ export default function HeladoJuniorCustomizer({ product, open, onClose, onAdd }
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
-    onAdd({ ...product, price: total }, notes);
+    onAdd({ ...product, price: total, name: `${product.name} ${sabores.join(", ")}` }, notes);
     setSabores([]); setExtras([]);
     setOpenSection("sabor");
     onClose();

@@ -182,7 +182,7 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
     ].filter(Boolean).join(" | ");
 
     // Agregar el producto base con precio total (base + crack + extras)
-    onAdd({ ...product, price: total }, notes);
+    onAdd({ ...product, price: total, name: `${product.name} ${salsa}` }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     // Reset
     setSalsa(null); setChantilly(null); setCrack(null); setExtras([]);
