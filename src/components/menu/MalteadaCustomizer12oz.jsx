@@ -178,14 +178,15 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
     if (!allRequired) return;
 
     const notes = [
-      `Tamaño: 12oz`,
       `Salsa: ${salsa}`,
       `Sabor: ${sabor}`,
       `Crack: ${crack}`,
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
-    onAdd({ ...product, price: total }, notes);
+    // Incluir "Malteada 12oz" en el nombre para que sea visible en el carrito
+    const nameWithSize = `${product.name} · Malteada 12oz`;
+    onAdd({ ...product, name: nameWithSize, product_name: nameWithSize, price: total }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     setSalsa(null); setSabor(null); setCrack(null); setExtras([]);
     setOpenSection("salsa");

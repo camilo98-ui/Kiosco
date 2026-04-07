@@ -181,8 +181,9 @@ export default function MalteadaCustomizer({ product, open, onClose, onAdd }) {
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
-    // Agregar el producto base con precio total (base + crack + extras)
-    onAdd({ ...product, price: total }, notes);
+    // Incluir "Malteada 16oz" en el nombre para que sea visible en el carrito
+    const nameWithSize = `${product.name} · Malteada 16oz`;
+    onAdd({ ...product, name: nameWithSize, product_name: nameWithSize, price: total }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     // Reset
     setSalsa(null); setChantilly(null); setCrack(null); setExtras([]);
