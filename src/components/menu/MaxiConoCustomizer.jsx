@@ -170,7 +170,7 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
       `Toppings incluidos: ${toppings.join(", ")}`,
     ].filter(Boolean).join(" | ");
 
-    onAdd({ ...product, price: total, name: `${product.name} ${sabor1}, ${sabor2}` }, notes);
+    onAdd({ ...product, price: total }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     setSabor1(null); setSabor2(null); setToppings([]);
     setOpenSection("sabor1");

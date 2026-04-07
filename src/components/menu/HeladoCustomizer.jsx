@@ -182,7 +182,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
-    onAdd({ ...product, price: total, name: `${product.name} ${sabores.join(", ")}` }, notes);
+    onAdd({ ...product, price: total }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
     setSabores([]); setExtras([]);
     setOpenSection("sabor");
