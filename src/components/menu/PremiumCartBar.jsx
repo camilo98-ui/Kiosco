@@ -111,6 +111,16 @@ export default function PremiumCartBar({ onCheckout }) {
                     <p className="font-bold text-sm truncate" style={{ color: "#2D1A22" }}>
                       {cartItem.product_name}
                     </p>
+                    {cartItem.product_name?.toLowerCase().includes("malteada") && (
+                      <span style={{
+                        display: "inline-block", fontSize: 10, fontWeight: 700,
+                        background: cartItem.product_name.includes("12oz") ? "#E8F0FF" : "#F0FFF4",
+                        color: cartItem.product_name.includes("12oz") ? "#1A56DB" : "#2E7D32",
+                        borderRadius: 20, padding: "2px 8px", marginTop: 3,
+                      }}>
+                        {cartItem.product_name.includes("12oz") ? "🧋 12oz" : "🥤 16oz"}
+                      </span>
+                    )}
                     <ProductDetailLine item={cartItem} />
                     <p className="font-black text-sm" style={{ color: "#C41E6A", marginTop: 4 }}>
                        {formatCOP(cartItem.price * cartItem.quantity)}
