@@ -374,8 +374,17 @@ export default function Menu() {
     setPendingCheckoutName(null);
   }, [pendingCheckoutName, total]);
 
+  const handleEditOrder = (order) => {
+    // Restaurar el carrito con los items del pedido confirmado
+    clearCart();
+    order.items.forEach(item => addItem(item, item.notes || ""));
+    setConfirmedOrder(null);
+    // Resetear el upsell para que no bloquee el nuevo checkout
+    setUpsellSeenThisSession(false);
+  };
+
   if (confirmedOrder) {
-    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} />;
+    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} onEditOrder={handleEditOrder} />;
   }
 
   if (activeCategory === "granizados") {

@@ -99,6 +99,24 @@ export default function PremiumCartBar({ onCheckout }) {
             </SheetTitle>
           </SheetHeader>
 
+          {cart.length === 0 && (
+            <div style={{ textAlign: "center", padding: "40px 20px" }}>
+              <div style={{ fontSize: 56, marginBottom: 12 }}>🍦</div>
+              <p style={{ fontSize: 16, fontWeight: 700, color: "#BBA8B0", margin: "0 0 6px" }}>Tu carrito está vacío</p>
+              <p style={{ fontSize: 13, color: "#DDD", margin: "0 0 20px" }}>Agrega algo delicioso 😊</p>
+              <button
+                onClick={() => setOpen(false)}
+                style={{
+                  background: "#C41E6A", color: "#fff", border: "none",
+                  borderRadius: 14, padding: "12px 28px", fontSize: 14,
+                  fontWeight: 700, cursor: "pointer", fontFamily: "'Poppins', sans-serif",
+                }}
+              >
+                Volver al menú
+              </button>
+            </div>
+          )}
+
           <div className="space-y-2 mt-3">
             {cart.map((cartItem, index) => (
               <div
