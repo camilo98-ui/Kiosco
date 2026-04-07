@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo } from "react";
 import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
+import HeladosSubSelector from "@/components/menu/HeladosSubSelector";
 import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
 import MalteadaCustomizer12oz from "@/components/menu/MalteadaCustomizer12oz";
 import BananaSplitCustomizer from "@/components/menu/BananaSplitCustomizer";
@@ -561,7 +562,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
 
   const renderLayout = () => {
     switch (category) {
-      case "helados":       return <HeladosLayout {...layoutProps} />;
+      case "helados":       return <HeladosSubSelector products={sortedProducts} onAdd={handleAdd} addedFlash={addedFlash} />;
       case "malteadas":     return <MalteadasLayout {...layoutProps} />;
       case "granizados":    return <EspecialesLayout {...layoutProps} />;
       case "especialidades": return <EspecialesLayout {...layoutProps} />;

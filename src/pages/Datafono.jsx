@@ -6,6 +6,7 @@ import { ArrowLeft, CreditCard, Plus, Minus, X, CheckCircle2, ShoppingBag, Searc
 import { formatCOP, CATEGORIES } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 
 const MAGENTA = "#E91B8B";
 
