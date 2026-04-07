@@ -4,6 +4,8 @@ import { formatCOP } from "@/lib/constants";
 
 const LITRO_IMAGE = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/f274e95e1_Gemini_Generated_Image_nwh7ponwh7ponwh7.png";
 
+const MAGENTA = "#C41E6A";
+
 const SABORES_GOURMET = [
   "Vainilla Gourmet",
   "Brownie Gourmet",
@@ -36,8 +38,9 @@ const LITROS = [
     label: "Litro Gourmet",
     price: 39900,
     sabores: SABORES_GOURMET,
-    badge: null,
-    flavorsLabel: "Vainilla · Brownie · Frutos del Bosque · Crema de Limón · Oreo y más",
+    badge: "Más popular",
+    previewFlavors: "Vainilla · Brownie · Frutos del Bosque y más",
+    featured: true,
   },
   {
     id: "exclusivo",
@@ -45,49 +48,10 @@ const LITROS = [
     price: 46900,
     sabores: SABORES_EXCLUSIVO,
     badge: "Premium",
-    flavorsLabel: "Yogo Yogo · Cherry Mania · M&M's · Macadamia · Oreo y más",
+    previewFlavors: "Yogo Yogo · Cherry Mania · M&M's y más",
+    featured: false,
   },
 ];
-
-const MAGENTA = "#C41E6A";
-
-// Confetti decorativo
-function Confetti() {
-  const dots = [
-    { top: "8%", left: "6%", size: 8, color: "#C41E6A", opacity: 0.15 },
-    { top: "4%", left: "20%", size: 5, color: "#FF6EB4", opacity: 0.12 },
-    { top: "12%", right: "8%", size: 7, color: "#C41E6A", opacity: 0.13 },
-    { top: "6%", right: "22%", size: 4, color: "#FF6EB4", opacity: 0.1 },
-    { bottom: "18%", left: "4%", size: 6, color: "#C41E6A", opacity: 0.12 },
-    { bottom: "22%", left: "18%", size: 4, color: "#FF6EB4", opacity: 0.1 },
-    { bottom: "16%", right: "6%", size: 8, color: "#C41E6A", opacity: 0.13 },
-    { bottom: "20%", right: "20%", size: 5, color: "#FF6EB4", opacity: 0.12 },
-  ];
-  const stars = [
-    { top: "10%", left: "12%", opacity: 0.13 },
-    { top: "7%", right: "14%", opacity: 0.11 },
-    { bottom: "24%", left: "10%", opacity: 0.12 },
-    { bottom: "19%", right: "12%", opacity: 0.10 },
-  ];
-  return (
-    <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
-      {dots.map((d, i) => (
-        <div key={i} style={{
-          position: "absolute", width: d.size, height: d.size,
-          borderRadius: "50%", background: d.color, opacity: d.opacity,
-          top: d.top, left: d.left, right: d.right, bottom: d.bottom,
-        }} />
-      ))}
-      {stars.map((s, i) => (
-        <div key={`star-${i}`} style={{
-          position: "absolute", fontSize: 14, opacity: s.opacity,
-          top: s.top, left: s.left, right: s.right, bottom: s.bottom,
-          color: MAGENTA,
-        }}>✦</div>
-      ))}
-    </div>
-  );
-}
 
 // Bottom sheet selector de sabor
 function SaborSheet({ litro, open, onClose, onConfirm }) {
@@ -125,7 +89,6 @@ function SaborSheet({ litro, open, onClose, onConfirm }) {
               display: "flex", flexDirection: "column",
             }}
           >
-            {/* Handle */}
             <div style={{ display: "flex", justifyContent: "center", padding: "12px 0 6px" }}>
               <div style={{ width: 40, height: 4, borderRadius: 2, background: "#EEE" }} />
             </div>
@@ -133,7 +96,6 @@ function SaborSheet({ litro, open, onClose, onConfirm }) {
               <p style={{ fontSize: 16, fontWeight: 800, color: "#1A1A1A", margin: 0 }}>Elige el sabor</p>
               <p style={{ fontSize: 12, color: "#999", margin: "2px 0 0" }}>{litro?.label} · {litro && formatCOP(litro.price)}</p>
             </div>
-            {/* Lista sabores */}
             <div style={{ flex: 1, overflowY: "auto", padding: "0 20px" }}>
               {litro?.sabores.map(sabor => (
                 <button
@@ -155,7 +117,6 @@ function SaborSheet({ litro, open, onClose, onConfirm }) {
                 </button>
               ))}
             </div>
-            {/* Botón confirmar */}
             <div style={{ padding: "14px 20px 32px", borderTop: "1px solid #F0F0F0" }}>
               <button
                 onClick={handleConfirm}
@@ -180,36 +141,57 @@ function SaborSheet({ litro, open, onClose, onConfirm }) {
   );
 }
 
-// Tarjeta de litro
 function LitroCard({ litro, onSelect }) {
   return (
     <button
       onClick={() => onSelect(litro)}
       style={{
-        flex: 1, background: "#FFF5F9", border: "1px solid #FFE4F3",
-        borderRadius: 16, padding: "14px 12px",
-        cursor: "pointer", textAlign: "left",
-        display: "flex", flexDirection: "column", gap: 6,
+        flex: 1,
+        background: "#FFFFFF",
+        border: `1.5px solid ${litro.featured ? MAGENTA : "#FFE4F3"}`,
+        borderRadius: 20,
+        padding: 16,
+        cursor: "pointer",
+        textAlign: "left",
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        boxShadow: "0 4px 16px rgba(180,0,80,0.08)",
+        minWidth: 0,
       }}
     >
-      {litro.badge && (
-        <span style={{
-          fontSize: 10, fontWeight: 800, background: MAGENTA, color: "#fff",
-          borderRadius: 20, padding: "2px 8px", alignSelf: "flex-start",
-        }}>
-          {litro.badge}
-        </span>
-      )}
-      <p style={{ fontSize: 14, fontWeight: 800, color: "#1A1A1A", margin: 0 }}>{litro.label}</p>
-      <p style={{ fontSize: 11, color: "#999", margin: 0, lineHeight: 1.4 }}>{litro.flavorsLabel}</p>
-      <p style={{ fontSize: 18, fontWeight: 800, color: MAGENTA, margin: "4px 0 0" }}>
+      {/* Badge */}
+      <span style={{
+        fontSize: 10, fontWeight: 700,
+        background: "#FFE4F3", color: MAGENTA,
+        borderRadius: 20, padding: "3px 10px",
+        alignSelf: "flex-start",
+        whiteSpace: "nowrap",
+      }}>
+        {litro.badge}
+      </span>
+
+      {/* Nombre */}
+      <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3 }}>
+        {litro.label}
+      </p>
+
+      {/* Sabores preview */}
+      <p style={{ fontSize: 11, color: "#999", margin: 0, lineHeight: 1.5 }}>
+        {litro.previewFlavors}
+      </p>
+
+      {/* Precio */}
+      <p style={{ fontSize: 22, fontWeight: 800, color: MAGENTA, margin: "4px 0 0" }}>
         {formatCOP(litro.price)}
       </p>
+
+      {/* Botón */}
       <div style={{
-        marginTop: 6, height: 40, borderRadius: 12,
+        marginTop: 4, height: 44, borderRadius: 12,
         background: MAGENTA, color: "#fff",
         display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: 13, fontWeight: 700,
+        fontSize: 14, fontWeight: 700,
         boxShadow: "0 3px 10px rgba(196,30,106,0.3)",
       }}>
         Agregar
@@ -219,11 +201,9 @@ function LitroCard({ litro, onSelect }) {
 }
 
 export default function ParaLlevarUpsell({ open, onSkip, onAddAndPay }) {
-  const [saborSheet, setSaborSheet] = useState(null); // litro seleccionado
+  const [saborSheet, setSaborSheet] = useState(null);
 
-  const handleLitroSelect = (litro) => {
-    setSaborSheet(litro);
-  };
+  const handleLitroSelect = (litro) => setSaborSheet(litro);
 
   const handleSaborConfirm = (litro, sabor) => {
     setSaborSheet(null);
@@ -242,82 +222,75 @@ export default function ParaLlevarUpsell({ open, onSkip, onAddAndPay }) {
         <motion.div
           initial={{ y: "100%" }}
           animate={{ y: 0 }}
-          exit={{ y: "100%", opacity: 0 }}
+          exit={{ y: "100%" }}
           transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
           style={{
             position: "fixed", inset: 0, zIndex: 100,
-            background: "#FFFFFF",
+            background: "#FFFAF9",
             display: "flex", flexDirection: "column",
             overflowY: "auto",
           }}
         >
-          <Confetti />
+          {/* Drag handle */}
+          <div style={{ display: "flex", justifyContent: "center", paddingTop: 14, paddingBottom: 6, flexShrink: 0 }}>
+            <div style={{ width: 40, height: 4, borderRadius: 2, background: "#DDD" }} />
+          </div>
 
-          {/* Contenido */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "28px 20px 0", position: "relative", zIndex: 1 }}>
+          {/* Badge */}
+          <div style={{ display: "flex", justifyContent: "center", marginTop: 8, marginBottom: 16, flexShrink: 0 }}>
+            <span style={{
+              background: "#FFE4F3", color: MAGENTA,
+              fontSize: 13, fontWeight: 600,
+              borderRadius: 20, padding: "6px 16px",
+            }}>
+              Antes de irte...
+            </span>
+          </div>
 
-            {/* Badge */}
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
-              <span style={{
-                background: "#FFE4F3", color: MAGENTA,
-                fontSize: 13, fontWeight: 700,
-                borderRadius: 20, padding: "6px 16px",
-                border: `1px solid #F9C6E0`,
-              }}>
-                🍦 Antes de irte...
-              </span>
-            </div>
-
-            {/* Título */}
-            <p style={{ fontSize: 26, fontWeight: 800, color: "#1A1A1A", textAlign: "center", margin: "0 0 6px", fontFamily: "'Poppins', sans-serif" }}>
+          {/* Título */}
+          <div style={{ textAlign: "center", padding: "0 20px", marginBottom: 18, flexShrink: 0 }}>
+            <p style={{ fontSize: 26, fontWeight: 700, color: "#1A1A1A", margin: 0, fontFamily: "'Poppins', sans-serif" }}>
               ¿Y para llevar?
             </p>
-            <p style={{ fontSize: 14, color: "#666", textAlign: "center", margin: "0 0 20px", lineHeight: 1.5 }}>
-              Llévate un litro Popsy y disfrútalo cuando quieras
+            <p style={{ fontSize: 13, color: "#999", margin: "6px 0 0" }}>
+              Llévate un litro y disfrútalo cuando quieras
             </p>
+          </div>
 
-            {/* Imagen principal */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
-              style={{ width: "100%", marginBottom: 6 }}
-            >
-              <img
-                src={LITRO_IMAGE}
-                alt="Litros Popsy"
-                style={{ width: "100%", maxHeight: 220, objectFit: "contain", display: "block" }}
-              />
-            </motion.div>
-
-            {/* Línea de puntos decorativa */}
+          {/* Imagen borde a borde */}
+          <div style={{ position: "relative", width: "100%", height: 180, flexShrink: 0 }}>
+            <img
+              src={LITRO_IMAGE}
+              alt="Litros Popsy"
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
+            />
+            {/* Overlay fade inferior */}
             <div style={{
-              display: "flex", justifyContent: "center", gap: 5, marginBottom: 22,
-            }}>
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} style={{ width: 5, height: 5, borderRadius: "50%", background: MAGENTA, opacity: 0.2 + (i % 3) * 0.1 }} />
-              ))}
-            </div>
+              position: "absolute", bottom: 0, left: 0, right: 0, height: 60,
+              background: "linear-gradient(to bottom, transparent, #FFFAF9)",
+            }} />
+          </div>
 
-            {/* Cards */}
-            <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
-              {LITROS.map(litro => (
-                <LitroCard key={litro.id} litro={litro} onSelect={handleLitroSelect} />
-              ))}
-            </div>
+          {/* Cards side by side */}
+          <div style={{ display: "flex", gap: 12, padding: "20px 16px 0", flexShrink: 0 }}>
+            {LITROS.map(litro => (
+              <LitroCard key={litro.id} litro={litro} onSelect={handleLitroSelect} />
+            ))}
           </div>
 
           {/* Botón saltar */}
-          <div style={{ padding: "12px 20px 36px", textAlign: "center", position: "relative", zIndex: 1 }}>
+          <div style={{ textAlign: "center", padding: "20px 20px 36px", flexShrink: 0 }}>
             <button
               onClick={onSkip}
               style={{
                 background: "none", border: "none", cursor: "pointer",
-                fontSize: 13, color: "#AAAAAA",
+                fontSize: 13, color: "#BBBBBB",
                 fontFamily: "'Poppins', sans-serif",
+                textDecoration: "underline",
+                padding: "10px 0",
               }}
             >
-              No gracias, continuar al pago →
+              No gracias, ya tengo todo
             </button>
           </div>
 
