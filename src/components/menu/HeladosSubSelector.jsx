@@ -135,11 +135,11 @@ export default function HeladosSubSelector({ products, onAdd }) {
        !p.name.toLowerCase().includes("cono"))
     );
     if (sub === "exclusivo") return available.filter(p => p.name.toLowerCase().includes("exclusivo"));
-    if (sub === "junior") return available.filter(p =>
-      p.name.toLowerCase().includes("junior") ||
-      p.name.toLowerCase().includes("jr") ||
-      p.name.toLowerCase().includes("cono")
-    );
+    if (sub === "junior") return available.filter(p => {
+      const n = p.name.toLowerCase();
+      return (n.includes("junior") || n.includes("jr") || n.includes("cono")) &&
+        !n.includes("maxi") && !n.includes("fiore");
+    });
     return available;
   };
 

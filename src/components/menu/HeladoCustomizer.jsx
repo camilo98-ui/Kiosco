@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { formatCOP } from "@/lib/constants";
@@ -154,6 +154,14 @@ function CheckOption({ label, price, selected, onToggle }) {
   );
 }
 
+function detectSabores(product) {
+  if (!product) return null;
+  const name = product.name.toLowerCase();
+  if (name.includes("2 sabor") || name.includes("2sabor")) return 2;
+  if (name.includes("1 sabor") || name.includes("1sabor")) return 1;
+  return null;
+}
+
 export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
   const [openSection, setOpenSection] = useState("cantidad");
   const [maxSabores, setMaxSabores] = useState(null);
@@ -194,6 +202,15 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
   const total = (product?.price || 0) + crackPrice + extrasTotal;
   const allRequired = maxSabores && sabores.length === maxSabores && crack !== null;
 
+  useEffect(() => {
+    if (open) {
+      const d = detectSabores(product);
+      setMaxSabores(d);
+      setOpenSection(d ? "sabor" : "cantidad");
+      setSabores([]); setCrack(null); setExtras([]); setTab("gourmet");
+    }
+  }, [open, product?.id]);
+
   const handleConfirm = () => {
     if (!allRequired) return;
     const notes = [
@@ -204,8 +221,6 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
 
     onAdd({ ...product, price: total }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
-    setSabores([]); setCrack(null); setExtras([]); setMaxSabores(null);
-    setOpenSection("cantidad"); setTab("gourmet");
     setTimeout(() => onClose(), 150);
   };
 

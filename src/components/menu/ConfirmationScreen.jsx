@@ -316,8 +316,21 @@ export default function ConfirmationScreen({ order, onNewOrder, onEditOrder }) {
           <Timeline status={orderStatus} />
         </motion.div>
 
-        {/* Posición en cola */}
-        <QueueSection orderNumber={order.order_number} />
+        {/* Mensaje de espera */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+          style={{ background: "#FFF5F9", borderRadius: 20, padding: 20, textAlign: "center" }}
+        >
+          <div style={{ fontSize: 40, marginBottom: 8 }}>🍦</div>
+          <p style={{ fontSize: 17, fontWeight: 800, color: MAGENTA, margin: "0 0 6px" }}>
+            ¡Ya estamos preparando tu pedido!
+          </p>
+          <p style={{ fontSize: 13, color: "#666", margin: 0 }}>
+            En unos momentos te llamamos por tu número. No te vayas lejos 😄
+          </p>
+        </motion.div>
 
         {/* Resumen del pedido */}
         <motion.div
