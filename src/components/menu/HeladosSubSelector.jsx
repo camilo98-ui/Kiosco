@@ -174,7 +174,12 @@ export default function HeladosSubSelector({ products, onAdd }) {
       if (n.includes("exclusivo") || n.includes("junior") || n.includes("jr") || n.includes("maxi")) return false;
       return n.includes("gourmet") || (n.includes("fiore") && !n.includes("exclusivo"));
     });
-    if (sub === "exclusivo") return available.filter(p => p.name.toLowerCase().includes("exclusivo"));
+    if (sub === "exclusivo") {
+      const excl = available.filter(p => p.name.toLowerCase().includes("exclusivo"));
+      const fiore = excl.filter(p => p.name.toLowerCase().includes("fiore"));
+      const rest = excl.filter(p => !p.name.toLowerCase().includes("fiore"));
+      return [...fiore, ...rest];
+    }
     if (sub === "junior") return available.filter(p => {
       const n = p.name.toLowerCase();
       return (n.includes("junior") || n.includes("jr") || n.includes("cono")) &&
