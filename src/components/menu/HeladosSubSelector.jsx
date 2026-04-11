@@ -126,15 +126,11 @@ export default function HeladosSubSelector({ products, onAdd }) {
   const available = products.filter(p => p.is_available !== false);
 
   const filterProducts = (sub) => {
-    if (sub === "gourmet") return available.filter(p =>
-      p.name.toLowerCase().includes("gourmet") ||
-      p.name.toLowerCase().includes("fiore") ||
-      (!p.name.toLowerCase().includes("exclusivo") &&
-       !p.name.toLowerCase().includes("junior") &&
-       !p.name.toLowerCase().includes("jr") &&
-       !p.name.toLowerCase().includes("maxi") &&
-       !p.name.toLowerCase().includes("cono"))
-    );
+    if (sub === "gourmet") return available.filter(p => {
+      const n = p.name.toLowerCase();
+      if (n.includes("exclusivo") || n.includes("junior") || n.includes("jr") || n.includes("maxi")) return false;
+      return n.includes("gourmet") || (n.includes("fiore") && !n.includes("exclusivo"));
+    });
     if (sub === "exclusivo") return available.filter(p => p.name.toLowerCase().includes("exclusivo"));
     if (sub === "junior") return available.filter(p => {
       const n = p.name.toLowerCase();
@@ -147,9 +143,6 @@ export default function HeladosSubSelector({ products, onAdd }) {
   const filtered = filterProducts(subcat);
   const featured = filtered[0];
   const rest = filtered.slice(1);
-  const isOdd = rest.length % 2 !== 0;
-  const gridItems = isOdd ? rest.slice(0, -1) : rest;
-  const lastItem = isOdd ? rest[rest.length - 1] : null;
 
   return (
     <div>
@@ -164,14 +157,13 @@ export default function HeladosSubSelector({ products, onAdd }) {
         >
           <div style={{ padding: "0 14px 14px" }}>
             {featured && <FeaturedProductCard product={featured} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />}
-            {gridItems.length > 0 && (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: lastItem ? 10 : 0 }}>
-                {gridItems.map(p => (
+            {rest.length > 0 && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {rest.map(p => (
                   <GridProductCard key={p.id} product={p} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />
                 ))}
               </div>
             )}
-            {lastItem && <FeaturedProductCard product={lastItem} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />}
           </div>
         </motion.div>
       </AnimatePresence>
