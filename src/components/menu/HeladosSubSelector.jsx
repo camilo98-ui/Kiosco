@@ -128,14 +128,14 @@ export default function HeladosSubSelector({ products, onAdd }) {
   const filterProducts = (sub) => {
     if (sub === "gourmet") return available.filter(p =>
       p.name.toLowerCase().includes("gourmet") ||
+      p.name.toLowerCase().includes("fiore") ||
       (!p.name.toLowerCase().includes("exclusivo") &&
        !p.name.toLowerCase().includes("junior") &&
        !p.name.toLowerCase().includes("jr") &&
        !p.name.toLowerCase().includes("maxi") &&
-       !p.name.toLowerCase().includes("cono") &&
-       !p.name.toLowerCase().includes("fiore"))
+       !p.name.toLowerCase().includes("cono"))
     );
-    if (sub === "exclusivo") return available.filter(p => p.name.toLowerCase().includes("exclusivo") || p.name.toLowerCase().includes("fiore"));
+    if (sub === "exclusivo") return available.filter(p => p.name.toLowerCase().includes("exclusivo"));
     if (sub === "junior") return available.filter(p => {
       const n = p.name.toLowerCase();
       return (n.includes("junior") || n.includes("jr") || n.includes("cono")) &&
