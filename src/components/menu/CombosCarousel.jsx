@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import { COMBOS_DATA } from "@/lib/combosData";
 
 const COMBOS = COMBOS_DATA;
-const CARD_WIDTH = 150;
+const CARD_WIDTH = 160;
 const GAP = 12;
 const CARD_STEP = CARD_WIDTH + GAP;
 
@@ -34,6 +34,7 @@ function ComboCard({ combo, onAdd }) {
         background: "#FFF0F5",
         borderRadius: "20px 20px 0 0",
         overflow: "hidden",
+        flexShrink: 0,
       }}>
         <img
           src={combo.image}
@@ -60,10 +61,9 @@ function ComboCard({ combo, onAdd }) {
       </div>
       <div style={{ padding: "8px 10px 12px" }}>
         <p style={{
-          fontSize: 12, fontWeight: 800, color: "#2D1A22",
+          fontSize: 11, fontWeight: 800, color: "#2D1A22",
           margin: 0, lineHeight: 1.3,
-          display: "-webkit-box", WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical", overflow: "hidden",
+          textAlign: "left",
         }}>
           {combo.title}
         </p>
