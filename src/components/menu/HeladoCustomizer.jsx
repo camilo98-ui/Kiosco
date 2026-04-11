@@ -155,17 +155,15 @@ function CheckOption({ label, price, selected, onToggle }) {
 }
 
 export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
-  const maxSabores = product?.name?.toLowerCase().includes("2 sabor") ||
-    product?.name?.toLowerCase().includes("2sabor") ? 2 : 1;
-
-  const [openSection, setOpenSection] = useState("sabor");
+  const [openSection, setOpenSection] = useState("cantidad");
+  const [maxSabores, setMaxSabores] = useState(null);
   const [tab, setTab] = useState("gourmet");
   const [sabores, setSabores] = useState([]);
   const [crack, setCrack] = useState(null);
   const [extras, setExtras] = useState([]);
 
   const saboresList = tab === "gourmet" ? SABORES_GOURMET : SABORES_EXCLUSIVO;
-  const SECTIONS = ["sabor", "crack", "extras"];
+  const SECTIONS = ["cantidad", "sabor", "crack", "extras"];
 
   const advanceToNext = (current) => {
     const idx = SECTIONS.indexOf(current);
@@ -194,7 +192,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
   const crackPrice = CHOCOLATE_CRACK.find(c => c.label === crack)?.price || 0;
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
   const total = (product?.price || 0) + crackPrice + extrasTotal;
-  const allRequired = sabores.length === maxSabores && crack !== null;
+  const allRequired = maxSabores && sabores.length === maxSabores && crack !== null;
 
   const handleConfirm = () => {
     if (!allRequired) return;
@@ -206,8 +204,8 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
 
     onAdd({ ...product, price: total }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
-    setSabores([]); setCrack(null); setExtras([]);
-    setOpenSection("sabor"); setTab("gourmet");
+    setSabores([]); setCrack(null); setExtras([]); setMaxSabores(null);
+    setOpenSection("cantidad"); setTab("gourmet");
     setTimeout(() => onClose(), 150);
   };
 
@@ -230,6 +228,18 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
             Desde {formatCOP(product?.price || 0)}
           </p>
         </div>
+
+        {/* Cantidad de sabores */}
+        <AccordionSection
+          title="¿Cuántos sabores quieres?"
+          required
+          open={openSection === "cantidad"}
+          onToggle={() => setOpenSection(s => s === "cantidad" ? null : "cantidad")}
+        >
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
+          <RadioOption label="1 sabor" price={0} selected={maxSabores === 1} onSelect={() => { setMaxSabores(1); setSabores([]); advanceToNext("cantidad"); }} />
+          <RadioOption label="2 sabores" price={0} selected={maxSabores === 2} onSelect={() => { setMaxSabores(2); setSabores([]); advanceToNext("cantidad"); }} />
+        </AccordionSection>
 
         {/* Sabor */}
         <AccordionSection
@@ -315,7 +325,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
           {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige {maxSabores === 1 ? "un sabor" : `${maxSabores} sabores`} y la opción de crack para continuar
+              * Elige la cantidad, sabores y opción de crack para continuar
             </p>
           )}
           <button
