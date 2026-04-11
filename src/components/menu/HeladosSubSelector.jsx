@@ -54,57 +54,52 @@ function FeaturedProductCard({ product, onAdd, isFirst }) {
         whileTap={{ scale: 0.98 }}
         onClick={() => onAdd(product)}
         style={{
-          width: "100%", borderRadius: 18, border: `1.5px solid ${BORDER}`,
-          background: "#fff", overflow: "visible", cursor: "pointer",
-          padding: "14px 14px 14px 14px",
-          display: "flex", alignItems: "center", gap: 14,
-          boxShadow: "0 2px 12px rgba(232,85,154,0.08)",
+          width: "100%", borderRadius: 18, border: `2px solid ${MAGENTA}`,
+          background: "#fff", overflow: "hidden", cursor: "pointer", padding: 0,
+          display: "flex", flexDirection: "column",
+          boxShadow: "0 4px 20px rgba(232,85,154,0.18)",
           marginBottom: 10, textAlign: "left",
         }}
       >
-        {/* Imagen hero */}
-        <div style={{
-          width: 110, height: 110, borderRadius: 16, overflow: "hidden",
-          background: "#fff0f7", flexShrink: 0,
-          transform: "translateY(-10px)",
-          boxShadow: "0 4px 16px rgba(232,85,154,0.15)",
-        }}>
+        {/* Imagen superior */}
+        <div style={{ position: "relative", height: 160, width: "100%", overflow: "hidden", flexShrink: 0 }}>
           {product.image_url && !imgErr ? (
             <img
               src={product.image_url}
               alt={product.name}
               onError={() => setImgErr(true)}
-              style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
             />
           ) : (
-            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 }}>🍦</div>
+            <div style={{ width: "100%", height: "100%", background: "#fff0f7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48 }}>🍦</div>
           )}
-        </div>
-
-        {/* Info */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+          {/* Badge sobre la imagen */}
           <span style={{
-            fontSize: 9, fontWeight: 800, background: "#fce7f3", color: MAGENTA,
-            borderRadius: 99, padding: "3px 9px", display: "inline-block", marginBottom: 6,
+            position: "absolute", top: 10, left: 10,
+            fontSize: 10, fontWeight: 800, background: MAGENTA, color: "#fff",
+            borderRadius: 99, padding: "4px 10px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
           }}>
             🔥 #1 esta semana
           </span>
-          <p style={{ fontSize: 14, fontWeight: 800, color: TEXT, margin: 0, lineHeight: 1.3 }}>
+        </div>
+
+        {/* Info */}
+        <div style={{ padding: "12px 14px 14px" }}>
+          <p style={{ fontSize: 15, fontWeight: 800, color: TEXT, margin: 0, lineHeight: 1.3 }}>
             {product.name}
           </p>
-          <p style={{ fontSize: 11, color: SUBTEXT, margin: "3px 0 0", lineHeight: 1.3 }}>
-            Personaliza a tu gusto
-          </p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
-            <p style={{ fontSize: 16, fontWeight: 900, color: MAGENTA, margin: 0 }}>
+          <p style={{ fontSize: 11, color: SUBTEXT, margin: "3px 0 0" }}>Personaliza a tu gusto</p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10 }}>
+            <p style={{ fontSize: 17, fontWeight: 900, color: MAGENTA, margin: 0 }}>
               {formatCOP(product.price)}
             </p>
             <div style={{
-              width: 30, height: 30, borderRadius: "50%", background: MAGENTA,
+              width: 32, height: 32, borderRadius: "50%", background: MAGENTA,
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "0 3px 10px rgba(232,85,154,0.35)",
             }}>
-              <Plus size={15} color="#fff" />
+              <Plus size={16} color="#fff" />
             </div>
           </div>
         </div>
