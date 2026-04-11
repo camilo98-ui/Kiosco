@@ -37,6 +37,10 @@
       "type": "string",
       "description": "Product image URL"
     },
+    "video_url": {
+      "type": "string",
+      "description": "Product video URL"
+    },
     "is_available": {
       "type": "boolean",
       "default": true,

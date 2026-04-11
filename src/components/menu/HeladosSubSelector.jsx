@@ -61,9 +61,17 @@ function FeaturedProductCard({ product, onAdd, isFirst }) {
           marginBottom: 10, textAlign: "left",
         }}
       >
-        {/* Imagen superior */}
+        {/* Video o Imagen superior */}
         <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", overflow: "hidden", flexShrink: 0, background: "#fdf0f5" }}>
-          {product.image_url && !imgErr ? (
+          {product.video_url ? (
+            <video
+              src={product.video_url}
+              autoPlay
+              loop
+              muted
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+            />
+          ) : product.image_url && !imgErr ? (
             <img
               src={product.image_url}
               alt={product.name}
@@ -122,9 +130,17 @@ function GridProductCard({ product, onAdd }) {
         textAlign: "left",
       }}
     >
-      {/* Imagen superior — toca bordes laterales y superior */}
+      {/* Video o Imagen superior — toca bordes laterales y superior */}
       <div style={{ height: 180, width: "100%", overflow: "hidden", flexShrink: 0 }}>
-        {product.image_url && !imgErr ? (
+        {product.video_url ? (
+          <video
+            src={product.video_url}
+            autoPlay
+            loop
+            muted
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+          />
+        ) : product.image_url && !imgErr ? (
           <img
             src={product.image_url}
             alt={product.name}
