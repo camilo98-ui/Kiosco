@@ -144,7 +144,7 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   );
 }
 
-function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, upsellMsg, setUpsellMsg, handleUpsellAccept, showParaLlevarUpsell, handleUpsellSkip, handleUpsellAddAndPay }) {
+function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, upsellMsg, setUpsellMsg, handleUpsellAccept, showParaLlevarUpsell, handleUpsellSkip, handleUpsellAddAndPay, autoOpenProduct, onAutoOpenDone }) {
   const touchStartX = useRef(null);
 
   const handleTouchStart = (e) => {
@@ -174,7 +174,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
         <div style={{ width: 44 }} />
       </div>
       <div className="pb-36 pt-2">
-        <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} />
+        <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} autoOpenProduct={autoOpenProduct} onAutoOpenDone={onAutoOpenDone} />
         {suggestedProducts.length > 0 && <SuggestedRow products={suggestedProducts} onAdd={onAdd} />}
       </div>
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
@@ -202,6 +202,7 @@ export default function Menu() {
   const [showMostOrdered, setShowMostOrdered] = useState(false);
   const [showCombosAll, setShowCombosAll] = useState(false);
   const [pendingCheckoutName, setPendingCheckoutName] = useState(null);
+  const [autoOpenProduct, setAutoOpenProduct] = useState(null);
   const [showParaLlevarUpsell, setShowParaLlevarUpsell] = useState(false);
   const [upsellSeenThisSession, setUpsellSeenThisSession] = useState(false);
   const [nextOrderNum, setNextOrderNum] = useState(null);
@@ -454,6 +455,8 @@ export default function Menu() {
         showParaLlevarUpsell={showParaLlevarUpsell}
         handleUpsellSkip={handleUpsellSkip}
         handleUpsellAddAndPay={handleUpsellAddAndPay}
+        autoOpenProduct={autoOpenProduct}
+        onAutoOpenDone={() => setAutoOpenProduct(null)}
       />
     );
   }
@@ -522,7 +525,7 @@ export default function Menu() {
           </div>
         ) : (
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
-            <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} onSelectCategory={(cat) => setActiveCategory(cat)} />
+            <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} onSelectCategory={(cat, product) => { setActiveCategory(cat); if (product) setAutoOpenProduct(product); }} />
           </motion.div>
         )}
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
@@ -506,7 +506,7 @@ function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   return <HeladosLayout products={products} onAdd={onAdd} addedFlash={addedFlash} bg={bg} catLabel={catLabel} />;
 }
 
-export default function EditorialLayout({ products, category, onAdd, addedFlash }) {
+export default function EditorialLayout({ products, category, onAdd, addedFlash, autoOpenProduct, onAutoOpenDone }) {
   const [customizerProduct, setCustomizerProduct] = useState(null);
   const [customizer12ozProduct, setCustomizer12ozProduct] = useState(null);
   const [bananaSplitProduct, setBananaSplitProduct] = useState(null);
@@ -523,7 +523,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
-  const handleAdd = (product) => {
+  const handleAdd = useCallback((product) => {
     if (category === "malteadas") {
       if (product.name.includes("12oz")) {
         setCustomizer12ozProduct(product);
@@ -551,7 +551,14 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash 
     } else {
       onAdd(product);
     }
-  };
+  }, [category, onAdd]);
+
+  useEffect(() => {
+    if (autoOpenProduct) {
+      handleAdd(autoOpenProduct);
+      if (onAutoOpenDone) onAutoOpenDone();
+    }
+  }, [autoOpenProduct?.id]);
 
   const handleCustomizerAdd = (productWithPrice, notes) => {
     onAdd(productWithPrice, notes);
