@@ -501,9 +501,6 @@ export default function Menu() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
           <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }}>
-          <CuantosSon onAdd={handleAddProduct} />
-        </motion.div>
         {isLoading ? (
           <div className="flex justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C41E6A" }} />
