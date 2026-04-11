@@ -23,7 +23,8 @@ function SubcatTabs({ active, onSelect }) {
             key={t.id}
             onClick={() => onSelect(t.id)}
             style={{
-              flex: 1, padding: "10px 0", borderRadius: 99, border: active === t.id ? "none" : "1.5px solid #e5d6df",
+              flex: 1, padding: "10px 0", borderRadius: 99,
+              border: active === t.id ? "none" : "1.5px solid #e5d6df",
               cursor: "pointer", fontWeight: 700, fontSize: 11,
               fontFamily: "'Poppins', sans-serif",
               background: active === t.id ? MAGENTA : "#fff",
@@ -41,13 +42,9 @@ function SubcatTabs({ active, onSelect }) {
 }
 
 function FeaturedProductCard({ product, onAdd, isFirst }) {
-  const [imgErr, setImgError] = useState(false);
+  const [imgErr, setImgErr] = useState(false);
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
       {isFirst && (
         <p style={{ fontSize: 10, fontWeight: 800, color: MAGENTA, textTransform: "uppercase", letterSpacing: "1.2px", marginBottom: 8 }}>
           ⭐ Más pedido
@@ -58,20 +55,27 @@ function FeaturedProductCard({ product, onAdd, isFirst }) {
         onClick={() => onAdd(product)}
         style={{
           width: "100%", borderRadius: 18, border: `1.5px solid ${BORDER}`,
-          background: "#fff", overflow: "hidden", cursor: "pointer", padding: 14,
+          background: "#fff", overflow: "visible", cursor: "pointer",
+          padding: "14px 14px 14px 14px",
           display: "flex", alignItems: "center", gap: 14,
           boxShadow: "0 2px 12px rgba(232,85,154,0.08)",
           marginBottom: 10, textAlign: "left",
         }}
       >
-        {/* Imagen */}
+        {/* Imagen hero */}
         <div style={{
-          width: 84, height: 84, borderRadius: 14, overflow: "hidden",
+          width: 110, height: 110, borderRadius: 16, overflow: "hidden",
           background: "#fff0f7", flexShrink: 0,
+          transform: "translateY(-10px)",
+          boxShadow: "0 4px 16px rgba(232,85,154,0.15)",
         }}>
           {product.image_url && !imgErr ? (
-            <img src={product.image_url} alt={product.name} onError={() => setImgError(true)}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <img
+              src={product.image_url}
+              alt={product.name}
+              onError={() => setImgErr(true)}
+              style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }}
+            />
           ) : (
             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 }}>🍦</div>
           )}
@@ -110,25 +114,30 @@ function FeaturedProductCard({ product, onAdd, isFirst }) {
 }
 
 function GridProductCard({ product, onAdd }) {
-  const [imgErr, setImgError] = useState(false);
+  const [imgErr, setImgErr] = useState(false);
   return (
     <motion.button
       whileTap={{ scale: 0.96 }}
       onClick={() => onAdd(product)}
       style={{
         borderRadius: 14, border: `1.5px solid ${BORDER}`, background: "#fff",
-        overflow: "hidden", cursor: "pointer", padding: 0, display: "flex",
-        flexDirection: "column", boxShadow: "0 2px 8px rgba(232,85,154,0.06)",
+        overflow: "hidden", cursor: "pointer", padding: 0,
+        display: "flex", flexDirection: "column",
+        boxShadow: "0 2px 8px rgba(232,85,154,0.06)",
         textAlign: "left",
       }}
     >
-      {/* Imagen superior */}
-      <div style={{ height: 90, background: "#fff0f7", overflow: "hidden", flexShrink: 0, width: "100%" }}>
+      {/* Imagen superior — toca bordes laterales y superior */}
+      <div style={{ height: 140, width: "100%", overflow: "hidden", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img
+            src={product.image_url}
+            alt={product.name}
+            onError={() => setImgErr(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
+          />
         ) : (
-          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36 }}>🍦</div>
+          <div style={{ width: "100%", height: "100%", background: "#fff0f7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36 }}>🍦</div>
         )}
       </div>
 
@@ -140,9 +149,7 @@ function GridProductCard({ product, onAdd }) {
         }}>
           {product.name}
         </p>
-        <p style={{ fontSize: 10, color: SUBTEXT, margin: "2px 0 0" }}>
-          Varios sabores
-        </p>
+        <p style={{ fontSize: 10, color: SUBTEXT, margin: "2px 0 0" }}>Varios sabores</p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
           <p style={{ fontSize: 13, fontWeight: 900, color: MAGENTA, margin: 0 }}>
             {formatCOP(product.price)}
@@ -222,7 +229,6 @@ export default function HeladosSubSelector({ products, onAdd }) {
           transition={{ duration: 0.18 }}
         >
           <div style={{ padding: "4px 14px 14px" }}>
-            {/* Featured */}
             {featured && (
               <FeaturedProductCard
                 product={featured}
@@ -231,7 +237,6 @@ export default function HeladosSubSelector({ products, onAdd }) {
               />
             )}
 
-            {/* Grid */}
             {rest.length > 0 && (
               <>
                 <p style={{
