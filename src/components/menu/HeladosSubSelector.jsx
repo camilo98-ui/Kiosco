@@ -84,7 +84,7 @@ function FeaturedProductCard({ product, onAdd, isFirst }) {
         }}
       >
         {/* Imagen carrusel */}
-        <div style={{ position: "relative", width: "100%", height: 220, overflow: "hidden", flexShrink: 0, background: "#fdf0f5" }}>
+        <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", flexShrink: 0, background: "#fdf0f5" }}>
           <AnimatePresence mode="wait">
             {images.length > 0 && !imgErr ? (
               <motion.img
@@ -96,7 +96,7 @@ function FeaturedProductCard({ product, onAdd, isFirst }) {
                 animate={{ scale: 1.0, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-                style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", position: "absolute", inset: 0 }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", position: "absolute", inset: 0 }}
               />
             ) : (
               <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48 }}>🍦</div>
