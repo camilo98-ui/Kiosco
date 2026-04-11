@@ -1,15 +1,16 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { COMBOS_DATA } from "@/lib/combosData";
+import ComboSaborSheet from "@/components/menu/ComboSaborSheet";
 
 const COMBOS = COMBOS_DATA;
 const CARD_WIDTH = 160;
 const GAP = 12;
 const CARD_STEP = CARD_WIDTH + GAP;
 
-function ComboCard({ combo, onAdd }) {
+function ComboCard({ combo, onCardClick }) {
   return (
     <button
-      onClick={() => onAdd && onAdd({ ...combo, name: combo.title })}
+      onClick={() => onCardClick(combo)}
       style={{
         width: CARD_WIDTH,
         flexShrink: 0,
@@ -84,6 +85,7 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
   const touchStartYRef = useRef(0);
   const isHorizontalScrollRef = useRef(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [selectedCombo, setSelectedCombo] = useState(null);
 
   const totalWidth = CARD_STEP * COMBOS.length;
   const doubled = [...COMBOS, ...COMBOS];
@@ -199,6 +201,18 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
     };
   }, [totalWidth]);
 
+  const handleCardClick = (combo) => {
+    if (combo.saborType) {
+      setSelectedCombo(combo);
+    } else {
+      onAdd && onAdd({ product_id: `combo-${combo.id}`, product_name: combo.title, price: combo.price, quantity: 1 });
+    }
+  };
+
+  const handleSaborAdd = (item, notes) => {
+    onAdd && onAdd(item, notes);
+  };
+
   return (
     <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
@@ -236,7 +250,7 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
           }}
         >
           {doubled.map((combo, i) => (
-            <ComboCard key={`${combo.id}-${i}`} combo={combo} onAdd={onAdd} />
+            <ComboCard key={`${combo.id}-${i}`} combo={combo} onCardClick={handleCardClick} />
           ))}
         </div>
       </div>
@@ -256,6 +270,13 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
           />
         ))}
       </div>
+
+      <ComboSaborSheet
+        combo={selectedCombo}
+        open={!!selectedCombo}
+        onClose={() => setSelectedCombo(null)}
+        onAdd={handleSaborAdd}
+      />
     </div>
   );
 }
