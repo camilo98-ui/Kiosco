@@ -170,8 +170,10 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
   const [crack, setCrack] = useState(null);
   const [extras, setExtras] = useState([]);
 
-  const saboresList = tab === "gourmet" ? SABORES_GOURMET : SABORES_EXCLUSIVO;
-  const SECTIONS = ["cantidad", "sabor", "crack", "extras"];
+  const fixedTab = product?._subcat === "gourmet" ? "gourmet" : product?._subcat === "exclusivo" ? "exclusivo" : null;
+  const effectiveTab = fixedTab || tab;
+  const saboresList = effectiveTab === "gourmet" ? SABORES_GOURMET : SABORES_EXCLUSIVO;
+  const SECTIONS = ["sabor", "crack", "extras"];
 
   const advanceToNext = (current) => {
     const idx = SECTIONS.indexOf(current);
@@ -200,14 +202,15 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
   const crackPrice = CHOCOLATE_CRACK.find(c => c.label === crack)?.price || 0;
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
   const total = (product?.price || 0) + crackPrice + extrasTotal;
-  const allRequired = maxSabores && sabores.length === maxSabores && crack !== null;
+  const allRequired = maxSabores && sabores.length >= maxSabores && crack !== null;
 
   useEffect(() => {
     if (open) {
       const d = detectSabores(product);
-      setMaxSabores(d);
-      setOpenSection(d ? "sabor" : "cantidad");
-      setSabores([]); setCrack(null); setExtras([]); setTab("gourmet");
+      setMaxSabores(d || 1);
+      setOpenSection("sabor");
+      setSabores([]); setCrack(null); setExtras([]);
+      if (!fixedTab) setTab("gourmet");
     }
   }, [open, product?.id]);
 
@@ -244,18 +247,6 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           </p>
         </div>
 
-        {/* Cantidad de sabores */}
-        <AccordionSection
-          title="¿Cuántos sabores quieres?"
-          required
-          open={openSection === "cantidad"}
-          onToggle={() => setOpenSection(s => s === "cantidad" ? null : "cantidad")}
-        >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
-          <RadioOption label="1 sabor" price={0} selected={maxSabores === 1} onSelect={() => { setMaxSabores(1); setSabores([]); advanceToNext("cantidad"); }} />
-          <RadioOption label="2 sabores" price={0} selected={maxSabores === 2} onSelect={() => { setMaxSabores(2); setSabores([]); advanceToNext("cantidad"); }} />
-        </AccordionSection>
-
         {/* Sabor */}
         <AccordionSection
           title={maxSabores === 2 ? "Elige Los 2 Sabores" : "Elige El Sabor"}
@@ -264,24 +255,25 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
           onToggle={() => setOpenSection(s => s === "sabor" ? null : "sabor")}
           badge={maxSabores === 2 ? `${sabores.length}/${maxSabores}` : null}
         >
-          {/* Tabs Gourmet / Exclusivo */}
-          <div style={{ display: "flex", gap: 8, padding: "8px 16px 12px" }}>
-            {[{ key: "gourmet", label: "Gourmet 🍦" }, { key: "exclusivo", label: "Exclusivo ✨" }].map(t => (
-              <button
-                key={t.key}
-                onClick={() => setTab(t.key)}
-                style={{
-                  flex: 1, padding: "8px 0", borderRadius: 10, border: "none", cursor: "pointer",
-                  fontWeight: 700, fontSize: 12, fontFamily: "'Poppins', sans-serif",
-                  background: tab === t.key ? "#C41E6A" : "#FFF0F5",
-                  color: tab === t.key ? "#fff" : "#C41E6A",
-                  transition: "all 0.2s",
-                }}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+          {!fixedTab && (
+            <div style={{ display: "flex", gap: 8, padding: "8px 16px 12px" }}>
+              {[{ key: "gourmet", label: "Gourmet 🍦" }, { key: "exclusivo", label: "Exclusivo ✨" }].map(t => (
+                <button
+                  key={t.key}
+                  onClick={() => setTab(t.key)}
+                  style={{
+                    flex: 1, padding: "8px 0", borderRadius: 10, border: "none", cursor: "pointer",
+                    fontWeight: 700, fontSize: 12, fontFamily: "'Poppins', sans-serif",
+                    background: effectiveTab === t.key ? "#C41E6A" : "#FFF0F5",
+                    color: effectiveTab === t.key ? "#fff" : "#C41E6A",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          )}
           <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>
             Selecciona {maxSabores === 1 ? "1 opción" : `${maxSabores} opciones`}
           </p>
@@ -340,7 +332,7 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
           {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige la cantidad, sabores y opción de crack para continuar
+              * Elige sabores y opción de crack para continuar
             </p>
           )}
           <button

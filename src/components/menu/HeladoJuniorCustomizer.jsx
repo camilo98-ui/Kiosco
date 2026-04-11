@@ -9,6 +9,11 @@ const SABORES_JUNIOR = [
   "Chocolate",
 ];
 
+const CHOCOLATE_CRACK = [
+  { label: "Sin Crack", price: 0 },
+  { label: "Con Crack", price: 4000 },
+];
+
 const EXTRAS = [
   { name: "Salsa Arequipe", price: 2900 },
   { name: "Salsa De Caramelo", price: 2900 },
@@ -123,10 +128,14 @@ export default function HeladoJuniorCustomizer({ product, open, onClose, onAdd }
 
   const [openSection, setOpenSection] = useState("sabor");
   const [sabores, setSabores] = useState([]);
+  const [crack, setCrack] = useState(null);
   const [extras, setExtras] = useState([]);
 
   const advanceToNext = (current) => {
-    if (current === "sabor") setTimeout(() => setOpenSection("extras"), 200);
+    const order = ["sabor", "crack", "extras"];
+    const idx = order.indexOf(current);
+    const next = order[idx + 1];
+    if (next) setTimeout(() => setOpenSection(next), 200);
   };
 
   const toggleSabor = (s) => {
@@ -147,19 +156,21 @@ export default function HeladoJuniorCustomizer({ product, open, onClose, onAdd }
     );
   };
 
+  const crackPrice = CHOCOLATE_CRACK.find(c => c.label === crack)?.price || 0;
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
-  const total = (product?.price || 0) + extrasTotal;
-  const allRequired = sabores.length === maxSabores;
+  const total = (product?.price || 0) + crackPrice + extrasTotal;
+  const allRequired = sabores.length === maxSabores && crack !== null;
 
   const handleConfirm = () => {
     if (!allRequired) return;
     const notes = [
       `Sabor: ${sabores.join(", ")}`,
+      `Crack: ${crack}`,
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
-    setSabores([]); setExtras([]);
+    setSabores([]); setCrack(null); setExtras([]);
     setOpenSection("sabor");
     onClose();
   };
@@ -216,6 +227,24 @@ export default function HeladoJuniorCustomizer({ product, open, onClose, onAdd }
           ))}
         </AccordionSection>
 
+        {/* Crack */}
+        <AccordionSection
+          title="Cobertura De Chocolate Crack"
+          required
+          open={openSection === "crack"}
+          onToggle={() => setOpenSection(s => s === "crack" ? null : "crack")}
+        >
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
+          {CHOCOLATE_CRACK.map(c => (
+            <RadioOption
+              key={c.label}
+              label={c.label}
+              selected={crack === c.label}
+              onSelect={() => { setCrack(c.label); advanceToNext("crack"); }}
+            />
+          ))}
+        </AccordionSection>
+
         {/* Extras */}
         <AccordionSection
           title="Elige Tus Extras"
@@ -239,7 +268,7 @@ export default function HeladoJuniorCustomizer({ product, open, onClose, onAdd }
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
           {!allRequired && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>
-              * Elige {maxSabores === 2 ? "2 sabores" : "1 sabor"} para continuar
+              * Elige sabores y opción de crack para continuar
             </p>
           )}
           <button

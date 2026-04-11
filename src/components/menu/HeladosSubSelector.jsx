@@ -121,7 +121,7 @@ function GridProductCard({ product, onAdd }) {
 }
 
 export default function HeladosSubSelector({ products, onAdd }) {
-  const [subcat, setSubcat] = useState("gourmet");
+  const [subcat, setSubcat] = useState("exclusivo");
 
   const available = products.filter(p => p.is_available !== false);
 
@@ -132,9 +132,10 @@ export default function HeladosSubSelector({ products, onAdd }) {
        !p.name.toLowerCase().includes("junior") &&
        !p.name.toLowerCase().includes("jr") &&
        !p.name.toLowerCase().includes("maxi") &&
-       !p.name.toLowerCase().includes("cono"))
+       !p.name.toLowerCase().includes("cono") &&
+       !p.name.toLowerCase().includes("fiore"))
     );
-    if (sub === "exclusivo") return available.filter(p => p.name.toLowerCase().includes("exclusivo"));
+    if (sub === "exclusivo") return available.filter(p => p.name.toLowerCase().includes("exclusivo") || p.name.toLowerCase().includes("fiore"));
     if (sub === "junior") return available.filter(p => {
       const n = p.name.toLowerCase();
       return (n.includes("junior") || n.includes("jr") || n.includes("cono")) &&
@@ -162,15 +163,15 @@ export default function HeladosSubSelector({ products, onAdd }) {
           transition={{ duration: 0.18 }}
         >
           <div style={{ padding: "0 14px 14px" }}>
-            {featured && <FeaturedProductCard product={featured} onAdd={onAdd} />}
+            {featured && <FeaturedProductCard product={featured} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />}
             {gridItems.length > 0 && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: lastItem ? 10 : 0 }}>
                 {gridItems.map(p => (
-                  <GridProductCard key={p.id} product={p} onAdd={onAdd} />
+                  <GridProductCard key={p.id} product={p} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />
                 ))}
               </div>
             )}
-            {lastItem && <FeaturedProductCard product={lastItem} onAdd={onAdd} />}
+            {lastItem && <FeaturedProductCard product={lastItem} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />}
           </div>
         </motion.div>
       </AnimatePresence>
