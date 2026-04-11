@@ -536,12 +536,11 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
       setEspecialidadesProduct(product);
     } else if (category === "helados" && (product.name.toLowerCase().includes("maxi cono") || product.name.toLowerCase().includes("maxicono"))) {
       setMaxiConoProduct(product);
-    } else if (category === "helados" && product.name.toLowerCase().includes("exclusivo")) {
-      setHeladoProduct(product);
-    } else if (category === "helados" && product.name.toLowerCase().includes("gourmet")) {
-      setHeladoProduct(product);
-    } else if (category === "helados" && product.name.toLowerCase().includes("junior")) {
+    } else if (category === "helados" && (product.name.toLowerCase().includes("junior") || product.name.toLowerCase().includes("jr"))) {
       setHeladoJuniorProduct(product);
+    } else if (category === "helados") {
+      // Todos los helados (gourmet, exclusivo, etc.) abren el customizer
+      setHeladoProduct(product);
     } else if (category === "granizados" && product.name.toLowerCase().includes("granizado")) {
       setGranizadoProduct(product);
     } else if (product.name.toLowerCase().includes("cono") && !product.name.toLowerCase().includes("maxi")) {
