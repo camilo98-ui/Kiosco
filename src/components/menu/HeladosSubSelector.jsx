@@ -3,7 +3,7 @@ import { Plus, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP } from "@/lib/constants";
 
-const MAGENTA = "#e8559a";
+const MAGENTA = "#C41E6A";
 const BG = "#f9f4f7";
 const BORDER = "#f3e0ea";
 const TEXT = "#2a2a2a";
@@ -123,13 +123,13 @@ function GridProductCard({ product, onAdd }) {
       }}
     >
       {/* Imagen superior — toca bordes laterales y superior */}
-      <div style={{ height: 140, width: "100%", overflow: "hidden", flexShrink: 0 }}>
+      <div style={{ height: 180, width: "100%", overflow: "hidden", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
           <img
             src={product.image_url}
             alt={product.name}
             onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
           />
         ) : (
           <div style={{ width: "100%", height: "100%", background: "#fff0f7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36 }}>🍦</div>
