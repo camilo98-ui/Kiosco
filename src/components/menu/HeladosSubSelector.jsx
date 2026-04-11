@@ -1,15 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-const FIORE_IMAGES = [
-  "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9af03d127_image.png",
-  "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0fe0c2312_image.png",
-  "https://media.base44.com/images/public/69cc99522394d529d2756aa4/ab88fe41d_image.png",
-  "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9725bbc93_image.png",
-  "https://media.base44.com/images/public/69cc99522394d529d2756aa4/217fb1a78_image.png",
-  "https://media.base44.com/images/public/69cc99522394d529d2756aa4/134b0f7b9_image.png",
-];
+import React, { useState } from "react";
 import { Plus, Search } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP } from "@/lib/constants";
 
 const MAGENTA = "#C41E6A";
@@ -52,19 +43,6 @@ function SubcatTabs({ active, onSelect }) {
 
 function FeaturedProductCard({ product, onAdd, isFirst }) {
   const [imgErr, setImgErr] = useState(false);
-  const [slideIdx, setSlideIdx] = useState(0);
-
-  const isFiore = product?.name?.toLowerCase().includes("fiore");
-  const images = isFiore ? FIORE_IMAGES : (product.image_url ? [product.image_url] : []);
-
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const timer = setInterval(() => {
-      setSlideIdx(prev => (prev + 1) % images.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [images.length]);
-
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
       {isFirst && (
@@ -83,37 +61,17 @@ function FeaturedProductCard({ product, onAdd, isFirst }) {
           marginBottom: 10, textAlign: "left",
         }}
       >
-        {/* Imagen carrusel */}
-        <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", flexShrink: 0, background: "#fdf0f5" }}>
-          <AnimatePresence mode="wait">
-            {images.length > 0 && !imgErr ? (
-              <motion.img
-                key={slideIdx}
-                src={images[slideIdx]}
-                alt={product.name}
-                onError={() => setImgErr(true)}
-                initial={{ scale: 1.05, opacity: 0 }}
-                animate={{ scale: 1.0, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-                style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", position: "absolute", inset: 0 }}
-              />
-            ) : (
-              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48 }}>🍦</div>
-            )}
-          </AnimatePresence>
-          {/* Dots */}
-          {images.length > 1 && (
-            <div style={{ position: "absolute", bottom: 8, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 4, zIndex: 2 }}>
-              {images.map((_, i) => (
-                <motion.div
-                  key={i}
-                  animate={{ width: i === slideIdx ? 20 : 6 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ height: 6, borderRadius: 3, background: i === slideIdx ? MAGENTA : "rgba(255,255,255,0.75)" }}
-                />
-              ))}
-            </div>
+        {/* Imagen superior */}
+        <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", overflow: "hidden", flexShrink: 0, background: "#fdf0f5" }}>
+          {product.image_url && !imgErr ? (
+            <img
+              src={product.image_url}
+              alt={product.name}
+              onError={() => setImgErr(true)}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+            />
+          ) : (
+            <div style={{ width: "100%", height: "100%", background: "#fff0f7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48 }}>🍦</div>
           )}
           {/* Badge sobre la imagen */}
           <span style={{
