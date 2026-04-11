@@ -95,11 +95,15 @@ function FamilyCarousel({ productCounts, onSelect }) {
   );
 }
 
-function MostOrderedItem({ product, idx, onAdd }) {
+function MostOrderedItem({ product, idx, onAdd, onSelectCategory }) {
   const [imgError, setImgError] = useState(false);
+  const handleClick = () => {
+    // Navegar a la categoría del producto para que el customizer funcione
+    onSelectCategory(product.category, product);
+  };
   return (
     <button
-      onClick={() => onAdd(product)}
+      onClick={handleClick}
       style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}
     >
       <div style={{ width: 52, height: 52, borderRadius: 14, background: ITEM_BG[idx % ITEM_BG.length], display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
@@ -120,7 +124,7 @@ function MostOrderedItem({ product, idx, onAdd }) {
   );
 }
 
-function MostOrdered({ products, onAdd, onShowAll }) {
+function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   const top = useMemo(() =>
     [...products].filter(p => p.tag === "mas_vendido" && p.is_available !== false).slice(0, 8),
     [products]
@@ -133,7 +137,7 @@ function MostOrdered({ products, onAdd, onShowAll }) {
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
       </div>
       {top.map((product, idx) => (
-        <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} />
+        <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} onSelectCategory={onSelectCategory} />
       ))}
       <div style={{ height: 8 }} />
     </div>
@@ -518,7 +522,7 @@ export default function Menu() {
           </div>
         ) : (
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
-            <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} />
+            <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} onSelectCategory={(cat) => setActiveCategory(cat)} />
           </motion.div>
         )}
       </div>

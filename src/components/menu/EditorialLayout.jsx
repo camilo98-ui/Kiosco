@@ -449,7 +449,7 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
 }
 
 function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
-  const available = products.filter(p => p.is_available !== false && p.category !== "granizados");
+  const available = products.filter(p => p.is_available !== false && !p.name.toLowerCase().includes("granizado"));
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} />

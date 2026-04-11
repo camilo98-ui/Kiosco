@@ -50,22 +50,22 @@ const SALSAS = [
 const CHANTILLY = ["Crema Chantilly", "Sin Crema Chantilly"];
 
 const EXTRAS = [
-  { name: "Gomas Ositos", price: 3100 },
-  { name: "Cerezas", price: 3100 },
-  { name: "M&M's", price: 3100 },
-  { name: "Banano", price: 3000 },
-  { name: "Fresas", price: 3100 },
-  { name: "Durazno", price: 3100 },
-  { name: "Mini Masmelos", price: 3100 },
-  { name: "Chantilly", price: 3100 },
-  { name: "Chips De Chocolate", price: 3100 },
-  { name: "Brownie", price: 3100 },
-  { name: "Galleta Oreo", price: 3100 },
-  { name: "Nueces", price: 3000 },
-  { name: "Barquillos", price: 3100 },
-  { name: "Chocolatina Milky Way", price: 3000 },
-  { name: "Leche Condensada", price: 3100 },
-  { name: "Sprinkles", price: 3100 },
+  { name: "Gomas Ositos", price: 2900 },
+  { name: "Cerezas", price: 2900 },
+  { name: "M&M's", price: 2900 },
+  { name: "Banano", price: 2900 },
+  { name: "Fresas", price: 2900 },
+  { name: "Durazno", price: 2900 },
+  { name: "Mini Masmelos", price: 2900 },
+  { name: "Chantilly", price: 2900 },
+  { name: "Chips De Chocolate", price: 2900 },
+  { name: "Brownie", price: 2900 },
+  { name: "Galleta Oreo", price: 2900 },
+  { name: "Nueces", price: 2900 },
+  { name: "Barquillos", price: 2900 },
+  { name: "Chocolatina Milky Way", price: 2900 },
+  { name: "Leche Condensada", price: 2900 },
+  { name: "Sprinkles", price: 2900 },
 ];
 
 const MAX_SABORES = 3;
