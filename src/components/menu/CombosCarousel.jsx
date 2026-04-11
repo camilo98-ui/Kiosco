@@ -7,9 +7,6 @@ const GAP = 12;
 const CARD_STEP = CARD_WIDTH + GAP;
 
 function ComboCard({ combo, onAdd }) {
-  const isPrice = combo.displayPrice && combo.displayPrice.startsWith("$");
-  const isPromo = combo.displayPrice && !isPrice;
-
   return (
     <button
       onClick={() => onAdd && onAdd({ ...combo, name: combo.title })}
@@ -25,6 +22,8 @@ function ComboCard({ combo, onAdd }) {
         WebkitUserSelect: "none",
         cursor: "pointer",
         padding: 0,
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <div style={{
@@ -32,8 +31,6 @@ function ComboCard({ combo, onAdd }) {
         width: CARD_WIDTH,
         height: CARD_WIDTH,
         background: "#FFF0F5",
-        borderRadius: "20px 20px 0 0",
-        overflow: "hidden",
         flexShrink: 0,
       }}>
         <img
@@ -59,24 +56,16 @@ function ComboCard({ combo, onAdd }) {
           {combo.badge}
         </span>
       </div>
-      <div style={{ padding: "8px 10px 12px" }}>
+      <div style={{ padding: "8px 10px 12px", textAlign: "center", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
         <p style={{
           fontSize: 11, fontWeight: 800, color: "#2D1A22",
           margin: 0, lineHeight: 1.3,
-          textAlign: "left",
         }}>
           {combo.title}
         </p>
-        {isPrice && (
-          <p style={{ fontSize: 14, fontWeight: 900, color: "#C41E6A", margin: "4px 0 0" }}>
-            {combo.displayPrice}
-          </p>
-        )}
-        {isPromo && (
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#C41E6A", margin: "4px 0 0", lineHeight: 1.3 }}>
-            {combo.displayPrice}
-          </p>
-        )}
+        <p style={{ fontSize: 14, fontWeight: 900, color: "#C41E6A", margin: 0 }}>
+          {combo.displayPrice}
+        </p>
       </div>
     </button>
   );
