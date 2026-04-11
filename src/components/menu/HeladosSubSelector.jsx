@@ -1,28 +1,34 @@
 import React, { useState } from "react";
-import { ArrowLeft, Plus } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP } from "@/lib/constants";
 
-// Tabs de subcategoría
+const MAGENTA = "#e8559a";
+const BG = "#f9f4f7";
+const BORDER = "#f3e0ea";
+const TEXT = "#2a2a2a";
+const SUBTEXT = "#888888";
+
 function SubcatTabs({ active, onSelect }) {
   const tabs = [
-    { id: "gourmet",   label: "Gourmet 🍦" },
+    { id: "gourmet", label: "Gourmet 🍦" },
     { id: "exclusivo", label: "Exclusivo ✨" },
-    { id: "junior",    label: "Cono Jr 🍧" },
+    { id: "junior", label: "Cono Jr 🍧" },
   ];
   return (
-    <div style={{ padding: "14px 14px 12px" }}>
+    <div style={{ padding: "14px 14px 12px", background: BG }}>
       <div style={{ display: "flex", gap: 8 }}>
         {tabs.map(t => (
           <button
             key={t.id}
             onClick={() => onSelect(t.id)}
             style={{
-              flex: 1, padding: "10px 0", borderRadius: 14, border: "none", cursor: "pointer",
-              fontWeight: 800, fontSize: 12, fontFamily: "'Poppins', sans-serif",
-              background: active === t.id ? "#C41E6A" : "#FFF0F5",
-              color: active === t.id ? "#fff" : "#C41E6A",
-              boxShadow: active === t.id ? "0 4px 14px rgba(196,30,106,0.3)" : "none",
+              flex: 1, padding: "10px 0", borderRadius: 99, border: active === t.id ? "none" : "1.5px solid #e5d6df",
+              cursor: "pointer", fontWeight: 700, fontSize: 11,
+              fontFamily: "'Poppins', sans-serif",
+              background: active === t.id ? MAGENTA : "#fff",
+              color: active === t.id ? "#fff" : SUBTEXT,
+              boxShadow: active === t.id ? "0 4px 14px rgba(232,85,154,0.3)" : "none",
               transition: "all 0.2s",
             }}
           >
@@ -34,84 +40,118 @@ function SubcatTabs({ active, onSelect }) {
   );
 }
 
-// Card destacada (ancha, 100%)
-function FeaturedProductCard({ product, onAdd }) {
-  const [imgErr, setImgErr] = useState(false);
+function FeaturedProductCard({ product, onAdd, isFirst }) {
+  const [imgErr, setImgError] = useState(false);
   return (
-    <motion.button
-      whileTap={{ scale: 0.98 }}
-      onClick={() => onAdd(product)}
-      style={{
-        width: "100%", height: 140, borderRadius: 16,
-        border: "0.5px solid #FFE4F3", background: "#FFF5F9",
-        overflow: "hidden", cursor: "pointer", padding: 0,
-        display: "flex", alignItems: "stretch",
-        boxShadow: "0 2px 8px rgba(196,30,106,0.08)",
-        marginBottom: 10,
-      }}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
     >
-      <div style={{ flex: 1, padding: "16px 14px", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-start" }}>
-        <span style={{ fontSize: 9, fontWeight: 800, background: "#C41E6A", color: "#fff", borderRadius: 20, padding: "2px 8px" }}>
-          🔥 Más pedido
-        </span>
-        <div>
-          <p style={{ fontSize: 16, fontWeight: 800, color: "#1A1A1A", margin: 0, lineHeight: 1.3, textAlign: "left" }}>
+      {isFirst && (
+        <p style={{ fontSize: 10, fontWeight: 800, color: MAGENTA, textTransform: "uppercase", letterSpacing: "1.2px", marginBottom: 8 }}>
+          ⭐ Más pedido
+        </p>
+      )}
+      <motion.button
+        whileTap={{ scale: 0.98 }}
+        onClick={() => onAdd(product)}
+        style={{
+          width: "100%", borderRadius: 18, border: `1.5px solid ${BORDER}`,
+          background: "#fff", overflow: "hidden", cursor: "pointer", padding: 14,
+          display: "flex", alignItems: "center", gap: 14,
+          boxShadow: "0 2px 12px rgba(232,85,154,0.08)",
+          marginBottom: 10, textAlign: "left",
+        }}
+      >
+        {/* Imagen */}
+        <div style={{
+          width: 84, height: 84, borderRadius: 14, overflow: "hidden",
+          background: "#fff0f7", flexShrink: 0,
+        }}>
+          {product.image_url && !imgErr ? (
+            <img src={product.image_url} alt={product.name} onError={() => setImgError(true)}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          ) : (
+            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 38 }}>🍦</div>
+          )}
+        </div>
+
+        {/* Info */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <span style={{
+            fontSize: 9, fontWeight: 800, background: "#fce7f3", color: MAGENTA,
+            borderRadius: 99, padding: "3px 9px", display: "inline-block", marginBottom: 6,
+          }}>
+            🔥 #1 esta semana
+          </span>
+          <p style={{ fontSize: 14, fontWeight: 800, color: TEXT, margin: 0, lineHeight: 1.3 }}>
             {product.name}
           </p>
-          <p style={{ fontSize: 18, fontWeight: 800, color: "#C41E6A", margin: "4px 0 0" }}>
-            {formatCOP(product.price)}
+          <p style={{ fontSize: 11, color: SUBTEXT, margin: "3px 0 0", lineHeight: 1.3 }}>
+            Personaliza a tu gusto
           </p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
+            <p style={{ fontSize: 16, fontWeight: 900, color: MAGENTA, margin: 0 }}>
+              {formatCOP(product.price)}
+            </p>
+            <div style={{
+              width: 30, height: 30, borderRadius: "50%", background: MAGENTA,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 3px 10px rgba(232,85,154,0.35)",
+            }}>
+              <Plus size={15} color="#fff" />
+            </div>
+          </div>
         </div>
-        <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#C41E6A", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(196,30,106,0.3)" }}>
-          <Plus size={16} color="#fff" />
-        </div>
-      </div>
-      <div style={{ width: "45%", background: "#FFF0F5", overflow: "hidden", flexShrink: 0 }}>
-        {product.image_url && !imgErr ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-        ) : (
-          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 50 }}>🍦</div>
-        )}
-      </div>
-    </motion.button>
+      </motion.button>
+    </motion.div>
   );
 }
 
-// Card de grid 2 columnas
 function GridProductCard({ product, onAdd }) {
-  const [imgErr, setImgErr] = useState(false);
+  const [imgErr, setImgError] = useState(false);
   return (
     <motion.button
       whileTap={{ scale: 0.96 }}
       onClick={() => onAdd(product)}
       style={{
-        borderRadius: 16, border: "0.5px solid #FFE4F3", background: "#FFF5F9",
-        overflow: "hidden", cursor: "pointer", padding: 0, display: "flex", flexDirection: "column",
-        boxShadow: "0 2px 6px rgba(196,30,106,0.07)",
+        borderRadius: 14, border: `1.5px solid ${BORDER}`, background: "#fff",
+        overflow: "hidden", cursor: "pointer", padding: 0, display: "flex",
+        flexDirection: "column", boxShadow: "0 2px 8px rgba(232,85,154,0.06)",
+        textAlign: "left",
       }}
     >
-      <div style={{ height: 130, background: "#FFF0F5", overflow: "hidden", flexShrink: 0 }}>
+      {/* Imagen superior */}
+      <div style={{ height: 90, background: "#fff0f7", overflow: "hidden", flexShrink: 0, width: "100%" }}>
         {product.image_url && !imgErr ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
+          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)}
             style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
-          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40 }}>🍦</div>
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36 }}>🍦</div>
         )}
       </div>
-      <div style={{ padding: "8px 10px 10px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+
+      {/* Info */}
+      <div style={{ padding: "9px 10px 10px", flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
         <p style={{
-          fontSize: 13, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3,
+          fontSize: 12, fontWeight: 700, color: TEXT, margin: 0, lineHeight: 1.3,
           display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
-          textAlign: "left",
         }}>
           {product.name}
         </p>
+        <p style={{ fontSize: 10, color: SUBTEXT, margin: "2px 0 0" }}>
+          Varios sabores
+        </p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
-          <p style={{ fontSize: 14, fontWeight: 800, color: "#C41E6A", margin: 0 }}>
+          <p style={{ fontSize: 13, fontWeight: 900, color: MAGENTA, margin: 0 }}>
             {formatCOP(product.price)}
           </p>
-          <div style={{ width: 26, height: 26, borderRadius: "50%", background: "#C41E6A", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(196,30,106,0.25)" }}>
+          <div style={{
+            width: 26, height: 26, borderRadius: "50%", background: MAGENTA,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 2px 8px rgba(232,85,154,0.3)",
+          }}>
             <Plus size={13} color="#fff" />
           </div>
         </div>
@@ -122,6 +162,7 @@ function GridProductCard({ product, onAdd }) {
 
 export default function HeladosSubSelector({ products, onAdd }) {
   const [subcat, setSubcat] = useState("exclusivo");
+  const [search, setSearch] = useState("");
 
   const available = products.filter(p => p.is_available !== false);
 
@@ -140,13 +181,38 @@ export default function HeladosSubSelector({ products, onAdd }) {
     return available;
   };
 
-  const filtered = filterProducts(subcat);
+  const filtered = filterProducts(subcat).filter(p =>
+    !search || p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   const featured = filtered[0];
   const rest = filtered.slice(1);
 
   return (
-    <div>
-      <SubcatTabs active={subcat} onSelect={setSubcat} />
+    <div style={{ background: BG, minHeight: "100%" }}>
+      {/* Search bar */}
+      <div style={{ padding: "10px 14px 2px", background: BG }}>
+        <div style={{
+          display: "flex", alignItems: "center", gap: 8,
+          background: "#fff", borderRadius: 99,
+          border: `1.5px solid ${BORDER}`, padding: "9px 14px",
+        }}>
+          <Search size={15} color={SUBTEXT} />
+          <input
+            type="text"
+            placeholder="Buscar helado..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              flex: 1, border: "none", outline: "none", fontSize: 13,
+              color: TEXT, background: "transparent", fontFamily: "'Poppins', sans-serif",
+            }}
+          />
+        </div>
+      </div>
+
+      <SubcatTabs active={subcat} onSelect={(s) => { setSubcat(s); setSearch(""); }} />
+
       <AnimatePresence mode="wait">
         <motion.div
           key={subcat}
@@ -155,13 +221,38 @@ export default function HeladosSubSelector({ products, onAdd }) {
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.18 }}
         >
-          <div style={{ padding: "0 14px 14px" }}>
-            {featured && <FeaturedProductCard product={featured} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />}
+          <div style={{ padding: "4px 14px 14px" }}>
+            {/* Featured */}
+            {featured && (
+              <FeaturedProductCard
+                product={featured}
+                isFirst={!search}
+                onAdd={(p) => onAdd({ ...p, _subcat: subcat })}
+              />
+            )}
+
+            {/* Grid */}
             {rest.length > 0 && (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                {rest.map(p => (
-                  <GridProductCard key={p.id} product={p} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />
-                ))}
+              <>
+                <p style={{
+                  fontSize: 10, fontWeight: 800, color: MAGENTA,
+                  textTransform: "uppercase", letterSpacing: "1.2px",
+                  margin: "4px 0 10px",
+                }}>
+                  Todos los productos
+                </p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  {rest.map(p => (
+                    <GridProductCard key={p.id} product={p} onAdd={(p) => onAdd({ ...p, _subcat: subcat })} />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {filtered.length === 0 && (
+              <div style={{ textAlign: "center", padding: "40px 20px", color: SUBTEXT }}>
+                <div style={{ fontSize: 40, marginBottom: 8 }}>🍦</div>
+                <p style={{ fontSize: 14 }}>No se encontraron helados</p>
               </div>
             )}
           </div>
