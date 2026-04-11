@@ -62,13 +62,13 @@ function FeaturedProductCard({ product, onAdd, isFirst }) {
         }}
       >
         {/* Imagen superior */}
-        <div style={{ position: "relative", height: 200, width: "100%", overflow: "hidden", flexShrink: 0, background: "#fdf0f5" }}>
+        <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", overflow: "hidden", flexShrink: 0, background: "#fdf0f5" }}>
           {product.image_url && !imgErr ? (
             <img
               src={product.image_url}
               alt={product.name}
               onError={() => setImgErr(true)}
-              style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
             />
           ) : (
             <div style={{ width: "100%", height: "100%", background: "#fff0f7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48 }}>🍦</div>
