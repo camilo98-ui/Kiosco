@@ -462,17 +462,28 @@ export default function Menu() {
         style={{ background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}
       >
         <HeaderLine hasCart={itemCount > 0} />
-        {/* Fila logo + carrito + búsqueda compacta */}
-        <div className="flex items-center justify-between pl-0 pr-3 gap-2" style={{ height: 48 }}>
-          <div style={{ width: "45%", minWidth: 120 }}>
+        {/* Fila logo + buscador */}
+        <div className="flex items-center gap-2 pl-0 pr-3" style={{ height: 48 }}>
+          <div style={{ width: "45%", minWidth: 120, flexShrink: 0 }}>
             <PopsyLogo onClick={handleLogoClick} size="normal" dark />
           </div>
-          <button onClick={() => setSearchOpen(true)} className="flex items-center justify-center" style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(255,255,255,0.22)", border: "none", cursor: "pointer", transition: "all 0.2s", willChange: "transform" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.32)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}>
-            <Search size={16} color="#fff" />
+          <button
+            onClick={() => setSearchOpen(true)}
+            style={{
+              flex: 1, display: "flex", alignItems: "center", gap: 8,
+              background: "rgba(255,255,255,0.18)", borderRadius: 24,
+              padding: "8px 14px", border: "1.5px solid rgba(255,255,255,0.25)",
+              cursor: "pointer", textAlign: "left", height: 36,
+            }}
+          >
+            <Search size={14} color="rgba(255,255,255,0.85)" />
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", fontFamily: "'Poppins', sans-serif", fontWeight: 500 }}>
+              ¿Qué se te antoja?
+            </span>
           </button>
         </div>
         {/* Buscador visible permanente */}
-        <div style={{ padding: "6px 12px 10px" }}>
+        <div style={{ display: "none" }}>
           <button
             onClick={() => setSearchOpen(true)}
             style={{
