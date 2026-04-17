@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/lib/cartStore";
 
 const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2b9a2f800_Logo_poopsy-removebg-preview.png";
+const MAGENTA = "#C41E6A";
 
-export default function AppHeader({ storeName, onLogoClick }) {
+export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
+  const { itemCount } = useCart();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -17,16 +21,19 @@ export default function AppHeader({ storeName, onLogoClick }) {
         position: "sticky",
         top: 0,
         zIndex: 20,
-        background: "linear-gradient(160deg, #FAD9E8 0%, #FDF0F6 60%, #FFFBFD 100%)",
-        padding: "18px 20px 16px",
+        height: 60,
+        background: "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 18px",
         boxShadow: scrolled
-          ? "0 2px 20px rgba(181,23,90,0.10)"
-          : "none",
-        borderBottom: scrolled ? "none" : "1px solid rgba(220,120,160,0.12)",
-        transition: "box-shadow 0.3s ease, border-bottom 0.3s ease",
+          ? "0 2px 16px rgba(0,0,0,0.10)"
+          : "0 1px 0 rgba(0,0,0,0.06)",
+        transition: "box-shadow 0.3s ease",
       }}
     >
-      {/* Logo */}
+      {/* Left — Logo */}
       <button
         onClick={onLogoClick}
         style={{
@@ -34,39 +41,81 @@ export default function AppHeader({ storeName, onLogoClick }) {
           border: "none",
           cursor: "pointer",
           padding: 0,
-          display: "inline-flex",
+          display: "flex",
           alignItems: "center",
+          flexShrink: 0,
         }}
       >
         <img
           src={LOGO_URL}
           alt="Popsy"
-          style={{
-            height: 56,
-            width: "auto",
-            objectFit: "contain",
-            objectPosition: "left center",
-            display: "block",
-          }}
+          style={{ height: 38, width: "auto", objectFit: "contain" }}
         />
       </button>
 
-      {/* Store location */}
-      {storeName && (
-        <p
-          style={{
-            fontSize: 12,
-            fontWeight: 500,
-            color: "#B5175A",
-            margin: "6px 0 0",
-            opacity: 0.75,
-            fontFamily: "'Poppins', sans-serif",
-            letterSpacing: "0.1px",
-          }}
-        >
-          📍 {storeName}
-        </p>
-      )}
+      {/* Center — Store location */}
+      <div style={{ flex: 1, textAlign: "center", padding: "0 12px" }}>
+        {storeName && (
+          <p
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: "#1A0A10",
+              margin: 0,
+              lineHeight: 1,
+              fontFamily: "'Poppins', sans-serif",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            📍 {storeName}
+          </p>
+        )}
+      </div>
+
+      {/* Right — Cart */}
+      <button
+        onClick={onCartClick}
+        data-cart-icon
+        style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          padding: 4,
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+        }}
+      >
+        <ShoppingCart size={24} color={MAGENTA} strokeWidth={2} />
+        {itemCount > 0 && (
+          <span
+            style={{
+              position: "absolute",
+              top: -2,
+              right: -4,
+              background: MAGENTA,
+              color: "#fff",
+              fontSize: 10,
+              fontWeight: 800,
+              borderRadius: "50%",
+              minWidth: 18,
+              height: 18,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "0 4px",
+              fontFamily: "'Poppins', sans-serif",
+              boxShadow: "0 2px 6px rgba(196,30,106,0.35)",
+            }}
+          >
+            {itemCount > 9 ? "9+" : itemCount}
+          </span>
+        )}
+      </button>
     </div>
   );
 }
