@@ -59,7 +59,7 @@ const FAMILY_CARDS = [
 
 function CategoryIcons({ activeCategory, onSelect }) {
   return (
-    <div style={{ background: "#fff", padding: "18px 16px 16px" }}>
+    <div style={{ background: "transparent", padding: "18px 16px 16px" }}>
       <p style={{ fontSize: 17, fontWeight: 700, color: "#2D1A12", margin: "0 0 14px", fontFamily: "'Poppins', sans-serif" }}>Categorías</p>
       <div style={{ display: "flex", overflowX: "auto", gap: 18, scrollbarWidth: "none", paddingBottom: 2 }}>
         {CATEGORIES.map((cat) => {
@@ -95,7 +95,7 @@ function FamilyCarousel({ productCounts, onSelect, hasCookieJaar }) {
   FAMILY_CARDS :
   FAMILY_CARDS.filter((c) => c.id !== "combos");
   return (
-    <div style={{ background: "#fff", padding: "10px 0 14px", marginTop: 2 }}>
+    <div style={{ background: "transparent", padding: "10px 0 14px", marginTop: 2 }}>
       <p style={{ fontSize: 18, fontWeight: 700, color: "#2D1A12", margin: "0 0 12px 16px", fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.2px" }}>¿Qué se te antoja? 😏</p>
       <CategoryGrid categories={visibleCards} productCounts={productCounts} onSelect={onSelect} />
     </div>);
@@ -138,7 +138,7 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   );
   if (top.length === 0) return null;
   return (
-    <div style={{ background: "#fff", marginTop: 10 }}>
+    <div style={{ background: "transparent", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
       <p style={{ fontSize: 18, fontWeight: 700, color: "#2D1A12", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.2px" }}>Los favoritos de todos 🔥</p>
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
@@ -527,7 +527,7 @@ export default function Menu() {
         
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "#fff", padding: "10px 0 12px" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "transparent", padding: "10px 0 12px" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ marginTop: 0 }}>
