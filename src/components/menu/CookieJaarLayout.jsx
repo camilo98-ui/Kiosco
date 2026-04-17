@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatCOP, TAG_CONFIG } from "@/lib/constants";
@@ -64,7 +64,7 @@ function HorizontalCard({ product, onAdd, addedFlash, bg }) {
 }
 
 export default function CookieJaarLayout({ onAdd, addedFlash }) {
-  const [tab, setTab] = React.useState("galletas");
+  const [tab, setTab] = useState("galletas");
   const bg = "#FFF0F5";
 
   const cookieJaarProducts = useMemo(() => COMBOS_DATA.filter(p => p.badge === "Cookie Jaar"), []);
@@ -76,26 +76,27 @@ export default function CookieJaarLayout({ onAdd, addedFlash }) {
   return (
     <>
       {/* Tabs */}
-      <div style={{ display: "flex", gap: 10, padding: "0 14px", marginBottom: 14 }}>
+      <div style={{ display: "flex", gap: 10, padding: "0 14px", marginBottom: 14, flexWrap: "wrap" }}>
         {[
-          { key: "galletas", label: "Galletas 🍪", count: galletas.length },
-          { key: "malteadas", label: "Malteadas 🥤", count: malteadas.length },
-          { key: "combos", label: "Combos 🎁", count: combos.length },
+          { key: "galletas", label: "Galletas 🍪" },
+          { key: "malteadas", label: "Malteadas 🥤" },
+          { key: "combos", label: "Combos 🎁" },
         ].map(t => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
             style={{
               flex: 1,
+              minWidth: "100px",
               padding: "10px 0",
               borderRadius: 14,
               border: "none",
               cursor: "pointer",
               fontWeight: 800,
-              fontSize: 12,
+              fontSize: 13,
               fontFamily: "'Poppins', sans-serif",
-              background: tab === t.key ? "#C41E6A" : "#F3E8FF",
-              color: tab === t.key ? "#fff" : "#7B3EA4",
+              background: tab === t.key ? "#C41E6A" : "#FFE4F3",
+              color: tab === t.key ? "#fff" : "#C41E6A",
               boxShadow: tab === t.key ? "0 4px 14px rgba(196,30,106,0.3)" : "none",
               transition: "all 0.2s",
             }}
