@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 
 
-export default function CategoryGrid({ categories, productCounts, onSelect }) {
+export default function CategoryGrid({ categories, productCounts, onSelect, onCookieJaar }) {
   const containerRef = useRef(null);
   const startX = useRef(null);
   const scrollLeft = useRef(null);
@@ -45,7 +45,7 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
       {categories.map((category) => (
         <button
           key={category.id}
-          onClick={() => onSelect(category.id)}
+          onClick={() => category.id === "combos" && onCookieJaar ? onCookieJaar() : onSelect(category.id)}
           style={{
             position: "relative",
             minWidth: 160,
