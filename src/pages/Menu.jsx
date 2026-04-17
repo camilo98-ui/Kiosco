@@ -501,15 +501,12 @@ export default function Menu() {
             {store?.name && (
               <button
                 onClick={clearStore}
-                style={{
-                  background: "rgba(255,255,255,0.22)", border: "1px solid rgba(255,255,255,0.4)",
-                  borderRadius: 20, cursor: "pointer", paddingLeft: 8, paddingRight: 8,
-                  paddingTop: 3, paddingBottom: 3, display: "flex", alignItems: "center",
-                  gap: 4, marginTop: -2, marginLeft: 14,
-                }}
+                style={{ background: "none", border: "none", cursor: "pointer", paddingLeft: 14, paddingRight: 0, paddingTop: 0, paddingBottom: 0, display: "flex", alignItems: "center", gap: 4, marginTop: -4 }}
               >
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#fff" }}>📍 {store.name}</span>
-                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.8)", fontWeight: 700, lineHeight: 1 }}>✕</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.75)", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                  📍 {store.name}
+                </span>
+                <span style={{ fontSize: 9, color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>✕</span>
               </button>
             )}
           </div>
