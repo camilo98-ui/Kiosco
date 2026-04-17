@@ -30,31 +30,31 @@ import CuantosSon from "@/components/menu/CuantosSon";
 import ParaLlevarUpsell from "@/components/menu/ParaLlevarUpsell";
 
 const FAMILY_GRADIENTS = [
-  "linear-gradient(135deg, #6D1B4E, #B5175A)",
-  "linear-gradient(135deg, #7B3A00, #C97B30)",
-  "linear-gradient(135deg, #3A2000, #7B5A1A)",
-  "linear-gradient(135deg, #1A3A6D, #2A6DB5)",
-  "linear-gradient(135deg, #1A2A1A, #2E7D32)",
-];
+"linear-gradient(135deg, #6D1B4E, #B5175A)",
+"linear-gradient(135deg, #7B3A00, #C97B30)",
+"linear-gradient(135deg, #3A2000, #7B5A1A)",
+"linear-gradient(135deg, #1A3A6D, #2A6DB5)",
+"linear-gradient(135deg, #1A2A1A, #2E7D32)"];
+
 
 const ITEM_BG = [
-  "linear-gradient(135deg, #6D1B4E, #B5175A)",
-  "linear-gradient(135deg, #7B3A00, #C97B30)",
-  "linear-gradient(135deg, #1A3A6D, #2A6DB5)",
-  "linear-gradient(135deg, #1A2A1A, #2E7D32)",
-  "linear-gradient(135deg, #3A2000, #7B5A1A)",
-];
+"linear-gradient(135deg, #6D1B4E, #B5175A)",
+"linear-gradient(135deg, #7B3A00, #C97B30)",
+"linear-gradient(135deg, #1A3A6D, #2A6DB5)",
+"linear-gradient(135deg, #1A2A1A, #2E7D32)",
+"linear-gradient(135deg, #3A2000, #7B5A1A)"];
+
 
 const FAMILY_CARDS = [
-  { id: "malteadas",      label: "Malteadas",      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7f68abf79_image.png" },
-  { id: "helados",        label: "Helados",        image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c9474e0e_Helados.png" },
-  { id: "combos",         label: "Cookie Jar",     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6dd912084_cookie-jaar-img.jpg" },
-  { id: "granizados",     label: "Granizados 🧊",  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/923ba973b_images2.jpg" },
-  { id: "especialidades", label: "Especiales",     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png" },
-  { id: "cafe",           label: "Café",           image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e15d81047_Coffee.png" },
-  { id: "bebidas",        label: "Otras bebidas",  image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/26de2b565_image.png" },
-  { id: "para_llevar",   label: "Para llevar",     image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa4c65c0f_ComboLitrodeheladoBrownie8Und.png" },
-];
+{ id: "malteadas", label: "Malteadas", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7f68abf79_image.png" },
+{ id: "helados", label: "Helados", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c9474e0e_Helados.png" },
+{ id: "combos", label: "Cookie Jar", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6dd912084_cookie-jaar-img.jpg" },
+{ id: "granizados", label: "Granizados 🧊", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/923ba973b_images2.jpg" },
+{ id: "especialidades", label: "Especiales", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png" },
+{ id: "cafe", label: "Café", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e15d81047_Coffee.png" },
+{ id: "bebidas", label: "Otras bebidas", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/26de2b565_image.png" },
+{ id: "para_llevar", label: "Para llevar", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa4c65c0f_ComboLitrodeheladoBrownie8Und.png" }];
+
 
 function CategoryIcons({ activeCategory, onSelect }) {
   return (
@@ -67,38 +67,38 @@ function CategoryIcons({ activeCategory, onSelect }) {
             <button
               key={cat.id}
               onClick={() => onSelect(cat.id)}
-              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, flexShrink: 0, background: "none", border: "none", cursor: "pointer", padding: 0 }}
-            >
+              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, flexShrink: 0, background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+              
               <div style={{
                 width: 70, height: 70, borderRadius: "50%",
                 background: isActive ? "#FFF0F5" : "#F5F5F5",
                 border: isActive ? "2.5px solid #B5175A" : "2px solid transparent",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 32, transition: "all 0.15s ease",
+                fontSize: 32, transition: "all 0.15s ease"
               }}>
                 {cat.emoji}
               </div>
               <span style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? "#B5175A" : "#8A7880", whiteSpace: "nowrap" }}>
                 {cat.label}
               </span>
-            </button>
-          );
+            </button>);
+
         })}
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 function FamilyCarousel({ productCounts, onSelect, hasCookieJaar }) {
-  const visibleCards = hasCookieJaar
-    ? FAMILY_CARDS
-    : FAMILY_CARDS.filter(c => c.id !== "combos");
+  const visibleCards = hasCookieJaar ?
+  FAMILY_CARDS :
+  FAMILY_CARDS.filter((c) => c.id !== "combos");
   return (
     <div style={{ background: "#fff", padding: "10px 0 14px", marginTop: 2 }}>
       <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px" }}>¿Qué se te antoja? 😏</p>
       <CategoryGrid categories={visibleCards} productCounts={productCounts} onSelect={onSelect} />
-    </div>
-  );
+    </div>);
+
 }
 
 function MostOrderedItem({ product, idx, onAdd, onSelectCategory }) {
@@ -110,30 +110,30 @@ function MostOrderedItem({ product, idx, onAdd, onSelectCategory }) {
   return (
     <button
       onClick={handleClick}
-      style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}
-    >
+      style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}>
+      
       <div style={{ width: 52, height: 52, borderRadius: 14, background: ITEM_BG[idx % ITEM_BG.length], display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
-        {product.image_url && !imgError ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-        ) : (
-          <span style={{ fontSize: 24 }}>{product.emoji || "🍦"}</span>
-        )}
+        {product.image_url && !imgError ?
+        <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> :
+
+        <span style={{ fontSize: 24 }}>{product.emoji || "🍦"}</span>
+        }
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{ fontSize: 13, fontWeight: 600, color: "#1A0A10", margin: 0, lineHeight: 1.3 }}>{product.name}</p>
         <p style={{ fontSize: 11, color: "#BBA8B0", margin: "2px 0 0" }}>
-          {CATEGORIES.find(c => c.id === product.category)?.label} · {formatCOP(product.price)}
+          {CATEGORIES.find((c) => c.id === product.category)?.label} · {formatCOP(product.price)}
         </p>
       </div>
       <ChevronRight size={16} color="#DDD" style={{ flexShrink: 0 }} />
-    </button>
-  );
+    </button>);
+
 }
 
 function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   const top = useMemo(() =>
-    [...products].filter(p => p.tag === "mas_vendido" && p.is_available !== false).slice(0, 8),
-    [products]
+  [...products].filter((p) => p.tag === "mas_vendido" && p.is_available !== false).slice(0, 8),
+  [products]
   );
   if (top.length === 0) return null;
   return (
@@ -142,12 +142,12 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
       <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Los favoritos de todos 🔥</p>
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
       </div>
-      {top.map((product, idx) => (
-        <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} onSelectCategory={onSelectCategory} />
-      ))}
+      {top.map((product, idx) =>
+      <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} onSelectCategory={onSelectCategory} />
+      )}
       <div style={{ height: 8 }} />
-    </div>
-  );
+    </div>);
+
 }
 
 function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, upsellMsg, setUpsellMsg, handleUpsellAccept, showParaLlevarUpsell, handleUpsellSkip, handleUpsellAddAndPay, autoOpenProduct, onAutoOpenDone }) {
@@ -175,7 +175,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
           <ArrowLeft size={20} color="#fff" />
         </button>
         <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
-          {CATEGORIES.find(c => c.id === activeCategory)?.label}
+          {CATEGORIES.find((c) => c.id === activeCategory)?.label}
         </span>
         <div style={{ width: 44 }} />
       </div>
@@ -189,8 +189,8 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={onAddProduct} />
       <ParaLlevarUpsell open={showParaLlevarUpsell} onSkip={handleUpsellSkip} onAddAndPay={handleUpsellAddAndPay} />
-    </div>
-  );
+    </div>);
+
 }
 
 export default function Menu() {
@@ -224,7 +224,7 @@ export default function Menu() {
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.list("sort_order", 200),
     staleTime: 10 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
+    gcTime: 30 * 60 * 1000
   });
 
   useEffect(() => {
@@ -241,24 +241,24 @@ export default function Menu() {
 
   const productsByCategory = useMemo(() => {
     const map = {};
-    CATEGORIES.forEach((c) => (map[c.id] = []));
-    products.forEach((p) => { if (map[p.category]) map[p.category].push(p); });
+    CATEGORIES.forEach((c) => map[c.id] = []);
+    products.forEach((p) => {if (map[p.category]) map[p.category].push(p);});
     return map;
   }, [products]);
 
   const productCounts = useMemo(() => {
     const map = {};
-    products.forEach(p => { map[p.category] = (map[p.category] || 0) + 1; });
+    products.forEach((p) => {map[p.category] = (map[p.category] || 0) + 1;});
     return map;
   }, [products]);
 
   const categoryProducts = useMemo(() => {
     if (!activeCategory) return [];
-    return (productsByCategory[activeCategory] || []).filter(p => p.is_available !== false);
+    return (productsByCategory[activeCategory] || []).filter((p) => p.is_available !== false);
   }, [productsByCategory, activeCategory]);
 
   const suggestedProducts = useMemo(() => {
-    return products.filter(p => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false).slice(0, 6);
+    return products.filter((p) => p.tag === "mas_vendido" && p.category !== activeCategory && p.is_available !== false).slice(0, 6);
   }, [products, activeCategory]);
 
   const handleAddProduct = useCallback((product, notes = "") => {
@@ -268,34 +268,34 @@ export default function Menu() {
       product_name: product.product_name || product.name || product.title,
       price: product.price,
       quantity: 1,
-      notes: finalNotes,
+      notes: finalNotes
     };
     addItem(productToAdd, finalNotes);
     setAddedFlash(product.product_id || product.id);
     setTimeout(() => setAddedFlash(null), 600);
     setLastAdded(productToAdd);
-    
+
     // Animación del carrito + toast
     const cartIcon = document.querySelector('[data-cart-icon]');
     if (cartIcon) {
       cartIcon.animate([
-        { transform: 'scale(1)' },
-        { transform: 'scale(1.4)' },
-        { transform: 'scale(1)' }
-      ], { duration: 400, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' });
+      { transform: 'scale(1)' },
+      { transform: 'scale(1.4)' },
+      { transform: 'scale(1)' }],
+      { duration: 400, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' });
     }
-    
+
     // Toast feedback
     toast.success(`✓ ${productToAdd.product_name} agregado al pedido`, {
       style: {
         background: "#C41E6A",
         color: "#fff",
         border: "none",
-        borderRadius: "12px",
+        borderRadius: "12px"
       },
-      duration: 1800,
+      duration: 1800
     });
-    
+
     const rule = UPSELL_RULES[product.category];
     if (rule && product.category === "adiciones") {
       upsellTimer.current = setTimeout(() => {
@@ -313,7 +313,7 @@ export default function Menu() {
       logoClickCount.current = 0;
       setHiddenMenuOpen(true);
     } else {
-      logoClickTimer.current = setTimeout(() => { logoClickCount.current = 0; }, 2000);
+      logoClickTimer.current = setTimeout(() => {logoClickCount.current = 0;}, 2000);
     }
   };
 
@@ -323,9 +323,9 @@ export default function Menu() {
   }, [upsellTarget]);
 
   const hasLitroInCart = useCallback(() => {
-    return cart.some(item =>
-      item.product_name?.toLowerCase().includes("litro") ||
-      item.product_id?.toString().startsWith("litro-")
+    return cart.some((item) =>
+    item.product_name?.toLowerCase().includes("litro") ||
+    item.product_id?.toString().startsWith("litro-")
     );
   }, [cart]);
 
@@ -343,9 +343,9 @@ export default function Menu() {
 
   const doCheckout = async (name, extraItems = [], passedTotal = 0) => {
     const cartSnapshot = [...cart, ...extraItems];
-    const orderTotal = passedTotal || cartSnapshot.reduce((s, i) => s + (i.price * i.quantity), 0);
+    const orderTotal = passedTotal || cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
     const currentNum = nextOrderNum || 101;
-    
+
     clearCart();
     // Mostrar ticket inmediatamente
     setConfirmedOrder({
@@ -353,26 +353,26 @@ export default function Menu() {
       customer_name: name,
       items: cartSnapshot,
       total: orderTotal,
-      id: `temp-${Date.now()}`,
+      id: `temp-${Date.now()}`
     });
     // Show rating after a short delay
     setTimeout(() => setShowRating(true), 1200);
     setPendingCheckoutName(null);
     setIsSubmitting(false);
-    
+
     // Guardar orden en background sin esperar
     const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
     const settingsId = settings[0]?.id;
     Promise.all([
-      base44.entities.Order.create({
-        order_number: currentNum,
-        customer_name: name,
-        items: cartSnapshot.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes })),
-        total: orderTotal,
-        status: "pendiente",
-      }),
-      settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) }),
-    ]).catch(() => {});
+    base44.entities.Order.create({
+      order_number: currentNum,
+      customer_name: name,
+      items: cartSnapshot.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes })),
+      total: orderTotal,
+      status: "pendiente"
+    }),
+    settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) })]
+    ).catch(() => {});
     setNextOrderNum(currentNum + 1);
   };
 
@@ -393,7 +393,7 @@ export default function Menu() {
   const handleEditOrder = (order) => {
     // Restaurar el carrito con los items del pedido confirmado
     clearCart();
-    order.items.forEach(item => addItem(item, item.notes || ""));
+    order.items.forEach((item) => addItem(item, item.notes || ""));
     setConfirmedOrder(null);
     // Resetear el upsell para que no bloquee el nuevo checkout
     setUpsellSeenThisSession(false);
@@ -409,13 +409,13 @@ export default function Menu() {
       <RatingScreen
         order={confirmedOrder}
         store={store}
-        onDone={() => { setShowRating(false); setConfirmedOrder(null); }}
-      />
-    );
+        onDone={() => {setShowRating(false);setConfirmedOrder(null);}} />);
+
+
   }
 
   if (confirmedOrder) {
-    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => { setConfirmedOrder(null); setShowRating(false); }} onEditOrder={handleEditOrder} />;
+    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => {setConfirmedOrder(null);setShowRating(false);}} onEditOrder={handleEditOrder} />;
   }
 
   if (activeCategory === "granizados") {
@@ -436,19 +436,19 @@ export default function Menu() {
             border: "none", borderRadius: 16, padding: "14px 32px",
             fontSize: 15, fontWeight: 700, cursor: "pointer",
             boxShadow: "0 4px 16px rgba(196,30,106,0.35)",
-            fontFamily: "'Poppins', sans-serif",
-          }}
-        >
+            fontFamily: "'Poppins', sans-serif"
+          }}>
+          
           Ir a Para llevar →
         </button>
         <button
           onClick={() => setActiveCategory(null)}
-          style={{ marginTop: 16, background: "none", border: "none", color: "#999", fontSize: 14, cursor: "pointer" }}
-        >
+          style={{ marginTop: 16, background: "none", border: "none", color: "#999", fontSize: 14, cursor: "pointer" }}>
+          
           ← Volver al inicio
         </button>
-      </div>
-    );
+      </div>);
+
   }
 
   if (activeCategory) {
@@ -482,9 +482,9 @@ export default function Menu() {
         handleUpsellSkip={handleUpsellSkip}
         handleUpsellAddAndPay={handleUpsellAddAndPay}
         autoOpenProduct={autoOpenProduct}
-        onAutoOpenDone={() => setAutoOpenProduct(null)}
-      />
-    );
+        onAutoOpenDone={() => setAutoOpenProduct(null)} />);
+
+
   }
 
   return (
@@ -492,19 +492,42 @@ export default function Menu() {
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20"
-        style={{ background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}
-      >
+        style={{ background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}>
+        
         <HeaderLine hasCart={itemCount > 0} />
-        {/* Fila logo + nombre tienda */}
-        <div className="flex items-end gap-2 pl-0 pr-3" style={{ height: 60, paddingBottom: 6 }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            <PopsyLogo onClick={handleLogoClick} size="large" dark />
-            {store?.name && (
-              <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.85)", paddingLeft: 16, letterSpacing: "0.5px", textTransform: "uppercase", display: "block", marginTop: -6 }}>
-                {store.name}
+        {/* Fila logo + buscador */}
+        <div className="flex items-end gap-2 pl-0 pr-3 hidden" style={{ height: 48 }}>
+          <div style={{ width: "45%", minWidth: 120, flexShrink: 0 }}>
+            <PopsyLogo onClick={handleLogoClick} size="normal" dark />
+            {store?.name &&
+            <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.75)", paddingLeft: 14, letterSpacing: "0.5px", textTransform: "uppercase", display: "block", marginTop: -4 }}>
+                📍 {store.name}
               </span>
-            )}
+            }
           </div>
+          <button
+            onClick={() => setSearchOpen(true)}
+            style={{
+              width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
+              background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.3)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer"
+            }}>
+            
+            <Search size={16} color="#fff" />
+          </button>
+          {/* Store picker icon */}
+          <button
+            onClick={() => setShowStorePicker(true)}
+            style={{
+              width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
+              background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.3)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer"
+            }}>
+            
+            <MapPin size={16} color="#fff" />
+          </button>
         </div>
         {/* Buscador visible permanente */}
         <div style={{ display: "none" }}>
@@ -514,9 +537,9 @@ export default function Menu() {
               width: "100%", display: "flex", alignItems: "center", gap: 10,
               background: "rgba(255,255,255,0.18)", borderRadius: 24,
               padding: "9px 16px", border: "1.5px solid rgba(255,255,255,0.25)",
-              cursor: "pointer", textAlign: "left",
-            }}
-          >
+              cursor: "pointer", textAlign: "left"
+            }}>
+            
             <Search size={15} color="rgba(255,255,255,0.85)" />
             <span style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", fontFamily: "'Poppins', sans-serif", fontWeight: 500 }}>
               ¿Qué se te antoja hoy?
@@ -536,15 +559,15 @@ export default function Menu() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
           <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
         </motion.div>
-        {isLoading ? (
-          <div className="flex justify-center py-16">
+        {isLoading ?
+        <div className="flex justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C41E6A" }} />
-          </div>
-        ) : (
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
-            <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} onSelectCategory={(cat, product) => { setActiveCategory(cat); if (product) setAutoOpenProduct(product); }} />
+          </div> :
+
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
+            <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} onSelectCategory={(cat, product) => {setActiveCategory(cat);if (product) setAutoOpenProduct(product);}} />
           </motion.div>
-        )}
+        }
       </div>
 
       {/* ── OVERLAYS ── */}
@@ -556,34 +579,34 @@ export default function Menu() {
       <ParaLlevarUpsell
         open={showParaLlevarUpsell}
         onSkip={handleUpsellSkip}
-        onAddAndPay={handleUpsellAddAndPay}
-      />
+        onAddAndPay={handleUpsellAddAndPay} />
+      
       <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
-      {showMostOrdered && (
-        <MostOrderedAll products={products} onAdd={(p) => { handleAddProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
-      )}
+      {showMostOrdered &&
+      <MostOrderedAll products={products} onAdd={(p) => {handleAddProduct(p);setShowMostOrdered(false);}} onBack={() => setShowMostOrdered(false)} />
+      }
 
       {/* Store picker modal */}
-      {showStorePicker && (
-        <div
-          style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "flex-end" }}
-          onClick={() => setShowStorePicker(false)}
-        >
+      {showStorePicker &&
+      <div
+        style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "flex-end" }}
+        onClick={() => setShowStorePicker(false)}>
+        
           <motion.div
-            initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 32 }}
-            onClick={e => e.stopPropagation()}
-            style={{ width: "100%", background: "#fff", borderRadius: "24px 24px 0 0", padding: "20px 20px 40px", maxHeight: "80vh", overflowY: "auto" }}
-          >
+          initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
+          transition={{ type: "spring", stiffness: 300, damping: 32 }}
+          onClick={(e) => e.stopPropagation()}
+          style={{ width: "100%", background: "#fff", borderRadius: "24px 24px 0 0", padding: "20px 20px 40px", maxHeight: "80vh", overflowY: "auto" }}>
+          
             <div style={{ width: 40, height: 4, borderRadius: 2, background: "#E0D0D8", margin: "0 auto 20px" }} />
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
               <MapPin size={16} color="#C41E6A" />
               <p style={{ fontSize: 16, fontWeight: 800, color: "#1A0A10", margin: 0 }}>Cambiar tienda</p>
             </div>
-            <StoreSelector onSelect={(s) => { selectStore(s); setShowStorePicker(false); }} />
+            <StoreSelector onSelect={(s) => {selectStore(s);setShowStorePicker(false);}} />
           </motion.div>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
