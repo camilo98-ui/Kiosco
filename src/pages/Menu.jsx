@@ -96,7 +96,7 @@ function FamilyCarousel({ productCounts, onSelect, hasCookieJaar }) {
   FAMILY_CARDS.filter((c) => c.id !== "combos");
   return (
     <div style={{ background: "transparent", padding: "10px 0 14px", marginTop: 2 }}>
-      <p style={{ fontSize: 18, fontWeight: 700, color: "#2D1A12", margin: "0 0 12px 16px", fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.2px" }}>¿Qué se te antoja? 😏</p>
+      <p style={{ fontSize: 20, fontWeight: 800, color: "#2D1A12", margin: "0 0 14px 16px", fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.4px" }}>¿Qué se te antoja? 😏</p>
       <CategoryGrid categories={visibleCards} productCounts={productCounts} onSelect={onSelect} />
     </div>);
 
@@ -140,8 +140,8 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   return (
     <div style={{ background: "transparent", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
-      <p style={{ fontSize: 18, fontWeight: 700, color: "#2D1A12", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.2px" }}>Los favoritos de todos 🔥</p>
-      <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
+      <p style={{ fontSize: 20, fontWeight: 800, color: "#2D1A12", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.4px" }}>Los favoritos de todos 🔥</p>
+      <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#C41E6A" }}>Ver todo</button>
       </div>
       {top.map((product, idx) =>
       <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} onSelectCategory={onSelectCategory} />

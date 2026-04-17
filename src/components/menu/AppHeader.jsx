@@ -39,10 +39,9 @@ export default function AppHeader({ storeName, onLogoClick, onStoreClick }) {
           src={LOGO_URL}
           alt="Popsy"
           style={{
-            height: 38,
+            height: 52,
             width: "auto",
             objectFit: "contain",
-            filter: "brightness(0) sepia(1) hue-rotate(340deg) saturate(0.3) brightness(0.25)",
           }}
         />
       </button>
@@ -61,18 +60,18 @@ export default function AppHeader({ storeName, onLogoClick, onStoreClick }) {
             gap: 5,
           }}
         >
-          <MapPin size={9} color="#2D1A12" strokeWidth={2} style={{ flexShrink: 0, opacity: 0.6 }} />
+          <MapPin size={9} color="#C41E6A" strokeWidth={2.5} style={{ flexShrink: 0 }} />
           <p
             style={{
               fontSize: 9,
-              fontWeight: 400,
+              fontWeight: 600,
               color: "#2D1A12",
               margin: 0,
-              letterSpacing: "0.24em",
+              letterSpacing: "0.22em",
               textTransform: "uppercase",
               fontFamily: "'Poppins', sans-serif",
               whiteSpace: "nowrap",
-              opacity: 0.6,
+              opacity: 0.75,
             }}
           >
             {storeName}

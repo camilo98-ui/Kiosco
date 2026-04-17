@@ -53,10 +53,10 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             borderRadius: 32,
             overflow: "hidden",
             background: "transparent",
-            border: "none",
+            border: "1px solid rgba(196,30,106,0.07)",
             cursor: "pointer",
             flexShrink: 0,
-            boxShadow: "0 12px 40px 0 rgba(100,60,30,0.10), 0 2px 8px 0 rgba(100,60,30,0.06)",
+            boxShadow: "0 8px 32px rgba(196,30,106,0.12), 0 2px 8px rgba(196,30,106,0.06)",
           }}
         >
           {/* Imagen de fondo */}
