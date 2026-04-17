@@ -167,7 +167,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "#FFFCFD" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className="min-h-screen" style={{ background: "#FFF5F7" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)" }}>
         <button onClick={onBack} style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.2)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
           <ArrowLeft size={20} color="#fff" />
@@ -177,7 +177,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
         </span>
         <div style={{ width: 44 }} />
       </div>
-      <div className="pb-36 pt-2">
+      <div className="pb-36 pt-2" style={{ background: "#FFF5F7" }}>
         <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} autoOpenProduct={autoOpenProduct} onAutoOpenDone={onAutoOpenDone} />
         {suggestedProducts.length > 0 && <SuggestedRow products={suggestedProducts} onAdd={onAdd} />}
       </div>
