@@ -135,7 +135,7 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   );
   if (top.length === 0) return null;
   return (
-    <div style={{ background: "transparent", marginTop: 10 }}>
+    <div style={{ background: "#FFF5F7", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
       <p style={{ fontSize: 16, fontWeight: 600, color: "#2D1A22", margin: 0, letterSpacing: "0.5px" }}>Los favoritos de todos 🔥</p>
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#D81B60", letterSpacing: "0.3px" }}>Ver todo</button>
