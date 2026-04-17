@@ -214,7 +214,7 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
   };
 
   return (
-    <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
+    <div style={{ background: "#FFF5F7", marginTop: 10, padding: "16px 0 12px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
         <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: 0 }}>
           Combos que enamoran 💕
