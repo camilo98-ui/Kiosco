@@ -492,12 +492,12 @@ export default function Menu() {
         
         <HeaderLine hasCart={itemCount > 0} />
         {/* Fila logo + buscador */}
-        <div className="flex items-center gap-2 pl-0 pr-3" style={{ height: 48, justifyContent: "space-between" }}>
+        <div className="flex items-center gap-2 pl-0 pr-3" style={{ height: 56, justifyContent: "space-between" }}>
           <button onClick={handleLogoClick} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center" }}>
-            <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/d29919a1a_Logo_poopsy-removebg-preview.png" alt="Popsy" style={{ height: 48, objectFit: "contain" }} />
+            <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/d29919a1a_Logo_poopsy-removebg-preview.png" alt="Popsy" style={{ height: 96, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
           </button>
-          <span style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 500 }}>
-            ¿Qué se te antoja?
+          <span style={{ fontSize: 14, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+            {store?.name || "Popsy"}
           </span>
         </div>
         {/* Buscador visible permanente */}
