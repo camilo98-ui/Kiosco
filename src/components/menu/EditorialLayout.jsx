@@ -2,7 +2,6 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
-import { COMBOS_DATA } from "@/lib/combosData";
 import HeladosSubSelector from "@/components/menu/HeladosSubSelector";
 import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
 import MalteadaCustomizer12oz from "@/components/menu/MalteadaCustomizer12oz";

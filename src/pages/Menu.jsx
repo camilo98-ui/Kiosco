@@ -90,13 +90,10 @@ function CategoryIcons({ activeCategory, onSelect }) {
 }
 
 function FamilyCarousel({ productCounts, onSelect }) {
-  const handleCategorySelect = (id) => {
-    onSelect(id);
-  };
   return (
     <div style={{ background: "transparent", padding: "10px 0 14px", marginTop: 2 }}>
       <p style={{ fontSize: 16, fontWeight: 600, color: "#2D1A22", margin: "0 0 12px 16px", letterSpacing: "0.5px" }}>¿Qué se te antoja? 😏</p>
-      <CategoryGrid categories={FAMILY_CARDS} productCounts={productCounts} onSelect={handleCategorySelect} />
+      <CategoryGrid categories={FAMILY_CARDS} productCounts={productCounts} onSelect={onSelect} />
     </div>);
 
 }
