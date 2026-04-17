@@ -24,6 +24,7 @@ import HiddenMenu from "@/components/menu/HiddenMenu";
 import HeaderLine from "@/components/menu/HeaderLine";
 import CombosCarousel from "@/components/menu/CombosCarousel";
 import CombosAllModal from "@/components/menu/CombosAllModal";
+import CookieJaarLayout from "@/components/menu/CookieJaarLayout";
 import MostOrderedAll from "@/components/menu/MostOrderedAll";
 import WaterUpsell from "@/components/menu/WaterUpsell";
 import CuantosSon from "@/components/menu/CuantosSon";
@@ -533,6 +534,14 @@ export default function Menu() {
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
           <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.25 }} style={{ marginTop: 10, background: "#fff", padding: "16px 0 12px", borderTop: "1px solid #F0E4EA" }}>
+          <div style={{ paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
+            <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: 0 }}>
+              Cookie Jaar 🍪
+            </p>
+          </div>
+          <CookieJaarLayout onAdd={handleAddProduct} addedFlash={addedFlash} />
         </motion.div>
         {isLoading ?
         <div className="flex justify-center py-16">
