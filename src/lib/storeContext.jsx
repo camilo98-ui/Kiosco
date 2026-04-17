@@ -54,8 +54,13 @@ export function StoreProvider({ children }) {
     sessionStorage.setItem("popsy_store", JSON.stringify(s));
   };
 
+  const clearStore = () => {
+    setStore(null);
+    sessionStorage.removeItem("popsy_store");
+  };
+
   return (
-    <StoreContext.Provider value={{ store, selectStore, loading }}>
+    <StoreContext.Provider value={{ store, selectStore, clearStore, loading }}>
       {children}
     </StoreContext.Provider>
   );
