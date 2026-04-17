@@ -7,7 +7,7 @@ import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { useCart } from "@/lib/cartStore";
 import { useStore } from "@/lib/storeContext";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
-import { Search, Loader2, ChevronRight, ArrowLeft } from "lucide-react";
+import { Search, Loader2, ChevronRight, ArrowLeft, MapPin } from "lucide-react";
 import StoreSelector from "@/components/StoreSelector";
 import RatingScreen from "@/components/RatingScreen";
 import PopsyLogo from "@/components/menu/PopsyLogo";
@@ -496,9 +496,12 @@ export default function Menu() {
           <button onClick={handleLogoClick} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", marginTop: 8, outline: "none", marginLeft: -12 }}>
             <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/d29919a1a_Logo_poopsy-removebg-preview.png" alt="Popsy" style={{ height: 120, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
           </button>
-          <span style={{ fontSize: 14, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
-            {store?.name || "Popsy"}
-          </span>
+          <button onClick={() => selectStore(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, padding: 0 }}>
+            <MapPin size={16} color="rgba(255,255,255,0.85)" />
+            <span style={{ fontSize: 14, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+              {store?.name || "Popsy"}
+            </span>
+          </button>
         </div>
         {/* Buscador visible permanente */}
         <div style={{ display: "none" }}>
