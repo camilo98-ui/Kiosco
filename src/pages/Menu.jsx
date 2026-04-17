@@ -493,7 +493,6 @@ export default function Menu() {
       {/* ── HEADER ── */}
       <AppHeader
         storeName={store?.name}
-        onCartClick={() => setCheckoutOpen(true)}
         onLogoClick={handleLogoClick}
       />
       
