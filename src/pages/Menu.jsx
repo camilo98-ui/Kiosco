@@ -508,16 +508,13 @@ export default function Menu() {
           <button
             onClick={() => setSearchOpen(true)}
             style={{
-              flex: 1, display: "flex", alignItems: "center", gap: 8,
-              background: "rgba(255,255,255,0.18)", borderRadius: 24,
-              padding: "8px 14px", border: "1.5px solid rgba(255,255,255,0.25)",
-              cursor: "pointer", textAlign: "left", height: 36,
+              width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
+              background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.3)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer",
             }}
           >
-            <Search size={14} color="rgba(255,255,255,0.85)" />
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", fontFamily: "'Poppins', sans-serif", fontWeight: 500 }}>
-              ¿Qué se te antoja?
-            </span>
+            <Search size={16} color="#fff" />
           </button>
           {/* Store picker icon */}
           <button
