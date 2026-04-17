@@ -495,7 +495,7 @@ export default function Menu() {
         <div className="flex items-center" style={{ height: 56, paddingLeft: 8, paddingRight: 8, gap: 8, alignItems: "center" }}>
           {/* Logo pequeño */}
           <button onClick={handleLogoClick} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", outline: "none", flexShrink: 0 }}>
-            <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/d29919a1a_Logo_poopsy-removebg-preview.png" alt="Popsy" style={{ height: 48, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+            <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/d29919a1a_Logo_poopsy-removebg-preview.png" alt="Popsy" style={{ height: 54, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
           </button>
           
           {/* Ubicación */}
