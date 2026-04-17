@@ -495,39 +495,16 @@ export default function Menu() {
         style={{ background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}
       >
         <HeaderLine hasCart={itemCount > 0} />
-        {/* Fila logo + buscador */}
-        <div className="flex items-center gap-2 pl-0 pr-3" style={{ height: 48 }}>
-          <div style={{ width: "45%", minWidth: 120, flexShrink: 0 }}>
-            <PopsyLogo onClick={handleLogoClick} size="normal" dark />
+        {/* Fila logo + nombre tienda */}
+        <div className="flex items-end gap-2 pl-0 pr-3" style={{ height: 60, paddingBottom: 6 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+            <PopsyLogo onClick={handleLogoClick} size="large" dark />
             {store?.name && (
-              <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.75)", paddingLeft: 14, letterSpacing: "0.5px", textTransform: "uppercase", display: "block", marginTop: -4 }}>
-                📍 {store.name}
+              <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.85)", paddingLeft: 16, letterSpacing: "0.5px", textTransform: "uppercase", display: "block", marginTop: -6 }}>
+                {store.name}
               </span>
             )}
           </div>
-          <button
-            onClick={() => setSearchOpen(true)}
-            style={{
-              width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-              background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.3)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <Search size={16} color="#fff" />
-          </button>
-          {/* Store picker icon */}
-          <button
-            onClick={() => setShowStorePicker(true)}
-            style={{
-              width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-              background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.3)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <MapPin size={16} color="#fff" />
-          </button>
         </div>
         {/* Buscador visible permanente */}
         <div style={{ display: "none" }}>
