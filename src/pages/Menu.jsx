@@ -492,17 +492,17 @@ export default function Menu() {
         
         <HeaderLine hasCart={itemCount > 0} />
         {/* Fila logo + ubicación + buscador */}
-        <div className="flex items-center gap-3" style={{ height: 64, paddingLeft: 8, paddingRight: 12, alignItems: "center" }}>
+        <div className="flex items-center" style={{ height: 56, paddingLeft: 8, paddingRight: 8, gap: 8, alignItems: "center" }}>
           {/* Logo pequeño */}
           <button onClick={handleLogoClick} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", outline: "none", flexShrink: 0 }}>
-            <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/d29919a1a_Logo_poopsy-removebg-preview.png" alt="Popsy" style={{ height: 40, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+            <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/d29919a1a_Logo_poopsy-removebg-preview.png" alt="Popsy" style={{ height: 32, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
           </button>
           
           {/* Ubicación */}
-          <button onClick={() => selectStore(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, padding: "6px 10px", borderRight: "1px solid rgba(255,255,255,0.2)" }}>
-            <MapPin size={16} color="#FF6EB4" />
-            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 600, maxWidth: 180, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-              {store?.address || store?.name || "Seleccionar tienda"}
+          <button onClick={() => selectStore(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", borderRight: "1px solid rgba(255,255,255,0.2)", flexShrink: 0 }}>
+            <MapPin size={14} color="#FF6EB4" />
+            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 600, maxWidth: 140, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {store?.address || store?.name || "Tienda"}
             </span>
           </button>
 
@@ -510,14 +510,14 @@ export default function Menu() {
           <button
             onClick={() => setSearchOpen(true)}
             style={{
-              flex: 1, display: "flex", alignItems: "center", gap: 10,
-              background: "rgba(255,255,255,0.12)", borderRadius: 6,
-              padding: "8px 12px", border: "none",
-              cursor: "pointer", textAlign: "left"
+              flex: 1, display: "flex", alignItems: "center", gap: 6,
+              background: "rgba(255,255,255,0.12)", borderRadius: 4,
+              padding: "6px 10px", border: "none",
+              cursor: "pointer", textAlign: "left", minWidth: 0
             }}>
-            <Search size={14} color="rgba(255,255,255,0.6)" />
-            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", fontFamily: "'Poppins', sans-serif", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-              Comida, restaurantes, tiendas...
+            <Search size={12} color="rgba(255,255,255,0.6)" style={{ flexShrink: 0 }} />
+            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", fontFamily: "'Poppins', sans-serif", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              Comida, restaurantes...
             </span>
           </button>
         </div>
