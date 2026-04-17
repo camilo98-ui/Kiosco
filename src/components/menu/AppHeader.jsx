@@ -17,62 +17,56 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick, onStore
         position: "sticky",
         top: 0,
         zIndex: 20,
-        height: 120,
         background: "#C41E6A",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 6,
-        boxShadow: scrolled
-          ? "0 4px 24px rgba(196,30,106,0.32)"
-          : "0 2px 10px rgba(196,30,106,0.18)",
-        transition: "box-shadow 0.3s ease",
       }}
     >
-      {/* Logo — centered, large, clickable for hidden menu */}
-      <button
-        onClick={onLogoClick}
+      {/* Pink bar — logo only */}
+      <div
         style={{
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          padding: 0,
+          height: 90,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <img
-          src={LOGO_URL}
-          alt="Popsy"
-          style={{
-            height: 52,
-            width: "auto",
-            objectFit: "contain",
-            filter: "brightness(0) invert(1)",
-          }}
-        />
-      </button>
+        <button
+          onClick={onLogoClick}
+          style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+        >
+          <img
+            src={LOGO_URL}
+            alt="Popsy"
+            style={{
+              height: 58,
+              width: "auto",
+              objectFit: "contain",
+              filter: "brightness(0) invert(1)",
+            }}
+          />
+        </button>
+      </div>
 
-      {/* Store name — fine, wide letter-spacing */}
+      {/* Thin store name bar */}
       {storeName && (
         <button
           onClick={onStoreClick}
           style={{
-            background: "none",
+            width: "100%",
+            background: "rgba(0,0,0,0.10)",
             border: "none",
             cursor: "pointer",
-            padding: 0,
+            padding: "5px 0 6px",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           <p
             style={{
-              fontSize: 10,
+              fontSize: 9,
               fontWeight: 300,
-              color: "rgba(255,255,255,0.80)",
+              color: "rgba(255,255,255,0.75)",
               margin: 0,
-              letterSpacing: "0.22em",
+              letterSpacing: "0.28em",
               textTransform: "uppercase",
               fontFamily: "'Poppins', sans-serif",
               whiteSpace: "nowrap",
