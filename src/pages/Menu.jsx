@@ -108,7 +108,7 @@ function MostOrderedItem({ product, idx, onAdd, onSelectCategory }) {
   return (
     <button
       onClick={handleClick}
-      style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}>
+      style={{ display: "flex", alignItems: "center", gap: 14, background: "#FFF5F7", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}>
       
       <div style={{ width: 52, height: 52, borderRadius: 14, background: ITEM_BG[idx % ITEM_BG.length], display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
         {product.image_url && !imgError ?
