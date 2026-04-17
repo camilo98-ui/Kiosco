@@ -1,0 +1,30 @@
+{
+  "name": "Rating",
+  "type": "object",
+  "properties": {
+    "store_slug": {
+      "type": "string",
+      "description": "Store slug identifier"
+    },
+    "store_name": {
+      "type": "string",
+      "description": "Store display name"
+    },
+    "score": {
+      "type": "number",
+      "description": "Rating score 1-5"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Optional comment"
+    },
+    "order_number": {
+      "type": "number",
+      "description": "Associated order number"
+    }
+  },
+  "required": [
+    "store_slug",
+    "score"
+  ]
+}

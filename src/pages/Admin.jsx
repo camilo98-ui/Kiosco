@@ -5,6 +5,7 @@ import AdminLogin from "@/components/admin/AdminLogin";
 import ProductManager from "@/components/admin/ProductManager";
 import OrderHistory from "@/components/admin/OrderHistory";
 import AdminStats from "@/components/admin/AdminStats";
+import RatingsPanel from "@/components/admin/RatingsPanel";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Sun, Moon } from "lucide-react";
@@ -58,10 +59,11 @@ export default function Admin() {
 
       <div className="max-w-2xl mx-auto px-4 py-4">
         <Tabs defaultValue="stats">
-          <TabsList className="w-full rounded-2xl bg-muted mb-4">
+          <TabsList className="w-full rounded-2xl bg-muted mb-4 flex-wrap gap-1">
             <TabsTrigger value="stats" className="flex-1 rounded-xl">📊 Stats</TabsTrigger>
             <TabsTrigger value="products" className="flex-1 rounded-xl">🍦 Productos</TabsTrigger>
             <TabsTrigger value="orders" className="flex-1 rounded-xl">📋 Pedidos</TabsTrigger>
+            <TabsTrigger value="ratings" className="flex-1 rounded-xl">⭐ Reseñas</TabsTrigger>
           </TabsList>
           <TabsContent value="stats">
             <AdminStats />
@@ -71,6 +73,9 @@ export default function Admin() {
           </TabsContent>
           <TabsContent value="orders">
             <OrderHistory />
+          </TabsContent>
+          <TabsContent value="ratings">
+            <RatingsPanel />
           </TabsContent>
         </Tabs>
       </div>

@@ -4,6 +4,7 @@ import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
+import { StoreProvider } from '@/lib/storeContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Menu from './pages/Menu';
 import Cajero from './pages/Cajero';
@@ -53,10 +54,12 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
+        <StoreProvider>
+          <Router>
+            <AuthenticatedApp />
+          </Router>
+          <Toaster />
+        </StoreProvider>
       </QueryClientProvider>
     </AuthProvider>
   )

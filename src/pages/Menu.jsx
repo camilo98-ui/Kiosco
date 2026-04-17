@@ -5,8 +5,11 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { useCart } from "@/lib/cartStore";
+import { useStore } from "@/lib/storeContext";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
 import { Search, Loader2, ChevronRight, ArrowLeft } from "lucide-react";
+import StoreSelector from "@/components/StoreSelector";
+import RatingScreen from "@/components/RatingScreen";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import SearchModal from "@/components/menu/SearchModal";
 import PromoBanners from "@/components/menu/PromoBanners";
@@ -189,6 +192,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
 
 export default function Menu() {
   useSwipeNavigation();
+  const { store, selectStore, loading: storeLoading } = useStore();
   const [activeCategory, setActiveCategory] = useState(null);
   const [upsellMsg, setUpsellMsg] = useState(null);
   const [upsellTarget, setUpsellTarget] = useState(null);
@@ -206,6 +210,7 @@ export default function Menu() {
   const [showParaLlevarUpsell, setShowParaLlevarUpsell] = useState(false);
   const [upsellSeenThisSession, setUpsellSeenThisSession] = useState(false);
   const [nextOrderNum, setNextOrderNum] = useState(null);
+  const [showRating, setShowRating] = useState(false);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -346,6 +351,8 @@ export default function Menu() {
       total: orderTotal,
       id: `temp-${Date.now()}`,
     });
+    // Show rating after a short delay
+    setTimeout(() => setShowRating(true), 1200);
     setPendingCheckoutName(null);
     setIsSubmitting(false);
     
@@ -388,8 +395,23 @@ export default function Menu() {
     setUpsellSeenThisSession(false);
   };
 
+  // Store selector screen
+  if (!storeLoading && !store) {
+    return <StoreSelector onSelect={selectStore} />;
+  }
+
+  if (confirmedOrder && showRating) {
+    return (
+      <RatingScreen
+        order={confirmedOrder}
+        store={store}
+        onDone={() => { setShowRating(false); setConfirmedOrder(null); }}
+      />
+    );
+  }
+
   if (confirmedOrder) {
-    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} onEditOrder={handleEditOrder} />;
+    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => { setConfirmedOrder(null); setShowRating(false); }} onEditOrder={handleEditOrder} />;
   }
 
   if (activeCategory === "granizados") {
@@ -473,6 +495,11 @@ export default function Menu() {
         <div className="flex items-center gap-2 pl-0 pr-3" style={{ height: 48 }}>
           <div style={{ width: "45%", minWidth: 120, flexShrink: 0 }}>
             <PopsyLogo onClick={handleLogoClick} size="normal" dark />
+            {store?.name && (
+              <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.75)", paddingLeft: 14, letterSpacing: "0.5px", textTransform: "uppercase", display: "block", marginTop: -4 }}>
+                📍 {store.name}
+              </span>
+            )}
           </div>
           <button
             onClick={() => setSearchOpen(true)}

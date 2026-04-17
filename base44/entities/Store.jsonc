@@ -1,0 +1,31 @@
+{
+  "name": "Store",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Store name"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL slug for the store (e.g. chapinero)"
+    },
+    "address": {
+      "type": "string",
+      "description": "Store address"
+    },
+    "schedule": {
+      "type": "string",
+      "description": "Store schedule (e.g. Lun-Dom 10am\u201310pm)"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the store is active"
+    }
+  },
+  "required": [
+    "name",
+    "slug"
+  ]
+}
