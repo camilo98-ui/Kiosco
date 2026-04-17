@@ -13,6 +13,7 @@ import GranizadoCustomizer from "@/components/menu/GranizadoCustomizer";
 import ConeCustomizer from "@/components/menu/ConeCustomizer";
 import GenericCustomizer from "@/components/menu/GenericCustomizer";
 import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer";
+import CookieJaarCustomizer from "@/components/menu/CookieJaarCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
 
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
@@ -517,12 +518,15 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const [coneProduct, setConeProduct] = useState(null);
   const [genericProduct, setGenericProduct] = useState(null);
   const [especialidadesProduct, setEspecialidadesProduct] = useState(null);
+  const [cookieJaarOpen, setCookieJaarOpen] = useState(false);
 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
   const handleAdd = useCallback((product) => {
-    if (category === "malteadas") {
+    if (category === "combos" && (product.badge === "Cookie Jaar" || (product.title && product.title.toLowerCase().includes("galleta")))) {
+      setCookieJaarOpen(true);
+    } else if (category === "malteadas") {
       if (product.name.includes("12oz")) {
         setCustomizer12ozProduct(product);
       } else {
@@ -649,6 +653,11 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
         product={especialidadesProduct}
         open={!!especialidadesProduct}
         onClose={() => setEspecialidadesProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <CookieJaarCustomizer
+        open={cookieJaarOpen}
+        onClose={() => setCookieJaarOpen(false)}
         onAdd={handleCustomizerAdd}
       />
     </>
