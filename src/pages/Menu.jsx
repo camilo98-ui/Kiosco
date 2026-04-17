@@ -95,8 +95,8 @@ function FamilyCarousel({ productCounts, onSelect, hasCookieJaar }) {
   FAMILY_CARDS :
   FAMILY_CARDS.filter((c) => c.id !== "combos");
   return (
-    <div style={{ background: "transparent", padding: "10px 0 14px", marginTop: 2 }}>
-      <p style={{ fontSize: 20, fontWeight: 800, color: "#2D1A12", margin: "0 0 14px 16px", fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.4px" }}>¿Qué se te antoja? 😏</p>
+    <div style={{ background: "transparent", padding: "32px 16px 20px", marginTop: 0 }}>
+      <p style={{ fontSize: 22, fontWeight: 800, color: "#C41E6A", margin: "0 0 18px", fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.3px" }}>¿Qué se te antoja? 😋</p>
       <CategoryGrid categories={visibleCards} productCounts={productCounts} onSelect={onSelect} />
     </div>);
 
@@ -139,8 +139,8 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   if (top.length === 0) return null;
   return (
     <div style={{ background: "transparent", marginTop: 10 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
-      <p style={{ fontSize: 20, fontWeight: 800, color: "#2D1A12", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.4px" }}>Los favoritos de todos 🔥</p>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "28px 16px 14px" }}>
+      <p style={{ fontSize: 22, fontWeight: 800, color: "#C41E6A", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.3px" }}>Los favoritos de todos 🔥</p>
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#C41E6A" }}>Ver todo</button>
       </div>
       {top.map((product, idx) =>
@@ -489,7 +489,7 @@ export default function Menu() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#FDFBF9" }}>
+    <div className="min-h-screen" style={{ background: "linear-gradient(180deg, #FFF0F6 0%, #FDFBF7 100%)" }}>
       {/* ── HEADER ── */}
       <AppHeader
         storeName={store?.name}

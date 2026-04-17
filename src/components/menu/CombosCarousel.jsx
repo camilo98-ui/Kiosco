@@ -15,10 +15,10 @@ function ComboCard({ combo, onCardClick }) {
         width: CARD_WIDTH,
         flexShrink: 0,
         borderRadius: 24,
-        border: "1px solid rgba(196,30,106,0.08)",
+        border: "none",
         background: "#fff",
         overflow: "hidden",
-        boxShadow: "0 4px 20px rgba(196,30,106,0.10)",
+        boxShadow: "0 8px 24px rgba(139, 69, 19, 0.12)",
         userSelect: "none",
         WebkitUserSelect: "none",
         cursor: "pointer",
@@ -215,9 +215,9 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
   };
 
   return (
-    <div style={{ background: "transparent", marginTop: 10, padding: "16px 0 12px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
-        <p style={{ fontSize: 20, fontWeight: 800, color: "#2D1A12", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.4px" }}>
+    <div style={{ background: "transparent", marginTop: 0, padding: "28px 0 18px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 18 }}>
+        <p style={{ fontSize: 22, fontWeight: 800, color: "#C41E6A", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.3px" }}>
           Combos que enamoran 💕
         </p>
         <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#C41E6A", padding: 0 }}>

@@ -10,43 +10,40 @@ export default function AppHeader({ storeName, onLogoClick, onStoreClick }) {
         position: "sticky",
         top: 0,
         zIndex: 20,
-        background: "#FDFBF9",
-        padding: "12px 20px 14px",
+        background: "#E8187A",
+        padding: "32px 20px 24px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 8,
+        gap: 16,
       }}
     >
-      {/* Pastilla frosted-glass */}
+      {/* Large white logo centered */}
       <button
         onClick={onLogoClick}
         style={{
-          background: "rgba(255,255,255,0.72)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          border: "1px solid rgba(45,26,18,0.08)",
-          borderRadius: 999,
-          padding: "10px 36px",
+          background: "none",
+          border: "none",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 2px 16px rgba(45,26,18,0.07)",
+          padding: 0,
         }}
       >
         <img
           src={LOGO_URL}
           alt="Popsy"
           style={{
-            height: 52,
+            height: 68,
             width: "auto",
             objectFit: "contain",
+            filter: "brightness(0) invert(1)",
           }}
         />
       </button>
 
-      {/* Store name — chocolate, minimal */}
+      {/* Store name — white, minimal */}
       {storeName && (
         <button
           onClick={onStoreClick}
@@ -57,21 +54,20 @@ export default function AppHeader({ storeName, onLogoClick, onStoreClick }) {
             padding: 0,
             display: "flex",
             alignItems: "center",
-            gap: 5,
+            gap: 4,
           }}
         >
-          <MapPin size={9} color="#C41E6A" strokeWidth={2.5} style={{ flexShrink: 0 }} />
+          <MapPin size={10} color="#fff" strokeWidth={1.5} style={{ flexShrink: 0 }} />
           <p
             style={{
-              fontSize: 9,
-              fontWeight: 600,
-              color: "#2D1A12",
+              fontSize: 10,
+              fontWeight: 500,
+              color: "#fff",
               margin: 0,
-              letterSpacing: "0.22em",
+              letterSpacing: "0.18em",
               textTransform: "uppercase",
               fontFamily: "'Poppins', sans-serif",
               whiteSpace: "nowrap",
-              opacity: 0.75,
             }}
           >
             {storeName}

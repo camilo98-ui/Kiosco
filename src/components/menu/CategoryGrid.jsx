@@ -50,13 +50,13 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             position: "relative",
             minWidth: 160,
             height: 210,
-            borderRadius: 32,
+            borderRadius: 24,
             overflow: "hidden",
             background: "transparent",
-            border: "1px solid rgba(196,30,106,0.07)",
+            border: "none",
             cursor: "pointer",
             flexShrink: 0,
-            boxShadow: "0 8px 32px rgba(196,30,106,0.12), 0 2px 8px rgba(196,30,106,0.06)",
+            boxShadow: "0 8px 24px rgba(139, 69, 19, 0.12)",
           }}
         >
           {/* Imagen de fondo */}
@@ -74,27 +74,29 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             />
           )}
 
-          {/* Label — clean white capsule */}
+          {/* Glassmorphism bar at bottom */}
           <div
             style={{
               position: "absolute",
-              bottom: 10,
-              left: "50%",
-              transform: "translateX(-50%)",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 44,
+              background: "rgba(255,255,255,0.78)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              borderTop: "1px solid rgba(255,255,255,0.5)",
               zIndex: 2,
-              background: "rgba(255,255,255,0.82)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-              borderRadius: 999,
-              padding: "4px 14px",
-              whiteSpace: "nowrap",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <p
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
-                color: "#2D1A12",
+                color: "#3D2B1F",
                 margin: 0,
                 fontFamily: "'Poppins', sans-serif",
                 letterSpacing: "0.01em",
