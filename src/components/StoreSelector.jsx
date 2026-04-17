@@ -125,7 +125,7 @@ export default function StoreSelector({ onSelect }) {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F8F5F7", display: "flex", flexDirection: "column", fontFamily: "-apple-system, 'SF Pro Display', 'Poppins', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #FFF0F6 0%, #FDFBF7 100%)", display: "flex", flexDirection: "column", fontFamily: "-apple-system, 'SF Pro Display', 'Poppins', sans-serif" }}>
 
       {/* ── HERO ── */}
       <div style={{
@@ -187,7 +187,7 @@ export default function StoreSelector({ onSelect }) {
       {/* ── White card that overlaps the hero ── */}
       <div style={{
         flex: 1,
-        background: "#F8F5F7",
+        background: "transparent",
         borderRadius: "28px 28px 0 0",
         marginTop: -28,
         position: "relative",
