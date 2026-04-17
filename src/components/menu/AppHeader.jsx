@@ -1,75 +1,78 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { MapPin } from "lucide-react";
 
 const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2b9a2f800_Logo_poopsy-removebg-preview.png";
 
-export default function AppHeader({ storeName, onLogoClick, onCartClick, onStoreClick }) {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+export default function AppHeader({ storeName, onLogoClick, onStoreClick }) {
   return (
     <div
       style={{
         position: "sticky",
         top: 0,
         zIndex: 20,
-        background: "#C41E6A",
+        background: "#FDFBF9",
+        padding: "12px 20px 14px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 8,
       }}
     >
-      {/* Pink bar — logo only */}
-      <div
+      {/* Pastilla frosted-glass */}
+      <button
+        onClick={onLogoClick}
         style={{
-          height: 72,
+          background: "rgba(255,255,255,0.72)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          border: "1px solid rgba(45,26,18,0.08)",
+          borderRadius: 999,
+          padding: "10px 36px",
+          cursor: "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          boxShadow: "0 2px 16px rgba(45,26,18,0.07)",
         }}
       >
-        <button
-          onClick={onLogoClick}
-          style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
-        >
-          <img
-            src={LOGO_URL}
-            alt="Popsy"
-            style={{
-              height: 124,
-              width: "auto",
-              objectFit: "contain",
-              filter: "brightness(0) invert(1)",
-            }}
-          />
-        </button>
-      </div>
+        <img
+          src={LOGO_URL}
+          alt="Popsy"
+          style={{
+            height: 38,
+            width: "auto",
+            objectFit: "contain",
+            filter: "brightness(0) sepia(1) hue-rotate(340deg) saturate(0.3) brightness(0.25)",
+          }}
+        />
+      </button>
 
-      {/* Thin store name bar */}
+      {/* Store name — chocolate, minimal */}
       {storeName && (
         <button
           onClick={onStoreClick}
           style={{
-            width: "100%",
-            background: "rgba(0,0,0,0.10)",
+            background: "none",
             border: "none",
             cursor: "pointer",
-            padding: "3px 0 4px",
+            padding: 0,
             display: "flex",
-            justifyContent: "center",
+            alignItems: "center",
+            gap: 5,
           }}
         >
+          <MapPin size={9} color="#2D1A12" strokeWidth={2} style={{ flexShrink: 0, opacity: 0.6 }} />
           <p
             style={{
               fontSize: 9,
-              fontWeight: 300,
-              color: "rgba(255,255,255,0.75)",
+              fontWeight: 400,
+              color: "#2D1A12",
               margin: 0,
-              letterSpacing: "0.28em",
+              letterSpacing: "0.24em",
               textTransform: "uppercase",
               fontFamily: "'Poppins', sans-serif",
               whiteSpace: "nowrap",
+              opacity: 0.6,
             }}
           >
             {storeName}

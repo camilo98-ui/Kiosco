@@ -74,33 +74,29 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             />
           )}
 
-          {/* Glassmorphism panel inferior — ultra-thin 20% */}
+          {/* Label — clean white capsule */}
           <div
             style={{
               position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "18%",
-              background: "rgba(255,255,255,0.20)",
-              backdropFilter: "blur(10px)",
-              WebkitBackdropFilter: "blur(10px)",
-              borderTop: "1px solid rgba(255,255,255,0.15)",
-              display: "flex",
-              alignItems: "center",
-              paddingLeft: 14,
+              bottom: 10,
+              left: "50%",
+              transform: "translateX(-50%)",
               zIndex: 2,
+              background: "rgba(255,255,255,0.82)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              borderRadius: 999,
+              padding: "4px 14px",
+              whiteSpace: "nowrap",
             }}
           >
             <p
               style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: "#fff",
+                fontSize: 11,
+                fontWeight: 700,
+                color: "#2D1A12",
                 margin: 0,
-                lineHeight: 1.2,
                 fontFamily: "'Poppins', sans-serif",
-                textShadow: "0 1px 4px rgba(0,0,0,0.25)",
                 letterSpacing: "0.01em",
               }}
             >
