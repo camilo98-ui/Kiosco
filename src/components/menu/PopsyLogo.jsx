@@ -8,13 +8,13 @@ export default function PopsyLogo({ onClick, size = "normal", dark = false }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center select-none focus:outline-none -ml-3"
-    >
+      className="flex items-center select-none focus:outline-none -ml-3">
+      
       <img
         src={LOGO_URL}
-        alt="Popsy"
-        className={`${imgSize} w-auto object-contain ${dark ? "brightness-0 invert" : ""}`}
-      />
-    </button>
-  );
+        alt="Popsy" className="h-24 w-auto object-contain brightness-0 invert hidden" />
+
+      
+    </button>);
+
 }
