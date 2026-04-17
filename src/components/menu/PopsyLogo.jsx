@@ -10,9 +10,9 @@ export default function PopsyLogo({ onClick, size = "normal", dark = false }) {
       onClick={onClick}
       className="flex items-center select-none focus:outline-none -ml-3">
       
-      <img
-        src={LOGO_URL}
-        alt="Popsy" className="h-24 w-auto object-contain brightness-0 invert hidden" />
+      
+
+      
 
       
     </button>);
