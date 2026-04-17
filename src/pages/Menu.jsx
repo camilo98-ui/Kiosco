@@ -486,7 +486,7 @@ export default function Menu() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#FFF5F7" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "#FFF5F7" }}>
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20"
@@ -526,7 +526,7 @@ export default function Menu() {
       </div>
 
       {/* ── CONTENIDO ── */}
-      <div style={{ paddingBottom: 120, background: "#FFF5F7" }}>
+      <div style={{ paddingBottom: 120, background: "#FFF5F7", flex: 1 }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "transparent", padding: "12px 0 8px" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </motion.div>
