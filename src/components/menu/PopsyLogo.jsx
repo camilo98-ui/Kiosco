@@ -3,12 +3,12 @@ import React from "react";
 const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/af2c73dd3_popsy-b-01__4_-removebg-preview1.png";
 
 export default function PopsyLogo({ onClick, size = "normal", dark = false }) {
-  const imgSize = size === "small" ? "h-10" : size === "large" ? "h-28" : "h-24";
+  const imgSize = size === "small" ? "h-10" : size === "large" ? "h-28" : "h-10";
 
   return (
     <button
       onClick={onClick}
-      className="flex items-center select-none focus:outline-none -ml-3"
+      className="flex items-center select-none focus:outline-none pl-4"
     >
       <img
         src={LOGO_URL}
