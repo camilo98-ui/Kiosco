@@ -495,6 +495,7 @@ export default function Menu() {
         storeName={store?.name}
         onLogoClick={handleLogoClick}
         onCartClick={() => setCheckoutOpen(true)}
+        onStoreClick={() => setShowStorePicker(true)}
       />
       
 

@@ -57,10 +57,13 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
         />
       </button>
 
-      {/* Center — Store location */}
-      <div style={{ flex: 1, textAlign: "center", padding: "0 10px" }}>
+      {/* Center — Store location (clickeable para cambiar tienda) */}
+      <button
+        onClick={onStoreClick}
+        style={{ flex: 1, textAlign: "center", padding: "0 10px", background: "none", border: "none", cursor: "pointer" }}
+      >
         {storeName && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, background: "rgba(255,255,255,0.15)", borderRadius: 20, padding: "5px 12px" }}>
             <MapPin size={12} color="rgba(248,249,250,0.85)" strokeWidth={2.5} />
             <p
               style={{
@@ -79,7 +82,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
             </p>
           </div>
         )}
-      </div>
+      </button>
 
       {/* Right — Cart */}
       <button
