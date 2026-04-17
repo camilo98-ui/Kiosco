@@ -7,7 +7,7 @@ import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { useCart } from "@/lib/cartStore";
 import { useStore } from "@/lib/storeContext";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
-import { Search, Loader2, ChevronRight, ArrowLeft } from "lucide-react";
+import { Search, Loader2, ChevronRight, ArrowLeft, MapPin } from "lucide-react";
 import StoreSelector from "@/components/StoreSelector";
 import RatingScreen from "@/components/RatingScreen";
 import PopsyLogo from "@/components/menu/PopsyLogo";
@@ -214,6 +214,7 @@ export default function Menu() {
   const [upsellSeenThisSession, setUpsellSeenThisSession] = useState(false);
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const [showRating, setShowRating] = useState(false);
+  const [showStorePicker, setShowStorePicker] = useState(false);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -518,6 +519,18 @@ export default function Menu() {
               ¿Qué se te antoja?
             </span>
           </button>
+          {/* Store picker icon */}
+          <button
+            onClick={() => setShowStorePicker(true)}
+            style={{
+              width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
+              background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.3)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <MapPin size={16} color="#fff" />
+          </button>
         </div>
         {/* Buscador visible permanente */}
         <div style={{ display: "none" }}>
@@ -574,6 +587,28 @@ export default function Menu() {
       <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
       {showMostOrdered && (
         <MostOrderedAll products={products} onAdd={(p) => { handleAddProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
+      )}
+
+      {/* Store picker modal */}
+      {showStorePicker && (
+        <div
+          style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "flex-end" }}
+          onClick={() => setShowStorePicker(false)}
+        >
+          <motion.div
+            initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 32 }}
+            onClick={e => e.stopPropagation()}
+            style={{ width: "100%", background: "#fff", borderRadius: "24px 24px 0 0", padding: "20px 20px 40px", maxHeight: "80vh", overflowY: "auto" }}
+          >
+            <div style={{ width: 40, height: 4, borderRadius: 2, background: "#E0D0D8", margin: "0 auto 20px" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+              <MapPin size={16} color="#C41E6A" />
+              <p style={{ fontSize: 16, fontWeight: 800, color: "#1A0A10", margin: 0 }}>Cambiar tienda</p>
+            </div>
+            <StoreSelector onSelect={(s) => { selectStore(s); setShowStorePicker(false); }} />
+          </motion.div>
+        </div>
       )}
     </div>
   );
