@@ -488,7 +488,7 @@ export default function Menu() {
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20"
-        style={{ background: "linear-gradient(180deg, rgba(216, 27, 96, 0.95) 0%, rgba(216, 27, 96, 0.92) 100%)", overflow: "hidden", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(255, 255, 255, 0.1)" }}>
+        style={{ background: "linear-gradient(180deg, rgba(216, 27, 96, 0.95) 0%, rgba(216, 27, 96, 0.92) 100%)", overflow: "hidden", backdropFilter: "blur(10px)", borderBottom: "2px solid #FF66A3" }}>
         
         <HeaderLine hasCart={itemCount > 0} />
         {/* Fila logo + ubicación + buscador */}
