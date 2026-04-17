@@ -49,14 +49,14 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
           style={{
             position: "relative",
             minWidth: 160,
-            height: 200,
-            borderRadius: 16,
+            height: 210,
+            borderRadius: 32,
             overflow: "hidden",
             background: "transparent",
             border: "none",
             cursor: "pointer",
             flexShrink: 0,
-            boxShadow: "0 10px 25px 0 rgba(45,26,18,0.08)",
+            boxShadow: "0 12px 40px 0 rgba(100,60,30,0.10), 0 2px 8px 0 rgba(100,60,30,0.06)",
           }}
         >
           {/* Imagen de fondo */}
@@ -74,32 +74,34 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             />
           )}
 
-          {/* Glassmorphism panel inferior */}
+          {/* Glassmorphism panel inferior — ultra-thin 20% */}
           <div
             style={{
               position: "absolute",
               bottom: 0,
               left: 0,
               right: 0,
-              height: "20%",
-              background: "rgba(255,255,255,0.40)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              borderTop: "1px solid rgba(255,255,255,0.25)",
+              height: "18%",
+              background: "rgba(255,255,255,0.20)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              borderTop: "1px solid rgba(255,255,255,0.15)",
               display: "flex",
               alignItems: "center",
-              paddingLeft: 12,
+              paddingLeft: 14,
               zIndex: 2,
             }}
           >
             <p
               style={{
-                fontSize: 14,
-                fontWeight: 700,
-                color: "#3D2B1F",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#fff",
                 margin: 0,
                 lineHeight: 1.2,
                 fontFamily: "'Poppins', sans-serif",
+                textShadow: "0 1px 4px rgba(0,0,0,0.25)",
+                letterSpacing: "0.01em",
               }}
             >
               {category.label}

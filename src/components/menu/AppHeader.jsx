@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ShoppingCart, MapPin } from "lucide-react";
-import { useCart } from "@/lib/cartStore";
 
 const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2b9a2f800_Logo_poopsy-removebg-preview.png";
 
 export default function AppHeader({ storeName, onLogoClick, onCartClick, onStoreClick }) {
-  const { itemCount } = useCart();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -20,19 +17,20 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick, onStore
         position: "sticky",
         top: 0,
         zIndex: 20,
-        height: 88,
+        height: 120,
         background: "#C41E6A",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 16px",
+        justifyContent: "center",
+        gap: 6,
         boxShadow: scrolled
-          ? "0 4px 20px rgba(196,30,106,0.35)"
-          : "0 2px 8px rgba(196,30,106,0.20)",
+          ? "0 4px 24px rgba(196,30,106,0.32)"
+          : "0 2px 10px rgba(196,30,106,0.18)",
         transition: "box-shadow 0.3s ease",
       }}
     >
-      {/* Left — Logo */}
+      {/* Logo — centered, large, clickable for hidden menu */}
       <button
         onClick={onLogoClick}
         style={{
@@ -42,14 +40,14 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick, onStore
           padding: 0,
           display: "flex",
           alignItems: "center",
-          flexShrink: 0,
+          justifyContent: "center",
         }}
       >
         <img
           src={LOGO_URL}
           alt="Popsy"
           style={{
-            height: "calc(88px * 0.45)",
+            height: 52,
             width: "auto",
             objectFit: "contain",
             filter: "brightness(0) invert(1)",
@@ -57,77 +55,33 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick, onStore
         />
       </button>
 
-      {/* Center — Store location (clickeable para cambiar tienda) */}
-      <button
-        onClick={onStoreClick}
-        style={{ flex: 1, textAlign: "center", padding: "0 10px", background: "none", border: "none", cursor: "pointer" }}
-      >
-        {storeName && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, background: "rgba(255,255,255,0.15)", borderRadius: 20, padding: "5px 12px" }}>
-            <MapPin size={12} color="rgba(248,249,250,0.85)" strokeWidth={2.5} />
-            <p
-              style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: "rgba(255,255,255,0.95)",
-                margin: 0,
-                lineHeight: 1,
-                fontFamily: "'Poppins', sans-serif",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {storeName}
-            </p>
-          </div>
-        )}
-      </button>
-
-      {/* Right — Cart */}
-      <button
-        onClick={onCartClick}
-        data-cart-icon
-        style={{
-          background: "rgba(255,255,255,0.18)",
-          border: "none",
-          borderRadius: "50%",
-          width: 40,
-          height: 40,
-          cursor: "pointer",
-          position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-        }}
-      >
-        <ShoppingCart size={22} color="#F8F9FA" strokeWidth={2} />
-        {itemCount > 0 && (
-          <span
+      {/* Store name — fine, wide letter-spacing */}
+      {storeName && (
+        <button
+          onClick={onStoreClick}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+          }}
+        >
+          <p
             style={{
-              position: "absolute",
-              top: -3,
-              right: -3,
-              background: "#fff",
-              color: "#C41E6A",
               fontSize: 10,
-              fontWeight: 900,
-              borderRadius: "50%",
-              minWidth: 18,
-              height: 18,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "0 4px",
+              fontWeight: 300,
+              color: "rgba(255,255,255,0.80)",
+              margin: 0,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
               fontFamily: "'Poppins', sans-serif",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+              whiteSpace: "nowrap",
             }}
           >
-            {itemCount > 9 ? "9+" : itemCount}
-          </span>
-        )}
-      </button>
+            {storeName}
+          </p>
+        </button>
+      )}
     </div>
   );
 }
