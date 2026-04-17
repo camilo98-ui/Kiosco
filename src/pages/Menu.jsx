@@ -495,26 +495,12 @@ export default function Menu() {
         <div className="flex items-center gap-2 pl-0 pr-3" style={{ height: 48 }}>
           <div style={{ width: "45%", minWidth: 120, flexShrink: 0 }}>
             <PopsyLogo onClick={handleLogoClick} size="normal" dark />
-            {store?.name &&
-            <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.75)", paddingLeft: 14, letterSpacing: "0.5px", textTransform: "uppercase", display: "block", marginTop: -4 }} className=" hidden hidden">
-                📍 {store.name}
-              </span>
-            }
           </div>
-          <button
-            onClick={() => setSearchOpen(true)}
-            style={{
-              flex: 1, display: "flex", alignItems: "center", gap: 8,
-              background: "rgba(255,255,255,0.18)", borderRadius: 24,
-              padding: "8px 14px", border: "1.5px solid rgba(255,255,255,0.25)",
-              cursor: "pointer", textAlign: "left", height: 36
-            }}>
-            
-            <Search size={14} color="rgba(255,255,255,0.85)" />
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", fontFamily: "'Poppins', sans-serif", fontWeight: 500 }}>
+          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: 8 }}>
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 500 }}>
               ¿Qué se te antoja?
             </span>
-          </button>
+          </div>
         </div>
         {/* Buscador visible permanente */}
         <div style={{ display: "none" }}>
