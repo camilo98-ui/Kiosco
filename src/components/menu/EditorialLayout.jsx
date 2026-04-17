@@ -34,18 +34,18 @@ function getProductHint(product) {
 }
 
 const CATEGORY_BG = {
-  helados: "#FFFFFF",
-  malteadas: "#FFFFFF",
-  especialidades: "#FFFFFF",
-  cafe: "#FFFFFF",
-  galletas: "#FFFFFF",
-  paletas_packs: "#FFFFFF",
-  popsy_toy: "#FFFFFF",
-  para_llevar: "#FFFFFF",
-  tortas: "#FFFFFF",
-  regalos: "#FFFFFF",
-  bebidas: "#FFFFFF",
-  adiciones: "#FFFFFF",
+  helados: "#FFF0F5",
+  malteadas: "#F3E8FF",
+  especialidades: "#FFFAF0",
+  cafe: "#FFF5F0",
+  galletas: "#FFF9F0",
+  paletas_packs: "#F0FFF4",
+  popsy_toy: "#F0F5FF",
+  para_llevar: "#F5FFF0",
+  tortas: "#FFF0F5",
+  regalos: "#FFF0FF",
+  bebidas: "#F0FAFF",
+  adiciones: "#FFFAF0",
 };
 
 function ProductImageBox({ product, bg, size = 120, emojiSize = 50 }) {
