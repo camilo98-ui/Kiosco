@@ -37,7 +37,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick, onStore
             src={LOGO_URL}
             alt="Popsy"
             style={{
-              height: 310,
+              height: 186,
               width: "auto",
               objectFit: "contain",
               filter: "brightness(0) invert(1)",
