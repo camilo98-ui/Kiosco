@@ -115,11 +115,11 @@ export default function PromoBanners({ onCategorySelect }) {
   const banner = BANNERS[active];
 
   return (
-    <div className="px-1 mb-0" style={{ marginBottom: 0 }}>
+    <div className="mb-0" style={{ marginBottom: 0, paddingLeft: 0, paddingRight: 0 }}>
       <div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        style={{ cursor: "grab", position: "relative", borderRadius: 16, overflow: "hidden" }}
+        style={{ cursor: "grab", position: "relative", borderRadius: 28, overflow: "hidden", boxShadow: "0 2px 8px rgba(196, 30, 106, 0.06)" }}
         onClick={() => onCategorySelect?.(banner.category)}
       >
         {BANNERS.map((b, i) => (

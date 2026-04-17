@@ -214,12 +214,12 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
   };
 
   return (
-    <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
-        <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: 0 }}>
+    <div style={{ background: "transparent", marginTop: 0, padding: "0" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 14, paddingRight: 14, marginBottom: 12 }}>
+        <p style={{ fontSize: 16, fontWeight: 600, color: "#2D1A22", margin: 0, letterSpacing: "0.5px" }}>
           Combos que enamoran 💕
         </p>
-        <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A", padding: 0 }}>
+        <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#D81B60", padding: 0, letterSpacing: "0.3px" }}>
           Ver todos
         </button>
       </div>
@@ -233,8 +233,8 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
         onMouseLeave={() => { if (!isDraggingRef.current) { pausedRef.current = false; } }}
         style={{
           overflow: "hidden",
-          paddingLeft: 16,
-          paddingBottom: 4,
+          paddingLeft: 14,
+          paddingBottom: 0,
           cursor: "grab",
           userSelect: "none",
           WebkitUserSelect: "none",

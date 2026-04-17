@@ -107,7 +107,7 @@ function MostOrderedItem({ product, idx, onAdd, onSelectCategory }) {
   return (
     <button
       onClick={handleClick}
-      style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}>
+      style={{ display: "flex", alignItems: "center", gap: 14, background: "transparent", border: "none", borderBottom: "1px solid rgba(245, 234, 239, 0.5)", padding: "12px 0", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}>
       
       <div style={{ width: 52, height: 52, borderRadius: 14, background: ITEM_BG[idx % ITEM_BG.length], display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
         {product.image_url && !imgError ?
@@ -134,15 +134,15 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   );
   if (top.length === 0) return null;
   return (
-    <div style={{ background: "transparent", marginTop: 10 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
+    <div style={{ background: "transparent", marginTop: 0 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 14px 8px" }}>
       <p style={{ fontSize: 16, fontWeight: 600, color: "#2D1A22", margin: 0, letterSpacing: "0.5px" }}>Los favoritos de todos 🔥</p>
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#D81B60", letterSpacing: "0.3px" }}>Ver todo</button>
       </div>
       {top.map((product, idx) =>
       <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} onSelectCategory={onSelectCategory} />
       )}
-      <div style={{ height: 8 }} />
+      <div style={{ height: 0 }} />
     </div>);
 
 }
@@ -488,11 +488,17 @@ export default function Menu() {
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20"
-        style={{ background: "linear-gradient(180deg, rgba(216, 27, 96, 0.95) 0%, rgba(216, 27, 96, 0.92) 100%)", overflow: "hidden", backdropFilter: "blur(10px)", borderBottom: "2px solid #FF66A3" }}>
+        style={{ 
+          background: "linear-gradient(180deg, rgba(216, 27, 96, 0.98) 0%, rgba(216, 27, 96, 0.96) 100%)",
+          overflow: "hidden",
+          backdropFilter: "blur(12px)",
+          borderBottom: "2px solid #FF66A3",
+          boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 16px rgba(196, 30, 106, 0.12)"
+        }}>
         
         <HeaderLine hasCart={itemCount > 0} />
         {/* Fila logo + ubicación + buscador */}
-        <div className="flex items-center" style={{ height: 48, paddingLeft: 12, paddingRight: 12, gap: 12, alignItems: "center" }}>
+        <div className="flex items-center" style={{ height: 44, paddingLeft: 12, paddingRight: 12, gap: 12, alignItems: "center" }}>
           {/* Logo pequeño */}
           <button onClick={handleLogoClick} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", outline: "none", flexShrink: 0 }}>
             <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/ada5108ff_Captura_de_pantalla_2026-04-17_132506-removebg-preview.png" alt="Popsy" style={{ height: 42, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
@@ -524,14 +530,14 @@ export default function Menu() {
       </div>
 
       {/* ── CONTENIDO ── */}
-      <div style={{ paddingBottom: 120 }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "transparent", padding: "12px 0 8px" }}>
+      <div style={{ paddingBottom: 120, padding: "12px 12px 120px" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "#fff", borderRadius: 32, padding: "12px", marginBottom: 12, boxShadow: "0 2px 8px rgba(196, 30, 106, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.5)" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ marginTop: 0 }}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ background: "#fff", borderRadius: 32, padding: "12px", marginBottom: 12, boxShadow: "0 2px 8px rgba(196, 30, 106, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.5)" }}>
           <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }} style={{ background: "#fff", borderRadius: 32, padding: "12px", marginBottom: 12, boxShadow: "0 2px 8px rgba(196, 30, 106, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.5)" }}>
           <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
         </motion.div>
         {isLoading ?
@@ -539,7 +545,7 @@ export default function Menu() {
             <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#C41E6A" }} />
           </div> :
 
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }} style={{ background: "#fff", borderRadius: 32, padding: "12px", boxShadow: "0 2px 8px rgba(196, 30, 106, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.5)" }}>
             <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} onSelectCategory={(cat, product) => {setActiveCategory(cat);if (product) setAutoOpenProduct(product);}} />
           </motion.div>
         }
