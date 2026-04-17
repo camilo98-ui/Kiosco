@@ -489,7 +489,7 @@ export default function Menu() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "linear-gradient(180deg, #FFF8F4 0%, #FFF5EE 100%)" }}>
+    <div className="min-h-screen" style={{ background: "linear-gradient(180deg, #FFF0F6 0%, #FDFBF7 100%)" }}>
       {/* ── HEADER ── */}
       <AppHeader
         storeName={store?.name}

@@ -20,7 +20,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
         position: "sticky",
         top: 0,
         zIndex: 20,
-        height: 68,
+        height: 88,
         background: "#C41E6A",
         display: "flex",
         alignItems: "center",
@@ -49,7 +49,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
           src={LOGO_URL}
           alt="Popsy"
           style={{
-            height: 64,
+            height: "calc(88px * 0.45)",
             width: "auto",
             objectFit: "contain",
             filter: "brightness(0) invert(1)",
@@ -61,7 +61,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
       <div style={{ flex: 1, textAlign: "center", padding: "0 10px" }}>
         {storeName && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}>
-            <MapPin size={12} color="rgba(255,255,255,0.85)" strokeWidth={2.5} />
+            <MapPin size={12} color="rgba(248,249,250,0.85)" strokeWidth={2.5} />
             <p
               style={{
                 fontSize: 13,
@@ -99,7 +99,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
           flexShrink: 0,
         }}
       >
-        <ShoppingCart size={22} color="#fff" strokeWidth={2} />
+        <ShoppingCart size={22} color="#F8F9FA" strokeWidth={2} />
         {itemCount > 0 && (
           <span
             style={{

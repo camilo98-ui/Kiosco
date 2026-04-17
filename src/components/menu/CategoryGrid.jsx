@@ -56,6 +56,7 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             border: "none",
             cursor: "pointer",
             flexShrink: 0,
+            boxShadow: "0 10px 25px 0 rgba(45,26,18,0.08)",
           }}
         >
           {/* Imagen de fondo */}
@@ -80,8 +81,8 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
               bottom: 0,
               left: 0,
               right: 0,
-              height: "38%",
-              background: "rgba(255,255,255,0.18)",
+              height: "20%",
+              background: "rgba(255,255,255,0.40)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
               borderTop: "1px solid rgba(255,255,255,0.25)",
@@ -93,12 +94,11 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
           >
             <p
               style={{
-                fontSize: 17,
-                fontWeight: 600,
-                color: "#2D1A12",
+                fontSize: 14,
+                fontWeight: 700,
+                color: "#3D2B1F",
                 margin: 0,
                 lineHeight: 1.2,
-                textShadow: "0 1px 2px rgba(255,255,255,0.4)",
                 fontFamily: "'Poppins', sans-serif",
               }}
             >
