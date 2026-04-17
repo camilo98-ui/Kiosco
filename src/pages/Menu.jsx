@@ -500,7 +500,7 @@ export default function Menu() {
           
           {/* Ubicación */}
           <button onClick={() => selectStore(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", borderRight: "1px solid rgba(255,255,255,0.2)", flexShrink: 0 }}>
-            <MapPin size={14} color="#FF6EB4" />
+            <MapPin size={14} color="#fff" />
             <span style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 600, maxWidth: 140, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {store?.address || store?.name || "Tienda"}
             </span>
