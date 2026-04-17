@@ -518,8 +518,6 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const [genericProduct, setGenericProduct] = useState(null);
   const [especialidadesProduct, setEspecialidadesProduct] = useState(null);
 
-  if (!products || products.length === 0) return null;
-
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
@@ -558,6 +556,8 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
       if (onAutoOpenDone) onAutoOpenDone();
     }
   }, [autoOpenProduct?.id]);
+
+  if (!products || products.length === 0) return null;
 
   const handleCustomizerAdd = (productWithPrice, notes) => {
     onAdd(productWithPrice, notes);

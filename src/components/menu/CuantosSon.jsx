@@ -66,6 +66,46 @@ const SECTIONS = [
   },
 ];
 
+function GridCell({ combo, fading, onAdd }) {
+  const [imgErr, setImgErr] = useState(false);
+  return (
+    <motion.button
+      whileTap={{ scale: 0.96 }}
+      onClick={() => onAdd && onAdd({ name: combo.title, product_name: combo.title, price: combo.price, product_id: combo.title })}
+      style={{
+        borderRadius: 14, border: "0.5px solid #FFE4F3", background: "#FFF5F9",
+        overflow: "hidden", cursor: "pointer", padding: 0,
+        opacity: fading ? 0 : 1,
+        transition: "opacity 0.2s ease",
+        display: "flex", flexDirection: "column",
+        boxShadow: "0 2px 6px rgba(196,30,106,0.07)",
+      }}
+    >
+      <div style={{ height: 70, background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        {combo.image && !imgErr ? (
+          <img src={combo.image} alt={combo.title} onError={() => setImgErr(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : (
+          <span style={{ fontSize: 24 }}>🍦</span>
+        )}
+      </div>
+      <div style={{ padding: "5px 6px 7px" }}>
+        <p style={{
+          fontSize: 10, fontWeight: 600, color: "#1A1A1A", margin: 0, lineHeight: 1.3,
+          display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
+        }}>
+          {combo.title}
+        </p>
+        {combo.price > 0 && (
+          <p style={{ fontSize: 11, fontWeight: 700, color: "#C41E6A", margin: "2px 0 0" }}>
+            {formatCOP(combo.price)}
+          </p>
+        )}
+      </div>
+    </motion.button>
+  );
+}
+
 // Grid rotante de 3 columnas — cada columna rota de forma independiente
 function RotatingGrid({ combos, color, onAdd }) {
   // 3 columnas, cada una muestra un producto diferente
@@ -99,47 +139,9 @@ function RotatingGrid({ combos, color, onAdd }) {
   return (
     <div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "0 14px" }}>
-        {[0, 1, 2].map(col => {
-          const combo = combos[indices[col] % combos.length];
-          const [imgErr, setImgErr] = useState(false);
-          return (
-            <motion.button
-              key={col}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => onAdd && onAdd({ name: combo.title, product_name: combo.title, price: combo.price, product_id: combo.title })}
-              style={{
-                borderRadius: 14, border: "0.5px solid #FFE4F3", background: "#FFF5F9",
-                overflow: "hidden", cursor: "pointer", padding: 0,
-                opacity: fading[col] ? 0 : 1,
-                transition: "opacity 0.2s ease",
-                display: "flex", flexDirection: "column",
-                boxShadow: "0 2px 6px rgba(196,30,106,0.07)",
-              }}
-            >
-              <div style={{ height: 70, background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                {combo.image && !imgErr ? (
-                  <img src={combo.image} alt={combo.title} onError={() => setImgErr(true)}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                ) : (
-                  <span style={{ fontSize: 24 }}>🍦</span>
-                )}
-              </div>
-              <div style={{ padding: "5px 6px 7px" }}>
-                <p style={{
-                  fontSize: 10, fontWeight: 600, color: "#1A1A1A", margin: 0, lineHeight: 1.3,
-                  display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
-                }}>
-                  {combo.title}
-                </p>
-                {combo.price > 0 && (
-                  <p style={{ fontSize: 11, fontWeight: 700, color: "#C41E6A", margin: "2px 0 0" }}>
-                    {formatCOP(combo.price)}
-                  </p>
-                )}
-              </div>
-            </motion.button>
-          );
-        })}
+        {[0, 1, 2].map(col => (
+          <GridCell key={col} combo={combos[indices[col] % combos.length]} fading={fading[col]} onAdd={onAdd} />
+        ))}
       </div>
       {/* Dots */}
       <div style={{ display: "flex", justifyContent: "center", gap: 5, marginTop: 10 }}>
