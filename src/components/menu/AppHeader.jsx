@@ -4,7 +4,7 @@ import { useCart } from "@/lib/cartStore";
 
 const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2b9a2f800_Logo_poopsy-removebg-preview.png";
 
-export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
+export default function AppHeader({ storeName, onLogoClick, onCartClick, onStoreClick }) {
   const { itemCount } = useCart();
   const [scrolled, setScrolled] = useState(false);
 
