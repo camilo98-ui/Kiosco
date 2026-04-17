@@ -89,11 +89,14 @@ function CategoryIcons({ activeCategory, onSelect }) {
   );
 }
 
-function FamilyCarousel({ productCounts, onSelect }) {
+function FamilyCarousel({ productCounts, onSelect, hasCookieJaar }) {
+  const visibleCards = hasCookieJaar
+    ? FAMILY_CARDS
+    : FAMILY_CARDS.filter(c => c.id !== "combos");
   return (
     <div style={{ background: "#fff", padding: "10px 0 14px", marginTop: 2 }}>
       <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px" }}>¿Qué se te antoja? 😏</p>
-      <CategoryGrid categories={FAMILY_CARDS} productCounts={productCounts} onSelect={onSelect} />
+      <CategoryGrid categories={visibleCards} productCounts={productCounts} onSelect={onSelect} />
     </div>
   );
 }
@@ -541,7 +544,7 @@ export default function Menu() {
           <PromoBanners onCategorySelect={setActiveCategory} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ marginTop: 0 }}>
-          <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
+          <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} hasCookieJaar={store?.has_cookie_jaar !== false} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
           <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
