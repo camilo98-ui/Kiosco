@@ -21,7 +21,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
         position: "sticky",
         top: 0,
         zIndex: 20,
-        height: 72,
+        height: 68,
         background: "#fff",
         display: "flex",
         alignItems: "center",
@@ -49,7 +49,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick }) {
         <img
           src={LOGO_URL}
           alt="Popsy"
-          style={{ height: 56, width: "auto", objectFit: "contain" }}
+          style={{ height: 64, width: "auto", objectFit: "contain" }}
         />
       </button>
 
