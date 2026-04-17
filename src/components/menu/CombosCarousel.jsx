@@ -49,10 +49,11 @@ function ComboCard({ combo, onCardClick }) {
         />
         <span style={{
           position: "absolute", top: 9, right: 9,
-          background: "#C41E6A", color: "#fff",
+          background: "rgba(255,255,255,0.92)", color: "#2D1A12",
           fontSize: 9, fontWeight: 800,
           borderRadius: 20, padding: "3px 8px",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8)",
+          border: "1px solid rgba(255,255,255,0.6)",
         }}>
           {combo.badge}
         </span>
@@ -216,7 +217,7 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
   return (
     <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
-        <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: 0 }}>
+        <p style={{ fontSize: 18, fontWeight: 700, color: "#2D1A12", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.2px" }}>
           Combos que enamoran 💕
         </p>
         <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A", padding: 0 }}>

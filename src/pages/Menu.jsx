@@ -60,7 +60,7 @@ const FAMILY_CARDS = [
 function CategoryIcons({ activeCategory, onSelect }) {
   return (
     <div style={{ background: "#fff", padding: "18px 16px 16px" }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 14px" }}>Categorías</p>
+      <p style={{ fontSize: 17, fontWeight: 700, color: "#2D1A12", margin: "0 0 14px", fontFamily: "'Poppins', sans-serif" }}>Categorías</p>
       <div style={{ display: "flex", overflowX: "auto", gap: 18, scrollbarWidth: "none", paddingBottom: 2 }}>
         {CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;
@@ -96,7 +96,7 @@ function FamilyCarousel({ productCounts, onSelect, hasCookieJaar }) {
   FAMILY_CARDS.filter((c) => c.id !== "combos");
   return (
     <div style={{ background: "#fff", padding: "10px 0 14px", marginTop: 2 }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px" }}>¿Qué se te antoja? 😏</p>
+      <p style={{ fontSize: 18, fontWeight: 700, color: "#2D1A12", margin: "0 0 12px 16px", fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.2px" }}>¿Qué se te antoja? 😏</p>
       <CategoryGrid categories={visibleCards} productCounts={productCounts} onSelect={onSelect} />
     </div>);
 
@@ -140,7 +140,7 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   return (
     <div style={{ background: "#fff", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Los favoritos de todos 🔥</p>
+      <p style={{ fontSize: 18, fontWeight: 700, color: "#2D1A12", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.2px" }}>Los favoritos de todos 🔥</p>
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
       </div>
       {top.map((product, idx) =>
@@ -489,7 +489,7 @@ export default function Menu() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#FFFAF9" }}>
+    <div className="min-h-screen" style={{ background: "linear-gradient(180deg, #FFF8F4 0%, #FFF5EE 100%)" }}>
       {/* ── HEADER ── */}
       <AppHeader
         storeName={store?.name}

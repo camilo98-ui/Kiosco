@@ -73,36 +73,33 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             />
           )}
 
-          {/* Gradiente oscuro en parte inferior */}
+          {/* Glassmorphism panel inferior */}
           <div
             style={{
               position: "absolute",
               bottom: 0,
               left: 0,
               right: 0,
-              height: "60%",
-              background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)",
-            }}
-          />
-
-          {/* Texto - esquina inferior izquierda */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: 12,
-              left: 12,
-              right: 12,
+              height: "38%",
+              background: "rgba(255,255,255,0.18)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              borderTop: "1px solid rgba(255,255,255,0.25)",
+              display: "flex",
+              alignItems: "center",
+              paddingLeft: 12,
               zIndex: 2,
-              textAlign: "left",
             }}
           >
             <p
               style={{
-                fontSize: 20,
-                fontWeight: 500,
-                color: "#fff",
+                fontSize: 17,
+                fontWeight: 600,
+                color: "#2D1A12",
                 margin: 0,
                 lineHeight: 1.2,
+                textShadow: "0 1px 2px rgba(255,255,255,0.4)",
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               {category.label}
