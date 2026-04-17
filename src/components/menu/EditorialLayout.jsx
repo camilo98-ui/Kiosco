@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP, TAG_CONFIG, CATEGORIES } from "@/lib/constants";
+import { COMBOS_DATA } from "@/lib/combosData";
 import HeladosSubSelector from "@/components/menu/HeladosSubSelector";
 import MalteadaCustomizer from "@/components/menu/MalteadaCustomizer";
 import MalteadaCustomizer12oz from "@/components/menu/MalteadaCustomizer12oz";
@@ -13,7 +14,6 @@ import GranizadoCustomizer from "@/components/menu/GranizadoCustomizer";
 import ConeCustomizer from "@/components/menu/ConeCustomizer";
 import GenericCustomizer from "@/components/menu/GenericCustomizer";
 import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer";
-import CookieJaarCustomizer from "@/components/menu/CookieJaarCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
 
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
@@ -503,6 +503,30 @@ function CafeLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   );
 }
 
+function CombosLayout({ products, onAdd, addedFlash, bg, catLabel }) {
+  // Incluir Cookie Jaar en los combos
+  const cookieJaarProducts = COMBOS_DATA.filter(p => p.badge === "Cookie Jaar");
+  const allProducts = [...products, ...cookieJaarProducts];
+  const available = allProducts.filter(p => p.is_available !== false);
+
+  return (
+    <>
+      <SectionHeader label={catLabel} count={available.length} />
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
+        {available.map(p => (
+          <HorizontalCard
+            key={p.id}
+            product={p}
+            onAdd={onAdd}
+            addedFlash={addedFlash}
+            bg={bg}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
+
 function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   return <HeladosLayout products={products} onAdd={onAdd} addedFlash={addedFlash} bg={bg} catLabel={catLabel} />;
 }
@@ -518,15 +542,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const [coneProduct, setConeProduct] = useState(null);
   const [genericProduct, setGenericProduct] = useState(null);
   const [especialidadesProduct, setEspecialidadesProduct] = useState(null);
-  const [cookieJaarOpen, setCookieJaarOpen] = useState(false);
 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
   const handleAdd = useCallback((product) => {
-    if (category === "combos" && (product.badge === "Cookie Jaar" || (product.title && product.title.toLowerCase().includes("galleta")))) {
-      setCookieJaarOpen(true);
-    } else if (category === "malteadas") {
+    if (category === "malteadas") {
       if (product.name.includes("12oz")) {
         setCustomizer12ozProduct(product);
       } else {
@@ -577,6 +598,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
       case "granizados":    return <EspecialesLayout {...layoutProps} />;
       case "especialidades": return <EspecialesLayout {...layoutProps} />;
       case "cafe":          return <CafeLayout {...layoutProps} />;
+      case "combos":        return <CombosLayout {...layoutProps} />;
       default:              return <DefaultLayout {...layoutProps} />;
     }
   };
@@ -653,11 +675,6 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
         product={especialidadesProduct}
         open={!!especialidadesProduct}
         onClose={() => setEspecialidadesProduct(null)}
-        onAdd={handleCustomizerAdd}
-      />
-      <CookieJaarCustomizer
-        open={cookieJaarOpen}
-        onClose={() => setCookieJaarOpen(false)}
         onAdd={handleCustomizerAdd}
       />
     </>
