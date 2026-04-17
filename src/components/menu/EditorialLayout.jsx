@@ -14,7 +14,6 @@ import ConeCustomizer from "@/components/menu/ConeCustomizer";
 import GenericCustomizer from "@/components/menu/GenericCustomizer";
 import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
-import CookieJaarLayout from "@/components/menu/CookieJaarLayout";
 
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
 
@@ -574,7 +573,6 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
       case "granizados":    return <EspecialesLayout {...layoutProps} />;
       case "especialidades": return <EspecialesLayout {...layoutProps} />;
       case "cafe":          return <CafeLayout {...layoutProps} />;
-      case "combos":        return <CookieJaarLayout onAdd={onAdd} />;
       default:              return <DefaultLayout {...layoutProps} />;
     }
   };

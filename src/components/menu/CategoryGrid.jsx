@@ -49,14 +49,13 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
           style={{
             position: "relative",
             minWidth: 160,
-            height: 210,
-            borderRadius: 24,
+            height: 200,
+            borderRadius: 16,
             overflow: "hidden",
             background: "transparent",
             border: "none",
             cursor: "pointer",
             flexShrink: 0,
-            boxShadow: "0 8px 24px rgba(139, 69, 19, 0.12)",
           }}
         >
           {/* Imagen de fondo */}
@@ -74,32 +73,36 @@ export default function CategoryGrid({ categories, productCounts, onSelect }) {
             />
           )}
 
-          {/* Glassmorphism bar at bottom */}
+          {/* Gradiente oscuro en parte inferior */}
           <div
             style={{
               position: "absolute",
               bottom: 0,
               left: 0,
               right: 0,
-              height: 44,
-              background: "rgba(255,255,255,0.78)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              borderTop: "1px solid rgba(255,255,255,0.5)",
+              height: "60%",
+              background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)",
+            }}
+          />
+
+          {/* Texto - esquina inferior izquierda */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: 12,
+              left: 12,
+              right: 12,
               zIndex: 2,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              textAlign: "left",
             }}
           >
             <p
               style={{
-                fontSize: 12,
-                fontWeight: 700,
-                color: "#3D2B1F",
+                fontSize: 20,
+                fontWeight: 500,
+                color: "#fff",
                 margin: 0,
-                fontFamily: "'Poppins', sans-serif",
-                letterSpacing: "0.01em",
+                lineHeight: 1.2,
               }}
             >
               {category.label}

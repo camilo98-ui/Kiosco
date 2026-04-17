@@ -22,11 +22,6 @@
       "type": "boolean",
       "default": true,
       "description": "Whether the store is active"
-    },
-    "has_cookie_jaar": {
-      "type": "boolean",
-      "default": true,
-      "description": "Whether the store has Cookie Jaar products"
     }
   },
   "required": [

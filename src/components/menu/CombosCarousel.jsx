@@ -14,11 +14,11 @@ function ComboCard({ combo, onCardClick }) {
       style={{
         width: CARD_WIDTH,
         flexShrink: 0,
-        borderRadius: 24,
-        border: "none",
+        borderRadius: 20,
+        border: "1.5px solid #F0E4EA",
         background: "#fff",
         overflow: "hidden",
-        boxShadow: "0 8px 24px rgba(139, 69, 19, 0.12)",
+        boxShadow: "0 2px 8px rgba(194,24,91,0.08)",
         userSelect: "none",
         WebkitUserSelect: "none",
         cursor: "pointer",
@@ -49,11 +49,10 @@ function ComboCard({ combo, onCardClick }) {
         />
         <span style={{
           position: "absolute", top: 9, right: 9,
-          background: "rgba(255,255,255,0.92)", color: "#2D1A12",
+          background: "#C41E6A", color: "#fff",
           fontSize: 9, fontWeight: 800,
           borderRadius: 20, padding: "3px 8px",
-          boxShadow: "0 1px 4px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8)",
-          border: "1px solid rgba(255,255,255,0.6)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
         }}>
           {combo.badge}
         </span>
@@ -215,12 +214,12 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
   };
 
   return (
-    <div style={{ background: "transparent", marginTop: 0, padding: "28px 0 18px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 18 }}>
-        <p style={{ fontSize: 22, fontWeight: 800, color: "#C41E6A", margin: 0, fontFamily: "'Poppins', sans-serif", letterSpacing: "-0.3px" }}>
+    <div style={{ background: "#fff", marginTop: 10, padding: "16px 0 12px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingLeft: 16, paddingRight: 16, marginBottom: 14 }}>
+        <p style={{ fontSize: 17, fontWeight: 800, color: "#2D2D2D", margin: 0 }}>
           Combos que enamoran 💕
         </p>
-        <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#C41E6A", padding: 0 }}>
+        <button onClick={onOpenAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A", padding: 0 }}>
           Ver todos
         </button>
       </div>
