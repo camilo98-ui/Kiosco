@@ -9,6 +9,7 @@ import { useStore } from "@/lib/storeContext";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
 import { Search, Loader2, ChevronRight, ArrowLeft, MapPin } from "lucide-react";
 import StoreSelector from "@/components/StoreSelector";
+import AppHeader from "@/components/menu/AppHeader";
 import RatingScreen from "@/components/RatingScreen";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import SearchModal from "@/components/menu/SearchModal";
@@ -490,18 +491,12 @@ export default function Menu() {
   return (
     <div className="min-h-screen" style={{ background: "#FFFAF9" }}>
       {/* ── HEADER ── */}
-      <div
-        className="sticky top-0 z-20"
-        style={{ background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}>
-        
-        <HeaderLine hasCart={itemCount > 0} />
-        {/* Fila logo + buscador */}
-        
-
-
-
-
-
+      <AppHeader
+        storeName={store?.name}
+        onCartClick={() => setCheckoutOpen(true)}
+        onLogoClick={handleLogoClick}
+      />
+      
 
 
 
@@ -529,25 +524,6 @@ export default function Menu() {
 
 
         
-        {/* Buscador visible permanente */}
-        <div style={{ display: "none" }}>
-          <button
-            onClick={() => setSearchOpen(true)}
-            style={{
-              width: "100%", display: "flex", alignItems: "center", gap: 10,
-              background: "rgba(255,255,255,0.18)", borderRadius: 24,
-              padding: "9px 16px", border: "1.5px solid rgba(255,255,255,0.25)",
-              cursor: "pointer", textAlign: "left"
-            }}>
-            
-            <Search size={15} color="rgba(255,255,255,0.85)" />
-            <span style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", fontFamily: "'Poppins', sans-serif", fontWeight: 500 }}>
-              ¿Qué se te antoja hoy?
-            </span>
-          </button>
-        </div>
-      </div>
-
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "#fff", padding: "10px 0 12px" }}>
