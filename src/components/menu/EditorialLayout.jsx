@@ -503,30 +503,6 @@ function CafeLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   );
 }
 
-function CombosLayout({ products, onAdd, addedFlash, bg, catLabel }) {
-  // Incluir Cookie Jaar en los combos
-  const cookieJaarProducts = COMBOS_DATA.filter(p => p.badge === "Cookie Jaar");
-  const allProducts = [...products, ...cookieJaarProducts];
-  const available = allProducts.filter(p => p.is_available !== false);
-
-  return (
-    <>
-      <SectionHeader label={catLabel} count={available.length} />
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 14, paddingRight: 14 }}>
-        {available.map(p => (
-          <HorizontalCard
-            key={p.id}
-            product={p}
-            onAdd={onAdd}
-            addedFlash={addedFlash}
-            bg={bg}
-          />
-        ))}
-      </div>
-    </>
-  );
-}
-
 function DefaultLayout({ products, onAdd, addedFlash, bg, catLabel }) {
   return <HeladosLayout products={products} onAdd={onAdd} addedFlash={addedFlash} bg={bg} catLabel={catLabel} />;
 }
@@ -598,7 +574,6 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
       case "granizados":    return <EspecialesLayout {...layoutProps} />;
       case "especialidades": return <EspecialesLayout {...layoutProps} />;
       case "cafe":          return <CafeLayout {...layoutProps} />;
-      case "combos":        return <CombosLayout {...layoutProps} />;
       default:              return <DefaultLayout {...layoutProps} />;
     }
   };
