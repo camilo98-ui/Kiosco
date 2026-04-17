@@ -24,7 +24,6 @@ import HiddenMenu from "@/components/menu/HiddenMenu";
 import HeaderLine from "@/components/menu/HeaderLine";
 import CombosCarousel from "@/components/menu/CombosCarousel";
 import CombosAllModal from "@/components/menu/CombosAllModal";
-import CookieJaarModal from "@/components/menu/CookieJaarModal";
 import MostOrderedAll from "@/components/menu/MostOrderedAll";
 import WaterUpsell from "@/components/menu/WaterUpsell";
 import CuantosSon from "@/components/menu/CuantosSon";
@@ -90,22 +89,14 @@ function CategoryIcons({ activeCategory, onSelect }) {
 
 }
 
-function FamilyCarousel({ productCounts, onSelect, onCookieJaar }) {
-  const categoriesWithCookie = [
-    ...FAMILY_CARDS,
-    { id: "cookie_jaar", label: "Cookie Jaar", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6dd912084_cookie-jaar-img.jpg" }
-  ];
+function FamilyCarousel({ productCounts, onSelect }) {
   const handleCategorySelect = (id) => {
-    if (id === "cookie_jaar") {
-      onCookieJaar();
-    } else {
-      onSelect(id);
-    }
+    onSelect(id);
   };
   return (
     <div style={{ background: "transparent", padding: "10px 0 14px", marginTop: 2 }}>
       <p style={{ fontSize: 16, fontWeight: 600, color: "#2D1A22", margin: "0 0 12px 16px", letterSpacing: "0.5px" }}>¿Qué se te antoja? 😏</p>
-      <CategoryGrid categories={categoriesWithCookie} productCounts={productCounts} onSelect={handleCategorySelect} />
+      <CategoryGrid categories={FAMILY_CARDS} productCounts={productCounts} onSelect={handleCategorySelect} />
     </div>);
 
 }
@@ -223,7 +214,6 @@ export default function Menu() {
   const [upsellSeenThisSession, setUpsellSeenThisSession] = useState(false);
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const [showRating, setShowRating] = useState(false);
-  const [showCookieJaar, setShowCookieJaar] = useState(false);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -542,7 +532,7 @@ export default function Menu() {
           <PromoBanners onCategorySelect={setActiveCategory} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ marginTop: 0 }}>
-          <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} onCookieJaar={() => setShowCookieJaar(true)} />
+          <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
           <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
@@ -570,7 +560,6 @@ export default function Menu() {
         onAddAndPay={handleUpsellAddAndPay} />
       
       <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
-      <CookieJaarModal open={showCookieJaar} onClose={() => setShowCookieJaar(false)} onAdd={handleAddProduct} addedFlash={addedFlash} />
       {showMostOrdered &&
       <MostOrderedAll products={products} onAdd={(p) => {handleAddProduct(p);setShowMostOrdered(false);}} onBack={() => setShowMostOrdered(false)} />
       }
