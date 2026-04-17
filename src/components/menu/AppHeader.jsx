@@ -39,7 +39,7 @@ export default function AppHeader({ storeName, onLogoClick, onStoreClick }) {
           src={LOGO_URL}
           alt="Popsy"
           style={{
-            height: 38,
+            height: 76,
             width: "auto",
             objectFit: "contain",
             filter: "brightness(0) sepia(1) hue-rotate(340deg) saturate(0.3) brightness(0.25)",
