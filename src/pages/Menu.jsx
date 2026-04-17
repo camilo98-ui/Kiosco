@@ -58,8 +58,8 @@ const FAMILY_CARDS = [
 
 function CategoryIcons({ activeCategory, onSelect }) {
   return (
-    <div style={{ background: "#fff", padding: "18px 16px 16px" }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 14px" }}>Categorías</p>
+    <div style={{ background: "transparent", padding: "18px 16px 16px" }}>
+      <p style={{ fontSize: 16, fontWeight: 600, color: "#2D1A22", margin: "0 0 14px", letterSpacing: "0.5px" }}>Categorías</p>
       <div style={{ display: "flex", overflowX: "auto", gap: 18, scrollbarWidth: "none", paddingBottom: 2 }}>
         {CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;
@@ -91,8 +91,8 @@ function CategoryIcons({ activeCategory, onSelect }) {
 
 function FamilyCarousel({ productCounts, onSelect }) {
   return (
-    <div style={{ background: "#fff", padding: "10px 0 14px", marginTop: 2 }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: "0 0 12px 16px" }}>¿Qué se te antoja? 😏</p>
+    <div style={{ background: "transparent", padding: "10px 0 14px", marginTop: 2 }}>
+      <p style={{ fontSize: 16, fontWeight: 600, color: "#2D1A22", margin: "0 0 12px 16px", letterSpacing: "0.5px" }}>¿Qué se te antoja? 😏</p>
       <CategoryGrid categories={FAMILY_CARDS} productCounts={productCounts} onSelect={onSelect} />
     </div>);
 
@@ -134,10 +134,10 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
   );
   if (top.length === 0) return null;
   return (
-    <div style={{ background: "#fff", marginTop: 10 }}>
+    <div style={{ background: "transparent", marginTop: 10 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 16px 4px" }}>
-      <p style={{ fontSize: 17, fontWeight: 700, color: "#1A0A10", margin: 0 }}>Los favoritos de todos 🔥</p>
-      <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, color: "#C41E6A" }}>Ver todo</button>
+      <p style={{ fontSize: 16, fontWeight: 600, color: "#2D1A22", margin: 0, letterSpacing: "0.5px" }}>Los favoritos de todos 🔥</p>
+      <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#D81B60", letterSpacing: "0.3px" }}>Ver todo</button>
       </div>
       {top.map((product, idx) =>
       <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} onSelectCategory={onSelectCategory} />
@@ -484,39 +484,39 @@ export default function Menu() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#FFFAF9" }}>
+    <div className="min-h-screen" style={{ background: "#FFF5F7" }}>
       {/* ── HEADER ── */}
       <div
         className="sticky top-0 z-20"
-        style={{ background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)", overflow: "hidden" }}>
+        style={{ background: "linear-gradient(180deg, rgba(216, 27, 96, 0.95) 0%, rgba(216, 27, 96, 0.92) 100%)", overflow: "hidden", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(255, 255, 255, 0.1)" }}>
         
         <HeaderLine hasCart={itemCount > 0} />
         {/* Fila logo + ubicación + buscador */}
-        <div className="flex items-center" style={{ height: 56, paddingLeft: 8, paddingRight: 8, gap: 8, alignItems: "center" }}>
+        <div className="flex items-center" style={{ height: 48, paddingLeft: 12, paddingRight: 12, gap: 12, alignItems: "center" }}>
           {/* Logo pequeño */}
           <button onClick={handleLogoClick} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", outline: "none", flexShrink: 0 }}>
             <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/ada5108ff_Captura_de_pantalla_2026-04-17_132506-removebg-preview.png" alt="Popsy" style={{ height: 42, objectFit: "contain", filter: "brightness(0) invert(1)" }} />
           </button>
           
           {/* Ubicación */}
-          <button onClick={() => selectStore(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", borderRight: "1px solid rgba(255,255,255,0.2)", flexShrink: 0 }}>
-            <MapPin size={14} color="#fff" />
-            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", fontFamily: "'Poppins', sans-serif", fontWeight: 600, maxWidth: 140, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          <button onClick={() => selectStore(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", borderRight: "1px solid rgba(255,255,255,0.15)", flexShrink: 0 }}>
+            <MapPin size={13} color="#fff" strokeWidth={1.5} />
+            <span style={{ fontSize: 10, color: "rgba(255,255,255,0.9)", fontFamily: "'Poppins', sans-serif", fontWeight: 500, maxWidth: 140, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", letterSpacing: "0.3px" }}>
               {store?.address || store?.name || "Tienda"}
             </span>
           </button>
 
-          {/* Buscador */}
+          {/* Buscador Glassmorphism */}
           <button
             onClick={() => setSearchOpen(true)}
             style={{
               flex: 1, display: "flex", alignItems: "center", gap: 6,
-              background: "rgba(255,255,255,0.12)", borderRadius: 4,
-              padding: "6px 10px", border: "none",
-              cursor: "pointer", textAlign: "left", minWidth: 0
+              background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)",
+              borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)",
+              padding: "6px 12px", cursor: "pointer", textAlign: "left", minWidth: 0
             }}>
-            <Search size={12} color="rgba(255,255,255,0.6)" style={{ flexShrink: 0 }} />
-            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", fontFamily: "'Poppins', sans-serif", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <Search size={12} color="rgba(255,255,255,0.7)" style={{ flexShrink: 0 }} />
+            <span style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", fontFamily: "'Poppins', sans-serif", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", letterSpacing: "0.2px" }}>
               Búsqueda rápida
             </span>
           </button>
@@ -525,7 +525,7 @@ export default function Menu() {
 
       {/* ── CONTENIDO ── */}
       <div style={{ paddingBottom: 120 }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "#fff", padding: "10px 0 12px" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ background: "transparent", padding: "12px 0 8px" }}>
           <PromoBanners onCategorySelect={setActiveCategory} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ marginTop: 0 }}>
