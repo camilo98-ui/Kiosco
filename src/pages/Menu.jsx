@@ -195,7 +195,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
 
 export default function Menu() {
   useSwipeNavigation();
-  const { store, selectStore, clearStore, loading: storeLoading } = useStore();
+  const { store, selectStore, loading: storeLoading } = useStore();
   const [activeCategory, setActiveCategory] = useState(null);
   const [upsellMsg, setUpsellMsg] = useState(null);
   const [upsellTarget, setUpsellTarget] = useState(null);
@@ -499,15 +499,9 @@ export default function Menu() {
           <div style={{ width: "45%", minWidth: 120, flexShrink: 0 }}>
             <PopsyLogo onClick={handleLogoClick} size="normal" dark />
             {store?.name && (
-              <button
-                onClick={clearStore}
-                style={{ background: "none", border: "none", cursor: "pointer", paddingLeft: 14, paddingRight: 0, paddingTop: 0, paddingBottom: 0, display: "flex", alignItems: "center", gap: 4, marginTop: -4 }}
-              >
-                <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.75)", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                  📍 {store.name}
-                </span>
-                <span style={{ fontSize: 9, color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>✕</span>
-              </button>
+              <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.75)", paddingLeft: 14, letterSpacing: "0.5px", textTransform: "uppercase", display: "block", marginTop: -4 }}>
+                📍 {store.name}
+              </span>
             )}
           </div>
           <button
