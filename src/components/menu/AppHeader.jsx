@@ -23,7 +23,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick, onStore
       {/* Pink bar — logo only */}
       <div
         style={{
-          height: 90,
+          height: 72,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -37,7 +37,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick, onStore
             src={LOGO_URL}
             alt="Popsy"
             style={{
-              height: 58,
+              height: 62,
               width: "auto",
               objectFit: "contain",
               filter: "brightness(0) invert(1)",
@@ -55,7 +55,7 @@ export default function AppHeader({ storeName, onLogoClick, onCartClick, onStore
             background: "rgba(0,0,0,0.10)",
             border: "none",
             cursor: "pointer",
-            padding: "5px 0 6px",
+            padding: "3px 0 4px",
             display: "flex",
             justifyContent: "center",
           }}
