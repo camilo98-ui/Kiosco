@@ -27,6 +27,55 @@ const SUBCATS = [
   },
 ];
 
+// Productos especiales que aparecen también en el carrusel de helados
+const ESPECIALES_EXTRA = [
+  {
+    id: "charlie-brownie",
+    name: "Charlie Brownie",
+    price: 29900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
+    category: "especialidades",
+    is_available: true,
+    tag: "recomendado",
+  },
+  {
+    id: "banana-split",
+    name: "Banana Split",
+    price: 29900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
+    category: "especialidades",
+    is_available: true,
+    tag: "recomendado",
+  },
+  {
+    id: "copa-gelarti",
+    name: "Copa Gelarti Pops",
+    price: 24900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
+    category: "especialidades",
+    is_available: true,
+    tag: "none",
+  },
+  {
+    id: "sundae-1",
+    name: "Sundae 1 Sabor",
+    price: 18900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
+    category: "especialidades",
+    is_available: true,
+    tag: "none",
+  },
+  {
+    id: "sundae-2",
+    name: "Sundae 2 Sabores",
+    price: 22900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
+    category: "especialidades",
+    is_available: true,
+    tag: "none",
+  },
+];
+
 const GRID_BADGES = ["#1 semana", "Premium", "Más pedido", "Nuevo"];
 
 // ─── Filter logic ─────────────────────────────────────────────────────────────
@@ -178,8 +227,16 @@ function MiniCarousel({ products, onAdd }) {
   const touchStartX = useRef(null);
 
   const PER_PAGE = 3;
-  const totalPages = Math.min(3, Math.ceil(products.length / PER_PAGE));
-  const visible = products.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
+  // Rellenar con productos repetidos para que siempre haya múltiplos de 3
+  const padded = useMemo(() => {
+    if (products.length === 0) return [];
+    const remainder = products.length % PER_PAGE;
+    if (remainder === 0) return products;
+    const fill = PER_PAGE - remainder;
+    return [...products, ...products.slice(0, fill)];
+  }, [products]);
+  const totalPages = Math.min(3, Math.ceil(padded.length / PER_PAGE));
+  const visible = padded.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
 
   const goTo = useCallback((p) => {
     setPage((p + totalPages) % totalPages);
@@ -213,11 +270,7 @@ function MiniCarousel({ products, onAdd }) {
           onTouchEnd={handleTouchEnd}
           style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}
         >
-          {visible.map(p => <MiniCard key={p.id} product={p} onAdd={onAdd} />)}
-          {/* Relleno si hay menos de 3 */}
-          {visible.length < PER_PAGE && Array.from({ length: PER_PAGE - visible.length }).map((_, i) => (
-            <div key={`empty-${i}`} />
-          ))}
+          {visible.map((p, i) => <MiniCard key={`${p.id}-${page}-${i}`} product={p} onAdd={onAdd} />)}
         </motion.div>
       </AnimatePresence>
 
@@ -399,6 +452,77 @@ function ProductListView({ subcat, products, onBack, onGlobalAdd }) {
   );
 }
 
+// ─── Product List View directo (sin featured card, grid completo tipo Malteadas) ─
+function DirectProductList({ subcat, products, onBack, onGlobalAdd }) {
+  const [search, setSearch] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+  const catInfo = SUBCATS.find(c => c.id === subcat);
+
+  const filtered = useMemo(() => {
+    let list = filterBySubcat(products, subcat);
+    if (search) list = list.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+    return list;
+  }, [subcat, products, search]);
+
+  const handleAdd = (product) => {
+    setCartItems(prev => {
+      const idx = prev.findIndex(i => i.id === product.id);
+      if (idx >= 0) {
+        const updated = [...prev];
+        updated[idx] = { ...updated[idx], qty: updated[idx].qty + 1 };
+        return updated;
+      }
+      return [...prev, { id: product.id, name: product.name, price: product.price, qty: 1 }];
+    });
+    onGlobalAdd(product);
+  };
+
+  const handleUpdateQty = (idx, delta) => {
+    setCartItems(prev => {
+      const updated = [...prev];
+      updated[idx] = { ...updated[idx], qty: updated[idx].qty + delta };
+      return updated.filter(i => i.qty > 0);
+    });
+  };
+
+  return (
+    <div style={{ background: "#F7F2F5", minHeight: "100%", fontFamily: FONT }}>
+      {/* Buscador */}
+      <div style={{ padding: "12px 14px 4px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff", borderRadius: 14, padding: "10px 14px" }}>
+          <Search size={14} color="#bbb" />
+          <input
+            type="text"
+            placeholder={`Buscar en ${catInfo?.label}...`}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{ flex: 1, border: "none", outline: "none", fontSize: 13, color: "#1A1A1A", background: "transparent", fontFamily: FONT }}
+          />
+        </div>
+      </div>
+
+      <div style={{ padding: "8px 14px", paddingBottom: cartItems.length > 0 ? 200 : 100 }}>
+        {filtered.length > 0 ? (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            {filtered.map((p, i) => (
+              <GridCard2x2 key={p.id} product={p} badge={p.tag === "mas_vendido" ? "Más pedido" : p.tag === "recomendado" ? "Recomendado" : null} onAdd={handleAdd} />
+            ))}
+          </div>
+        ) : (
+          <div style={{ textAlign: "center", padding: "60px 20px", color: "#bbb" }}>
+            <div style={{ fontSize: 40, marginBottom: 8 }}>🍦</div>
+            <p style={{ fontSize: 14 }}>No se encontraron helados</p>
+          </div>
+        )}
+      </div>
+
+      <AnimatePresence>
+        {cartItems.length > 0 && <MiniCart items={cartItems} onUpdateQty={handleUpdateQty} />}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ─── Category Card (selector principal) ──────────────────────────────────────
 function CategoryCard({ cat, onSelect, index }) {
   return (
@@ -421,7 +545,7 @@ function CategoryCard({ cat, onSelect, index }) {
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
         </div>
         <div style={{ flex: 1, padding: "16px 14px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 8 }}>
-          <p style={{ fontSize: 20, fontWeight: 900, color: "#1A1A1A", margin: 0 }}>{cat.label}</p>
+          <p style={{ fontSize: 24, fontWeight: 900, color: "#1A1A1A", margin: 0 }}>{cat.label}</p>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {cat.tags.map(t => (
               <span key={t} style={{ fontSize: 10, fontWeight: 700, background: "#FCE4EC", color: "#C2185B", borderRadius: 99, padding: "3px 10px" }}>
@@ -449,16 +573,33 @@ function CategoryCard({ cat, onSelect, index }) {
 export default function HeladosSubSelector({ products, onAdd }) {
   const [activeSubcat, setActiveSubcat] = useState(null);
 
+  // Parchear imagen Fiore y Maxicono
+  const patchedProducts = useMemo(() => products.map(p => {
+    const n = p.name.toLowerCase();
+    if (n.includes("fiore")) {
+      return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0e644041f_HeladoFiore14900.png" };
+    }
+    if (n.includes("maxicono") || n.includes("maxi cono")) {
+      return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/35f526635_Maxicono14900.png" };
+    }
+    return p;
+  }), [products]);
+
   if (activeSubcat) {
     return (
-      <ProductListView
+      <DirectProductList
         subcat={activeSubcat}
-        products={products}
+        products={patchedProducts}
         onBack={() => setActiveSubcat(null)}
         onGlobalAdd={onAdd}
       />
     );
   }
+
+  // Combinar helados + especiales extra para el carrusel
+  const allForCarousel = useMemo(() => {
+    return [...patchedProducts, ...ESPECIALES_EXTRA];
+  }, [patchedProducts]);
 
   return (
     <div style={{ background: "#F7F2F5", borderRadius: 28, padding: 14, fontFamily: FONT }}>
@@ -467,8 +608,8 @@ export default function HeladosSubSelector({ products, onAdd }) {
         <CategoryCard key={cat.id} cat={cat} onSelect={setActiveSubcat} index={i} />
       ))}
 
-      {/* Tendencia hoy: grid 2×2 + carrusel */}
-      <TendenciaSection products={products} onAdd={onAdd} />
+      {/* Tendencia hoy: grid 2×2 + carrusel con especiales */}
+      <TendenciaSection products={allForCarousel} onAdd={onAdd} />
     </div>
   );
 }

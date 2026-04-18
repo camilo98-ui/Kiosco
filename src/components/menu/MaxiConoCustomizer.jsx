@@ -55,7 +55,23 @@ const EXTRAS = [
 ];
 
 const MAX_TOPPINGS = 2;
-const SECTIONS = ["sabor1", "sabor2", "toppings"];
+const SECTIONS = ["sabor1", "sabor2", "toppings", "extras"];
+
+const EXTRAS_COSTO = [
+  { name: "Salsa Arequipe", price: 3100 },
+  { name: "Salsa De Caramelo", price: 3100 },
+  { name: "Salsa De Chocolate", price: 3100 },
+  { name: "Salsa De Fresa", price: 3100 },
+  { name: "Salsa De Mora", price: 3100 },
+  { name: "Crema Chantilly", price: 3100 },
+  { name: "Chips De Chocolate", price: 3100 },
+  { name: "Brownie", price: 3100 },
+  { name: "Galleta Oreo", price: 3100 },
+  { name: "Nueces", price: 3000 },
+  { name: "Leche Condensada", price: 3100 },
+  { name: "Macadamia", price: 3100 },
+  { name: "Sprinkles", price: 3100 },
+];
 
 function AccordionSection({ title, required, open, onToggle, children, badge }) {
   return (
@@ -138,6 +154,7 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
   const [sabor1, setSabor1] = useState(null);
   const [sabor2, setSabor2] = useState(null);
   const [toppings, setToppings] = useState([]);
+  const [extras, setExtras] = useState([]);
 
   const advanceToNext = (current) => {
     const idx = SECTIONS.indexOf(current);
@@ -159,7 +176,16 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
     });
   };
 
-  const total = product?.price || 0;
+  const toggleExtra = (name, price) => {
+    setExtras(prev =>
+      prev.find(e => e.name === name)
+        ? prev.filter(e => e.name !== name)
+        : [...prev, { name, price }]
+    );
+  };
+
+  const extrasTotal = extras.reduce((s, e) => s + e.price, 0);
+  const total = (product?.price || 0) + extrasTotal;
 
   const allRequired = sabor1 && sabor2 && toppings.length === MAX_TOPPINGS;
 
@@ -168,11 +194,12 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
     const notes = [
       `Sabores: ${sabor1}, ${sabor2}`,
       `Toppings incluidos: ${toppings.join(", ")}`,
+      extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
 
     onAdd({ ...product, price: total }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
-    setSabor1(null); setSabor2(null); setToppings([]);
+    setSabor1(null); setSabor2(null); setToppings([]); setExtras([]);
     setOpenSection("sabor1");
     setTimeout(() => onClose(), 150);
   };
@@ -245,6 +272,23 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
               selected={toppings.includes(e.name)}
               onToggle={() => toggleTopping(e.name)}
               disabled={!toppings.includes(e.name) && toppings.length >= MAX_TOPPINGS}
+            />
+          ))}
+        </AccordionSection>
+
+        <AccordionSection
+          title="Extras Adicionales"
+          required={false}
+          open={openSection === "extras"}
+          onToggle={() => setOpenSection(s => s === "extras" ? null : "extras")}
+        >
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Opcionales · con costo adicional</p>
+          {EXTRAS_COSTO.map(e => (
+            <CheckOption
+              key={e.name}
+              label={`${e.name} · +$${e.price.toLocaleString("es-CO")}`}
+              selected={!!extras.find(x => x.name === e.name)}
+              onToggle={() => toggleExtra(e.name, e.price)}
             />
           ))}
         </AccordionSection>
