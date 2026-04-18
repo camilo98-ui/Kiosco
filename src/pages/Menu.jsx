@@ -395,36 +395,45 @@ export default function Menu() {
   }
 
   if (activeCategory === "granizados") {
+    const GRANIZADOS = [
+      { id: "gran-maracuya-16", name: "Granizado Maracuyá 16oz", price: 16900, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa74e5737_GranizadoMaracuy16Onzas16900.png" },
+      { id: "gran-mandarina-16", name: "Granizado Mandarina 16oz", price: 16900, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c2ed50391_GranizadoMandarina16Onzas16900.png" },
+      { id: "gran-limon-16", name: "Granizado Limón 16oz", price: 16900, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/27c9386e4_GranizadodeLimn16Onzas16900.png" },
+      { id: "gran-mandarina-12", name: "Granizado Mandarina 12oz", price: 14900, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6305d3859_GranizadoMandarina12Onzas14900.png" },
+      { id: "gran-maracuya-12", name: "Granizado Maracuyá 12oz", price: 14900, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/a0dbfe535_GranizadoMaracuy12Onzas14900.png" },
+    ];
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center" style={{ background: "#FFFCFD", padding: 32 }}>
-        <div style={{ fontSize: 64, marginBottom: 16 }}>🧊</div>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#1A1A1A", textAlign: "center", margin: "0 0 8px" }}>
-          Granizados
-        </h2>
-        <p style={{ fontSize: 15, color: "#666", textAlign: "center", margin: "0 0 24px", lineHeight: 1.5 }}>
-          Encuentra nuestros granizados en la sección<br />
-          <strong>Para llevar 🛍️</strong>
-        </p>
-        <button
-          onClick={() => setActiveCategory("para_llevar")}
-          style={{
-            background: "#C41E6A", color: "#fff",
-            border: "none", borderRadius: 16, padding: "14px 32px",
-            fontSize: 15, fontWeight: 700, cursor: "pointer",
-            boxShadow: "0 4px 16px rgba(196,30,106,0.35)",
-            fontFamily: "'Poppins', sans-serif"
-          }}>
-          
-          Ir a Para llevar →
-        </button>
-        <button
-          onClick={() => setActiveCategory(null)}
-          style={{ marginTop: 16, background: "none", border: "none", color: "#999", fontSize: 14, cursor: "pointer" }}>
-          
-          ← Volver al inicio
-        </button>
-      </div>);
-
+      <div className="min-h-screen" style={{ background: "#F7F2F5" }}>
+        {/* Header */}
+        <div className="sticky top-0 z-20 flex items-center justify-between px-3" style={{ height: 56, background: "linear-gradient(90deg, #C41E6A 0%, #C41E6A 55%, #FF6EB4 100%)" }}>
+          <button onClick={() => setActiveCategory(null)} style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.2)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+            <ArrowLeft size={20} color="#fff" />
+          </button>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>Granizados 🧊</span>
+          <div style={{ width: 44 }} />
+        </div>
+        {/* Grid */}
+        <div style={{ padding: "16px 14px 120px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          {GRANIZADOS.map(p => (
+            <button
+              key={p.id}
+              onClick={() => handleAddProduct({ product_id: p.id, product_name: p.name, price: p.price, quantity: 1 })}
+              style={{ borderRadius: 18, border: "none", background: "#fff", overflow: "hidden", cursor: "pointer", padding: 0, display: "flex", flexDirection: "column", textAlign: "left", boxShadow: "0 2px 8px rgba(196,30,106,0.07)" }}
+            >
+              <div style={{ height: 140, width: "100%", overflow: "hidden", background: "#f5f5f5" }}>
+                <img src={p.image} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+              <div style={{ padding: "10px 12px 14px" }}>
+                <p style={{ fontSize: 12, fontWeight: 700, color: "#1A1A1A", margin: "0 0 4px", lineHeight: 1.3, fontFamily: "'Poppins', sans-serif" }}>{p.name}</p>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#E8187A", margin: 0, fontFamily: "'Poppins', sans-serif" }}>${p.price.toLocaleString("es-CO")}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+        <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
+        <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
+      </div>
+    );
   }
 
   if (activeCategory) {
