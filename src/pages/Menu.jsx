@@ -28,6 +28,7 @@ import MostOrderedAll from "@/components/menu/MostOrderedAll";
 import WaterUpsell from "@/components/menu/WaterUpsell";
 import CuantosSon from "@/components/menu/CuantosSon";
 import CookieJaarModal from "@/components/menu/CookieJaarModal";
+import ParaLlevarLayout from "@/components/menu/ParaLlevarLayout";
 
 const FAMILY_GRADIENTS = [
 "linear-gradient(135deg, #6D1B4E, #B5175A)",
@@ -177,6 +178,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
         <div style={{ width: 44 }} />
       </div>
       <div className="pb-36 pt-2" style={{ background: "#FFF5F7" }}>
+        {activeCategory === "para_llevar" && <ParaLlevarLayout onAdd={onAdd} />}
       </div>
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
