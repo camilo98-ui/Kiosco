@@ -177,8 +177,6 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
         <div style={{ width: 44 }} />
       </div>
       <div className="pb-36 pt-2" style={{ background: "#FFF5F7" }}>
-        <EditorialLayout products={categoryProducts} category={activeCategory} onAdd={onAdd} addedFlash={addedFlash} autoOpenProduct={autoOpenProduct} onAutoOpenDone={onAutoOpenDone} />
-        {suggestedProducts.length > 0 && <SuggestedRow products={suggestedProducts} onAdd={onAdd} />}
       </div>
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
