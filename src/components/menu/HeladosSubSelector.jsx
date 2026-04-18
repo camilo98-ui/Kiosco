@@ -271,12 +271,12 @@ function MiniCard({ product, onAdd }) {
         fontFamily: FONT, flex: 1,
       }}
     >
-      <div style={{ height: 90, width: "100%", background: "#FFF0F5", flexShrink: 0, padding: 4, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ height: 90, width: "100%", overflow: "hidden", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }} />
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
         ) : (
-          <span style={{ fontSize: 26 }}>🍦</span>
+          <div style={{ width: "100%", height: "100%", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>🍦</div>
         )}
       </div>
       <div style={{ padding: "6px 8px 8px" }}>
