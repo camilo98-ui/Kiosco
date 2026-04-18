@@ -29,32 +29,44 @@ const SABORES = {
 const FEATURED_IMAGES = {
   gourmet: [
     {
+      id: "fiore-gourmet",
       name: "Fiore",
       image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0e644041f_HeladoFiore14900.png",
+      price: 14900,
     },
     {
+      id: "gourmet-1sabor",
       name: "Gourmet",
       image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/928441d6e_GOURMET.png",
+      price: 8500,
     },
   ],
   exclusivo: [
     {
+      id: "fiore-exclusivo",
       name: "Fiore Exclusivo",
       image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0e644041f_HeladoFiore14900.png",
+      price: 14900,
     },
     {
+      id: "yogo-yogo",
       name: "Yogo Yogo",
       image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/3d40172de_EXCLUSIVO.png",
+      price: 10500,
     },
   ],
   junior: [
     {
+      id: "cono-jr",
       name: "Cono Jr",
       image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/4168be318_CONOJR.jpg",
+      price: 7500,
     },
     {
+      id: "cono-jr-mix",
       name: "Cono Jr Mix",
       image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/928441d6e_GOURMET.png",
+      price: 9900,
     },
   ],
 };
@@ -72,29 +84,50 @@ const LABELS = {
   junior:    "Cono Jr",
 };
 
-function FeaturedImage({ item }) {
+function FeaturedImage({ item, onAdd }) {
   const [err, setErr] = useState(false);
   return (
-    <div style={{
-      flex: 1, borderRadius: 18, overflow: "hidden",
-      background: "#FFF0F5", height: 140,
-      border: "1.5px solid #FFE4F3",
-      display: "flex", flexDirection: "column",
-    }}>
+    <button
+      onClick={() => onAdd && onAdd(item)}
+      style={{
+        flex: 1, borderRadius: 18, overflow: "hidden",
+        background: "#FFF0F5", height: 150,
+        border: "1.5px solid #FFE4F3",
+        display: "flex", flexDirection: "column",
+        position: "relative", cursor: "pointer", padding: 0,
+      }}
+    >
       {item.image && !err ? (
         <img
           src={item.image}
           alt={item.name}
           onError={() => setErr(true)}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       ) : (
         <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44 }}>🍦</div>
       )}
-      <div style={{ background: "rgba(0,0,0,0.55)", padding: "6px 10px", textAlign: "center", marginTop: -28, position: "relative" }}>
-        <p style={{ fontSize: 11, fontWeight: 800, color: "#fff", margin: 0 }}>{item.name}</p>
+      {/* Overlay inferior con nombre y precio */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, right: 0,
+        background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)",
+        padding: "20px 10px 8px",
+        display: "flex", flexDirection: "column", alignItems: "center", gap: 1,
+      }}>
+        <p style={{ fontSize: 11, fontWeight: 800, color: "#fff", margin: 0, lineHeight: 1.2 }}>{item.name}</p>
+        <p style={{ fontSize: 12, fontWeight: 900, color: "#FFD6EC", margin: 0 }}>{formatCOP(item.price)}</p>
       </div>
-    </div>
+      {/* Botón + */}
+      <div style={{
+        position: "absolute", top: 8, right: 8,
+        width: 26, height: 26, borderRadius: "50%",
+        background: MAGENTA,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+      }}>
+        <span style={{ color: "#fff", fontSize: 16, lineHeight: 1, fontWeight: 900 }}>+</span>
+      </div>
+    </button>
   );
 }
 
@@ -232,10 +265,30 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
             </div>
           </div>
 
-          {/* Imágenes destacadas */}
+          {/* Imágenes destacadas — comprables directamente */}
           <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
             {featured.map((item, i) => (
-              <FeaturedImage key={i} item={item} />
+              <FeaturedImage
+                key={i}
+                item={item}
+                onAdd={(it) => {
+                  onAdd(
+                    {
+                      product_id: it.id,
+                      product_name: it.name,
+                      name: it.name,
+                      price: it.price,
+                      quantity: 1,
+                    },
+                    `Helado ${it.name} · 1 Sabor`
+                  );
+                  toast.success(`✓ ${it.name} agregado`, {
+                    duration: 1500,
+                    style: { background: "#C41E6A", color: "#fff", border: "none", borderRadius: 12 },
+                  });
+                  setTimeout(() => onClose(), 150);
+                }}
+              />
             ))}
           </div>
 
