@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { Plus, Search, ArrowLeft, Minus } from "lucide-react";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { Plus, Search, ArrowLeft, Minus, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP } from "@/lib/constants";
 
@@ -27,6 +27,8 @@ const SUBCATS = [
   },
 ];
 
+const GRID_BADGES = ["#1 semana", "Premium", "Más pedido", "Nuevo"];
+
 // ─── Filter logic ─────────────────────────────────────────────────────────────
 function filterBySubcat(products, sub) {
   const available = products.filter(p => p.is_available !== false);
@@ -52,7 +54,6 @@ function filterBySubcat(products, sub) {
 function MiniCart({ items, onUpdateQty }) {
   if (items.length === 0) return null;
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-
   return (
     <motion.div
       initial={{ y: 100, opacity: 0 }}
@@ -60,13 +61,10 @@ function MiniCart({ items, onUpdateQty }) {
       exit={{ y: 100, opacity: 0 }}
       style={{
         position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
-        background: "#fff",
-        borderTop: `2.5px solid ${MAGENTA}`,
-        borderRadius: "20px 20px 0 0",
-        padding: "16px 16px 28px",
+        background: "#fff", borderTop: `2.5px solid ${MAGENTA}`,
+        borderRadius: "20px 20px 0 0", padding: "16px 16px 28px",
         boxShadow: "0 -6px 30px rgba(232,24,122,0.18)",
-        maxWidth: 600, margin: "0 auto",
-        fontFamily: FONT,
+        maxWidth: 600, margin: "0 auto", fontFamily: FONT,
       }}
     >
       <div style={{ marginBottom: 12 }}>
@@ -94,113 +92,198 @@ function MiniCart({ items, onUpdateQty }) {
   );
 }
 
-// ─── Featured Card ────────────────────────────────────────────────────────────
-function FeaturedCard({ product, onAdd }) {
+// ─── Grid 2×2 card ───────────────────────────────────────────────────────────
+function GridCard2x2({ product, badge, onAdd }) {
   const [imgErr, setImgErr] = useState(false);
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 12 }}>
-      <p style={{ fontSize: 10, fontWeight: 800, color: MAGENTA, textTransform: "uppercase", letterSpacing: "1.2px", margin: "0 0 8px", fontFamily: FONT }}>
-        ⭐ Más pedido
-      </p>
-      <motion.button
-        whileTap={{ scale: 0.98 }}
-        onClick={() => onAdd(product)}
-        style={{
-          width: "100%", borderRadius: 18, border: `2px solid ${MAGENTA}`,
-          background: "#fff", overflow: "hidden", cursor: "pointer", padding: 0,
-          display: "flex", alignItems: "center",
-          boxShadow: "0 4px 16px rgba(232,24,122,0.12)",
-          textAlign: "left",
-        }}
-      >
-        <div style={{ width: 110, height: 110, flexShrink: 0, background: "#FFF0F6", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          {product.image_url && !imgErr ? (
-            <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          ) : (
-            <span style={{ fontSize: 44 }}>🍦</span>
-          )}
-        </div>
-        <div style={{ flex: 1, padding: "12px 14px", fontFamily: FONT }}>
-          <span style={{ fontSize: 9, fontWeight: 800, background: MAGENTA, color: "#fff", borderRadius: 99, padding: "3px 9px" }}>🔥 #1 esta semana</span>
-          <p style={{ fontSize: 14, fontWeight: 800, color: "#1A1A1A", margin: "6px 0 8px", lineHeight: 1.3 }}>{product.name}</p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 16, fontWeight: 900, color: MAGENTA }}>{formatCOP(product.price)}</span>
-            <div style={{ width: 32, height: 32, borderRadius: "50%", background: MAGENTA, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 3px 10px rgba(232,24,122,0.35)" }}>
-              <Plus size={15} color="#fff" />
-            </div>
-          </div>
-        </div>
-      </motion.button>
-    </motion.div>
-  );
-}
-
-// ─── Grid Card ────────────────────────────────────────────────────────────────
-function GridCard({ product, onAdd }) {
-  const [imgErr, setImgErr] = useState(false);
-  return (
-    <motion.button
-      whileTap={{ scale: 0.96 }}
+    <button
       onClick={() => onAdd(product)}
       style={{
-        borderRadius: 16, border: "none",
-        background: "#fff", overflow: "hidden", cursor: "pointer", padding: 0,
-        display: "flex", flexDirection: "column",
-        textAlign: "left", fontFamily: FONT,
+        borderRadius: 16, border: "none", background: "#fff",
+        overflow: "hidden", cursor: "pointer", padding: 0,
+        display: "flex", flexDirection: "column", textAlign: "left",
+        position: "relative", fontFamily: FONT,
       }}
     >
-      <div style={{ height: 110, width: "100%", background: "#FFF0F6", overflow: "hidden", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ height: 115, width: "100%", overflow: "hidden", background: "#f5f5f5", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
-          <span style={{ fontSize: 40 }}>🍦</span>
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36 }}>🍦</div>
         )}
       </div>
-      <div style={{ padding: "8px 10px 12px", flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+      {/* Badge absoluto */}
+      {badge && (
+        <span style={{
+          position: "absolute", top: 8, left: 8,
+          background: MAGENTA, color: "#fff",
+          fontSize: 9, fontWeight: 800,
+          borderRadius: 99, padding: "3px 8px",
+          fontFamily: FONT,
+        }}>{badge}</span>
+      )}
+      <div style={{ padding: "8px 10px 12px", flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
         <p style={{
-          fontSize: 11, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3,
+          fontSize: 12, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3,
           display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
-        }}>
-          {product.name}
-        </p>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto", paddingTop: 6 }}>
+        }}>{product.name}</p>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto" }}>
           <span style={{ fontSize: 13, fontWeight: 900, color: MAGENTA }}>{formatCOP(product.price)}</span>
           <div style={{ width: 26, height: 26, borderRadius: "50%", background: MAGENTA, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Plus size={12} color="#fff" />
           </div>
         </div>
       </div>
-    </motion.button>
+    </button>
   );
 }
 
-// ─── Tendencia Card (horizontal scroll) ──────────────────────────────────────
-function TrendCard({ product, onAdd }) {
+// ─── Mini Carousel Card ───────────────────────────────────────────────────────
+function MiniCard({ product, onAdd }) {
   const [imgErr, setImgErr] = useState(false);
   return (
-    <motion.button
-      whileTap={{ scale: 0.96 }}
+    <button
       onClick={() => onAdd(product)}
       style={{
-        width: 110, flexShrink: 0, borderRadius: 16, border: "none",
-        background: "#fff", overflow: "hidden", cursor: "pointer", padding: 0,
-        display: "flex", flexDirection: "column", textAlign: "left", fontFamily: FONT,
+        borderRadius: 14, border: "none", background: "#fff",
+        overflow: "hidden", cursor: "pointer", padding: 0,
+        display: "flex", flexDirection: "column", textAlign: "left",
+        fontFamily: FONT, flex: 1,
       }}
     >
-      <div style={{ height: 80, width: "100%", background: "#FFF0F6", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ height: 72, width: "100%", overflow: "hidden", background: "#f5f5f5", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
-          <span style={{ fontSize: 30 }}>🍦</span>
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>🍦</div>
         )}
       </div>
-      <div style={{ padding: "6px 8px 10px" }}>
-        <p style={{ fontSize: 10, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-          {product.name}
-        </p>
-        <p style={{ fontSize: 12, fontWeight: 900, color: MAGENTA, margin: "3px 0 0" }}>{formatCOP(product.price)}</p>
+      <div style={{ padding: "6px 8px 8px" }}>
+        <p style={{
+          fontSize: 10, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3,
+          display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
+        }}>{product.name}</p>
+        <p style={{ fontSize: 11, fontWeight: 900, color: MAGENTA, margin: "3px 0 0" }}>{formatCOP(product.price)}</p>
       </div>
-    </motion.button>
+    </button>
+  );
+}
+
+// ─── Mini Carousel (3 cols × 3 páginas) ──────────────────────────────────────
+function MiniCarousel({ products, onAdd }) {
+  const [page, setPage] = useState(0);
+  const timerRef = useRef(null);
+  const touchStartX = useRef(null);
+
+  const PER_PAGE = 3;
+  const totalPages = Math.min(3, Math.ceil(products.length / PER_PAGE));
+  const visible = products.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
+
+  const goTo = useCallback((p) => {
+    setPage((p + totalPages) % totalPages);
+  }, [totalPages]);
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => goTo(page + 1), 4000);
+    return () => clearInterval(timerRef.current);
+  }, [page, goTo]);
+
+  const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(page + (diff > 0 ? 1 : -1));
+    touchStartX.current = null;
+  };
+
+  if (products.length === 0) return null;
+
+  return (
+    <div style={{ marginTop: 16 }}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={page}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}
+        >
+          {visible.map(p => <MiniCard key={p.id} product={p} onAdd={onAdd} />)}
+          {/* Relleno si hay menos de 3 */}
+          {visible.length < PER_PAGE && Array.from({ length: PER_PAGE - visible.length }).map((_, i) => (
+            <div key={`empty-${i}`} />
+          ))}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Navegación */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12 }}>
+        <div style={{ display: "flex", gap: 6 }}>
+          <button
+            onClick={() => goTo(page - 1)}
+            style={{ width: 30, height: 30, borderRadius: "50%", background: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <ChevronLeft size={16} color={MAGENTA} />
+          </button>
+          <button
+            onClick={() => goTo(page + 1)}
+            style={{ width: 30, height: 30, borderRadius: "50%", background: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <ChevronRight size={16} color={MAGENTA} />
+          </button>
+        </div>
+        <div style={{ display: "flex", gap: 5 }}>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setPage(i)}
+              style={{
+                width: i === page ? 18 : 6, height: 6, borderRadius: 3,
+                background: i === page ? MAGENTA : "#F2C4D8",
+                border: "none", cursor: "pointer", padding: 0,
+                transition: "all 0.3s ease",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Tendencia Section (grid 2×2 + carrusel miniaturas) ──────────────────────
+function TendenciaSection({ products, onAdd }) {
+  const trending = useMemo(() =>
+    products.filter(p => p.tag === "mas_vendido" && p.is_available !== false),
+    [products]
+  );
+
+  const grid4 = trending.slice(0, 4);
+  const carousel = trending.slice(4);
+
+  if (trending.length === 0) return null;
+
+  return (
+    <div style={{ marginTop: 16 }}>
+      <p style={{ fontSize: 10, fontWeight: 800, color: "#999", textTransform: "uppercase", letterSpacing: "1.5px", margin: "0 0 12px", fontFamily: FONT }}>
+        🔥 Tendencia hoy
+      </p>
+
+      {/* Grid 2×2 */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+        {grid4.map((p, i) => (
+          <GridCard2x2 key={p.id} product={p} badge={GRID_BADGES[i] || null} onAdd={onAdd} />
+        ))}
+      </div>
+
+      {/* Carrusel miniaturas */}
+      {carousel.length > 0 && <MiniCarousel products={carousel} onAdd={onAdd} />}
+    </div>
   );
 }
 
@@ -208,7 +291,6 @@ function TrendCard({ product, onAdd }) {
 function ProductListView({ subcat, products, onBack, onGlobalAdd }) {
   const [search, setSearch] = useState("");
   const [cartItems, setCartItems] = useState([]);
-
   const catInfo = SUBCATS.find(c => c.id === subcat);
 
   const filtered = useMemo(() => {
@@ -219,11 +301,6 @@ function ProductListView({ subcat, products, onBack, onGlobalAdd }) {
 
   const featured = filtered[0];
   const rest = filtered.slice(1);
-
-  const trendProducts = useMemo(() =>
-    products.filter(p => p.tag === "mas_vendido" && p.is_available !== false).slice(0, 10),
-    [products]
-  );
 
   const handleAdd = (product) => {
     setCartItems(prev => {
@@ -262,48 +339,58 @@ function ProductListView({ subcat, products, onBack, onGlobalAdd }) {
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div key={subcat + search} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
-          <div style={{ padding: "8px 14px", paddingBottom: cartItems.length > 0 ? 200 : 100 }}>
-            {featured && <FeaturedCard product={featured} onAdd={handleAdd} />}
-
-            {rest.length > 0 && (
-              <>
-                <p style={{ fontSize: 10, fontWeight: 800, color: MAGENTA, textTransform: "uppercase", letterSpacing: "1.2px", margin: "12px 0 10px", fontFamily: FONT }}>
-                  Todos los productos
-                </p>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                  {rest.map(p => <GridCard key={p.id} product={p} onAdd={handleAdd} />)}
-                </div>
-              </>
-            )}
-
-            {/* Tendencia hoy */}
-            {trendProducts.length > 0 && (
-              <div style={{ marginTop: 24 }}>
-                <p style={{ fontSize: 10, fontWeight: 800, color: "#999", textTransform: "uppercase", letterSpacing: "1.5px", margin: "0 0 12px", fontFamily: FONT }}>
-                  🔥 Tendencia hoy
-                </p>
-                <div style={{ display: "flex", gap: 10, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4 }}>
-                  {trendProducts.map(p => <TrendCard key={p.id} product={p} onAdd={handleAdd} />)}
+      <div style={{ padding: "8px 14px", paddingBottom: cartItems.length > 0 ? 200 : 100 }}>
+        {/* Featured */}
+        {featured && (
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={() => handleAdd(featured)}
+            style={{
+              width: "100%", borderRadius: 18, border: `2px solid ${MAGENTA}`,
+              background: "#fff", overflow: "hidden", cursor: "pointer", padding: 0,
+              display: "flex", alignItems: "center", textAlign: "left", marginBottom: 12,
+            }}
+          >
+            <div style={{ width: 110, height: 110, flexShrink: 0, background: "#f5f5f5", overflow: "hidden" }}>
+              {featured.image_url ? (
+                <img src={featured.image_url} alt={featured.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              ) : <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40 }}>🍦</div>}
+            </div>
+            <div style={{ flex: 1, padding: "12px 14px" }}>
+              <span style={{ fontSize: 9, fontWeight: 800, background: MAGENTA, color: "#fff", borderRadius: 99, padding: "3px 9px" }}>🔥 #1 esta semana</span>
+              <p style={{ fontSize: 14, fontWeight: 800, color: "#1A1A1A", margin: "6px 0 8px", lineHeight: 1.3 }}>{featured.name}</p>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: 16, fontWeight: 900, color: MAGENTA }}>{formatCOP(featured.price)}</span>
+                <div style={{ width: 32, height: 32, borderRadius: "50%", background: MAGENTA, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Plus size={15} color="#fff" />
                 </div>
               </div>
-            )}
+            </div>
+          </motion.button>
+        )}
 
-            {filtered.length === 0 && (
-              <div style={{ textAlign: "center", padding: "60px 20px", color: "#bbb" }}>
-                <div style={{ fontSize: 40, marginBottom: 8 }}>🍦</div>
-                <p style={{ fontSize: 14, fontFamily: FONT }}>No se encontraron helados</p>
-              </div>
-            )}
+        {/* Grid rest */}
+        {rest.length > 0 && (
+          <>
+            <p style={{ fontSize: 10, fontWeight: 800, color: MAGENTA, textTransform: "uppercase", letterSpacing: "1.2px", margin: "4px 0 10px" }}>
+              Todos los productos
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              {rest.map((p, i) => <GridCard2x2 key={p.id} product={p} badge={null} onAdd={handleAdd} />)}
+            </div>
+          </>
+        )}
+
+        {filtered.length === 0 && (
+          <div style={{ textAlign: "center", padding: "60px 20px", color: "#bbb" }}>
+            <div style={{ fontSize: 40, marginBottom: 8 }}>🍦</div>
+            <p style={{ fontSize: 14 }}>No se encontraron helados</p>
           </div>
-        </motion.div>
-      </AnimatePresence>
+        )}
+      </div>
 
       <AnimatePresence>
-        {cartItems.length > 0 && (
-          <MiniCart items={cartItems} onUpdateQty={handleUpdateQty} />
-        )}
+        {cartItems.length > 0 && <MiniCart items={cartItems} onUpdateQty={handleUpdateQty} />}
       </AnimatePresence>
     </div>
   );
@@ -323,31 +410,18 @@ function CategoryCard({ cat, onSelect, index }) {
           width: "100%", borderRadius: 20, border: "none",
           background: "#fff", overflow: "hidden", cursor: "pointer", padding: 0,
           display: "flex", alignItems: "stretch",
-          textAlign: "left", marginBottom: 12,
-          fontFamily: FONT,
+          textAlign: "left", marginBottom: 12, fontFamily: FONT,
         }}
       >
-        {/* Foto */}
         <div style={{ width: 120, height: 110, flexShrink: 0, overflow: "hidden" }}>
-          <img
-            src={cat.image}
-            alt={cat.label}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
-          />
+          <img src={cat.image} alt={cat.label}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
         </div>
-
-        {/* Info */}
         <div style={{ flex: 1, padding: "16px 14px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 8 }}>
-          <p style={{ fontSize: 20, fontWeight: 900, color: "#1A1A1A", margin: 0, fontFamily: FONT }}>
-            {cat.label}
-          </p>
+          <p style={{ fontSize: 20, fontWeight: 900, color: "#1A1A1A", margin: 0 }}>{cat.label}</p>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {cat.tags.map(t => (
-              <span key={t} style={{
-                fontSize: 10, fontWeight: 700,
-                background: "#FCE4EC", color: "#C2185B",
-                borderRadius: 99, padding: "3px 10px", fontFamily: FONT,
-              }}>
+              <span key={t} style={{ fontSize: 10, fontWeight: 700, background: "#FCE4EC", color: "#C2185B", borderRadius: 99, padding: "3px 10px" }}>
                 {t}
               </span>
             ))}
@@ -355,8 +429,7 @@ function CategoryCard({ cat, onSelect, index }) {
           <button
             onClick={e => { e.stopPropagation(); onSelect(cat.id); }}
             style={{
-              alignSelf: "flex-start",
-              background: MAGENTA, color: "#fff",
+              alignSelf: "flex-start", background: MAGENTA, color: "#fff",
               border: "none", borderRadius: 10, padding: "7px 14px",
               fontSize: 12, fontWeight: 800, cursor: "pointer", fontFamily: FONT,
             }}
@@ -384,8 +457,6 @@ export default function HeladosSubSelector({ products, onAdd }) {
     );
   }
 
-  const trendProducts = products.filter(p => p.tag === "mas_vendido" && p.is_available !== false).slice(0, 10);
-
   return (
     <div style={{ background: "#F7F2F5", borderRadius: 28, padding: 14, fontFamily: FONT }}>
       {/* 3 Category Cards */}
@@ -393,19 +464,8 @@ export default function HeladosSubSelector({ products, onAdd }) {
         <CategoryCard key={cat.id} cat={cat} onSelect={setActiveSubcat} index={i} />
       ))}
 
-      {/* Tendencia hoy */}
-      {trendProducts.length > 0 && (
-        <div style={{ marginTop: 8 }}>
-          <p style={{ fontSize: 10, fontWeight: 800, color: "#999", textTransform: "uppercase", letterSpacing: "1.5px", margin: "0 0 12px", fontFamily: FONT }}>
-            🔥 Tendencia hoy
-          </p>
-          <div style={{ display: "flex", gap: 10, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4 }}>
-            {trendProducts.map(p => (
-              <TrendCard key={p.id} product={p} onAdd={onAdd} />
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Tendencia hoy: grid 2×2 + carrusel */}
+      <TendenciaSection products={products} onAdd={onAdd} />
     </div>
   );
 }
