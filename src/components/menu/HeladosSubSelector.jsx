@@ -421,27 +421,7 @@ export default function HeladosSubSelector({ products, onAdd }) {
 
   return (
     <div style={{ background: BG, minHeight: "100%", fontFamily: FONT }}>
-      {/* Header unificado */}
-      <div style={{ background: MAGENTA, padding: "20px 16px 18px" }}>
-        <div style={{ textAlign: "center", marginBottom: 14 }}>
-          <div style={{ fontSize: 40, marginBottom: 6 }}>🍦</div>
-          <p style={{ fontSize: 24, fontWeight: 900, color: "#fff", margin: "0 0 4px", letterSpacing: "-0.5px", fontFamily: FONT }}>
-            Helados
-          </p>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: 0, fontFamily: FONT }}>
-            Elige tu categoría favorita
-          </p>
-        </div>
-        {/* Frase en píldora */}
-        <div style={{
-          background: "rgba(255,255,255,0.18)", borderRadius: 99,
-          padding: "8px 16px", textAlign: "center",
-        }}>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.95)", margin: 0, fontStyle: "italic", fontFamily: FONT }}>
-            "El placer de un helado Popsy no tiene comparación 💕"
-          </p>
-        </div>
-      </div>
+
 
       {/* Tarjetas */}
       <div style={{ padding: "16px 14px 100px" }}>
