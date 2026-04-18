@@ -28,7 +28,43 @@ const SUBCATS = [
   },
 ];
 
-// Productos especiales que aparecen también en el carrusel de helados
+// Productos fijos para el grid "Tendencia hoy" (4 top) + carrusel (resto)
+const TENDENCIA_GRID = [
+  {
+    id: "fiore-grid",
+    name: "Helado Fiore",
+    price: 9900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0e644041f_HeladoFiore14900.png",
+    is_available: true,
+    tag: "mas_vendido",
+  },
+  {
+    id: "maxicono-grid",
+    name: "Maxi Cono",
+    price: 14900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/35f526635_Maxicono14900.png",
+    is_available: true,
+    tag: "recomendado",
+  },
+  {
+    id: "exclusivo-1sabor-grid",
+    name: "Helado Exclusivo 1 Sabor",
+    price: 9500,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/3d40172de_EXCLUSIVO.png",
+    is_available: true,
+    tag: "recomendado",
+  },
+  {
+    id: "gourmet-1sabor-grid",
+    name: "Helado Gourmet 1 Sabor",
+    price: 7500,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/928441d6e_GOURMET.png",
+    is_available: true,
+    tag: "none",
+  },
+];
+
+// Productos para el carrusel de miniaturas
 const ESPECIALES_EXTRA = [
   {
     id: "charlie-brownie",
@@ -72,6 +108,38 @@ const ESPECIALES_EXTRA = [
     price: 22900,
     image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
     category: "especialidades",
+    is_available: true,
+    tag: "none",
+  },
+  {
+    id: "fiore-mini",
+    name: "Helado Fiore",
+    price: 9900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0e644041f_HeladoFiore14900.png",
+    is_available: true,
+    tag: "none",
+  },
+  {
+    id: "maxicono-mini",
+    name: "Maxi Cono",
+    price: 14900,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/35f526635_Maxicono14900.png",
+    is_available: true,
+    tag: "none",
+  },
+  {
+    id: "exclusivo-mini",
+    name: "Exclusivo 1 Sabor",
+    price: 9500,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/3d40172de_EXCLUSIVO.png",
+    is_available: true,
+    tag: "none",
+  },
+  {
+    id: "gourmet-mini",
+    name: "Gourmet 1 Sabor",
+    price: 7500,
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/928441d6e_GOURMET.png",
     is_available: true,
     tag: "none",
   },
@@ -155,15 +223,14 @@ function GridCard2x2({ product, badge, onAdd }) {
         position: "relative", fontFamily: FONT,
       }}
     >
-      <div style={{ height: 115, width: "100%", overflow: "hidden", background: "#f5f5f5", flexShrink: 0 }}>
+      <div style={{ height: 160, width: "100%", background: "#FFF0F5", flexShrink: 0, padding: 8, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center" }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }} />
         ) : (
-          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36 }}>🍦</div>
+          <span style={{ fontSize: 36 }}>🍦</span>
         )}
       </div>
-      {/* Badge absoluto */}
       {badge && (
         <span style={{
           position: "absolute", top: 8, left: 8,
@@ -175,11 +242,11 @@ function GridCard2x2({ product, badge, onAdd }) {
       )}
       <div style={{ padding: "8px 10px 12px", flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
         <p style={{
-          fontSize: 12, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3,
+          fontSize: 12, fontWeight: 700, color: "#111", margin: 0, lineHeight: 1.3,
           display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
         }}>{product.name}</p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto" }}>
-          <span style={{ fontSize: 13, fontWeight: 900, color: MAGENTA }}>{formatCOP(product.price)}</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: MAGENTA }}>{formatCOP(product.price)}</span>
           <div style={{ width: 26, height: 26, borderRadius: "50%", background: MAGENTA, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Plus size={12} color="#fff" />
           </div>
@@ -202,20 +269,20 @@ function MiniCard({ product, onAdd }) {
         fontFamily: FONT, flex: 1,
       }}
     >
-      <div style={{ height: 72, width: "100%", overflow: "hidden", background: "#f5f5f5", flexShrink: 0 }}>
+      <div style={{ height: 90, width: "100%", background: "#FFF0F5", flexShrink: 0, padding: 4, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center" }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }} />
         ) : (
-          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>🍦</div>
+          <span style={{ fontSize: 26 }}>🍦</span>
         )}
       </div>
       <div style={{ padding: "6px 8px 8px" }}>
         <p style={{
-          fontSize: 10, fontWeight: 700, color: "#1A1A1A", margin: 0, lineHeight: 1.3,
+          fontSize: 10, fontWeight: 700, color: "#111", margin: 0, lineHeight: 1.3,
           display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
         }}>{product.name}</p>
-        <p style={{ fontSize: 11, fontWeight: 900, color: MAGENTA, margin: "3px 0 0" }}>{formatCOP(product.price)}</p>
+        <p style={{ fontSize: 11, fontWeight: 700, color: MAGENTA, margin: "3px 0 0" }}>{formatCOP(product.price)}</p>
       </div>
     </button>
   );
@@ -310,36 +377,23 @@ function MiniCarousel({ products, onAdd }) {
   );
 }
 
-// ─── Tendencia Section (grid 2×2 + carrusel miniaturas) ──────────────────────
-function TendenciaSection({ products, onAdd }) {
-  // Primero los mas_vendido, luego el resto — para llenar siempre el espacio
-  const trending = useMemo(() => {
-    const available = products.filter(p => p.is_available !== false);
-    const top = available.filter(p => p.tag === "mas_vendido");
-    const rest = available.filter(p => p.tag !== "mas_vendido");
-    return [...top, ...rest].slice(0, 13); // máx 4 grid + 9 carrusel
-  }, [products]);
-
-  const grid4 = trending.slice(0, 4);
-  const carousel = trending.slice(4);
-
-  if (trending.length === 0) return null;
-
+// ─── Tendencia Section (grid fijo 2×2 + carrusel miniaturas) ─────────────────
+function TendenciaSection({ onAdd }) {
   return (
     <div style={{ marginTop: 16 }}>
       <p style={{ fontSize: 10, fontWeight: 800, color: "#999", textTransform: "uppercase", letterSpacing: "1.5px", margin: "0 0 12px", fontFamily: FONT }}>
         🔥 Tendencia hoy
       </p>
 
-      {/* Grid 2×2 */}
+      {/* Grid fijo 2×2 */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-        {grid4.map((p, i) => (
+        {TENDENCIA_GRID.map((p, i) => (
           <GridCard2x2 key={p.id} product={p} badge={GRID_BADGES[i] || null} onAdd={onAdd} />
         ))}
       </div>
 
-      {/* Carrusel miniaturas */}
-      {carousel.length > 0 && <MiniCarousel products={carousel} onAdd={onAdd} />}
+      {/* Carrusel miniaturas con los 9 especiales */}
+      <MiniCarousel products={ESPECIALES_EXTRA} onAdd={onAdd} />
     </div>
   );
 }
@@ -531,22 +585,34 @@ function CategoryCard({ cat, onSelect, index }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.07, duration: 0.2 }}
+      style={{ marginBottom: 12 }}
     >
       <button
         onClick={() => onSelect(cat.id)}
         style={{
           width: "100%", borderRadius: 20, border: "none",
-          background: "#fff", overflow: "hidden", cursor: "pointer", padding: 0,
+          background: "#fff", cursor: "pointer", padding: 0,
           display: "flex", alignItems: "stretch",
-          textAlign: "left", marginBottom: 12, fontFamily: FONT,
+          textAlign: "left", fontFamily: FONT,
         }}
       >
-        <div style={{ width: 120, height: 110, flexShrink: 0, overflow: "hidden" }}>
-          <img src={cat.image} alt={cat.label}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+        {/* Imagen izquierda: 120×130, contain, fondo suave, padding */}
+        <div style={{
+          width: 120, flexShrink: 0,
+          background: "#FFF0F5", borderRadius: "20px 0 0 20px",
+          padding: 8, boxSizing: "border-box",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          minHeight: 130,
+        }}>
+          <img
+            src={cat.image}
+            alt={cat.label}
+            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "top" }}
+          />
         </div>
+        {/* Info derecha */}
         <div style={{ flex: 1, padding: "16px 14px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 8 }}>
-          <p style={{ fontSize: 24, fontWeight: 900, color: "#1A1A1A", margin: 0 }}>{cat.label}</p>
+          <p style={{ fontSize: 20, fontWeight: 900, color: "#1A1A1A", margin: 0 }}>{cat.label}</p>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {cat.tags.map(t => (
               <span key={t} style={{ fontSize: 10, fontWeight: 700, background: "#FCE4EC", color: "#C2185B", borderRadius: 99, padding: "3px 10px" }}>
@@ -599,8 +665,8 @@ export default function HeladosSubSelector({ products, onAdd }) {
           <CategoryCard key={cat.id} cat={cat} onSelect={setActiveSubcat} index={i} />
         ))}
 
-        {/* Tendencia hoy: grid 2×2 + carrusel con especiales */}
-        <TendenciaSection products={allForCarousel} onAdd={onAdd} />
+        {/* Tendencia hoy: grid fijo 2×2 + carrusel especiales */}
+        <TendenciaSection onAdd={onAdd} />
       </div>
 
       {/* Customizer sheet directo por subcategoría */}
