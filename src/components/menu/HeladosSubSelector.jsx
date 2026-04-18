@@ -258,10 +258,13 @@ function MiniCarousel({ products, onAdd }) {
 
 // ─── Tendencia Section (grid 2×2 + carrusel miniaturas) ──────────────────────
 function TendenciaSection({ products, onAdd }) {
-  const trending = useMemo(() =>
-    products.filter(p => p.tag === "mas_vendido" && p.is_available !== false),
-    [products]
-  );
+  // Primero los mas_vendido, luego el resto — para llenar siempre el espacio
+  const trending = useMemo(() => {
+    const available = products.filter(p => p.is_available !== false);
+    const top = available.filter(p => p.tag === "mas_vendido");
+    const rest = available.filter(p => p.tag !== "mas_vendido");
+    return [...top, ...rest].slice(0, 13); // máx 4 grid + 9 carrusel
+  }, [products]);
 
   const grid4 = trending.slice(0, 4);
   const carousel = trending.slice(4);
