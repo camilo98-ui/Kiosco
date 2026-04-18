@@ -585,6 +585,11 @@ export default function HeladosSubSelector({ products, onAdd }) {
     return p;
   }), [products]);
 
+  // Combinar helados + especiales extra para el carrusel
+  const allForCarousel = useMemo(() => {
+    return [...patchedProducts, ...ESPECIALES_EXTRA];
+  }, [patchedProducts]);
+
   if (activeSubcat) {
     return (
       <DirectProductList
@@ -595,11 +600,6 @@ export default function HeladosSubSelector({ products, onAdd }) {
       />
     );
   }
-
-  // Combinar helados + especiales extra para el carrusel
-  const allForCarousel = useMemo(() => {
-    return [...patchedProducts, ...ESPECIALES_EXTRA];
-  }, [patchedProducts]);
 
   return (
     <div style={{ background: "#F7F2F5", borderRadius: 28, padding: 14, fontFamily: FONT }}>
