@@ -223,12 +223,14 @@ function GridCard2x2({ product, badge, onAdd }) {
         position: "relative", fontFamily: FONT,
       }}
     >
-      <div style={{ height: 160, width: "100%", background: "#FFF0F5", flexShrink: 0, padding: 8, boxSizing: "border-box", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ height: 160, width: "100%", overflow: "hidden", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }} />
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
         ) : (
-          <span style={{ fontSize: 36 }}>🍦</span>
+          <div style={{ width: "100%", height: "100%", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ fontSize: 36 }}>🍦</span>
+          </div>
         )}
       </div>
       {badge && (
@@ -596,19 +598,21 @@ function CategoryCard({ cat, onSelect, index }) {
           textAlign: "left", fontFamily: FONT,
         }}
       >
-        {/* Imagen izquierda: 120×130, contain, fondo suave, padding */}
+        {/* Imagen izquierda */}
         <div style={{
           width: 120, flexShrink: 0,
           background: "#FFF0F5", borderRadius: "20px 0 0 20px",
-          padding: 8, boxSizing: "border-box",
+          padding: 10, boxSizing: "border-box",
           display: "flex", alignItems: "center", justifyContent: "center",
           minHeight: 130,
         }}>
-          <img
-            src={cat.image}
-            alt={cat.label}
-            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "top" }}
-          />
+          <div style={{ width: 100, height: 100, borderRadius: 12, overflow: "hidden", flexShrink: 0 }}>
+            <img
+              src={cat.image}
+              alt={cat.label}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+            />
+          </div>
         </div>
         {/* Info derecha */}
         <div style={{ flex: 1, padding: "16px 14px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 8 }}>
