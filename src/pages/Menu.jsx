@@ -178,7 +178,17 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
         <div style={{ width: 44 }} />
       </div>
       <div className="pb-36 pt-2" style={{ background: "#FFF5F7" }}>
-        {activeCategory === "para_llevar" && <ParaLlevarLayout onAdd={onAdd} />}
+        {activeCategory === "para_llevar"
+          ? <ParaLlevarLayout onAdd={onAdd} />
+          : <EditorialLayout
+              products={categoryProducts}
+              category={activeCategory}
+              onAdd={onAdd}
+              addedFlash={addedFlash}
+              autoOpenProduct={autoOpenProduct}
+              onAutoOpenDone={onAutoOpenDone}
+            />
+        }
       </div>
       <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
