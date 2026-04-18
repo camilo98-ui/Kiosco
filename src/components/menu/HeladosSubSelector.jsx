@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useRef, useCallback } from "react"
 import { Plus, Search, ArrowLeft, Minus, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCOP } from "@/lib/constants";
+import HeladoSubcatCustomizer from "@/components/menu/HeladoSubcatCustomizer";
 
 const MAGENTA = "#E8187A";
 const FONT = "-apple-system, 'SF Pro Display', 'Poppins', sans-serif";
@@ -590,26 +591,25 @@ export default function HeladosSubSelector({ products, onAdd }) {
     return [...patchedProducts, ...ESPECIALES_EXTRA];
   }, [patchedProducts]);
 
-  if (activeSubcat) {
-    return (
-      <DirectProductList
-        subcat={activeSubcat}
-        products={patchedProducts}
-        onBack={() => setActiveSubcat(null)}
-        onGlobalAdd={onAdd}
-      />
-    );
-  }
-
   return (
-    <div style={{ background: "#F7F2F5", borderRadius: 28, padding: 14, fontFamily: FONT }}>
-      {/* 3 Category Cards */}
-      {SUBCATS.map((cat, i) => (
-        <CategoryCard key={cat.id} cat={cat} onSelect={setActiveSubcat} index={i} />
-      ))}
+    <>
+      <div style={{ background: "#F7F2F5", borderRadius: 28, padding: 14, fontFamily: FONT }}>
+        {/* 3 Category Cards */}
+        {SUBCATS.map((cat, i) => (
+          <CategoryCard key={cat.id} cat={cat} onSelect={setActiveSubcat} index={i} />
+        ))}
 
-      {/* Tendencia hoy: grid 2×2 + carrusel con especiales */}
-      <TendenciaSection products={allForCarousel} onAdd={onAdd} />
-    </div>
+        {/* Tendencia hoy: grid 2×2 + carrusel con especiales */}
+        <TendenciaSection products={allForCarousel} onAdd={onAdd} />
+      </div>
+
+      {/* Customizer sheet directo por subcategoría */}
+      <HeladoSubcatCustomizer
+        subcat={activeSubcat}
+        open={!!activeSubcat}
+        onClose={() => setActiveSubcat(null)}
+        onAdd={onAdd}
+      />
+    </>
   );
 }
