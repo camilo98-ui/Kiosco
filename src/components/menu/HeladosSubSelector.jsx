@@ -600,19 +600,15 @@ function CategoryCard({ cat, onSelect, index }) {
       >
         {/* Imagen izquierda */}
         <div style={{
-          width: 120, flexShrink: 0,
-          background: "#FFF0F5", borderRadius: "20px 0 0 20px",
-          padding: 10, boxSizing: "border-box",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          minHeight: 130,
+          width: 130, flexShrink: 0,
+          borderRadius: "20px 0 0 20px",
+          overflow: "hidden",
         }}>
-          <div style={{ width: 100, height: 100, borderRadius: 12, overflow: "hidden", flexShrink: 0 }}>
-            <img
-              src={cat.image}
-              alt={cat.label}
-              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
-            />
-          </div>
+          <img
+            src={cat.image}
+            alt={cat.label}
+            style={{ width: "100%", height: "100%", minHeight: 120, objectFit: "cover", objectPosition: "center", display: "block" }}
+          />
         </div>
         {/* Info derecha */}
         <div style={{ flex: 1, padding: "16px 14px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 8 }}>
