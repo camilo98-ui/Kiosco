@@ -55,18 +55,11 @@ export default function LoginRoles() {
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <p
-            className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2"
-            style={{ letterSpacing: "0.15em" }}
-          >
-            Helado Gourmet
-          </p>
-          <p
-            className="text-4xl font-black mb-2"
-            style={{ color: "#E91E63", fontStyle: "italic" }}
-          >
-            Popsy
-          </p>
+          <img
+            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/adafd980d_images2.png"
+            alt="Popsy"
+            className="h-24 mb-4 mx-auto"
+          />
           <h1 className="text-xl font-semibold text-pink-300 mb-2">
             Iniciar sesión
           </h1>
