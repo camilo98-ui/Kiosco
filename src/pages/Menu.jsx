@@ -50,7 +50,7 @@ const FAMILY_CARDS = [
 { id: "malteadas", label: "Malteadas", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/7f68abf79_image.png" },
 { id: "helados", label: "Helados", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c9474e0e_Helados.png" },
 { id: "combos", label: "Cookie Jar", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6dd912084_cookie-jaar-img.jpg" },
-{ id: "granizados", label: "Granizados 🧊", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/923ba973b_images2.jpg" },
+{ id: "granizados", label: "Granizados", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/923ba973b_images2.jpg" },
 { id: "especialidades", label: "Especiales", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png" },
 { id: "cafe", label: "Café", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e15d81047_Coffee.png" },
 { id: "bebidas", label: "Otras bebidas", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/26de2b565_image.png" },
@@ -409,7 +409,7 @@ export default function Menu() {
           <button onClick={() => setActiveCategory(null)} style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.2)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
             <ArrowLeft size={20} color="#fff" />
           </button>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>Granizados 🧊</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>Granizados</span>
           <div style={{ width: 44 }} />
         </div>
         {/* Grid */}
