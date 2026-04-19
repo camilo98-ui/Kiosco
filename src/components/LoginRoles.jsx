@@ -84,7 +84,7 @@ export default function LoginRoles() {
         {/* Header */}
         <div className="text-center mb-8">
           <motion.img
-            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/adafd980d_images2.png"
+            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/bfc0077cd_images__2_-removebg-preview.png"
             alt="Popsy"
             className="h-32 mb-6 mx-auto"
             style={{ filter: 'drop-shadow(0 0 0px rgba(233, 30, 99, 0))', mixBlendMode: 'multiply' }}
