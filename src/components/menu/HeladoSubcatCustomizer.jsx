@@ -162,21 +162,20 @@ function SaborButton({ label, selected, onSelect, disabled }) {
 }
 
 export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, productPrice }) {
-  const [numSabores, setNumSabores] = useState(null); // null = no elegido aún
+  const [numSabores, setNumSabores] = useState(null);
   const [selected, setSelected] = useState([]);
+  const [selectedFeatured, setSelectedFeatured] = useState(null); // featured seleccionado
 
   const saboresList = SABORES[subcat] || [];
   const featured = FEATURED_IMAGES[subcat] || [];
   const label = LABELS[subcat] || "Helado";
   const prices = BASE_PRICES[subcat] || { "1 Sabor": 8500, "2 Sabores": 10900 };
 
-  // Precio final: usar el del producto si existe, o el del mapa
-  const basePrice = productPrice || (numSabores === 2 ? prices["2 Sabores"] : prices["1 Sabor"]);
-
   useEffect(() => {
     if (open) {
       setNumSabores(null);
       setSelected([]);
+      setSelectedFeatured(null);
     }
   }, [open, subcat]);
 
@@ -184,22 +183,31 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
     if (!numSabores) return;
     setSelected(prev => {
       if (prev.includes(s)) return prev.filter(x => x !== s);
-      if (prev.length >= numSabores) return prev; // ya tiene el máximo
+      if (prev.length >= numSabores) return prev;
       return [...prev, s];
     });
   };
 
   const canConfirm = numSabores && selected.length === numSabores;
 
+  // Nombre del producto a mostrar en el pedido
+  const productName = selectedFeatured
+    ? `${selectedFeatured.name} ${numSabores === 1 ? "1 Sabor" : "2 Sabores"}`
+    : `Helado ${label} ${numSabores === 1 ? "1 Sabor" : "2 Sabores"}`;
+
+  const productPrice2 = selectedFeatured
+    ? selectedFeatured.price
+    : (numSabores === 2 ? prices["2 Sabores"] : prices["1 Sabor"]);
+
   const handleConfirm = () => {
     if (!canConfirm) return;
-    const notes = `Sabor: ${selected.join(", ")} | Crack: Sin Crack`;
+    const notes = `Sabor: ${selected.join(", ")}`;
     onAdd(
       {
         product_id: `helado-${subcat}-${Date.now()}`,
-        product_name: `Helado ${label} ${numSabores === 1 ? "1 Sabor" : "2 Sabores"}`,
-        name: `Helado ${label} ${numSabores === 1 ? "1 Sabor" : "2 Sabores"}`,
-        price: numSabores === 2 ? prices["2 Sabores"] : prices["1 Sabor"],
+        product_name: productName,
+        name: productName,
+        price: productPrice2,
         quantity: 1,
       },
       notes
@@ -231,10 +239,59 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
         </div>
 
         <div style={{ padding: "16px 16px 0" }}>
+          {/* Imágenes destacadas — ahora seleccionan el producto, no añaden directo */}
+          <div style={{ marginBottom: 16 }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", margin: "0 0 10px", fontFamily: FONT }}>
+              ¿Cuál quieres? 🍦
+            </p>
+            <div style={{ display: "flex", gap: 10 }}>
+              {featured.map((item, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedFeatured(selectedFeatured?.id === item.id ? null : item)}
+                  style={{
+                    flex: 1, borderRadius: 18, overflow: "hidden",
+                    background: "#FFF0F5", height: 140,
+                    border: selectedFeatured?.id === item.id ? `2.5px solid ${MAGENTA}` : "1.5px solid #FFE4F3",
+                    display: "flex", flexDirection: "column",
+                    position: "relative", cursor: "pointer", padding: 0,
+                    boxShadow: selectedFeatured?.id === item.id ? `0 2px 12px rgba(196,30,106,0.25)` : "none",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0,
+                    background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)",
+                    padding: "20px 10px 8px",
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: 1,
+                  }}>
+                    <p style={{ fontSize: 11, fontWeight: 800, color: "#fff", margin: 0 }}>{item.name}</p>
+                    <p style={{ fontSize: 12, fontWeight: 900, color: "#FFD6EC", margin: 0 }}>{formatCOP(item.price)}</p>
+                  </div>
+                  {selectedFeatured?.id === item.id && (
+                    <div style={{
+                      position: "absolute", top: 8, right: 8,
+                      width: 22, height: 22, borderRadius: "50%",
+                      background: MAGENTA,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      <span style={{ color: "#fff", fontSize: 13, fontWeight: 900 }}>✓</span>
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Paso 1: ¿Cuántos sabores? */}
           <div style={{ marginBottom: 20 }}>
             <p style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", margin: "0 0 10px", fontFamily: FONT }}>
-              ¿Cuántos sabores quieres? 🍦
+              ¿Cuántos sabores? 🍦
             </p>
             <div style={{ display: "flex", gap: 10 }}>
               {[1, 2].map(n => (
@@ -242,17 +299,12 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
                   key={n}
                   onClick={() => { setNumSabores(n); setSelected([]); }}
                   style={{
-                    flex: 1,
-                    padding: "14px 0",
-                    borderRadius: 14,
+                    flex: 1, padding: "14px 0", borderRadius: 14,
                     border: numSabores === n ? `2.5px solid ${MAGENTA}` : "1.5px solid #F0E4EA",
                     background: numSabores === n ? "#FFF0F5" : "#fff",
-                    cursor: "pointer",
-                    fontWeight: 800,
-                    fontSize: 15,
+                    cursor: "pointer", fontWeight: 800, fontSize: 15,
                     color: numSabores === n ? MAGENTA : "#888",
-                    fontFamily: FONT,
-                    transition: "all 0.15s",
+                    fontFamily: FONT, transition: "all 0.15s",
                     boxShadow: numSabores === n ? `0 2px 12px rgba(196,30,106,0.18)` : "none",
                   }}
                 >
@@ -265,34 +317,7 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
             </div>
           </div>
 
-          {/* Imágenes destacadas — comprables directamente */}
-          <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-            {featured.map((item, i) => (
-              <FeaturedImage
-                key={i}
-                item={item}
-                onAdd={(it) => {
-                  onAdd(
-                    {
-                      product_id: it.id,
-                      product_name: it.name,
-                      name: it.name,
-                      price: it.price,
-                      quantity: 1,
-                    },
-                    `Helado ${it.name} · 1 Sabor`
-                  );
-                  toast.success(`✓ ${it.name} agregado`, {
-                    duration: 1500,
-                    style: { background: "#C41E6A", color: "#fff", border: "none", borderRadius: 12 },
-                  });
-                  setTimeout(() => onClose(), 150);
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Paso 2: Lista de sabores (solo si ya eligió cuántos) */}
+          {/* Paso 2: Lista de sabores de la subcategoría */}
           {numSabores ? (
             <div style={{ marginBottom: 20 }}>
               <p style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", margin: "0 0 8px", fontFamily: FONT }}>
@@ -312,7 +337,7 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
             </div>
           ) : (
             <div style={{ textAlign: "center", padding: "12px 0 24px", color: "#CCC" }}>
-              <p style={{ fontSize: 13 }}>Primero elige cuántos sabores quieres ☝️</p>
+              <p style={{ fontSize: 13 }}>Elige cuántos sabores quieres ☝️</p>
             </div>
           )}
         </div>
@@ -340,7 +365,7 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
             }}
           >
             {canConfirm
-              ? `Agregar al pedido · ${formatCOP(numSabores === 2 ? prices["2 Sabores"] : prices["1 Sabor"])}`
+              ? `Agregar al pedido · ${formatCOP(productPrice2)}`
               : "Personaliza tu helado 🍦"}
           </button>
         </div>
