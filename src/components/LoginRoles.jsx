@@ -97,7 +97,6 @@ export default function LoginRoles() {
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <p style={{ fontSize: "10px", fontWeight: 600, color: "#C41E6A", letterSpacing: "1.5px", marginBottom: "6px" }}>HELADO GOURMET</p>
           <motion.img
             src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/bfc0077cd_images__2_-removebg-preview.png"
             alt="Popsy"
