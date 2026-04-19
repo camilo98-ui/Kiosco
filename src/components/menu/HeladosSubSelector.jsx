@@ -211,7 +211,7 @@ function MiniCart({ items, onUpdateQty }) {
 }
 
 // ─── Grid 2×2 card ───────────────────────────────────────────────────────────
-function GridCard2x2({ product, badge, onAdd }) {
+function GridCard2x2({ product, badge, onAdd, imgPosition }) {
   const [imgErr, setImgErr] = useState(false);
   return (
     <button
@@ -226,7 +226,7 @@ function GridCard2x2({ product, badge, onAdd }) {
       <div style={{ height: 160, width: "100%", overflow: "hidden", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 10%" }} />
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: imgPosition || "center 10%" }} />
         ) : (
           <div style={{ width: "100%", height: "100%", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <span style={{ fontSize: 36 }}>🍦</span>
@@ -390,7 +390,7 @@ function TendenciaSection({ onAdd }) {
       {/* Grid fijo 2×2 */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
         {TENDENCIA_GRID.map((p, i) => (
-          <GridCard2x2 key={p.id} product={p} badge={GRID_BADGES[i] || null} onAdd={onAdd} />
+          <GridCard2x2 key={p.id} product={p} badge={GRID_BADGES[i] || null} onAdd={onAdd} imgPosition={p.id === "maxicono-grid" ? "center top" : "center 10%"} />
         ))}
       </div>
 
