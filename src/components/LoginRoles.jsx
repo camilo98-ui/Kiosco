@@ -12,11 +12,18 @@ export default function LoginRoles() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const savedStore = localStorage.getItem('popsy_selected_store');
     base44.entities.Store.filter({ is_active: true })
-      .then(data => setStores(data))
+      .then(data => {
+        setStores(data);
+        if (savedStore) {
+          setSelectedStore(savedStore);
+          setTimeout(() => navigate('/menu'), 300);
+        }
+      })
       .catch(() => setStores([]))
       .finally(() => setLoading(false));
-  }, []);
+  }, [navigate]);
 
   const filtered = useMemo(() => {
     return stores.filter(store =>
@@ -27,6 +34,7 @@ export default function LoginRoles() {
 
   const handleEnter = () => {
     if (selectedStore) {
+      localStorage.setItem('popsy_selected_store', selectedStore);
       navigate(`/menu`);
     }
   };
@@ -38,47 +46,61 @@ export default function LoginRoles() {
         background: "linear-gradient(135deg, #FFF0F8 0%, #FFFBFC 50%, #FFF5F8 100%)",
       }}
     >
-      {/* Burbujas animadas de fondo - Verde pastel */}
+      {/* Burbujas animadas de fondo - Magenta y Verde pastel pequeñas */}
       <motion.div
         animate={{
-          x: [0, 80, -80, 0],
-          y: [-100, 100, -100, 0],
-          scale: [1, 1.3, 0.8, 1],
+          x: [0, 40, -40, 0],
+          y: [-50, 50, -50, 0],
+          scale: [1, 1.1, 0.9, 1],
         }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none"
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-20 -right-20 w-[200px] h-[200px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 30% 30%, rgba(144, 238, 144, 0.6), rgba(144, 238, 144, 0.2), rgba(144, 238, 144, 0.05), transparent)',
-          filter: 'blur(60px)',
-          boxShadow: '0 0 200px rgba(144, 238, 144, 0.4)',
+          background: 'radial-gradient(circle at 30% 30%, rgba(233, 30, 99, 0.5), rgba(233, 30, 99, 0.15), transparent)',
+          filter: 'blur(40px)',
+          boxShadow: '0 0 80px rgba(233, 30, 99, 0.3)',
         }}
       />
       <motion.div
         animate={{
-          x: [0, -80, 80, 0],
-          y: [100, -100, 100, 0],
-          scale: [1, 0.8, 1.3, 1],
+          x: [0, -35, 35, 0],
+          y: [50, -50, 50, 0],
+          scale: [1, 0.9, 1.1, 1],
         }}
-        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute -bottom-32 -left-32 w-[550px] h-[550px] rounded-full pointer-events-none"
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        className="absolute -bottom-16 -left-16 w-[180px] h-[180px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(152, 251, 152, 0.5), rgba(152, 251, 152, 0.15), rgba(152, 251, 152, 0.03), transparent)',
-          filter: 'blur(65px)',
-          boxShadow: '0 0 210px rgba(152, 251, 152, 0.35)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.45), rgba(144, 238, 144, 0.1), transparent)',
+          filter: 'blur(38px)',
+          boxShadow: '0 0 75px rgba(144, 238, 144, 0.25)',
         }}
       />
       <motion.div
         animate={{
-          x: [0, 60, -60, 0],
-          y: [0, -80, 80, 0],
-          scale: [1, 1.2, 0.9, 1],
+          x: [0, 30, -30, 0],
+          y: [0, -40, 40, 0],
+          scale: [1, 1.15, 0.85, 1],
         }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute top-1/3 right-1/4 w-[480px] h-[480px] rounded-full pointer-events-none"
+        transition={{ duration: 19, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+        className="absolute top-1/2 right-1/3 w-[160px] h-[160px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(173, 255, 47, 0.4), rgba(173, 255, 47, 0.1), rgba(173, 255, 47, 0.02), transparent)',
-          filter: 'blur(55px)',
-          boxShadow: '0 0 180px rgba(173, 255, 47, 0.3)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(233, 100, 150, 0.4), rgba(233, 100, 150, 0.08), transparent)',
+          filter: 'blur(35px)',
+          boxShadow: '0 0 70px rgba(233, 100, 150, 0.2)',
+        }}
+      />
+      <motion.div
+        animate={{
+          x: [0, -30, 30, 0],
+          y: [30, -30, 30, 0],
+          scale: [1, 0.95, 1.1, 1],
+        }}
+        transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 2.2 }}
+        className="absolute bottom-1/3 left-1/4 w-[150px] h-[150px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 35% 35%, rgba(152, 251, 152, 0.4), rgba(152, 251, 152, 0.08), transparent)',
+          filter: 'blur(36px)',
+          boxShadow: '0 0 65px rgba(152, 251, 152, 0.2)',
         }}
       />
 
