@@ -226,7 +226,7 @@ function GridCard2x2({ product, badge, onAdd }) {
       <div style={{ height: 160, width: "100%", overflow: "hidden", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
+            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center center", padding: "8px 8px 0" }} />
         ) : (
           <div style={{ width: "100%", height: "100%", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <span style={{ fontSize: 36 }}>🍦</span>
@@ -274,7 +274,7 @@ function MiniCard({ product, onAdd }) {
       <div style={{ height: 120, width: "100%", overflow: "hidden", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "14px 14px 0 0" }} />
+            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center center", borderRadius: "14px 14px 0 0", padding: "6px 6px 0" }} />
         ) : (
           <div style={{ width: "100%", height: "100%", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, borderRadius: "14px 14px 0 0" }}>🍦</div>
         )}
