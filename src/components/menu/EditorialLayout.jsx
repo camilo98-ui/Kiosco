@@ -452,7 +452,15 @@ function EspecialesCard({ product, onAdd, addedFlash, bg }) {
 }
 
 function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
-  const available = products.filter(p => p.is_available !== false && !p.name.toLowerCase().includes("granizado"));
+  const available = products.filter(p => p.is_available !== false && !p.name.toLowerCase().includes("granizado")).map(p => {
+    const name = p.name.toLowerCase();
+    if (name.includes("sundae 1 sabor")) {
+      return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2df60753e_Sundae1sabor10900.png" };
+    } else if (name.includes("sundae 2 sabor")) {
+      return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/4ec8da0eb_Sundae2sabores14900.png" };
+    }
+    return p;
+  });
   return (
     <>
       <SectionHeader label={catLabel} count={available.length} />
@@ -525,31 +533,40 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
   const handleAdd = useCallback((product) => {
+    // Patch images for Sundaes
+    let patchedProduct = product;
+    const name = product.name.toLowerCase();
+    if (name.includes("sundae 1 sabor")) {
+      patchedProduct = { ...product, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2df60753e_Sundae1sabor10900.png" };
+    } else if (name.includes("sundae 2 sabor")) {
+      patchedProduct = { ...product, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/4ec8da0eb_Sundae2sabores14900.png" };
+    }
+
     if (category === "malteadas") {
-      if (product.name.includes("12oz")) {
-        setCustomizer12ozProduct(product);
+      if (patchedProduct.name.includes("12oz")) {
+        setCustomizer12ozProduct(patchedProduct);
       } else {
-        setCustomizerProduct(product);
+        setCustomizerProduct(patchedProduct);
       }
-    } else if (category === "especialidades" && product.name.toLowerCase().includes("banana split")) {
-      setBananaSplitProduct(product);
+    } else if (category === "especialidades" && patchedProduct.name.toLowerCase().includes("banana split")) {
+      setBananaSplitProduct(patchedProduct);
     } else if (category === "especialidades") {
-      setEspecialidadesProduct(product);
-    } else if (category === "helados" && (product.name.toLowerCase().includes("maxi cono") || product.name.toLowerCase().includes("maxicono"))) {
-      setMaxiConoProduct(product);
-    } else if (category === "helados" && (product.name.toLowerCase().includes("junior") || product.name.toLowerCase().includes("jr"))) {
-      setHeladoJuniorProduct(product);
+      setEspecialidadesProduct(patchedProduct);
+    } else if (category === "helados" && (patchedProduct.name.toLowerCase().includes("maxi cono") || patchedProduct.name.toLowerCase().includes("maxicono"))) {
+      setMaxiConoProduct(patchedProduct);
+    } else if (category === "helados" && (patchedProduct.name.toLowerCase().includes("junior") || patchedProduct.name.toLowerCase().includes("jr"))) {
+      setHeladoJuniorProduct(patchedProduct);
     } else if (category === "helados") {
       // Todos los helados (gourmet, exclusivo, etc.) abren el customizer
-      setHeladoProduct(product);
-    } else if (category === "granizados" && product.name.toLowerCase().includes("granizado")) {
-      setGranizadoProduct(product);
-    } else if (product.name.toLowerCase().includes("cono") && !product.name.toLowerCase().includes("maxi")) {
-      setConeProduct(product);
+      setHeladoProduct(patchedProduct);
+    } else if (category === "granizados" && patchedProduct.name.toLowerCase().includes("granizado")) {
+      setGranizadoProduct(patchedProduct);
+    } else if (patchedProduct.name.toLowerCase().includes("cono") && !patchedProduct.name.toLowerCase().includes("maxi")) {
+      setConeProduct(patchedProduct);
     } else if (category === "combos") {
-      setGenericProduct(product);
+      setGenericProduct(patchedProduct);
     } else {
-      onAdd(product);
+      onAdd(patchedProduct);
     }
   }, [category, onAdd]);
 
