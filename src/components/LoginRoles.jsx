@@ -35,7 +35,7 @@ export default function LoginRoles() {
     <div
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 50%, #F5F0FF 100%)",
+        background: "linear-gradient(135deg, #FFFFFF 0%, #FFFBFC 50%, #FEFAF5 100%)",
       }}
     >
       {/* Burbujas animadas de fondo */}
@@ -48,9 +48,9 @@ export default function LoginRoles() {
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -top-32 -right-32 w-80 h-80 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(233, 30, 99, 0.35), rgba(233, 30, 99, 0.08), transparent)',
-          filter: 'blur(40px)',
-          boxShadow: '0 0 80px rgba(233, 30, 99, 0.25)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(233, 30, 99, 0.5), rgba(233, 30, 99, 0.15), transparent)',
+          filter: 'blur(35px)',
+          boxShadow: '0 0 100px rgba(233, 30, 99, 0.4)',
         }}
       />
       <motion.div
@@ -62,9 +62,9 @@ export default function LoginRoles() {
         transition={{ duration: 28, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.3), rgba(168, 85, 247, 0.05), transparent)',
-          filter: 'blur(50px)',
-          boxShadow: '0 0 100px rgba(168, 85, 247, 0.2)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.45), rgba(168, 85, 247, 0.12), transparent)',
+          filter: 'blur(45px)',
+          boxShadow: '0 0 120px rgba(168, 85, 247, 0.35)',
         }}
       />
 
