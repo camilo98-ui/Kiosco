@@ -69,10 +69,10 @@ export default function LoginRoles() {
         transition={{ duration: 0.5 }}
         className="relative z-10 w-full max-w-[420px] p-8 rounded-3xl"
         style={{
-          background: "rgba(255, 255, 255, 0.9)",
-          boxShadow: "0 20px 60px rgba(233, 30, 99, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.9)",
-          backdropFilter: "blur(20px)",
-          border: "1px solid rgba(233, 30, 99, 0.1)",
+          background: "rgba(255, 255, 255, 0.75)",
+          boxShadow: "0 20px 60px rgba(244, 194, 219, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 0 40px rgba(233, 30, 99, 0.15)",
+          backdropFilter: "blur(30px)",
+          border: "1.5px solid rgba(244, 194, 219, 0.6)",
         }}
       >
         {/* Header */}
@@ -84,11 +84,11 @@ export default function LoginRoles() {
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           />
-          <h1 className="text-xl font-semibold mb-1" style={{ color: "#E91E63" }}>
+          <h1 className="text-3xl font-black mb-2" style={{ color: "#E91E63" }}>
             Bienvenido
           </h1>
-          <p className="text-xs text-gray-400 font-medium tracking-wide">
-            SELECCIONA TU TIENDA
+          <p className="text-sm text-gray-500 font-medium">
+            ¿A cuál tienda Popsy vienes hoy?
           </p>
         </div>
 
@@ -154,12 +154,12 @@ export default function LoginRoles() {
             boxShadow: selectedStore ? "0 8px 20px rgba(233, 30, 99, 0.3)" : "none",
           }}
         >
-          Continuar →
+          Ir a Popsy 🍦
         </motion.button>
 
         {/* Footer */}
         <p className="text-center text-xs text-gray-400">
-          Acceso administrativo
+          Elige tu ubicación favorita
         </p>
       </motion.div>
     </div>
