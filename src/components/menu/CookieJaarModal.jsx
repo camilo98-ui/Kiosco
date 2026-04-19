@@ -3,6 +3,7 @@ import { X, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { COOKIE_JAAR_DATA } from "@/lib/cookieJaarData";
 import { formatCOP } from "@/lib/constants";
+import GalletaCustomizer from "@/components/menu/GalletaCustomizer";
 
 const MAGENTA = "#C41E6A";
 const FONT = "'Poppins', sans-serif";
@@ -140,6 +141,7 @@ function FeaturedCard({ product, onAdd }) {
 
 export default function CookieJaarModal({ open, onClose, onAdd }) {
   const [activeTab, setActiveTab] = useState("galletas");
+  const [galletaCustomizerProduct, setGalletaCustomizerProduct] = useState(null);
 
   const allProducts = COOKIE_JAAR_DATA[activeTab] || [];
 
@@ -149,7 +151,25 @@ export default function CookieJaarModal({ open, onClose, onAdd }) {
   const noType = allProducts.filter(p => !p.type);
 
   const handleAdd = (p) => {
+    // Si es galleta, abrir customizer
+    if (p.type === "mediana" || p.type === "suprema") {
+      setGalletaCustomizerProduct(p);
+      return;
+    }
     onAdd({ product_id: p.id, product_name: p.name, price: p.price, quantity: 1, category: "combos" });
+    setTimeout(() => onClose(), 100);
+  };
+
+  const handleGalletaConfirm = (productWithPrice, notes) => {
+    onAdd({
+      product_id: productWithPrice.id,
+      product_name: productWithPrice.name,
+      price: productWithPrice.price,
+      quantity: 1,
+      category: "galletas",
+      notes,
+    });
+    setGalletaCustomizerProduct(null);
     setTimeout(() => onClose(), 100);
   };
 
@@ -294,6 +314,14 @@ export default function CookieJaarModal({ open, onClose, onAdd }) {
           </motion.div>
         </motion.div>
       )}
+
+      {/* Galleta customizer */}
+      <GalletaCustomizer
+        product={galletaCustomizerProduct}
+        open={!!galletaCustomizerProduct}
+        onClose={() => setGalletaCustomizerProduct(null)}
+        onAdd={handleGalletaConfirm}
+      />
     </AnimatePresence>
   );
 }
