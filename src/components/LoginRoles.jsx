@@ -156,10 +156,10 @@ export default function LoginRoles() {
         transition={{ duration: 0.5 }}
         className="relative z-10 w-full max-w-[340px] p-6 rounded-3xl mx-auto"
         style={{
-          background: "rgba(255, 255, 255, 0.45)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.6)",
+          background: "rgba(255, 255, 255, 0.35)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1px solid rgba(255, 255, 255, 0.7)",
           boxShadow: "0 8px 32px rgba(232, 24, 122, 0.1)",
           minHeight: "520px"
         }}>
@@ -205,7 +205,7 @@ export default function LoginRoles() {
           {loading ?
           <p className="text-center text-gray-400 text-sm py-4">Cargando tiendas...</p> :
           filtered.length > 0 ?
-          <div className="space-y-2 max-h-40 overflow-y-auto pr-2">
+          <div className="space-y-2 max-h-40 overflow-y-auto pr-2 mb-3">
                {filtered.map((store, idx) =>
             <motion.button
               key={store.id}
@@ -214,20 +214,19 @@ export default function LoginRoles() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
-              className="w-full p-2.5 rounded-2xl text-left transition-all"
+              className="w-full text-left transition-all"
               style={{
-                background: selectedStore === store.id ? "rgba(233, 30, 99, 0.2)" : "rgba(255, 255, 255, 0.25)",
-                backdropFilter: "blur(10px)",
-                border: selectedStore === store.id ? "1.5px solid rgba(233, 30, 99, 0.6)" : "1.5px solid rgba(255, 255, 255, 0.3)",
+                background: selectedStore === store.id ? "rgba(233, 30, 99, 0.2)" : "rgba(255, 255, 255, 0.7)",
+                border: selectedStore === store.id ? "1.5px solid rgba(233, 30, 99, 0.6)" : "1px solid rgba(240, 210, 225, 0.6)",
+                borderRadius: "14px",
+                padding: "12px 14px",
                 boxShadow: selectedStore === store.id ? "inset 0 0 0 1px rgba(233, 30, 99, 0.3)" : "none"
               }}>
               
-                  <p className="font-semibold text-xs" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
+                  <p className="font-bold text-xs" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
                     {store.name}
                   </p>
-                  {store.address &&
-              <p className="text-xs text-gray-400 mt-0.5">{store.address}</p>
-              }
+                  <p className="text-xs text-gray-400 mt-0.5">{store.address || store.name}</p>
                 </motion.button>
             )}
             </div> :
@@ -241,12 +240,13 @@ export default function LoginRoles() {
           onClick={handleEnter}
           disabled={!selectedStore}
           whileTap={selectedStore ? { scale: 0.98 } : {}}
-          className="w-full h-11 rounded-2xl font-bold text-sm transition-all mb-3"
+          className="w-full h-11 rounded-2xl font-bold text-sm transition-all"
           style={{
             background: selectedStore ? "linear-gradient(135deg, #E91E63, #F06292)" : "#E8E8E8",
             color: selectedStore ? "#FFFFFF" : "#999",
             cursor: selectedStore ? "pointer" : "not-allowed",
-            boxShadow: selectedStore ? "0 6px 16px rgba(233, 30, 99, 0.3)" : "none"
+            boxShadow: selectedStore ? "0 6px 16px rgba(233, 30, 99, 0.3)" : "none",
+            marginTop: "16px"
           }}>
           
           Ir a Popsy 🍦
