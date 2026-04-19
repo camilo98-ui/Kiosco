@@ -18,47 +18,62 @@ export default function StoreSelector({ onSelect }) {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      {/* Fondo con burbujas animadas */}
+      {/* Fondo con burbujas animadas - Magenta y Verde pastel pequeñas */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        {/* Burbuja 1 - superior derecha */}
         <motion.div
           animate={{
-            x: [0, 40, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-32 -right-32 w-80 h-80 rounded-full"
-          style={{
-            background: 'radial-gradient(circle at 30% 30%, rgba(236, 72, 153, 0.15), rgba(236, 72, 153, 0.02))',
-            boxShadow: '0 0 60px rgba(236, 72, 153, 0.1), inset -20px -20px 40px rgba(255,255,255,0.5), inset 20px 20px 40px rgba(236, 72, 153, 0.1)'
-          }}
-        />
-        
-        {/* Burbuja 2 - inferior izquierda */}
-        <motion.div
-          animate={{
-            x: [0, -30, 0],
-            y: [0, 40, 0],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full"
-          style={{
-            background: 'radial-gradient(circle at 30% 30%, rgba(168, 85, 247, 0.12), rgba(168, 85, 247, 0.02))',
-            boxShadow: '0 0 60px rgba(168, 85, 247, 0.08), inset -25px -25px 50px rgba(255,255,255,0.4), inset 25px 25px 50px rgba(168, 85, 247, 0.08)'
-          }}
-        />
-        
-        {/* Burbuja 3 - centro superior */}
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            y: [0, -20, 0],
+            x: [0, 40, -40, 0],
+            y: [-50, 50, -50, 0],
+            scale: [1, 1.1, 0.9, 1],
           }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full"
+          className="absolute -top-20 -right-20 w-[200px] h-[200px] rounded-full pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.08), rgba(236, 72, 153, 0.01))',
-            boxShadow: '0 0 50px rgba(236, 72, 153, 0.06), inset -15px -15px 30px rgba(255,255,255,0.3)'
+            background: 'radial-gradient(circle at 30% 30%, rgba(233, 30, 99, 0.5), rgba(233, 30, 99, 0.15), transparent)',
+            filter: 'blur(40px)',
+            boxShadow: '0 0 80px rgba(233, 30, 99, 0.3)',
+          }}
+        />
+        <motion.div
+          animate={{
+            x: [0, -35, 35, 0],
+            y: [50, -50, 50, 0],
+            scale: [1, 0.9, 1.1, 1],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          className="absolute -bottom-16 -left-16 w-[180px] h-[180px] rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.45), rgba(144, 238, 144, 0.1), transparent)',
+            filter: 'blur(38px)',
+            boxShadow: '0 0 75px rgba(144, 238, 144, 0.25)',
+          }}
+        />
+        <motion.div
+          animate={{
+            x: [0, 30, -30, 0],
+            y: [0, -40, 40, 0],
+            scale: [1, 1.15, 0.85, 1],
+          }}
+          transition={{ duration: 19, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+          className="absolute top-1/2 right-1/3 w-[160px] h-[160px] rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at 35% 35%, rgba(233, 100, 150, 0.4), rgba(233, 100, 150, 0.08), transparent)',
+            filter: 'blur(35px)',
+            boxShadow: '0 0 70px rgba(233, 100, 150, 0.2)',
+          }}
+        />
+        <motion.div
+          animate={{
+            x: [0, -30, 30, 0],
+            y: [30, -30, 30, 0],
+            scale: [1, 0.95, 1.1, 1],
+          }}
+          transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 2.2 }}
+          className="absolute bottom-1/3 left-1/4 w-[150px] h-[150px] rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at 35% 35%, rgba(152, 251, 152, 0.4), rgba(152, 251, 152, 0.08), transparent)',
+            filter: 'blur(36px)',
+            boxShadow: '0 0 65px rgba(152, 251, 152, 0.2)',
           }}
         />
       </div>
