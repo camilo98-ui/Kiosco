@@ -7,6 +7,7 @@ const TABS = [
   { id: "litros", label: "🍦 Litros" },
   { id: "tarrinas", label: "🫙 Tarrinas" },
   { id: "paletas", label: "🍡 Paletas" },
+  { id: "tortas", label: "🎂 Tortas" },
 ];
 
 // Litros ordenados de más caro a más barato
@@ -47,6 +48,37 @@ const TARRINAS = [
   { id: "tarrina-fresa", name: "Tarrina Fresa Gourmet", price: 39900, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9116f73c0_TarrinaFresaGourmet39900.png" },
   { id: "tarrina-chocolate", name: "Tarrina Chocolate Gourmet", price: 39900, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e87d3f5fb_TarrinaChocolateGourmet39900.png" },
   { id: "tarrina-chocolate-belga", name: "Tarrina Chocolate Belga", price: 39900, image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/ee9fb5d73_TarrinaChocolateBelga39900.png" },
+];
+
+const TORTAS = [
+  {
+    id: "torta-frutos-bosque",
+    name: "Torta de Helado Frutos del Bosque",
+    price: 61900,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/123e23b0d_TortadeHeladoFrutosdelBosque61900.png",
+    porciones: "12 porciones · 900g",
+  },
+  {
+    id: "torta-oreo",
+    name: "Torta de Helado Oreo",
+    price: 61900,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c371f4020_TortadeHeladoOreo61900.png",
+    porciones: "12 porciones · 900g",
+  },
+  {
+    id: "torta-juan-valdez",
+    name: "Torta de Helado Juan Valdez",
+    price: 48900,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/ec6fa07be_TortaJuanValdez48900.png",
+    porciones: "8 porciones · 600g",
+  },
+  {
+    id: "postre-milkyway",
+    name: "Postre Milky Way",
+    price: 48900,
+    image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/a3ac1e867_PostreMilkyWay48900.png",
+    porciones: "Postre helado",
+  },
 ];
 
 const PALETAS = [
@@ -105,6 +137,9 @@ function ProductCard({ product, onAdd }) {
         }}>
           {product.name}
         </p>
+        {product.porciones && (
+          <span style={{ fontSize: 10, color: "#C41E6A", fontWeight: 600 }}>{product.porciones}</span>
+        )}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto", paddingTop: 6 }}>
           <span style={{
             fontSize: 13, fontWeight: 800,
@@ -146,7 +181,8 @@ export default function ParaLlevarLayout({ onAdd }) {
 
   const products = activeTab === "litros" ? LITROS_SORTED
     : activeTab === "tarrinas" ? TARRINAS
-    : PALETAS;
+    : activeTab === "paletas" ? PALETAS
+    : TORTAS;
 
   return (
     <div style={{ paddingBottom: 16 }}>
