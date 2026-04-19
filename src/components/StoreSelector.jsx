@@ -10,10 +10,10 @@ export default function StoreSelector({ onSelect }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.Store.filter({ is_active: true }).
-    then((data) => setStores(data)).
-    catch(() => setStores([])).
-    finally(() => setLoading(false));
+    base44.entities.Store.filter({ is_active: true })
+      .then(data => setStores(data))
+      .catch(() => setStores([]))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -75,23 +75,23 @@ export default function StoreSelector({ onSelect }) {
         <div className="w-full max-w-lg">
           {/* Logo flotante desktop */}
           <div className="text-center mb-8">
-            
-
-
-
-
-
-
-
-            
-            
+            <motion.img
+              src={LOGO_URL}
+              alt="Popsy"
+              className="h-28 xl:h-32 object-contain mx-auto drop-shadow-xl"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              onError={(e) => {
+                e.target.style.display = "none";
+              }}
+            />
             
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-5xl font-black text-slate-400 italic mt-4">
-              
+              className="text-5xl font-black text-slate-400 italic mt-4"
+            >
               Popsy
             </motion.h1>
             <p className="text-slate-500 text-sm mt-2 font-medium">Sistema de Gestión</p>
@@ -112,51 +112,51 @@ export default function StoreSelector({ onSelect }) {
               <p className="text-sm text-slate-600 font-medium">Comienza a gestionar tus pedidos</p>
             </div>
 
-            {loading ?
-            <div className="text-center py-8">
+            {loading ? (
+              <div className="text-center py-8">
                 <div className="inline-block animate-spin">
                   <div className="w-8 h-8 border-2 border-slate-200 border-t-pink-500 rounded-full" />
                 </div>
                 <p className="text-slate-500 mt-4 text-sm">Cargando tiendas...</p>
-              </div> :
-            stores.length === 0 ?
-            <div className="text-center py-8">
+              </div>
+            ) : stores.length === 0 ? (
+              <div className="text-center py-8">
                 <p className="text-slate-500">Sin tiendas disponibles</p>
-              </div> :
-
-            <>
+              </div>
+            ) : (
+              <>
                 <StoreSelectorContent stores={stores} onSelect={onSelect} />
               </>
-            }
+            )}
           </motion.div>
         </div>
       </div>
 
       {/* Mobile View - fallback simple */}
       <div className="lg:hidden flex flex-col items-center justify-center min-h-screen px-4 py-8">
-        <h1 className="text-4xl font-black text-pink-600 italic mb-8">Popsy</h1>
+        <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/6ea4dfa96_image.png" alt="Popsy" className="h-32 object-contain mx-auto mb-6" />
         <div className="w-full space-y-3">
-          {loading ?
-          <p className="text-slate-500 text-center">Cargando...</p> :
-
-          stores.map((store, idx) =>
-          <motion.button
-            key={store.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
-            onClick={() => onSelect(store)}
-            className="w-full p-4 rounded-2xl bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 text-left">
-            
+          {loading ? (
+            <p className="text-slate-500 text-center">Cargando...</p>
+          ) : (
+            stores.map((store, idx) => (
+              <motion.button
+                key={store.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                onClick={() => onSelect(store)}
+                className="w-full p-4 rounded-2xl bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 text-left"
+              >
                 <p className="font-bold text-slate-800">{store.name}</p>
                 <p className="text-xs text-slate-600 mt-1">
                   {store.address || "Seleccionar"}
                 </p>
               </motion.button>
-          )
-          }
+            ))
+          )}
         </div>
       </div>
-    </div>);
-
+    </div>
+  );
 }
