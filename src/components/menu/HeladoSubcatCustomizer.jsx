@@ -239,55 +239,6 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
         </div>
 
         <div style={{ padding: "16px 16px 0" }}>
-          {/* Imágenes destacadas — ahora seleccionan el producto, no añaden directo */}
-          <div style={{ marginBottom: 16 }}>
-            <p style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", margin: "0 0 10px", fontFamily: FONT }}>
-              ¿Cuál quieres? 🍦
-            </p>
-            <div style={{ display: "flex", gap: 10 }}>
-              {featured.map((item, i) => (
-                <button
-                  key={i}
-                  onClick={() => setSelectedFeatured(selectedFeatured?.id === item.id ? null : item)}
-                  style={{
-                    flex: 1, borderRadius: 18, overflow: "hidden",
-                    background: "#FFF0F5", height: 140,
-                    border: selectedFeatured?.id === item.id ? `2.5px solid ${MAGENTA}` : "1.5px solid #FFE4F3",
-                    display: "flex", flexDirection: "column",
-                    position: "relative", cursor: "pointer", padding: 0,
-                    boxShadow: selectedFeatured?.id === item.id ? `0 2px 12px rgba(196,30,106,0.25)` : "none",
-                    transition: "all 0.15s",
-                  }}
-                >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                  />
-                  <div style={{
-                    position: "absolute", bottom: 0, left: 0, right: 0,
-                    background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)",
-                    padding: "20px 10px 8px",
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: 1,
-                  }}>
-                    <p style={{ fontSize: 11, fontWeight: 800, color: "#fff", margin: 0 }}>{item.name}</p>
-                    <p style={{ fontSize: 12, fontWeight: 900, color: "#FFD6EC", margin: 0 }}>{formatCOP(item.price)}</p>
-                  </div>
-                  {selectedFeatured?.id === item.id && (
-                    <div style={{
-                      position: "absolute", top: 8, right: 8,
-                      width: 22, height: 22, borderRadius: "50%",
-                      background: MAGENTA,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      <span style={{ color: "#fff", fontSize: 13, fontWeight: 900 }}>✓</span>
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Paso 1: ¿Cuántos sabores? */}
           <div style={{ marginBottom: 20 }}>
             <p style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", margin: "0 0 10px", fontFamily: FONT }}>
