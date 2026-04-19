@@ -310,9 +310,6 @@ export default function Menu() {
     }
   }, [addItem]);
 
-  const STORES_WITH_COOKIE_JAAR = ["COLINA", "PLAZA IMPERIAL 2", "VIVA TUNJA", "FONTANAR"];
-  const hasCoookieJaar = STORES_WITH_COOKIE_JAAR.includes(store?.name);
-
   const handleLogoClick = () => {
     logoClickCount.current += 1;
     clearTimeout(logoClickTimer.current);
@@ -464,7 +461,7 @@ export default function Menu() {
           <PromoBanners onCategorySelect={setActiveCategory} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} style={{ marginTop: 0 }}>
-          <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} onCookieJaar={hasCoookieJaar ? () => setShowCookieJaar(true) : undefined} showCookieJaar={hasCoookieJaar} />
+          <FamilyCarousel productCounts={productCounts} onSelect={setActiveCategory} onCookieJaar={() => setShowCookieJaar(true)} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
           <CombosCarousel onAdd={handleAddProduct} onOpenAll={() => setShowCombosAll(true)} />
