@@ -223,14 +223,12 @@ function GridCard2x2({ product, badge, onAdd, imgPosition }) {
         position: "relative", fontFamily: FONT,
       }}
     >
-      <div style={{ height: 160, width: "100%", overflow: "hidden", flexShrink: 0 }}>
+      <div style={{ height: 200, width: "100%", overflow: "hidden", flexShrink: 0, background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: imgPosition || "center 10%" }} />
+            style={{ width: "100%", height: "100%", objectFit: "contain", padding: "8px" }} />
         ) : (
-          <div style={{ width: "100%", height: "100%", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontSize: 36 }}>🍦</span>
-          </div>
+          <span style={{ fontSize: 36 }}>🍦</span>
         )}
       </div>
       {badge && (
