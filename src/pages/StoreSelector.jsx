@@ -77,65 +77,7 @@ export default function StoreSelector() {
           boxShadow: '0 0 110px rgba(249, 168, 201, 0.75)'
         }} />
       
-      {/* Burbuja verde pastel claro - derecha */}
-      <motion.div
-        animate={{
-          x: [0, 40, -40, 0],
-          y: [0, -50, 50, 0],
-          scale: [1, 1.1, 0.95, 1]
-        }}
-        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute top-1/4 -right-24 w-[300px] h-[300px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(249, 168, 201, 0.85), rgba(249, 168, 201, 0.3), transparent)',
-          filter: 'blur(28px)',
-          boxShadow: '0 0 100px rgba(249, 168, 201, 0.65)'
-        }} />
-      
-      {/* Burbuja rosa suave - arriba izquierda */}
-      <motion.div
-        animate={{
-          x: [0, -40, 40, 0],
-          y: [-60, 60, -60, 0],
-          scale: [1, 1.12, 0.92, 1]
-        }}
-        transition={{ duration: 23, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        className="absolute top-0 -left-28 w-[336px] h-[336px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(249, 168, 201, 0.85), rgba(249, 168, 201, 0.4), transparent)',
-          filter: 'blur(31px)',
-          boxShadow: '0 0 105px rgba(249, 168, 201, 0.7)'
-        }} />
-      
-      {/* Burbuja magenta suave - centro derecha */}
-      <motion.div
-        animate={{
-          x: [0, 30, -30, 0],
-          y: [40, -40, 40, 0],
-          scale: [1, 1.08, 0.98, 1]
-        }}
-        transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute bottom-1/4 right-1/4 w-[264px] h-[264px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(249, 168, 201, 0.85), rgba(249, 168, 201, 0.35), transparent)',
-          filter: 'blur(28px)',
-          boxShadow: '0 0 90px rgba(249, 168, 201, 0.65)'
-        }} />
-      
-      {/* Burbuja verde claro - izquierda centro */}
-      <motion.div
-        animate={{
-          x: [0, 50, -50, 0],
-          y: [30, -30, 30, 0],
-          scale: [1, 0.95, 1.1, 1]
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
-        className="absolute top-1/3 -left-40 w-[312px] h-[312px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(249, 168, 201, 0.85), rgba(249, 168, 201, 0.3), transparent)',
-          filter: 'blur(29px)',
-          boxShadow: '0 0 95px rgba(249, 168, 201, 0.65)'
-        }} />
+
 
       {/* Card Principal */}
       <motion.div
