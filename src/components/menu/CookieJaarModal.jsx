@@ -180,7 +180,7 @@ export default function CookieJaarModal({ open, onClose, onAdd }) {
               <div style={{ height: 190, overflow: "hidden" }}>
                 <img
                   src={TAB_HERO[activeTab]} alt="Cookie Jaar"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%" }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
                 />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)" }} />
               </div>
