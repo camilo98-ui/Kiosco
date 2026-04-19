@@ -20,9 +20,9 @@ const TAB_SUBTITLES = {
 };
 
 const TAB_HERO = {
-  galletas: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c95849418_Galletasupremacookiesandcream.png",
-  malteadas: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/cd259117c_MalteadaPistacho12Oz.png",
-  combos: null,
+  galletas: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/162924610_image.png",
+  malteadas: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/162924610_image.png",
+  combos: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/162924610_image.png",
 };
 
 function TypeBadge({ type }) {
@@ -177,19 +177,13 @@ export default function CookieJaarModal({ open, onClose, onAdd }) {
           >
             {/* Header con hero */}
             <div style={{ position: "relative", flexShrink: 0 }}>
-              {TAB_HERO[activeTab] ? (
-                <div style={{ height: 160, overflow: "hidden" }}>
-                  <img
-                    src={TAB_HERO[activeTab]} alt={activeTab}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
-                  />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 50%)" }} />
-                </div>
-              ) : (
-                <div style={{ height: 100, background: `linear-gradient(135deg, ${MAGENTA}, #FF6EB4)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: 48 }}>🎉</span>
-                </div>
-              )}
+              <div style={{ height: 190, overflow: "hidden" }}>
+                <img
+                  src={TAB_HERO[activeTab]} alt="Cookie Jaar"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%" }}
+                />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)" }} />
+              </div>
 
               {/* Título sobre hero */}
               <div style={{ position: "absolute", bottom: 14, left: 20 }}>
