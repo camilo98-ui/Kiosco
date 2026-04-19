@@ -326,6 +326,17 @@ export default function HeladoCustomizer({ product, open, onClose, onAdd }) {
               onToggle={() => toggleExtra(e.name, e.price)}
             />
           ))}
+          <button
+            onClick={() => setOpenSection(null)}
+            style={{
+              width: "100%", display: "flex", alignItems: "center",
+              justifyContent: "space-between", padding: "12px 16px",
+              background: "none", border: "none", cursor: "pointer", textAlign: "left",
+              borderTop: "1px solid #F9F0F4", fontWeight: 700, fontSize: 13, color: "#1A0A10"
+            }}
+          >
+            No quiero extras
+          </button>
         </AccordionSection>
 
         {/* Footer */}
