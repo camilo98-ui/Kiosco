@@ -1,227 +1,241 @@
 import React, { useState, useEffect } from "react";
 import { formatCOP } from "@/lib/constants";
-import { CheckCircle, AlertTriangle } from "lucide-react";
+import { CheckCircle, Printer, FileText } from "lucide-react";
 import moment from "moment";
 import ProductDetailLine from "@/components/menu/ProductDetailLine.jsx";
 
-const STATUS_STYLES = {
-  pendiente: {
-    badge: { background: "#FFF3CC", color: "#B8860B", border: "1px solid #F5C842" },
-    label: "Pendiente",
-    borderColor: "#F5C842",
-  },
-  pagado_tarjeta: {
-    badge: { background: "#FFE4F3", color: "#C41E6A", border: "1px solid #C41E6A" },
-    label: "Pendiente por pagar",
-    borderColor: "#C41E6A",
-  },
-  listo: {
-    badge: { background: "#E8F5E9", color: "#2E7D32", border: "1px solid #4CAF50" },
-    label: "Listo para entregar",
-    borderColor: "#4CAF50",
-  },
-  finalizado: {
-    badge: { background: "#F0F0F0", color: "#999999", border: "1px solid #DDDDDD" },
-    label: "Cobrado y facturado",
-    borderColor: "#DDDDDD",
-  },
-};
+const FONT = "-apple-system, 'SF Pro Display', 'Poppins', sans-serif";
 
-// Parsea las notes en líneas legibles
-// Formato: "Sabor: X | Chantilly: Y | Crack: Z | Extras: A, B"
-function parseNotes(notes) {
-  if (!notes) return [];
-  return notes.split("|").map(s => s.trim()).filter(Boolean);
+function getTimeState(elapsedSeconds) {
+  const mins = elapsedSeconds / 60;
+  if (mins < 5) return "normal";
+  if (mins < 10) return "waiting";
+  return "urgent";
 }
 
-function OrderItem({ item }) {
-  const lines = parseNotes(item.notes);
+function getCardStyle(status, timeState) {
+  if (status === "finalizado") return { background: "#fff", border: "1px solid #eee" };
+  if (timeState === "urgent") return { background: "#FFF5F5", border: "1px solid #FCA5A5" };
+  if (timeState === "waiting") return { background: "#FFFBEB", border: "1px solid #FCD34D" };
+  return { background: "#fff", border: "1px solid #eee" };
+}
+
+function getProgressColor(timeState) {
+  if (timeState === "urgent") return "#EF4444";
+  if (timeState === "waiting") return "#F59E0B";
+  return "#22C55E";
+}
+
+function getProgressWidth(elapsedSeconds) {
+  // 100% at 15 min (900s)
+  return Math.min(100, (elapsedSeconds / 900) * 100);
+}
+
+function TimeBadge({ elapsedSeconds }) {
+  const mins = Math.floor(elapsedSeconds / 60);
+  const secs = elapsedSeconds % 60;
+  const timeStr = `${mins}:${String(secs).padStart(2, "0")}`;
+  const state = getTimeState(elapsedSeconds);
+
+  let badgeStyle, label;
+  if (state === "normal") {
+    badgeStyle = { background: "#ECFDF5", color: "#059669" };
+    label = `${mins} min`;
+  } else if (state === "waiting") {
+    badgeStyle = { background: "#FFFBEB", color: "#D97706" };
+    label = `Pasó ${mins} min`;
+  } else {
+    badgeStyle = { background: "#FEE2E2", color: "#DC2626" };
+    label = `⚠️ +${mins} min`;
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
+      <span style={{
+        fontFamily: FONT, fontSize: 15, fontWeight: 700,
+        color: state === "urgent" ? "#DC2626" : state === "waiting" ? "#D97706" : "#555",
+        letterSpacing: "0.5px", fontVariantNumeric: "tabular-nums",
+      }}>{timeStr}</span>
+      <span style={{
+        ...badgeStyle,
+        fontSize: 10, fontWeight: 700, borderRadius: 20,
+        padding: "2px 8px", fontFamily: FONT,
+      }}>{label}</span>
+    </div>
+  );
+}
+
+function ClientAvatar({ name }) {
+  const initials = name ? name.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase() : "?";
   return (
     <div style={{
-      background: "#FAFAFA",
-      border: "1px solid #F0F0F0",
-      borderRadius: 10,
-      padding: "8px 10px",
-      marginBottom: 6,
-    }}>
-      {/* Nombre del producto en grande y claro */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 6, marginBottom: lines.length > 0 ? 5 : 0 }}>
-        <span style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", flex: 1, lineHeight: 1.3 }}>
-          {item.quantity > 1 && (
-            <span style={{
-              display: "inline-block", background: "#C41E6A", color: "#fff",
-              borderRadius: 6, fontSize: 11, fontWeight: 800, padding: "1px 6px", marginRight: 6,
-            }}>
-              ×{item.quantity}
-            </span>
-          )}
-          {item.product_name}
-        </span>
-        <span style={{ fontSize: 13, fontWeight: 700, color: "#C41E6A", flexShrink: 0 }}>
-          {formatCOP(item.price * item.quantity)}
-        </span>
-      </div>
-
-      {/* Personalización línea por línea */}
-      {lines.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 2, paddingLeft: 2 }}>
-          {lines.map((line, i) => {
-            const [key, ...rest] = line.split(":");
-            const value = rest.join(":").trim();
-            return (
-              <div key={i} style={{ display: "flex", gap: 4, alignItems: "flex-start" }}>
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#888", minWidth: 48, textTransform: "uppercase", lineHeight: 1.5, flexShrink: 0 }}>
-                  {key.trim()}:
-                </span>
-                <span style={{ fontSize: 11, color: "#444", lineHeight: 1.4, fontWeight: 500 }}>
-                  {value}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
+      width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
+      background: "#E8187A", color: "#fff",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      fontSize: 13, fontWeight: 800, fontFamily: FONT,
+    }}>{initials}</div>
   );
 }
 
 export default function CajeroOrderCard({ order, onFinalize }) {
   const [elapsed, setElapsed] = useState(0);
-
-  const st = STATUS_STYLES[order.status] || STATUS_STYLES.pendiente;
-  const isOvertime = elapsed > 300;
-  const isPagoTarjeta = order.status === "pagado_tarjeta";
+  const [pulse, setPulse] = useState(false);
 
   useEffect(() => {
     if (order.status === "finalizado") return;
     const interval = setInterval(() => {
       setElapsed(moment().diff(moment(order.created_date), "seconds"));
     }, 1000);
+    setElapsed(moment().diff(moment(order.created_date), "seconds"));
     return () => clearInterval(interval);
   }, [order.created_date, order.status]);
 
-  const minutes = Math.floor(elapsed / 60);
-  const seconds = elapsed % 60;
-  const timeStr = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  // Pulse animation for urgent
+  useEffect(() => {
+    if (order.status === "finalizado") return;
+    const timeState = getTimeState(elapsed);
+    if (timeState === "urgent") {
+      const t = setInterval(() => setPulse(p => !p), 2000);
+      return () => clearInterval(t);
+    } else {
+      setPulse(false);
+    }
+  }, [elapsed, order.status]);
+
+  const timeState = order.status === "finalizado" ? "normal" : getTimeState(elapsed);
+  const cardStyle = getCardStyle(order.status, timeState);
+  const progressColor = getProgressColor(timeState);
+  const progressWidth = order.status === "finalizado" ? 0 : getProgressWidth(elapsed);
 
   const canFinalize = order.status === "pendiente" || order.status === "pagado_tarjeta";
-  
-  const handleCardClick = () => {
-    if (canFinalize) {
-      onFinalize(order);
-    }
-  };
+  const isFinalized = order.status === "finalizado";
+
+  const urgentShadow = timeState === "urgent" && !isFinalized
+    ? (pulse ? "0 0 0 6px rgba(239,68,68,0.08)" : "0 0 0 0px rgba(239,68,68,0)")
+    : "none";
 
   return (
-    <div onClick={handleCardClick} style={{
-      background: "#FFFFFF",
-      border: "0.5px solid #EBEBEB",
-      borderLeft: `4px solid ${isPagoTarjeta ? "#FF4444" : (isOvertime ? "#FF6B6B" : st.borderColor)}`,
-      borderRadius: 16,
-      padding: 12,
+    <div style={{
+      ...cardStyle,
+      borderRadius: 18,
       display: "flex",
       flexDirection: "column",
-      gap: 8,
-      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-      cursor: canFinalize ? "pointer" : "default",
-      transition: "all 0.2s",
-      minWidth: 300,
-    }} onMouseEnter={(e) => { if (canFinalize) e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)"; }} onMouseLeave={(e) => { if (canFinalize) e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.05)"; }}>
-      {/* Número + tiempo */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-        <div style={{ fontFamily: "'Poppins', sans-serif", fontSize: 40, fontWeight: 800, color: "#1A1A1A", lineHeight: 1 }}>
-          #{order.order_number}
-        </div>
-        {order.status !== "finalizado" && (
-          <span style={{ fontSize: 12, color: isOvertime ? "#FF6B6B" : (isPagoTarjeta ? "#FF4444" : "#AAAAAA"), fontWeight: isOvertime || isPagoTarjeta ? 700 : 600, paddingTop: 4 }}>{timeStr}</span>
-        )}
-      </div>
-
-      {/* Badge de estado + badge datáfono */}
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+      overflow: "hidden",
+      fontFamily: FONT,
+      boxShadow: urgentShadow,
+      transition: "background 0.3s, border-color 0.3s, box-shadow 0.3s",
+      position: "relative",
+    }}>
+      {/* Progress bar */}
+      <div style={{ height: 4, background: "#F3F3F3", flexShrink: 0 }}>
         <div style={{
-          display: "inline-flex", alignSelf: "flex-start",
-          background: isPagoTarjeta ? "#FFCCCC" : (isOvertime ? "#FFE0E0" : st.badge.background),
-          color: isPagoTarjeta ? "#FF4444" : (isOvertime ? "#FF6B6B" : st.badge.color),
-          border: isPagoTarjeta ? "1px solid #FF4444" : (isOvertime ? "1px solid #FF6B6B" : st.badge.border),
-          borderRadius: 20, fontSize: 11, fontWeight: 700,
-          padding: "3px 10px",
-        }}>
-          {isPagoTarjeta ? "Pendiente por pagar" : (isOvertime ? "⏰ Pasó 5 min" : st.label)}
+          height: "100%",
+          width: `${progressWidth}%`,
+          background: progressColor,
+          transition: "width 1s linear, background 0.3s",
+        }} />
+      </div>
+
+      <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
+        {/* Top row: order number + timer */}
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 28, fontWeight: 900, color: "#111", lineHeight: 1, fontFamily: FONT }}>
+            #{order.order_number}
+          </span>
+          {!isFinalized && <TimeBadge elapsedSeconds={elapsed} />}
+          {isFinalized && (
+            <span style={{ fontSize: 11, fontWeight: 700, background: "#F0F0F0", color: "#999", borderRadius: 20, padding: "3px 10px" }}>
+              ✅ Cobrado
+            </span>
+          )}
         </div>
-        {order.payment_method === "tarjeta" && (
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: 4,
-            background: "#E8F0FF", color: "#1A56DB", border: "1px solid #1A56DB",
-            borderRadius: 20, fontSize: 11, fontWeight: 700,
-            padding: "3px 10px",
-          }}>
-            💳 Datáfono
-          </div>
-        )}
-      </div>
 
-      {/* Cliente */}
-      <p style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", margin: 0 }}>
-        👤 {order.customer_name}
-      </p>
+        {/* Cliente */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <ClientAvatar name={order.customer_name} />
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A" }}>{order.customer_name}</span>
+          {order.payment_method === "tarjeta" && (
+            <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, background: "#E8F0FF", color: "#1A56DB", borderRadius: 20, padding: "2px 8px" }}>💳 Tarjeta</span>
+          )}
+        </div>
 
-      <div style={{ height: "0.5px", background: "#F0F0F0" }} />
+        {/* Separador */}
+        <div style={{ height: 1, background: "#F5F5F5" }} />
 
-      {/* Ítems con detalle */}
-      <div style={{ maxHeight: 160, overflowY: "auto", paddingRight: 6 }}>
-        {order.items?.map((item, i) => (
-          <div key={i} style={{
-            background: "#FAFAFA",
-            border: "1px solid #F0F0F0",
-            borderRadius: 8,
-            padding: "10px 12px",
-            marginBottom: 8,
-          }}>
-            {/* Nombre del producto */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 4, marginBottom: 4 }}>
-              <div style={{ flex: 1 }}>
-                <span style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", lineHeight: 1.2 }}>
-                  {item.quantity > 1 ? `${item.quantity}× ` : ""}{item.product_name}
+        {/* Items */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {order.items?.map((item, i) => (
+            <div key={i}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 6 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, flex: 1 }}>
+                  {item.quantity > 1 && (
+                    <span style={{ display: "inline-block", background: "#E8187A", color: "#fff", borderRadius: 5, fontSize: 10, fontWeight: 800, padding: "0px 5px", marginRight: 5 }}>
+                      ×{item.quantity}
+                    </span>
+                  )}
+                  {item.product_name}
                 </span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#E8187A", flexShrink: 0 }}>{formatCOP(item.price * item.quantity)}</span>
               </div>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#C41E6A", flexShrink: 0, whiteSpace: "nowrap" }}>
-                {formatCOP(item.price * item.quantity)}
-              </span>
+              <ProductDetailLine item={item} />
             </div>
+          ))}
+        </div>
 
-            {/* Personalización */}
-            <ProductDetailLine item={item} />
-          </div>
-        ))}
-      </div>
+        {/* Separador */}
+        <div style={{ height: 1, background: "#F5F5F5" }} />
 
-      <div style={{ height: "0.5px", background: "#F0F0F0" }} />
+        {/* Total */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#AAA", textTransform: "uppercase", letterSpacing: "1px" }}>Total</span>
+          <span style={{ fontSize: 18, fontWeight: 900, color: "#1A1A1A" }}>{formatCOP(order.total)}</span>
+        </div>
 
-      {/* Total */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: 12, color: "#999" }}>Total</span>
-        <span style={{ fontSize: 15, fontWeight: 800, color: "#C41E6A" }}>{formatCOP(order.total)}</span>
-      </div>
-
-      {/* Botón directo */}
-      {canFinalize && (
-        <button
-          onClick={() => onFinalize(order)}
-          style={{
+        {/* Botón principal */}
+        {canFinalize ? (
+          <button
+            onClick={() => onFinalize(order)}
+            style={{
+              width: "100%", height: 44, borderRadius: 12,
+              background: "#22C55E", color: "#fff",
+              fontSize: 13, fontWeight: 700, border: "none", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              fontFamily: FONT, transition: "opacity 0.2s",
+            }}
+            onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
+            onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+          >
+            <CheckCircle size={15} /> ✅ Cobrado y facturado
+          </button>
+        ) : (
+          <button disabled style={{
             width: "100%", height: 44, borderRadius: 12,
-            background: order.status === "pendiente" ? "#4CAF50" : "#2196F3",
-            color: "#fff",
-            fontSize: 13, fontWeight: 700, border: "none", cursor: "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-          }}
-        >
-          {order.status === "pendiente"
-            ? <><CheckCircle size={15} /> Cobrado y facturado</>
-            : <><AlertTriangle size={15} /> Facturado en POS</>
-          }
-        </button>
-      )}
+            background: "#F0F0F0", color: "#BBB",
+            fontSize: 13, fontWeight: 700, border: "none", cursor: "not-allowed",
+            fontFamily: FONT,
+          }}>
+            ✅ Cobrado y facturado
+          </button>
+        )}
+
+        {/* Botones secundarios */}
+        <div style={{ display: "flex", gap: 8 }}>
+          <button style={{
+            flex: 1, height: 34, borderRadius: 8, border: "1px solid #EEE",
+            background: "#FAFAFA", color: "#666", fontSize: 11, fontWeight: 600,
+            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 4, fontFamily: FONT,
+          }}>
+            <Printer size={12} /> Imprimir
+          </button>
+          <button style={{
+            flex: 1, height: 34, borderRadius: 8, border: "1px solid #EEE",
+            background: "#FAFAFA", color: "#666", fontSize: 11, fontWeight: 600,
+            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 4, fontFamily: FONT,
+          }}>
+            <FileText size={12} /> Detalle
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
