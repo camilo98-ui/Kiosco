@@ -268,23 +268,23 @@ function MiniCard({ product, onAdd }) {
         borderRadius: 14, border: "none", background: "#fff",
         overflow: "hidden", cursor: "pointer", padding: 0,
         display: "flex", flexDirection: "column", textAlign: "left",
-        fontFamily: FONT, flex: 1,
+        fontFamily: FONT, width: "100%",
       }}
     >
-      <div style={{ height: 90, width: "100%", overflow: "hidden", flexShrink: 0 }}>
+      <div style={{ height: 120, width: "100%", overflow: "hidden", flexShrink: 0 }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "14px 14px 0 0" }} />
         ) : (
-          <div style={{ width: "100%", height: "100%", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>🍦</div>
+          <div style={{ width: "100%", height: "100%", background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, borderRadius: "14px 14px 0 0" }}>🍦</div>
         )}
       </div>
-      <div style={{ padding: "6px 8px 8px" }}>
+      <div style={{ padding: "8px 8px 10px" }}>
         <p style={{
-          fontSize: 10, fontWeight: 700, color: "#111", margin: 0, lineHeight: 1.3,
+          fontSize: 11, fontWeight: 700, color: "#111", margin: 0, lineHeight: 1.3,
           display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
         }}>{product.name}</p>
-        <p style={{ fontSize: 11, fontWeight: 700, color: MAGENTA, margin: "3px 0 0" }}>{formatCOP(product.price)}</p>
+        <p style={{ fontSize: 12, fontWeight: 900, color: MAGENTA, margin: "3px 0 0" }}>{formatCOP(product.price)}</p>
       </div>
     </button>
   );
@@ -338,7 +338,7 @@ function MiniCarousel({ products, onAdd }) {
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}
         >
           {visible.map((p, i) => <MiniCard key={`${p.id}-${page}-${i}`} product={p} onAdd={onAdd} />)}
         </motion.div>
@@ -346,21 +346,21 @@ function MiniCarousel({ products, onAdd }) {
 
       {/* Navegación */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12 }}>
-        <div style={{ display: "flex", gap: 6 }}>
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
           <button
             onClick={() => goTo(page - 1)}
-            style={{ width: 30, height: 30, borderRadius: "50%", background: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+            style={{ width: 28, height: 28, borderRadius: "50%", background: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
           >
-            <ChevronLeft size={16} color={MAGENTA} />
+            <ChevronLeft size={15} color={MAGENTA} />
           </button>
           <button
             onClick={() => goTo(page + 1)}
-            style={{ width: 30, height: 30, borderRadius: "50%", background: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+            style={{ width: 28, height: 28, borderRadius: "50%", background: "#fff", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
           >
-            <ChevronRight size={16} color={MAGENTA} />
+            <ChevronRight size={15} color={MAGENTA} />
           </button>
         </div>
-        <div style={{ display: "flex", gap: 5 }}>
+        <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
           {Array.from({ length: totalPages }).map((_, i) => (
             <button
               key={i}
