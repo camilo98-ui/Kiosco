@@ -81,9 +81,8 @@ const GRANIZADOS_FIJOS = [
 ];
 
 export default function GranizadosLayout({ products, onAdd }) {
-  // Usar los productos de la BD si existen, sino los fijos
-  const dbProducts = products.filter(p => p.is_available !== false && p.name.toLowerCase().includes("granizado"));
-  const available = dbProducts.length > 0 ? dbProducts : GRANIZADOS_FIJOS;
+  // Siempre usar los granizados fijos con imágenes y precios correctos
+  const available = GRANIZADOS_FIJOS;
   const g16 = available.filter(p => p.name.includes("16oz"));
   const g12 = available.filter(p => p.name.includes("12oz"));
   const other = available.filter(p => !p.name.includes("16oz") && !p.name.includes("12oz"));
