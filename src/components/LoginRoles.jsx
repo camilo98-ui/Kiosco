@@ -38,47 +38,47 @@ export default function LoginRoles() {
         background: "linear-gradient(135deg, #FFF0F8 0%, #FFFBFC 50%, #FFF5F8 100%)",
       }}
     >
-      {/* Burbujas animadas de fondo */}
+      {/* Burbujas animadas de fondo - Verde pastel */}
       <motion.div
         animate={{
-          x: [0, 50, -50, 0],
-          y: [0, -60, 60, 0],
+          x: [0, 80, -80, 0],
+          y: [-100, 100, -100, 0],
+          scale: [1, 1.3, 0.8, 1],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 30% 30%, rgba(144, 238, 144, 0.6), rgba(144, 238, 144, 0.2), rgba(144, 238, 144, 0.05), transparent)',
+          filter: 'blur(60px)',
+          boxShadow: '0 0 200px rgba(144, 238, 144, 0.4)',
+        }}
+      />
+      <motion.div
+        animate={{
+          x: [0, -80, 80, 0],
+          y: [100, -100, 100, 0],
+          scale: [1, 0.8, 1.3, 1],
+        }}
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute -bottom-32 -left-32 w-[550px] h-[550px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 40% 40%, rgba(152, 251, 152, 0.5), rgba(152, 251, 152, 0.15), rgba(152, 251, 152, 0.03), transparent)',
+          filter: 'blur(65px)',
+          boxShadow: '0 0 210px rgba(152, 251, 152, 0.35)',
+        }}
+      />
+      <motion.div
+        animate={{
+          x: [0, 60, -60, 0],
+          y: [0, -80, 80, 0],
           scale: [1, 1.2, 0.9, 1],
         }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-48 -right-48 w-[500px] h-[500px] rounded-full pointer-events-none"
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute top-1/3 right-1/4 w-[480px] h-[480px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(220, 150, 200, 0.8), rgba(220, 150, 200, 0.15), transparent)',
-          filter: 'blur(50px)',
-          boxShadow: '0 0 150px rgba(220, 150, 200, 0.6)',
-        }}
-      />
-      <motion.div
-        animate={{
-          x: [0, -50, 50, 0],
-          y: [0, 60, -60, 0],
-          scale: [1, 0.9, 1.2, 1],
-        }}
-        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute -bottom-48 -left-48 w-[480px] h-[480px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(180, 150, 230, 0.75), rgba(180, 150, 230, 0.12), transparent)',
-          filter: 'blur(50px)',
-          boxShadow: '0 0 160px rgba(180, 150, 230, 0.5)',
-        }}
-      />
-      <motion.div
-        animate={{
-          x: [0, 40, -40, 0],
-          y: [0, 50, -50, 0],
-          scale: [1, 1.1, 0.95, 1],
-        }}
-        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(200, 180, 240, 0.4), rgba(200, 180, 240, 0.05), transparent)',
-          filter: 'blur(45px)',
-          boxShadow: '0 0 120px rgba(200, 180, 240, 0.3)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(173, 255, 47, 0.4), rgba(173, 255, 47, 0.1), rgba(173, 255, 47, 0.02), transparent)',
+          filter: 'blur(55px)',
+          boxShadow: '0 0 180px rgba(173, 255, 47, 0.3)',
         }}
       />
 
@@ -89,10 +89,10 @@ export default function LoginRoles() {
         transition={{ duration: 0.5 }}
         className="relative z-10 w-full max-w-[340px] p-6 rounded-3xl mx-auto"
         style={{
-          background: "rgba(255, 220, 240, 0.6)",
-          boxShadow: "0 8px 32px rgba(233, 30, 99, 0.15)",
+          background: "rgba(255, 245, 250, 0.8)",
+          boxShadow: "0 8px 32px rgba(233, 30, 99, 0.08)",
           backdropFilter: "blur(20px)",
-          border: "1.5px solid rgba(255, 200, 230, 0.5)",
+          border: "1.5px solid rgba(200, 240, 200, 0.3)",
         }}
       >
         {/* Header */}
