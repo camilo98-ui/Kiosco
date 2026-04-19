@@ -51,16 +51,23 @@ export default function LoginRoles() {
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <img
-            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/bb51e9dd1_LOGO_POPSY_2-removebg-preview.png"
-            alt="Popsy Logo"
-            className="h-20 object-contain mx-auto mb-4"
-          />
-          <h1 className="text-xl font-semibold text-gray-700 mb-2">
-            Selecciona tu tienda
+          <p
+            className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2"
+            style={{ letterSpacing: "0.15em" }}
+          >
+            Helado Gourmet
+          </p>
+          <p
+            className="text-4xl font-black mb-2"
+            style={{ color: "#E91E63", fontStyle: "italic" }}
+          >
+            Popsy
+          </p>
+          <h1 className="text-xl font-semibold text-pink-300 mb-2">
+            Iniciar sesión
           </h1>
           <p className="text-sm text-gray-500">
-            Comienza a gestionar tus pedidos
+            Selecciona tu rol y comienza
           </p>
         </div>
 
