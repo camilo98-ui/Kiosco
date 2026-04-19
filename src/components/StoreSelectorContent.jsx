@@ -3,15 +3,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
 
 const STORE_ICONS = {
-  0: "🏪",
-  1: "🌟", 
-  2: "💜"
+  0: "🏬",
+  1: "🏪", 
+  2: "🏢"
 };
 
 const STORE_COLORS = {
-  0: { bg: "#F0F4FF", border: "#C7D2FE", icon: "#4F46E5" },
-  1: { bg: "#FFF7ED", border: "#FDBA74", icon: "#EA580C" },
-  2: { bg: "#FCE7F3", border: "#F472B6", icon: "#EC4899" }
+  0: { bg: "#FFF5F8", border: "#E8187A", light: "#FFB6D9" },
+  1: { bg: "#FFF5F8", border: "#E8187A", light: "#FFB6D9" },
+  2: { bg: "#FFF5F8", border: "#E8187A", light: "#FFB6D9" }
 };
 
 export default function StoreSelectorContent({ stores, onSelect }) {
@@ -27,24 +27,32 @@ export default function StoreSelectorContent({ stores, onSelect }) {
 
   const handleSelect = (store) => {
     setSelected(store.id);
-    setTimeout(() => onSelect(store), 300);
+    // No navega inmediatamente, solo selecciona
+  };
+
+  const selectedStore = selected ? stores.find(s => s.id === selected) : null;
+
+  const handleEnter = () => {
+    if (selectedStore) {
+      onSelect(selectedStore);
+    }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Search Input */}
+    <div className="space-y-4">
+      {/* Buscador */}
       <div className="relative">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
         <input
           type="text"
-          placeholder="Busca tu tienda..."
+          placeholder="Buscar sede..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-slate-200 focus:border-pink-500 focus:outline-none transition-colors text-sm"
+          className="w-full pl-12 pr-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-magenta focus:outline-none transition-colors text-sm font-medium"
         />
       </div>
 
-      {/* Store Results */}
+      {/* Cards de sede */}
       <AnimatePresence mode="wait">
         {filtered.length > 0 ? (
           <motion.div
@@ -69,38 +77,26 @@ export default function StoreSelectorContent({ stores, onSelect }) {
                   onClick={() => handleSelect(store)}
                   className="w-full text-left transition-all"
                   style={{
-                    background: colors.bg,
-                    border: `2px solid ${isSelected ? colors.icon : colors.border}`,
+                    background: isSelected ? colors.light : "#FFF5F8",
+                    border: `2px solid ${isSelected ? colors.border : "#F0E4EA"}`,
                     borderRadius: "16px",
-                    padding: "16px 18px",
-                    boxShadow: isSelected ? `0 0 0 3px ${colors.icon}20` : "none"
+                    padding: "14px 16px",
                   }}
                 >
                   <div className="flex items-start gap-3">
-                    <div
-                      className="text-2xl flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg"
-                      style={{ background: colors.icon + "15" }}
-                    >
+                    {/* Ícono */}
+                    <div className="text-2xl flex-shrink-0 mt-0.5">
                       {icon}
                     </div>
 
+                    {/* Contenido */}
                     <div className="flex-1 min-w-0">
-                      <p className="font-bold text-slate-800 text-sm leading-tight">
+                      <p className="font-bold text-slate-800 text-sm">
                         {store.name}
                       </p>
-                      <p className="text-xs text-slate-600 mt-1">
-                        {store.address || store.schedule || "Selecciona para continuar"}
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {store.address || store.schedule || "Información de la sede"}
                       </p>
-                    </div>
-
-                    <div className="flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5"
-                      style={{
-                        borderColor: isSelected ? colors.icon : colors.border,
-                        background: isSelected ? colors.icon : "white"
-                      }}>
-                      {isSelected && (
-                        <span className="text-white text-xs font-bold">✓</span>
-                      )}
                     </div>
                   </div>
                 </motion.button>
@@ -115,29 +111,31 @@ export default function StoreSelectorContent({ stores, onSelect }) {
             exit={{ opacity: 0 }}
             className="text-center py-8"
           >
-            <p className="text-slate-500 text-sm">No encontramos tiendas con "<strong>{search}</strong>"</p>
+            <p className="text-slate-500 text-sm">No encontramos sedes con "<strong>{search}</strong>"</p>
           </motion.div>
         ) : null}
       </AnimatePresence>
 
-      {/* Enter Button */}
+      {/* Botón Entrar */}
       <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        onClick={() => selected && handleSelect(stores.find(s => s.id === selected))}
+        onClick={handleEnter}
         disabled={!selected}
-        className="w-full py-3 rounded-full font-bold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3 rounded-2xl font-bold text-white transition-all text-sm"
         style={{
-          background: selected ? "linear-gradient(135deg, #EC4899 0%, #F472B6 100%)" : "#E5E7EB"
+          background: selected ? "#E8187A" : "#E5E7EB",
+          cursor: selected ? "pointer" : "not-allowed",
+          opacity: selected ? 1 : 0.6
         }}
       >
-        Entrar →
+        {selectedStore ? `Entrar a ${selectedStore.name} ✨` : "Entrar →"}
       </motion.button>
 
-      {/* Admin Link */}
-      <p className="text-center text-xs text-slate-500">
-        Acceso administrativo
+      {/* Link "¿Necesitas ayuda?" */}
+      <p className="text-center text-xs text-slate-500 font-medium">
+        ¿Necesitas ayuda?
       </p>
     </div>
   );
