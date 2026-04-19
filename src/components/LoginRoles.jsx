@@ -83,14 +83,14 @@ export default function LoginRoles() {
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <motion.h1 
-            className="text-4xl font-black mb-6 mx-auto"
-            style={{ color: "#E91E63" }}
+          <motion.img
+            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/adafd980d_images2.png"
+            alt="Popsy"
+            className="h-32 mb-6 mx-auto"
+            style={{ filter: 'drop-shadow(0 0 0px rgba(233, 30, 99, 0))', mixBlendMode: 'multiply' }}
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            Popsy
-          </motion.h1>
+          />
           <h2 className="text-2xl font-bold mb-2" style={{ color: "#1A1A1A" }}>
             Bienvenido
           </h2>
