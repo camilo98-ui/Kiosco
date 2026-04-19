@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { MapPin, Clock } from "lucide-react";
 
 export default function StoreSelector({ onSelect }) {
   const [stores, setStores] = useState([]);
@@ -26,82 +26,81 @@ export default function StoreSelector({ onSelect }) {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "linear-gradient(135deg, #FFFBF7 0%, #F5E6F0 100%)",
+      background: "linear-gradient(135deg, #FEF5F8 0%, #F5EDFA 100%)",
       display: "flex",
       flexDirection: "column",
       fontFamily: "'Poppins', sans-serif",
       position: "relative",
       overflow: "hidden",
     }}>
-      {/* Animated background blobs */}
+      {/* Decorative blobs */}
       <div style={{
         position: "fixed",
-        top: "10%",
-        left: "5%",
-        width: 300,
-        height: 300,
-        background: "radial-gradient(circle, rgba(232, 24, 122, 0.1) 0%, transparent 70%)",
-        borderRadius: "50%",
-        filter: "blur(60px)",
-        animation: "float 8s ease-in-out infinite",
-      }} />
-      <div style={{
-        position: "fixed",
-        bottom: "10%",
-        right: "10%",
+        top: "5%",
+        left: "-5%",
         width: 250,
         height: 250,
-        background: "radial-gradient(circle, rgba(0, 136, 204, 0.1) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(173, 216, 230, 0.2) 0%, transparent 70%)",
         borderRadius: "50%",
-        filter: "blur(60px)",
-        animation: "float 10s ease-in-out infinite reverse",
+        filter: "blur(80px)",
+      }} />
+      <div style={{
+        position: "fixed",
+        bottom: "-10%",
+        right: "-5%",
+        width: 300,
+        height: 300,
+        background: "radial-gradient(circle, rgba(255, 192, 203, 0.15) 0%, transparent 70%)",
+        borderRadius: "50%",
+        filter: "blur(80px)",
       }} />
 
-      {/* Simple Header */}
+      {/* Header */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
         style={{
-          padding: "60px 32px 40px",
+          padding: "48px 32px 32px",
           textAlign: "center",
           position: "relative",
           zIndex: 1,
         }}
       >
         <p style={{
-          fontSize: 13,
-          color: "#999",
-          margin: "0 0 12px",
+          fontSize: 11,
+          color: "#C41E6A",
+          margin: "0 0 8px",
           letterSpacing: "2px",
           textTransform: "uppercase",
-          fontWeight: 600,
+          fontWeight: 700,
         }}>
-          BIENVENIDO
+          Helado Gourmet
         </p>
         <h1 style={{
-          fontSize: 48,
+          fontSize: 56,
           fontWeight: 900,
-          color: "#1A0A10",
-          margin: "0 0 8px",
-          letterSpacing: "-2px",
+          color: "#C41E6A",
+          margin: "0 0 4px",
+          letterSpacing: "-1px",
+          fontStyle: "italic",
         }}>
           Popsy
         </h1>
         <p style={{
-          fontSize: 14,
+          fontSize: 13,
           color: "#888",
           margin: 0,
-          fontWeight: 400,
+          fontWeight: 500,
         }}>
-          Elige tu ubicación favorita
+          Sistema de Gestión
         </p>
       </motion.div>
 
       {/* Content */}
       <div style={{
         flex: 1,
-        padding: "40px 24px 60px",
+        padding: "32px 24px 60px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -114,7 +113,7 @@ export default function StoreSelector({ onSelect }) {
               width: 50,
               height: 50,
               border: "2px solid #DDD",
-              borderTopColor: "#E8187A",
+              borderTopColor: "#C41E6A",
               borderRadius: "50%",
               animation: "spin 1s linear infinite",
               margin: "0 auto 20px",
@@ -126,193 +125,133 @@ export default function StoreSelector({ onSelect }) {
             <p style={{ fontSize: 18, color: "#999" }}>Sin tiendas disponibles</p>
           </div>
         ) : (
-          <div style={{ maxWidth: 500, width: "100%" }}>
-            {/* Full Screen Card Carousel */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIdx}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5 }}
-                style={{
-                  background: bgGradients[activeIdx % bgGradients.length],
-                  borderRadius: 32,
-                  padding: 48,
-                  position: "relative",
-                  border: `1px solid ${accentColors[activeIdx % accentColors.length]}20`,
-                  boxShadow: `0 20px 60px rgba(${
-                    accentColors[activeIdx % accentColors.length] === "#FF006E"
-                      ? "255, 0, 110"
-                      : accentColors[activeIdx % accentColors.length] === "#00D9FF"
-                      ? "0, 217, 255"
-                      : "255, 183, 3"
-                  }, 0.2)`,
-                }}
-              >
-                {/* Corner decoration */}
-                <div style={{
-                  position: "absolute",
-                  top: -20,
-                  right: -20,
-                  width: 100,
-                  height: 100,
-                  background: `radial-gradient(circle, ${accentColors[activeIdx % accentColors.length]}30 0%, transparent 70%)`,
-                  borderRadius: "50%",
-                }} />
+          <div style={{ maxWidth: 600, width: "100%" }}>
+            {/* Card Container */}
+            <div style={{
+              background: "#fff",
+              borderRadius: 24,
+              border: "1px solid #F0E4EA",
+              padding: "40px 32px",
+              boxShadow: "0 10px 40px rgba(196, 30, 106, 0.08)",
+            }}>
+              {/* Title */}
+              <div style={{ marginBottom: 32, textAlign: "center" }}>
+                <h2 style={{
+                  fontSize: 22,
+                  fontWeight: 800,
+                  color: "#1A0A10",
+                  margin: "0 0 8px",
+                }}>
+                  Selecciona tu tienda
+                </h2>
+                <p style={{
+                  fontSize: 13,
+                  color: "#999",
+                  margin: 0,
+                }}>
+                  Elige dónde deseas ordenar
+                </p>
+              </div>
 
-                <div style={{ position: "relative", zIndex: 2 }}>
-                  {/* Store Content */}
-                  <div style={{ marginBottom: 32 }}>
-                    <div style={{
-                      fontSize: 56,
-                      marginBottom: 20,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 12,
-                    }}>
-                      🎯
-                      <span style={{
-                        fontSize: 24,
-                        color: accentColors[activeIdx % accentColors.length],
-                        display: "flex",
-                        alignItems: "center",
-                      }}>
-                        <Sparkles size={20} />
-                      </span>
-                    </div>
-                    <h2 style={{
-                      fontSize: 32,
-                      fontWeight: 900,
-                      color: "#1A0A10",
-                      margin: "0 0 12px",
-                      lineHeight: 1.2,
-                      textTransform: "uppercase",
-                      letterSpacing: "-0.5px",
-                    }}>
-                      {stores[activeIdx].name}
-                    </h2>
-                  </div>
-
-                  {/* Details */}
-                  <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 16,
-                    marginBottom: 32,
-                  }}>
-                    {stores[activeIdx].address && (
-                      <div style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: 12,
-                      }}>
-                        <MapPin
-                          size={20}
-                          color={accentColors[activeIdx % accentColors.length]}
-                          strokeWidth={2}
-                          style={{ marginTop: 2, flexShrink: 0 }}
-                        />
-                        <p style={{
-                          fontSize: 15,
-                          color: "#555",
-                          margin: 0,
-                          fontWeight: 500,
-                          lineHeight: 1.6,
-                        }}>
-                          {stores[activeIdx].address}
-                        </p>
-                      </div>
-                    )}
-                    {stores[activeIdx].schedule && (
-                      <div style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: 12,
-                      }}>
-                        <Clock
-                          size={20}
-                          color={accentColors[activeIdx % accentColors.length]}
-                          strokeWidth={2}
-                          style={{ marginTop: 2, flexShrink: 0 }}
-                        />
-                        <p style={{
-                          fontSize: 15,
-                          color: "#555",
-                          margin: 0,
-                          fontWeight: 500,
-                          lineHeight: 1.6,
-                        }}>
-                          {stores[activeIdx].schedule}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* CTA Button */}
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => onSelect(stores[activeIdx])}
-                    style={{
-                      width: "100%",
-                      padding: "16px 32px",
-                      borderRadius: 18,
-                      border: "none",
-                      background: `linear-gradient(135deg, ${accentColors[activeIdx % accentColors.length]}, ${accentColors[activeIdx % accentColors.length]}E6)`,
-                      color: "#fff",
-                      fontSize: 15,
-                      fontWeight: 800,
-                      cursor: "pointer",
-                      letterSpacing: "1px",
-                      textTransform: "uppercase",
-                      boxShadow: `0 8px 20px ${accentColors[activeIdx % accentColors.length]}30`,
-                      transition: "all 0.3s",
-                    }}
-                  >
-                    Continuar
-                  </motion.button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Navigation Dots */}
-            {stores.length > 1 && (
+              {/* Store Options */}
               <div style={{
                 display: "flex",
-                justifyContent: "center",
-                gap: 8,
-                marginTop: 32,
+                flexDirection: "column",
+                gap: 12,
               }}>
-                {stores.map((_, idx) => (
-                  <motion.button
-                    key={idx}
-                    onClick={() => setActiveIdx(idx)}
-                    style={{
-                      width: activeIdx === idx ? 32 : 10,
-                      height: 10,
-                      borderRadius: 5,
-                      border: "none",
-                      background: activeIdx === idx
-                        ? accentColors[idx % accentColors.length]
-                        : "#DDD",
-                      cursor: "pointer",
-                      transition: "all 0.3s",
-                    }}
-                  />
-                ))}
+                {stores.map((store, idx) => {
+                  const colors = [
+                    { bg: "#E8F4F8", accent: "#0088CC", icon: "🏪" },
+                    { bg: "#FFF0E6", accent: "#FF8C00", icon: "🌟" },
+                    { bg: "#F0E8F8", accent: "#9333EA", icon: "💜" },
+                  ];
+                  const colorSet = colors[idx % colors.length];
+
+                  return (
+                    <motion.button
+                      key={store.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.08 }}
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => onSelect(store)}
+                      style={{
+                        background: "#fff",
+                        border: `2px solid ${colorSet.bg}`,
+                        borderRadius: 16,
+                        padding: "16px 20px",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 16,
+                        transition: "all 0.3s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = colorSet.accent;
+                        e.currentTarget.style.boxShadow = `0 8px 24px ${colorSet.accent}15`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = colorSet.bg;
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    >
+                      {/* Icon */}
+                      <div style={{
+                        width: 48,
+                        height: 48,
+                        background: colorSet.bg,
+                        borderRadius: 12,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: 24,
+                        flexShrink: 0,
+                      }}>
+                        {colorSet.icon}
+                      </div>
+
+                      {/* Content */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: "#1A0A10",
+                          margin: "0 0 4px",
+                        }}>
+                          {store.name}
+                        </p>
+                        <p style={{
+                          fontSize: 12,
+                          color: "#888",
+                          margin: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}>
+                          <MapPin size={14} /> {store.address || store.schedule || "Ubicación disponible"}
+                        </p>
+                      </div>
+
+                      {/* Arrow */}
+                      <span style={{
+                        fontSize: 18,
+                        color: colorSet.accent,
+                        flexShrink: 0,
+                      }}>
+                        →
+                      </span>
+                    </motion.button>
+                  );
+                })}
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(30px); }
-        }
       `}</style>
     </div>
   );
