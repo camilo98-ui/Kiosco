@@ -170,7 +170,7 @@ export default function CookieJaarModal({ open, onClose, onAdd }) {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: "#F7F2F5", borderRadius: "28px 28px 0 0",
+              background: "#F7F2F5", borderRadius: 0,
               width: "100%", maxWidth: 600, maxHeight: "100dvh", height: "100dvh",
               display: "flex", flexDirection: "column", overflow: "hidden",
             }}
