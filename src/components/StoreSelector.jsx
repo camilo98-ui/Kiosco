@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import StoreSelectorContent from "./StoreSelectorContent";
 
-const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/55f3a2eb4_Logo_poopsy-removebg-preview.png";
+const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/21f23c7d3_image.png";
 
 export default function StoreSelector({ onSelect }) {
   const [stores, setStores] = useState([]);
