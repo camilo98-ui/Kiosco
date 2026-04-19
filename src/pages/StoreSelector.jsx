@@ -57,9 +57,9 @@ export default function StoreSelector() {
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -top-32 -right-32 w-[475px] h-[475px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.75), rgba(244, 167, 192, 0.4), rgba(244, 167, 192, 0.1), transparent)',
-          filter: 'blur(50px)',
-          boxShadow: '0 0 120px rgba(244, 167, 192, 0.75)'
+          background: 'radial-gradient(circle at 35% 35%, rgba(249, 168, 201, 0.85), rgba(249, 168, 201, 0.5), rgba(249, 168, 201, 0.1), transparent)',
+          filter: 'blur(32px)',
+          boxShadow: '0 0 120px rgba(249, 168, 201, 0.85)'
         }} />
       
       {/* Burbuja grande verde pastel abajo izquierda */}
@@ -72,9 +72,9 @@ export default function StoreSelector() {
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         className="absolute -bottom-32 -left-32 w-[518px] h-[518px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.75), rgba(168, 230, 216, 0.35), rgba(168, 230, 216, 0.05), transparent)',
-          filter: 'blur(48px)',
-          boxShadow: '0 0 110px rgba(168, 230, 216, 0.65)'
+          background: 'radial-gradient(circle at 40% 40%, rgba(134, 239, 206, 0.85), rgba(134, 239, 206, 0.45), rgba(134, 239, 206, 0.05), transparent)',
+          filter: 'blur(30px)',
+          boxShadow: '0 0 110px rgba(134, 239, 206, 0.75)'
         }} />
       
       {/* Burbuja verde pastel claro - derecha */}
@@ -87,9 +87,9 @@ export default function StoreSelector() {
         transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute top-1/4 -right-24 w-[300px] h-[300px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.75), rgba(168, 230, 216, 0.22), transparent)',
-          filter: 'blur(45px)',
-          boxShadow: '0 0 100px rgba(168, 230, 216, 0.55)'
+          background: 'radial-gradient(circle at 40% 40%, rgba(134, 239, 206, 0.85), rgba(134, 239, 206, 0.3), transparent)',
+          filter: 'blur(28px)',
+          boxShadow: '0 0 100px rgba(134, 239, 206, 0.65)'
         }} />
       
       {/* Burbuja rosa suave - arriba izquierda */}
@@ -102,9 +102,9 @@ export default function StoreSelector() {
         transition={{ duration: 23, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
         className="absolute top-0 -left-28 w-[336px] h-[336px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.75), rgba(244, 167, 192, 0.3), transparent)',
-          filter: 'blur(46px)',
-          boxShadow: '0 0 105px rgba(244, 167, 192, 0.6)'
+          background: 'radial-gradient(circle at 35% 35%, rgba(249, 168, 201, 0.85), rgba(249, 168, 201, 0.4), transparent)',
+          filter: 'blur(31px)',
+          boxShadow: '0 0 105px rgba(249, 168, 201, 0.7)'
         }} />
       
       {/* Burbuja magenta suave - centro derecha */}
@@ -117,9 +117,9 @@ export default function StoreSelector() {
         transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
         className="absolute bottom-1/4 right-1/4 w-[264px] h-[264px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.75), rgba(244, 167, 192, 0.25), transparent)',
-          filter: 'blur(42px)',
-          boxShadow: '0 0 90px rgba(244, 167, 192, 0.55)'
+          background: 'radial-gradient(circle at 35% 35%, rgba(249, 168, 201, 0.85), rgba(249, 168, 201, 0.35), transparent)',
+          filter: 'blur(28px)',
+          boxShadow: '0 0 90px rgba(249, 168, 201, 0.65)'
         }} />
       
       {/* Burbuja verde claro - izquierda centro */}
@@ -132,9 +132,9 @@ export default function StoreSelector() {
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
         className="absolute top-1/3 -left-40 w-[312px] h-[312px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.75), rgba(168, 230, 216, 0.2), transparent)',
-          filter: 'blur(44px)',
-          boxShadow: '0 0 95px rgba(168, 230, 216, 0.55)'
+          background: 'radial-gradient(circle at 40% 40%, rgba(134, 239, 206, 0.85), rgba(134, 239, 206, 0.3), transparent)',
+          filter: 'blur(29px)',
+          boxShadow: '0 0 95px rgba(134, 239, 206, 0.65)'
         }} />
 
       {/* Card Principal */}
