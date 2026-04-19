@@ -34,7 +34,7 @@ export default function StoreSelector() {
       const store = stores.find((s) => s.id === selectedStore);
       if (store) {
         selectStore(store);
-        navigate("/login-roles");
+        navigate("/menu");
       }
     }
   };
