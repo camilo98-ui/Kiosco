@@ -16,17 +16,17 @@ export default function StoreSelector({ onSelect }) {
   }, []);
 
   const bgGradients = [
-    "linear-gradient(135deg, #1F1A2E 0%, #16213E 100%)",
-    "linear-gradient(135deg, #2D1B3D 0%, #1A0F2E 100%)",
-    "linear-gradient(135deg, #0D1B2A 0%, #1B2633 100%)",
+    "linear-gradient(135deg, #FFE5F0 0%, #FFF0F5 100%)",
+    "linear-gradient(135deg, #E5F7FF 0%, #F0F5FF 100%)",
+    "linear-gradient(135deg, #F5FFE5 0%, #FFFAF0 100%)",
   ];
 
-  const accentColors = ["#FF006E", "#00D9FF", "#FFB703"];
+  const accentColors = ["#E8187A", "#0088CC", "#FF9500"];
 
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0A0E27",
+      background: "linear-gradient(135deg, #FFFBF7 0%, #F5E6F0 100%)",
       display: "flex",
       flexDirection: "column",
       fontFamily: "'Poppins', sans-serif",
@@ -40,7 +40,7 @@ export default function StoreSelector({ onSelect }) {
         left: "5%",
         width: 300,
         height: 300,
-        background: "radial-gradient(circle, rgba(255, 0, 110, 0.15) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(232, 24, 122, 0.1) 0%, transparent 70%)",
         borderRadius: "50%",
         filter: "blur(60px)",
         animation: "float 8s ease-in-out infinite",
@@ -51,7 +51,7 @@ export default function StoreSelector({ onSelect }) {
         right: "10%",
         width: 250,
         height: 250,
-        background: "radial-gradient(circle, rgba(0, 217, 255, 0.15) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(0, 136, 204, 0.1) 0%, transparent 70%)",
         borderRadius: "50%",
         filter: "blur(60px)",
         animation: "float 10s ease-in-out infinite reverse",
@@ -82,7 +82,7 @@ export default function StoreSelector({ onSelect }) {
         <h1 style={{
           fontSize: 48,
           fontWeight: 900,
-          color: "#fff",
+          color: "#1A0A10",
           margin: "0 0 8px",
           letterSpacing: "-2px",
         }}>
@@ -90,7 +90,7 @@ export default function StoreSelector({ onSelect }) {
         </h1>
         <p style={{
           fontSize: 14,
-          color: "#AAA",
+          color: "#888",
           margin: 0,
           fontWeight: 400,
         }}>
@@ -113,17 +113,17 @@ export default function StoreSelector({ onSelect }) {
             <div style={{
               width: 50,
               height: 50,
-              border: "2px solid #333",
-              borderTopColor: "#FF006E",
+              border: "2px solid #DDD",
+              borderTopColor: "#E8187A",
               borderRadius: "50%",
               animation: "spin 1s linear infinite",
               margin: "0 auto 20px",
             }} />
-            <p style={{ color: "#666" }}>Cargando tiendas...</p>
+            <p style={{ color: "#888" }}>Cargando tiendas...</p>
           </div>
         ) : stores.length === 0 ? (
           <div style={{ textAlign: "center" }}>
-            <p style={{ fontSize: 18, color: "#666" }}>Sin tiendas disponibles</p>
+            <p style={{ fontSize: 18, color: "#999" }}>Sin tiendas disponibles</p>
           </div>
         ) : (
           <div style={{ maxWidth: 500, width: "100%" }}>
@@ -184,7 +184,7 @@ export default function StoreSelector({ onSelect }) {
                     <h2 style={{
                       fontSize: 32,
                       fontWeight: 900,
-                      color: "#fff",
+                      color: "#1A0A10",
                       margin: "0 0 12px",
                       lineHeight: 1.2,
                       textTransform: "uppercase",
@@ -215,7 +215,7 @@ export default function StoreSelector({ onSelect }) {
                         />
                         <p style={{
                           fontSize: 15,
-                          color: "#CCC",
+                          color: "#555",
                           margin: 0,
                           fontWeight: 500,
                           lineHeight: 1.6,
@@ -238,7 +238,7 @@ export default function StoreSelector({ onSelect }) {
                         />
                         <p style={{
                           fontSize: 15,
-                          color: "#CCC",
+                          color: "#555",
                           margin: 0,
                           fontWeight: 500,
                           lineHeight: 1.6,
@@ -259,14 +259,14 @@ export default function StoreSelector({ onSelect }) {
                       padding: "16px 32px",
                       borderRadius: 18,
                       border: "none",
-                      background: `linear-gradient(135deg, ${accentColors[activeIdx % accentColors.length]}, ${accentColors[activeIdx % accentColors.length]}CC)`,
+                      background: `linear-gradient(135deg, ${accentColors[activeIdx % accentColors.length]}, ${accentColors[activeIdx % accentColors.length]}E6)`,
                       color: "#fff",
                       fontSize: 15,
                       fontWeight: 800,
                       cursor: "pointer",
                       letterSpacing: "1px",
                       textTransform: "uppercase",
-                      boxShadow: `0 8px 20px ${accentColors[activeIdx % accentColors.length]}40`,
+                      boxShadow: `0 8px 20px ${accentColors[activeIdx % accentColors.length]}30`,
                       transition: "all 0.3s",
                     }}
                   >
@@ -295,7 +295,7 @@ export default function StoreSelector({ onSelect }) {
                       border: "none",
                       background: activeIdx === idx
                         ? accentColors[idx % accentColors.length]
-                        : "#333",
+                        : "#DDD",
                       cursor: "pointer",
                       transition: "all 0.3s",
                     }}
