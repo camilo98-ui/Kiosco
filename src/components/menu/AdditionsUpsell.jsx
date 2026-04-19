@@ -71,6 +71,13 @@ export default function AdditionsUpsell({ lastAdded, additions, onAdd, onDismiss
                 </div>
               </button>
             ))}
+            <button
+              onClick={onDismiss}
+              className="shrink-0 flex flex-col items-center gap-1.5 bg-muted/50 hover:bg-muted border border-border rounded-2xl p-3 w-24 transition-all hover:scale-105 active:scale-95"
+            >
+              <span className="text-2xl">✖️</span>
+              <p className="text-[10px] font-bold text-center leading-tight text-foreground">No quiero</p>
+            </button>
           </div>
         </div>
       </motion.div>

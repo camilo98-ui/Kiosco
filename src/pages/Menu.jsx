@@ -219,6 +219,7 @@ export default function Menu() {
   const [autoOpenProduct, setAutoOpenProduct] = useState(null);
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const [showRating, setShowRating] = useState(false);
+  const [editingOrderId, setEditingOrderId] = useState(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -334,7 +335,10 @@ export default function Menu() {
   const doCheckout = async (name, extraItems = [], passedTotal = 0) => {
     const cartSnapshot = [...cart, ...extraItems];
     const orderTotal = passedTotal || cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
-    const currentNum = nextOrderNum || 101;
+    
+    // Si editando, usar número de orden existente; si no, generar uno nuevo
+    const isEditing = editingOrderId && editingOrderId !== `temp-${Date.now()}`;
+    const currentNum = isEditing ? confirmedOrder?.order_number : (nextOrderNum || 101);
 
     clearCart();
     // Mostrar ticket inmediatamente
@@ -343,24 +347,37 @@ export default function Menu() {
       customer_name: name,
       items: cartSnapshot,
       total: orderTotal,
-      id: `temp-${Date.now()}`
+      id: editingOrderId || `temp-${Date.now()}`
     });
     setIsSubmitting(false);
 
     // Guardar orden en background sin esperar
-    const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
-    const settingsId = settings[0]?.id;
-    Promise.all([
-    base44.entities.Order.create({
-      order_number: currentNum,
-      customer_name: name,
-      items: cartSnapshot.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes })),
-      total: orderTotal,
-      status: "pendiente"
-    }),
-    settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) })]
-    ).catch(() => {});
-    setNextOrderNum(currentNum + 1);
+    const itemsData = cartSnapshot.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes }));
+
+    if (isEditing) {
+      // Actualizar orden existente
+      base44.entities.Order.update(editingOrderId, {
+        customer_name: name,
+        items: itemsData,
+        total: orderTotal
+      }).catch(() => {});
+    } else {
+      // Crear nueva orden
+      const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
+      const settingsId = settings[0]?.id;
+      Promise.all([
+      base44.entities.Order.create({
+        order_number: currentNum,
+        customer_name: name,
+        items: itemsData,
+        total: orderTotal,
+        status: "pendiente"
+      }),
+      settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) })]
+      ).catch(() => {});
+      setNextOrderNum(currentNum + 1);
+    }
+    setEditingOrderId(null);
   };
 
   const handleCheckout = handleCheckoutStart;
@@ -370,7 +387,7 @@ export default function Menu() {
     clearCart();
     order.items.forEach((item) => addItem(item, item.notes || ""));
     setConfirmedOrder(null);
-
+    setEditingOrderId(order.id);
   };
 
   // Store selector screen
