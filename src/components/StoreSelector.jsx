@@ -134,7 +134,7 @@ export default function StoreSelector({ onSelect }) {
 
       {/* Mobile View - fallback simple */}
       <div className="lg:hidden flex flex-col items-center justify-center min-h-screen px-4 py-8">
-        <h1 className="text-4xl font-black text-pink-600 italic mb-8">Popsy</h1>
+        <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/ab199fe69_Logo_poopsy-removebg-preview.png" alt="Popsy" className="h-32 object-contain mx-auto mb-6" />
         <div className="w-full space-y-3">
           {loading ? (
             <p className="text-slate-500 text-center">Cargando...</p>
