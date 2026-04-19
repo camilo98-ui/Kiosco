@@ -35,14 +35,14 @@ const FAMILY_GRADIENTS = [
 "linear-gradient(135deg, #7B3A00, #C97B30)",
 "linear-gradient(135deg, #3A2000, #7B5A1A)",
 "linear-gradient(135deg, #1A3A6D, #2A6DB5)",
-"linear-gradient(135deg, #1A2A1A, #2E7D32)"];
+"linear-gradient(135deg, #4A2A1A, #9A5A3A)"];
 
 
 const ITEM_BG = [
 "linear-gradient(135deg, #6D1B4E, #B5175A)",
 "linear-gradient(135deg, #7B3A00, #C97B30)",
 "linear-gradient(135deg, #1A3A6D, #2A6DB5)",
-"linear-gradient(135deg, #1A2A1A, #2E7D32)",
+"linear-gradient(135deg, #4A2A1A, #9A5A3A)",
 "linear-gradient(135deg, #3A2000, #7B5A1A)"];
 
 
