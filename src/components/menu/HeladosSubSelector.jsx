@@ -390,7 +390,7 @@ function TendenciaSection({ onAdd }) {
       {/* Grid fijo 2×2 */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
         {TENDENCIA_GRID.map((p, i) => (
-          <GridCard2x2 key={p.id} product={p} badge={GRID_BADGES[i] || null} onAdd={onAdd} imgPosition={p.id === "maxicono-grid" ? "center top" : "center 10%"} />
+          <GridCard2x2 key={p.id} product={p} badge={GRID_BADGES[i] || null} onAdd={onAdd} imgPosition={p.id === "maxicono-grid" ? "center -30%" : "center 10%"} />
         ))}
       </div>
 
