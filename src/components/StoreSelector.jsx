@@ -132,28 +132,14 @@ export default function StoreSelector({ onSelect }) {
         </div>
       </div>
 
-      {/* Mobile View - fallback simple */}
+      {/* Mobile View */}
       <div className="lg:hidden flex flex-col items-center justify-center min-h-screen px-4 py-8">
         <img src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/6ea4dfa96_image.png" alt="Popsy" className="h-32 object-contain mx-auto mb-6" />
-        <div className="w-full space-y-3">
+        <div className="w-full">
           {loading ? (
             <p className="text-slate-500 text-center">Cargando...</p>
           ) : (
-            stores.map((store, idx) => (
-              <motion.button
-                key={store.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                onClick={() => onSelect(store)}
-                className="w-full p-4 rounded-2xl bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 text-left"
-              >
-                <p className="font-bold text-slate-800">{store.name}</p>
-                <p className="text-xs text-slate-600 mt-1">
-                  {store.address || "Seleccionar"}
-                </p>
-              </motion.button>
-            ))
+            <StoreSelectorContent stores={stores} onSelect={onSelect} />
           )}
         </div>
       </div>
