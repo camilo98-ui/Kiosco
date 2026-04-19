@@ -105,17 +105,6 @@ export default function GranizadosLayout({ products, onAdd }) {
     );
   };
 
-  // Si hay separación 16oz / 12oz, mostrar secciones
-  if (g16.length > 0 || g12.length > 0) {
-    return (
-      <div style={{ padding: "8px 14px" }}>
-        {renderGroup(g16, "Granizados 16oz")}
-        {renderGroup(g12, "Granizados 12oz")}
-        {renderGroup(other, "Otros granizados")}
-      </div>
-    );
-  }
-
   return (
     <div style={{ padding: "8px 14px" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
