@@ -20,9 +20,9 @@ const TAB_SUBTITLES = {
 };
 
 const TAB_HERO = {
-  galletas: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/162924610_image.png",
-  malteadas: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/162924610_image.png",
-  combos: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/162924610_image.png",
+  galletas: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d6f087c15_images51.jpg",
+  malteadas: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d6f087c15_images51.jpg",
+  combos: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/d6f087c15_images51.jpg",
 };
 
 function TypeBadge({ type }) {
@@ -180,7 +180,7 @@ export default function CookieJaarModal({ open, onClose, onAdd }) {
               <div style={{ height: 190, overflow: "hidden" }}>
                 <img
                   src={TAB_HERO[activeTab]} alt="Cookie Jaar"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%" }}
                 />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)" }} />
               </div>
