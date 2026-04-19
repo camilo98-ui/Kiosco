@@ -69,38 +69,7 @@ export default function LoginRoles() {
         }} />
       
       
-      {/* Burbuja grande verde pastel abajo izquierda */}
-      <motion.div
-        animate={{
-          x: [0, -50, 50, 0],
-          y: [80, -80, 80, 0],
-          scale: [1, 0.95, 1.15, 1]
-        }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute -bottom-32 -left-32 w-[300px] h-[300px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.65), rgba(144, 238, 144, 0.25), rgba(144, 238, 144, 0.05), transparent)',
-          filter: 'blur(48px)',
-          boxShadow: '0 0 110px rgba(144, 238, 144, 0.4)'
-        }} />
-      
-      
-      {/* Burbuja verde pastel claro - derecha */}
-      <motion.div
-        animate={{
-          x: [0, 40, -40, 0],
-          y: [0, -50, 50, 0],
-          scale: [1, 1.1, 0.95, 1]
-        }}
-        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute top-1/4 -right-24 w-[250px] h-[250px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.55), rgba(144, 238, 144, 0.15), transparent)',
-          filter: 'blur(45px)',
-          boxShadow: '0 0 100px rgba(144, 238, 144, 0.35)'
-        }} />
-      
-      
+
       {/* Burbuja rosa suave - arriba izquierda */}
       <motion.div
         animate={{
@@ -133,21 +102,7 @@ export default function LoginRoles() {
         }} />
       
       
-      {/* Burbuja verde claro - izquierda centro */}
-      <motion.div
-        animate={{
-          x: [0, 50, -50, 0],
-          y: [30, -30, 30, 0],
-          scale: [1, 0.95, 1.1, 1]
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
-        className="absolute top-1/3 -left-40 w-[260px] h-[260px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(152, 251, 152, 0.5), rgba(152, 251, 152, 0.12), transparent)',
-          filter: 'blur(44px)',
-          boxShadow: '0 0 95px rgba(152, 251, 152, 0.3)'
-        }} />
-      
+
 
       {/* Card Principal */}
       <motion.div
