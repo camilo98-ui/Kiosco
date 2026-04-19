@@ -1,36 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Briefcase, Crown, User } from "lucide-react";
-
-const ROLES = [
-  {
-    id: "gerente",
-    title: "Gerente",
-    description: "Visión completa del negocio y toma de decisiones",
-    icon: Briefcase,
-  },
-  {
-    id: "lider",
-    title: "Líder de Experiencia",
-    description: "Control diario del punto, equipo y resultados",
-    icon: Crown,
-  },
-  {
-    id: "embajador",
-    title: "Embajador",
-    description: "Ejecución operativa y apoyo en ventas",
-    icon: User,
-  },
-];
+import { Search } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 export default function LoginRoles() {
-  const [selectedRole, setSelectedRole] = useState(null);
+  const [stores, setStores] = useState([]);
+  const [search, setSearch] = useState("");
+  const [selectedStore, setSelectedStore] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    base44.entities.Store.filter({ is_active: true })
+      .then(data => setStores(data))
+      .catch(() => setStores([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = useMemo(() => {
+    return stores.filter(store =>
+      store.name.toLowerCase().includes(search.toLowerCase()) ||
+      (store.address && store.address.toLowerCase().includes(search.toLowerCase()))
+    );
+  }, [search, stores]);
+
   const handleEnter = () => {
-    if (selectedRole) {
-      navigate(`/${selectedRole}`);
+    if (selectedStore) {
+      navigate(`/menu`);
     }
   };
 
@@ -78,58 +75,61 @@ export default function LoginRoles() {
           </p>
         </div>
 
-        {/* Selector de Roles */}
-        <div className="space-y-3 mb-6">
-          {ROLES.map((role) => {
-            const Icon = role.icon;
-            const isSelected = selectedRole === role.id;
+        {/* Buscador de Tiendas */}
+        <div className="space-y-4 mb-6">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Busca tu tienda..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-pink-500 focus:outline-none transition-colors text-sm"
+            />
+          </div>
 
-            return (
-              <motion.button
-                key={role.id}
-                onClick={() => setSelectedRole(role.id)}
-                whileTap={{ scale: 1.02 }}
-                transition={{ duration: 0.15 }}
-                className="w-full p-4 rounded-2xl flex items-start gap-3 transition-all"
-                style={{
-                  background: isSelected ? "#FCE4EC" : "#FFFFFF",
-                  border: isSelected ? "2px solid #E91E63" : "2px solid transparent",
-                }}
-              >
-                <Icon
-                  size={22}
-                  style={{ color: isSelected ? "#E91E63" : "#999", flexShrink: 0 }}
-                  className="mt-0.5"
-                />
-                <div className="text-left">
-                  <p
-                    className="font-semibold text-sm"
-                    style={{ color: isSelected ? "#E91E63" : "#1A1A1A" }}
-                  >
-                    {role.title}
+          {loading ? (
+            <p className="text-center text-gray-400 text-sm py-4">Cargando tiendas...</p>
+          ) : filtered.length > 0 ? (
+            <div className="space-y-2 max-h-48 overflow-y-auto">
+              {filtered.map((store) => (
+                <motion.button
+                  key={store.id}
+                  onClick={() => setSelectedStore(store.id)}
+                  whileTap={{ scale: 1.02 }}
+                  className="w-full p-3 rounded-xl text-left transition-all"
+                  style={{
+                    background: selectedStore === store.id ? "#FCE4EC" : "#F5F5F5",
+                    border: selectedStore === store.id ? "2px solid #E91E63" : "2px solid transparent",
+                  }}
+                >
+                  <p className="font-semibold text-sm" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
+                    {store.name}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {role.description}
-                  </p>
-                </div>
-              </motion.button>
-            );
-          })}
+                  {store.address && (
+                    <p className="text-xs text-gray-500 mt-1">{store.address}</p>
+                  )}
+                </motion.button>
+              ))}
+            </div>
+          ) : search.length > 0 ? (
+            <p className="text-center text-gray-400 text-sm py-4">No encontramos tiendas</p>
+          ) : null}
         </div>
 
         {/* Botón Entrar */}
         <motion.button
           onClick={handleEnter}
-          disabled={!selectedRole}
-          whileTap={selectedRole ? { scale: 0.98 } : {}}
+          disabled={!selectedStore}
+          whileTap={selectedStore ? { scale: 0.98 } : {}}
           className="w-full h-12 rounded-xl font-bold text-sm transition-all mb-3"
           style={{
-            background: selectedRole ? "#F8BBD0" : "#E8E8E8",
-            color: selectedRole ? "#FFFFFF" : "#999",
-            cursor: selectedRole ? "pointer" : "not-allowed",
+            background: selectedStore ? "#E91E63" : "#E8E8E8",
+            color: selectedStore ? "#FFFFFF" : "#999",
+            cursor: selectedStore ? "pointer" : "not-allowed",
           }}
         >
-          Entrar 🚀
+          Entrar →
         </motion.button>
 
         {/* Footer */}
