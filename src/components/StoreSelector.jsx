@@ -125,7 +125,7 @@ export default function StoreSelector({ onSelect }) {
               </div>
             ) : (
               <>
-                <StoreSelector_Content stores={stores} onSelect={onSelect} />
+                <StoreSelectorContent stores={stores} onSelect={onSelect} />
               </>
             )}
           </motion.div>
