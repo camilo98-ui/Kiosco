@@ -11,6 +11,7 @@ import Cajero from './pages/Cajero';
 import Datafono from './pages/Datafono';
 import Admin from './pages/Admin';
 import PopsyApp from './pages/PopsyApp';
+import LoginRoles from './components/LoginRoles';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -38,7 +39,8 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<Menu />} />
+      <Route path="/" element={<LoginRoles />} />
+      <Route path="/menu" element={<Menu />} />
       <Route path="/cajero" element={<Cajero />} />
       <Route path="/datafono" element={<Datafono />} />
       <Route path="/admin" element={<Admin />} />
