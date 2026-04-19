@@ -14,6 +14,9 @@ import ConeCustomizer from "@/components/menu/ConeCustomizer";
 import GenericCustomizer from "@/components/menu/GenericCustomizer";
 import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
+import BebidasLayout from "@/components/menu/BebidasLayout";
+import CafeLayoutPremium from "@/components/menu/CafeLayoutPremium";
+import GranizadosLayout from "@/components/menu/GranizadosLayout";
 
 const TAG_PRIORITY = { promo: 0, mas_vendido: 1, recomendado: 2, none: 3 };
 
@@ -570,9 +573,10 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
     switch (category) {
       case "helados":       return <HeladosSubSelector products={sortedProducts} onAdd={handleAdd} addedFlash={addedFlash} />;
       case "malteadas":     return <MalteadasLayout {...layoutProps} />;
-      case "granizados":    return <EspecialesLayout {...layoutProps} />;
+      case "granizados":    return <GranizadosLayout products={sortedProducts} onAdd={handleAdd} />;
       case "especialidades": return <EspecialesLayout {...layoutProps} />;
-      case "cafe":          return <CafeLayout {...layoutProps} />;
+      case "cafe":          return <CafeLayoutPremium products={sortedProducts} onAdd={handleAdd} />;
+      case "bebidas":       return <BebidasLayout products={sortedProducts} onAdd={handleAdd} />;
       default:              return <DefaultLayout {...layoutProps} />;
     }
   };
