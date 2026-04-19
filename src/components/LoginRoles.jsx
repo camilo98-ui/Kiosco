@@ -52,7 +52,7 @@ export default function LoginRoles() {
         {/* Header */}
         <div className="text-center mb-6">
           <img
-            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/ac52e6a2e_LOGO_POPSY_2-removebg-preview.png"
+            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/bb51e9dd1_LOGO_POPSY_2-removebg-preview.png"
             alt="Popsy Logo"
             className="h-20 object-contain mx-auto mb-4"
           />
