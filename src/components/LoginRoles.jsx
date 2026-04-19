@@ -178,7 +178,7 @@ export default function LoginRoles() {
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} />
           
-          <h2 className="text-[hsl(var(--muted-foreground))] mb-1 text-xl font-bold" style={{ color: "#1A1A1A" }}>
+          <h2 className="text-[hsl(var(--muted-foreground))] mb-1 text-xl font-bold" style={{ color: "#888" }}>
             Bienvenido
           </h2>
           <p className="text-xs text-gray-500 font-medium">
