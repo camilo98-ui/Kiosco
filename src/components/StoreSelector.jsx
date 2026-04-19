@@ -131,20 +131,13 @@ export default function StoreSelector({ onSelect }) {
         <motion.img
           src={LOGO_URL}
           alt="Popsy"
-          className="h-24 object-contain mx-auto mb-4"
+          className="h-24 object-contain mx-auto mb-8"
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           onError={(e) => {
             e.target.style.display = "none";
           }}
         />
-        <motion.h1
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-4xl font-black text-pink-600 italic mb-2"
-        >
-          Popsy
-        </motion.h1>
         <p className="text-slate-600 text-sm font-semibold text-center mb-8">Selecciona tu tienda</p>
         
         <motion.div
