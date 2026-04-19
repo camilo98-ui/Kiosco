@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
+import StoreSelectorContent from "./StoreSelectorContent";
 
 const LOGO_URL = "https://media.base44.com/images/public/69cc99522394d529d2756aa4/popsy_logo.png";
 
@@ -123,43 +124,9 @@ export default function StoreSelector({ onSelect }) {
                 <p className="text-slate-500">Sin tiendas disponibles</p>
               </div>
             ) : (
-              <div className="space-y-3 max-h-96 overflow-y-auto">
-                {stores.map((store, idx) => (
-                  <motion.button
-                    key={store.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.1 }}
-                    whileHover={{ y: -2 }}
-                    onClick={() => onSelect(store)}
-                    className="w-full text-left rounded-2xl p-4 flex items-center gap-4 group transition-all"
-                    style={{
-                      background: ["#E8F4F8", "#FFF0E6", "#F0E8F8"][idx % 3],
-                      border: "1px solid rgba(236, 72, 153, 0.1)"
-                    }}
-                  >
-                    {/* Icon */}
-                    <div className="w-14 h-14 bg-white/80 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
-                      {["🏪", "🌟", "💜"][idx % 3]}
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-bold text-slate-800 text-sm">
-                        {store.name}
-                      </p>
-                      <p className="text-xs text-slate-600 mt-0.5">
-                        {store.address || store.schedule || "Ubicación disponible"}
-                      </p>
-                    </div>
-
-                    {/* Arrow */}
-                    <div className="text-slate-400 group-hover:text-pink-500 transition-colors flex-shrink-0">
-                      →
-                    </div>
-                  </motion.button>
-                ))}
-              </div>
+              <>
+                <StoreSelector_Content stores={stores} onSelect={onSelect} />
+              </>
             )}
           </motion.div>
         </div>
