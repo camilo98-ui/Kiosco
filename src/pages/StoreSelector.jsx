@@ -55,11 +55,11 @@ export default function StoreSelector() {
           scale: [1, 1.15, 0.9, 1]
         }}
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-32 -right-32 w-[380px] h-[380px] rounded-full pointer-events-none"
+        className="absolute -top-32 -right-32 w-[475px] h-[475px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.75), rgba(244, 167, 192, 0.4), rgba(244, 167, 192, 0.1), transparent)',
           filter: 'blur(50px)',
-          boxShadow: '0 0 120px rgba(244, 167, 192, 0.7)'
+          boxShadow: '0 0 120px rgba(244, 167, 192, 0.75)'
         }} />
       
       {/* Burbuja grande verde pastel abajo izquierda */}
@@ -70,11 +70,11 @@ export default function StoreSelector() {
           scale: [1, 0.95, 1.15, 1]
         }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute -bottom-32 -left-32 w-[414px] h-[414px] rounded-full pointer-events-none"
+        className="absolute -bottom-32 -left-32 w-[518px] h-[518px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.7), rgba(168, 230, 216, 0.35), rgba(168, 230, 216, 0.05), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.75), rgba(168, 230, 216, 0.35), rgba(168, 230, 216, 0.05), transparent)',
           filter: 'blur(48px)',
-          boxShadow: '0 0 110px rgba(168, 230, 216, 0.6)'
+          boxShadow: '0 0 110px rgba(168, 230, 216, 0.65)'
         }} />
       
       {/* Burbuja verde pastel claro - derecha */}
@@ -87,9 +87,9 @@ export default function StoreSelector() {
         transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute top-1/4 -right-24 w-[300px] h-[300px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.65), rgba(168, 230, 216, 0.2), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.75), rgba(168, 230, 216, 0.22), transparent)',
           filter: 'blur(45px)',
-          boxShadow: '0 0 100px rgba(168, 230, 216, 0.5)'
+          boxShadow: '0 0 100px rgba(168, 230, 216, 0.55)'
         }} />
       
       {/* Burbuja rosa suave - arriba izquierda */}
@@ -102,9 +102,9 @@ export default function StoreSelector() {
         transition={{ duration: 23, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
         className="absolute top-0 -left-28 w-[336px] h-[336px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.65), rgba(244, 167, 192, 0.28), transparent)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.75), rgba(244, 167, 192, 0.3), transparent)',
           filter: 'blur(46px)',
-          boxShadow: '0 0 105px rgba(244, 167, 192, 0.55)'
+          boxShadow: '0 0 105px rgba(244, 167, 192, 0.6)'
         }} />
       
       {/* Burbuja magenta suave - centro derecha */}
@@ -117,9 +117,9 @@ export default function StoreSelector() {
         transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
         className="absolute bottom-1/4 right-1/4 w-[264px] h-[264px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.65), rgba(244, 167, 192, 0.22), transparent)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.75), rgba(244, 167, 192, 0.25), transparent)',
           filter: 'blur(42px)',
-          boxShadow: '0 0 90px rgba(244, 167, 192, 0.5)'
+          boxShadow: '0 0 90px rgba(244, 167, 192, 0.55)'
         }} />
       
       {/* Burbuja verde claro - izquierda centro */}
@@ -132,9 +132,9 @@ export default function StoreSelector() {
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
         className="absolute top-1/3 -left-40 w-[312px] h-[312px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.65), rgba(168, 230, 216, 0.18), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.75), rgba(168, 230, 216, 0.2), transparent)',
           filter: 'blur(44px)',
-          boxShadow: '0 0 95px rgba(168, 230, 216, 0.5)'
+          boxShadow: '0 0 95px rgba(168, 230, 216, 0.55)'
         }} />
 
       {/* Card Principal */}
@@ -157,11 +157,9 @@ export default function StoreSelector() {
           <motion.img
             src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/bfc0077cd_images__2_-removebg-preview.png"
             alt="Popsy"
-            className="h-20 mb-3 mx-auto"
+            className="h-20 mb-4 mx-auto"
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} />
-          
-          <p className="text-xs text-pink-500 font-bold tracking-widest mb-2">HELADO GOURMET</p>
           
           <h2 className="text-xl font-bold mb-1" style={{ color: "#888" }}>
             Bienvenido
@@ -239,8 +237,9 @@ export default function StoreSelector() {
           whileTap={selectedStore ? { scale: 0.98 } : {}}
           className="w-full h-11 rounded-2xl font-bold text-sm transition-all"
           style={{
-            background: selectedStore ? "linear-gradient(135deg, #E91E63, #F06292)" : "#E8E8E8",
-            color: selectedStore ? "#FFFFFF" : "#999",
+            background: selectedStore ? "linear-gradient(135deg, #E91E63, #F06292)" : "rgba(232, 24, 122, 0.3)",
+            color: "#FFFFFF",
+            opacity: selectedStore ? 1 : 0.6,
             cursor: selectedStore ? "pointer" : "not-allowed",
             boxShadow: selectedStore ? "0 6px 16px rgba(233, 30, 99, 0.3)" : "none",
             marginTop: "20px"
