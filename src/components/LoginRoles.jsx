@@ -41,24 +41,30 @@ export default function LoginRoles() {
       {/* Burbujas animadas de fondo */}
       <motion.div
         animate={{
-          x: [0, 40, 0],
-          y: [0, -30, 0],
+          x: [0, 60, -30, 0],
+          y: [0, -50, 20, 0],
+          scale: [1, 1.2, 0.95, 1],
         }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-40 -right-40 w-96 h-96 rounded-full pointer-events-none"
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-32 -right-32 w-80 h-80 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 30% 30%, rgba(233, 30, 99, 0.15), rgba(233, 30, 99, 0.02))',
+          background: 'radial-gradient(circle at 35% 35%, rgba(233, 30, 99, 0.35), rgba(233, 30, 99, 0.08), transparent)',
+          filter: 'blur(40px)',
+          boxShadow: '0 0 80px rgba(233, 30, 99, 0.25)',
         }}
       />
       <motion.div
         animate={{
-          x: [0, -30, 0],
-          y: [0, 40, 0],
+          x: [0, -50, 40, 0],
+          y: [0, 60, -30, 0],
+          scale: [1, 0.9, 1.15, 1],
         }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full pointer-events-none"
+        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 30% 30%, rgba(168, 85, 247, 0.12), rgba(168, 85, 247, 0.02))',
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.3), rgba(168, 85, 247, 0.05), transparent)',
+          filter: 'blur(50px)',
+          boxShadow: '0 0 100px rgba(168, 85, 247, 0.2)',
         }}
       />
 
@@ -77,16 +83,17 @@ export default function LoginRoles() {
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <motion.img
-            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/adafd980d_images2.png"
-            alt="Popsy"
-            className="h-28 mb-6 mx-auto"
+          <motion.h1 
+            className="text-4xl font-black mb-6 mx-auto"
+            style={{ color: "#E91E63" }}
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <h1 className="text-3xl font-black mb-2" style={{ color: "#E91E63" }}>
+          >
+            Popsy
+          </motion.h1>
+          <h2 className="text-2xl font-bold mb-2" style={{ color: "#1A1A1A" }}>
             Bienvenido
-          </h1>
+          </h2>
           <p className="text-sm text-gray-500 font-medium">
             ¿A cuál tienda Popsy vienes hoy?
           </p>
