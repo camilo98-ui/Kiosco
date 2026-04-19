@@ -35,7 +35,7 @@ export default function LoginRoles() {
     <div
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #FAFBFF 0%, #FFFFFF 50%, #FFF8FB 100%)",
+        background: "linear-gradient(135deg, #FFF0F8 0%, #FFFBFC 50%, #FFF5F8 100%)",
       }}
     >
       {/* Burbujas animadas de fondo */}
@@ -87,34 +87,35 @@ export default function LoginRoles() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-[420px] p-8 rounded-3xl"
+        className="relative z-10 w-full max-w-[340px] p-6 rounded-3xl mx-auto"
         style={{
-          background: "rgba(255, 255, 255, 0.25)",
-          boxShadow: "0 0 60px rgba(244, 194, 219, 1), 0 0 100px rgba(233, 30, 99, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.7)",
-          backdropFilter: "blur(50px) saturate(180%)",
-          border: "2.5px solid rgba(244, 194, 219, 1)",
+          background: "rgba(255, 220, 240, 0.6)",
+          boxShadow: "0 8px 32px rgba(233, 30, 99, 0.15)",
+          backdropFilter: "blur(20px)",
+          border: "1.5px solid rgba(255, 200, 230, 0.5)",
         }}
       >
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
+          <p style={{ fontSize: "10px", fontWeight: 600, color: "#C41E6A", letterSpacing: "1.5px", marginBottom: "6px" }}>HELADO GOURMET</p>
           <motion.img
             src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/bfc0077cd_images__2_-removebg-preview.png"
             alt="Popsy"
-            className="h-32 mb-6 mx-auto"
+            className="h-20 mb-4 mx-auto"
             style={{ filter: 'drop-shadow(0 0 0px rgba(233, 30, 99, 0))', mixBlendMode: 'multiply' }}
-            animate={{ y: [0, -8, 0] }}
+            animate={{ y: [0, -6, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           />
-          <h2 className="text-2xl font-bold mb-2" style={{ color: "#1A1A1A" }}>
+          <h2 className="text-xl font-bold mb-1" style={{ color: "#1A1A1A" }}>
             Bienvenido
           </h2>
-          <p className="text-sm text-gray-500 font-medium">
+          <p className="text-xs text-gray-500 font-medium">
             ¿A cuál tienda Popsy vienes hoy?
           </p>
         </div>
 
         {/* Buscador de Tiendas */}
-        <div className="space-y-4 mb-6">
+        <div className="space-y-3 mb-5">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
             <input
@@ -122,7 +123,7 @@ export default function LoginRoles() {
               placeholder="Busca tu tienda..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-2xl border-2 border-gray-100 focus:border-pink-400 focus:outline-none transition-all text-sm bg-gray-50 focus:bg-white"
+              className="w-full pl-12 pr-4 py-2.5 rounded-2xl border-2 border-gray-100 focus:border-pink-400 focus:outline-none transition-all text-sm bg-gray-50 focus:bg-white"
               style={{
                 boxShadow: search ? "0 0 0 3px rgba(233, 30, 99, 0.1)" : "none",
               }}
@@ -132,27 +133,27 @@ export default function LoginRoles() {
           {loading ? (
             <p className="text-center text-gray-400 text-sm py-4">Cargando tiendas...</p>
           ) : filtered.length > 0 ? (
-            <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
-              {filtered.map((store, idx) => (
-                <motion.button
-                  key={store.id}
-                  onClick={() => setSelectedStore(store.id)}
-                  whileTap={{ scale: 1.02 }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="w-full p-3 rounded-2xl text-left transition-all"
+            <div className="space-y-2 max-h-40 overflow-y-auto pr-2">
+               {filtered.map((store, idx) => (
+                 <motion.button
+                   key={store.id}
+                   onClick={() => setSelectedStore(store.id)}
+                   whileTap={{ scale: 1.02 }}
+                   initial={{ opacity: 0, y: 10 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   transition={{ delay: idx * 0.05 }}
+                   className="w-full p-2.5 rounded-2xl text-left transition-all"
                   style={{
                     background: selectedStore === store.id ? "rgba(233, 30, 99, 0.08)" : "#F9F9F9",
                     border: selectedStore === store.id ? "1.5px solid #E91E63" : "1.5px solid #F0F0F0",
                     boxShadow: selectedStore === store.id ? "0 0 0 3px rgba(233, 30, 99, 0.08)" : "none",
                   }}
                 >
-                  <p className="font-semibold text-sm" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
+                  <p className="font-semibold text-xs" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
                     {store.name}
                   </p>
                   {store.address && (
-                    <p className="text-xs text-gray-400 mt-1">{store.address}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{store.address}</p>
                   )}
                 </motion.button>
               ))}
@@ -167,12 +168,12 @@ export default function LoginRoles() {
           onClick={handleEnter}
           disabled={!selectedStore}
           whileTap={selectedStore ? { scale: 0.98 } : {}}
-          className="w-full h-12 rounded-2xl font-bold text-sm transition-all mb-4"
+          className="w-full h-11 rounded-2xl font-bold text-sm transition-all mb-3"
           style={{
             background: selectedStore ? "linear-gradient(135deg, #E91E63, #F06292)" : "#E8E8E8",
             color: selectedStore ? "#FFFFFF" : "#999",
             cursor: selectedStore ? "pointer" : "not-allowed",
-            boxShadow: selectedStore ? "0 8px 20px rgba(233, 30, 99, 0.3)" : "none",
+            boxShadow: selectedStore ? "0 6px 16px rgba(233, 30, 99, 0.3)" : "none",
           }}
         >
           Ir a Popsy 🍦
