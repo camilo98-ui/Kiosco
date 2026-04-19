@@ -33,17 +33,16 @@ function HeroCard({ product, onAdd }) {
       }}
     >
       <div style={{
-        height: 200, background: "#F9F0F5",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        position: "relative", overflow: "hidden",
+        width: "100%", height: 200, overflow: "hidden", borderRadius: "20px 20px 0 0",
+        position: "relative", flexShrink: 0,
       }}>
-        {/* círculo suave de fondo */}
-        <div style={{ position: "absolute", width: 160, height: 160, borderRadius: "50%", background: "rgba(232,24,122,0.06)" }} />
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ height: "90%", width: "90%", objectFit: "contain", position: "relative", zIndex: 1 }} />
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
         ) : (
-          <span style={{ fontSize: 64, position: "relative", zIndex: 1 }}>{product.emoji || "💧"}</span>
+          <div style={{ width: "100%", height: "100%", background: "#F9F0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 64 }}>
+            {product.emoji || "💧"}
+          </div>
         )}
         <AvailabilityBadge available={product.is_available} />
       </div>
@@ -82,16 +81,16 @@ function SingleHero({ product, onAdd }) {
       }}
     >
       <div style={{
-        height: 250, background: "#F9F0F5",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        position: "relative", overflow: "hidden",
+        width: "100%", height: 250, overflow: "hidden", borderRadius: "20px 20px 0 0",
+        position: "relative", flexShrink: 0,
       }}>
-        <div style={{ position: "absolute", width: 220, height: 220, borderRadius: "50%", background: "rgba(232,24,122,0.07)" }} />
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ height: "88%", width: "88%", objectFit: "contain", position: "relative", zIndex: 1 }} />
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
         ) : (
-          <span style={{ fontSize: 80, position: "relative", zIndex: 1 }}>{product.emoji || "💧"}</span>
+          <div style={{ width: "100%", height: "100%", background: "#F9F0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 80 }}>
+            {product.emoji || "💧"}
+          </div>
         )}
         <AvailabilityBadge available={product.is_available} />
       </div>
@@ -128,16 +127,16 @@ function SmallCard({ product, onAdd }) {
       }}
     >
       <div style={{
-        height: 140, background: "#F9F0F5",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        position: "relative",
+        width: "100%", height: 140, overflow: "hidden", borderRadius: "18px 18px 0 0",
+        position: "relative", flexShrink: 0,
       }}>
-        <div style={{ position: "absolute", width: 100, height: 100, borderRadius: "50%", background: "rgba(232,24,122,0.06)" }} />
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ height: "88%", width: "88%", objectFit: "contain", position: "relative", zIndex: 1 }} />
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
         ) : (
-          <span style={{ fontSize: 44, position: "relative", zIndex: 1 }}>{product.emoji || "💧"}</span>
+          <div style={{ width: "100%", height: "100%", background: "#F9F0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44 }}>
+            {product.emoji || "💧"}
+          </div>
         )}
         <AvailabilityBadge available={product.is_available} />
       </div>
