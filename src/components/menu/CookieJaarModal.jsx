@@ -3,7 +3,7 @@ import { X, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { COOKIE_JAAR_DATA } from "@/lib/cookieJaarData";
 import { formatCOP } from "@/lib/constants";
-import GalletaCustomizer from "@/components/menu/GalletaCustomizer";
+import GalletaCustomizer from "@/components/menu/GalletaCustomizer.jsx";
 
 const MAGENTA = "#C41E6A";
 const FONT = "'Poppins', sans-serif";
