@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { formatCOP } from "@/lib/constants";
 
 const MAGENTA = "#C41E6A";
 const FONT = "'Poppins', sans-serif";
 
-// ── Sabores por categoría ──────────────────────────────────────────────────────
 const SABORES = {
   gourmet: [
     "Arequipe", "Chocolate Belga", "Chocolate", "Fresa", "Frutos Del Bosque",
@@ -25,53 +23,6 @@ const SABORES = {
   ],
 };
 
-// ── Imágenes destacadas (las 2 de temporada) ──────────────────────────────────
-const FEATURED_IMAGES = {
-  gourmet: [
-    {
-      id: "fiore-gourmet",
-      name: "Fiore",
-      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0e644041f_HeladoFiore14900.png",
-      price: 14900,
-    },
-    {
-      id: "gourmet-1sabor",
-      name: "Gourmet",
-      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/928441d6e_GOURMET.png",
-      price: 8500,
-    },
-  ],
-  exclusivo: [
-    {
-      id: "fiore-exclusivo",
-      name: "Fiore Exclusivo",
-      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/0e644041f_HeladoFiore14900.png",
-      price: 14900,
-    },
-    {
-      id: "yogo-yogo",
-      name: "Yogo Yogo",
-      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/3d40172de_EXCLUSIVO.png",
-      price: 10500,
-    },
-  ],
-  junior: [
-    {
-      id: "cono-jr",
-      name: "Cono Jr",
-      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/4168be318_CONOJR.jpg",
-      price: 7500,
-    },
-    {
-      id: "cono-jr-mix",
-      name: "Cono Jr Mix",
-      image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/928441d6e_GOURMET.png",
-      price: 9900,
-    },
-  ],
-};
-
-// ── Precios por subcategoría ───────────────────────────────────────────────────
 const BASE_PRICES = {
   gourmet:   { "1 Sabor": 8500,  "2 Sabores": 10900 },
   exclusivo: { "1 Sabor": 10500, "2 Sabores": 13900 },
@@ -84,137 +35,198 @@ const LABELS = {
   junior:    "Cono Jr",
 };
 
-function FeaturedImage({ item, onAdd }) {
-  const [err, setErr] = useState(false);
+const CRACK_OPTIONS = [
+  { label: "Sin Crack", price: 0 },
+  { label: "Con Crack", price: 4000 },
+];
+
+const EXTRAS = [
+  { name: "Salsa Arequipe", price: 2900 },
+  { name: "Salsa De Caramelo", price: 2900 },
+  { name: "Salsa De Chocolate", price: 2900 },
+  { name: "Salsa De Fresa", price: 2900 },
+  { name: "Salsa De Frutas", price: 2900 },
+  { name: "Salsa De Mora", price: 2900 },
+  { name: "Salsa Cereza Italiana", price: 2900 },
+  { name: "Crema Chantilly", price: 2900 },
+  { name: "Gomas Ositos", price: 2900 },
+  { name: "Cerezas", price: 2900 },
+  { name: "M&M's", price: 2900 },
+  { name: "Banano", price: 2900 },
+  { name: "Fresas", price: 2900 },
+  { name: "Durazno", price: 2900 },
+  { name: "Mini Masmelos", price: 2900 },
+  { name: "Chips De Chocolate", price: 2900 },
+  { name: "Brownie", price: 2900 },
+  { name: "Galleta Oreo", price: 2900 },
+  { name: "Nueces", price: 2900 },
+  { name: "Barquillos", price: 2900 },
+  { name: "Chocolatina Milky Way", price: 2900 },
+  { name: "Leche Condensada", price: 2900 },
+  { name: "Macadamia", price: 2900 },
+  { name: "Sprinkles", price: 2900 },
+];
+
+// ── Accordion Step ─────────────────────────────────────────────────────────────
+function StepAccordion({ stepNum, title, subtitle, isOpen, isDone, onToggle, children }) {
   return (
-    <button
-      onClick={() => onAdd && onAdd(item)}
-      style={{
-        flex: 1, borderRadius: 18, overflow: "hidden",
-        background: "#FFF0F5", height: 150,
-        border: "1.5px solid #FFE4F3",
-        display: "flex", flexDirection: "column",
-        position: "relative", cursor: "pointer", padding: 0,
-      }}
-    >
-      {item.image && !err ? (
-        <img
-          src={item.image}
-          alt={item.name}
-          onError={() => setErr(true)}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-        />
-      ) : (
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44 }}>🍦</div>
-      )}
-      {/* Overlay inferior con nombre y precio */}
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0,
-        background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)",
-        padding: "20px 10px 8px",
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 1,
-      }}>
-        <p style={{ fontSize: 11, fontWeight: 800, color: "#fff", margin: 0, lineHeight: 1.2 }}>{item.name}</p>
-        <p style={{ fontSize: 12, fontWeight: 900, color: "#FFD6EC", margin: 0 }}>{formatCOP(item.price)}</p>
+    <div style={{ borderRadius: 16, background: "#fff", marginBottom: 10, overflow: "hidden", border: isDone ? `1.5px solid ${MAGENTA}` : "1.5px solid #F0E4EA" }}>
+      <button
+        onClick={onToggle}
+        style={{
+          width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "14px 16px", background: "none", border: "none", cursor: "pointer",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{
+            width: 28, height: 28, borderRadius: "50%", flexShrink: 0,
+            background: isDone ? MAGENTA : isOpen ? "#FFF0F5" : "#F5F5F5",
+            border: isDone ? "none" : isOpen ? `2px solid ${MAGENTA}` : "2px solid #DDD",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 12, fontWeight: 900,
+            color: isDone ? "#fff" : isOpen ? MAGENTA : "#AAA",
+          }}>
+            {isDone ? "✓" : stepNum}
+          </div>
+          <div style={{ textAlign: "left" }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: isDone ? MAGENTA : "#1A1A1A", margin: 0, fontFamily: FONT }}>{title}</p>
+            {isDone && subtitle && (
+              <p style={{ fontSize: 11, color: "#AAA", margin: 0, fontFamily: FONT, lineHeight: 1.3 }}>{subtitle}</p>
+            )}
+          </div>
+        </div>
+        <span style={{ fontSize: 16, color: "#CCC" }}>{isOpen ? "∧" : "∨"}</span>
+      </button>
+      {isOpen && <div style={{ borderTop: "1px solid #F0E4EA", paddingBottom: 8 }}>{children}</div>}
+    </div>
+  );
+}
+
+// ── Option Rows ────────────────────────────────────────────────────────────────
+function RadioRow({ label, price, selected, onSelect }) {
+  return (
+    <button onClick={onSelect} style={{
+      width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+      padding: "12px 16px", background: "none", border: "none", cursor: "pointer",
+      borderBottom: "1px solid #F9F0F4",
+    }}>
+      <div>
+        <span style={{ fontSize: 13, color: "#1A0A10", fontFamily: FONT }}>{label}</span>
+        {price > 0 && <span style={{ fontSize: 11, color: MAGENTA, marginLeft: 6, fontWeight: 700 }}>+ {formatCOP(price)}</span>}
       </div>
-      {/* Botón + */}
       <div style={{
-        position: "absolute", top: 8, right: 8,
-        width: 26, height: 26, borderRadius: "50%",
-        background: MAGENTA,
+        width: 22, height: 22, borderRadius: "50%",
+        border: selected ? `6px solid ${MAGENTA}` : "2px solid #DDD",
+        background: "#fff", flexShrink: 0, transition: "all 0.15s",
+      }} />
+    </button>
+  );
+}
+
+function CheckRow({ label, price, selected, onToggle }) {
+  return (
+    <button onClick={onToggle} style={{
+      width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+      padding: "12px 16px", background: "none", border: "none", cursor: "pointer",
+      borderBottom: "1px solid #F9F0F4",
+    }}>
+      <div>
+        <span style={{ fontSize: 13, color: "#1A0A10", fontFamily: FONT }}>{label}</span>
+        {price > 0 && <span style={{ fontSize: 11, color: MAGENTA, marginLeft: 6, fontWeight: 700 }}>+ {formatCOP(price)}</span>}
+      </div>
+      <div style={{
+        width: 22, height: 22, borderRadius: 5,
+        border: selected ? "none" : "2px solid #DDD",
+        background: selected ? MAGENTA : "#fff",
         display: "flex", alignItems: "center", justifyContent: "center",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+        flexShrink: 0, transition: "all 0.15s",
       }}>
-        <span style={{ color: "#fff", fontSize: 16, lineHeight: 1, fontWeight: 900 }}>+</span>
+        {selected && <span style={{ color: "#fff", fontSize: 13, fontWeight: 900 }}>✓</span>}
       </div>
     </button>
   );
 }
 
-function SaborButton({ label, selected, onSelect, disabled }) {
-  return (
-    <button
-      onClick={onSelect}
-      disabled={disabled && !selected}
-      style={{
-        padding: "10px 14px",
-        borderRadius: 12,
-        border: selected ? `2px solid ${MAGENTA}` : "1.5px solid #F0E4EA",
-        background: selected ? "#FFF0F5" : "#fff",
-        cursor: disabled && !selected ? "not-allowed" : "pointer",
-        fontSize: 13,
-        fontWeight: selected ? 700 : 500,
-        color: selected ? MAGENTA : "#333",
-        opacity: disabled && !selected ? 0.45 : 1,
-        transition: "all 0.15s",
-        textAlign: "center",
-        fontFamily: FONT,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 8,
-      }}
-    >
-      <span>{label}</span>
-      {selected && <span style={{ fontSize: 14, color: MAGENTA }}>✓</span>}
-    </button>
-  );
-}
-
-export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, productPrice }) {
+// ── Main Component ─────────────────────────────────────────────────────────────
+export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd }) {
+  const [openStep, setOpenStep] = useState("cantidad");
   const [numSabores, setNumSabores] = useState(null);
   const [selected, setSelected] = useState([]);
-  const [selectedFeatured, setSelectedFeatured] = useState(null); // featured seleccionado
+  const [crack, setCrack] = useState(null);
+  const [extras, setExtras] = useState([]);
 
   const saboresList = SABORES[subcat] || [];
-  const featured = FEATURED_IMAGES[subcat] || [];
   const label = LABELS[subcat] || "Helado";
   const prices = BASE_PRICES[subcat] || { "1 Sabor": 8500, "2 Sabores": 10900 };
 
   useEffect(() => {
     if (open) {
+      setOpenStep("cantidad");
       setNumSabores(null);
       setSelected([]);
-      setSelectedFeatured(null);
+      setCrack(null);
+      setExtras([]);
     }
   }, [open, subcat]);
 
-  const toggleSabor = (s) => {
-    if (!numSabores) return;
+  const toggleExtra = (name, price) => {
+    setExtras(prev =>
+      prev.find(e => e.name === name) ? prev.filter(e => e.name !== name) : [...prev, { name, price }]
+    );
+  };
+
+  const handleSelectNumSabores = (n) => {
+    setNumSabores(n);
+    setSelected([]);
+    setTimeout(() => setOpenStep("sabores"), 200);
+  };
+
+  const handleToggleSabor = (s) => {
     setSelected(prev => {
       if (prev.includes(s)) return prev.filter(x => x !== s);
       if (prev.length >= numSabores) return prev;
-      return [...prev, s];
+      const next = [...prev, s];
+      if (next.length === numSabores) {
+        setTimeout(() => setOpenStep("extras"), 300);
+      }
+      return next;
     });
   };
 
-  const canConfirm = numSabores && selected.length === numSabores;
+  const handleSelectCrack = (c) => {
+    setCrack(c);
+    setTimeout(() => setOpenStep(null), 200);
+  };
 
-  // Nombre del producto a mostrar en el pedido
-  const productName = selectedFeatured
-    ? `${selectedFeatured.name} ${numSabores === 1 ? "1 Sabor" : "2 Sabores"}`
-    : `Helado ${label} ${numSabores === 1 ? "1 Sabor" : "2 Sabores"}`;
+  const crackPrice = CRACK_OPTIONS.find(c => c.label === crack)?.price || 0;
+  const extrasTotal = extras.reduce((s, e) => s + e.price, 0);
+  const basePrice = numSabores === 2 ? prices["2 Sabores"] : prices["1 Sabor"];
+  const total = basePrice + crackPrice + extrasTotal;
 
-  const productPrice2 = selectedFeatured
-    ? selectedFeatured.price
-    : (numSabores === 2 ? prices["2 Sabores"] : prices["1 Sabor"]);
+  const canConfirm = numSabores && selected.length === numSabores && crack !== null;
 
   const handleConfirm = () => {
     if (!canConfirm) return;
-    const notes = `Sabor: ${selected.join(", ")}`;
+    const notes = [
+      `Sabor: ${selected.join(", ")}`,
+      `Crack: ${crack}`,
+      extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
+    ].filter(Boolean).join(" | ");
+
     onAdd(
       {
         product_id: `helado-${subcat}-${Date.now()}`,
-        product_name: productName,
-        name: productName,
-        price: productPrice2,
+        product_name: `Helado ${label} ${numSabores === 1 ? "1 Sabor" : "2 Sabores"}`,
+        name: `Helado ${label} ${numSabores === 1 ? "1 Sabor" : "2 Sabores"}`,
+        price: total,
         quantity: 1,
       },
       notes
     );
     toast.success("✓ Agregado al pedido", {
       duration: 1500,
-      style: { background: "#C41E6A", color: "#fff", border: "none", borderRadius: 12 },
+      style: { background: MAGENTA, color: "#fff", border: "none", borderRadius: 12 },
     });
     setTimeout(() => onClose(), 150);
   };
@@ -226,29 +238,34 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
       <SheetContent
         side="bottom"
         className="rounded-t-3xl"
-        style={{ background: "#FFFCFD", border: "none", maxHeight: "92vh", overflowY: "auto", padding: 0 }}
+        style={{ background: "#F7F2F5", border: "none", maxHeight: "92vh", overflowY: "auto", padding: 0 }}
       >
         {/* Header */}
-        <div style={{ padding: "20px 16px 14px", borderBottom: "1px solid #F0E4EA", position: "sticky", top: 0, background: "#FFFCFD", zIndex: 10 }}>
+        <div style={{ padding: "20px 16px 14px", background: "#fff", borderBottom: "1px solid #F0E4EA" }}>
           <SheetTitle style={{ fontSize: 20, fontWeight: 900, color: "#1A0A10", margin: 0, fontFamily: FONT }}>
             Helado {label}
           </SheetTitle>
-          <p style={{ fontSize: 13, color: MAGENTA, fontWeight: 700, margin: "4px 0 0" }}>
+          <p style={{ fontSize: 13, color: MAGENTA, fontWeight: 700, margin: "4px 0 0", fontFamily: FONT }}>
             Desde {formatCOP(prices["1 Sabor"])}
           </p>
         </div>
 
-        <div style={{ padding: "16px 16px 0" }}>
-          {/* Paso 1: ¿Cuántos sabores? */}
-          <div style={{ marginBottom: 20 }}>
-            <p style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", margin: "0 0 10px", fontFamily: FONT }}>
-              ¿Cuántos sabores? 🍦
-            </p>
-            <div style={{ display: "flex", gap: 10 }}>
+        <div style={{ padding: "14px 14px 0" }}>
+
+          {/* Paso 1: Cantidad */}
+          <StepAccordion
+            stepNum={1}
+            title="¿Cuántos sabores?"
+            subtitle={numSabores ? `${numSabores} ${numSabores === 1 ? "sabor" : "sabores"} · ${formatCOP(basePrice)}` : null}
+            isOpen={openStep === "cantidad"}
+            isDone={numSabores !== null}
+            onToggle={() => setOpenStep(s => s === "cantidad" ? null : "cantidad")}
+          >
+            <div style={{ display: "flex", gap: 10, padding: "12px 16px" }}>
               {[1, 2].map(n => (
                 <button
                   key={n}
-                  onClick={() => { setNumSabores(n); setSelected([]); }}
+                  onClick={() => handleSelectNumSabores(n)}
                   style={{
                     flex: 1, padding: "14px 0", borderRadius: 14,
                     border: numSabores === n ? `2.5px solid ${MAGENTA}` : "1.5px solid #F0E4EA",
@@ -256,7 +273,6 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
                     cursor: "pointer", fontWeight: 800, fontSize: 15,
                     color: numSabores === n ? MAGENTA : "#888",
                     fontFamily: FONT, transition: "all 0.15s",
-                    boxShadow: numSabores === n ? `0 2px 12px rgba(196,30,106,0.18)` : "none",
                   }}
                 >
                   {n} {n === 1 ? "Sabor" : "Sabores"}
@@ -266,40 +282,101 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
                 </button>
               ))}
             </div>
-          </div>
+          </StepAccordion>
 
-          {/* Paso 2: Lista de sabores de la subcategoría */}
-          {numSabores ? (
-            <div style={{ marginBottom: 20 }}>
-              <p style={{ fontSize: 13, fontWeight: 800, color: "#1A1A1A", margin: "0 0 8px", fontFamily: FONT }}>
-                {numSabores === 1 ? "Elige tu sabor" : `Elige ${numSabores} sabores (${selected.length}/${numSabores})`}
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {saboresList.map(s => (
-                  <SaborButton
-                    key={s}
-                    label={s}
-                    selected={selected.includes(s)}
-                    onSelect={() => toggleSabor(s)}
-                    disabled={selected.length >= numSabores}
-                  />
-                ))}
-              </div>
+          {/* Paso 2: Sabores */}
+          <StepAccordion
+            stepNum={2}
+            title={numSabores === 1 ? "Elige tu sabor" : `Elige ${numSabores || 2} sabores`}
+            subtitle={selected.length > 0 ? selected.join(", ") : null}
+            isOpen={openStep === "sabores"}
+            isDone={selected.length > 0 && selected.length === numSabores}
+            onToggle={() => setOpenStep(s => s === "sabores" ? null : "sabores")}
+          >
+            <p style={{ fontSize: 11, color: "#BBA8B0", padding: "8px 16px 4px", margin: 0, fontFamily: FONT }}>
+              {numSabores
+                ? `Selecciona ${numSabores === 1 ? "1 opción" : `${numSabores} opciones`} (${selected.length}/${numSabores})`
+                : "Primero elige cuántos sabores"}
+            </p>
+            {saboresList.map(s => (
+              <RadioRow
+                key={s}
+                label={s}
+                price={0}
+                selected={selected.includes(s)}
+                onSelect={() => handleToggleSabor(s)}
+              />
+            ))}
+          </StepAccordion>
+
+          {/* Paso 3: Extras */}
+          <StepAccordion
+            stepNum={3}
+            title="Extras (opcional)"
+            subtitle={extras.length > 0 ? `${extras.length} extra${extras.length > 1 ? "s" : ""} · +${formatCOP(extrasTotal)}` : "Sin extras"}
+            isOpen={openStep === "extras"}
+            isDone={crack !== null}
+            onToggle={() => setOpenStep(s => s === "extras" ? null : "extras")}
+          >
+            <p style={{ fontSize: 11, color: "#BBA8B0", padding: "8px 16px 4px", margin: 0, fontFamily: FONT }}>
+              Opcionales · con costo adicional
+            </p>
+            {EXTRAS.map(e => (
+              <CheckRow
+                key={e.name}
+                label={e.name}
+                price={e.price}
+                selected={!!extras.find(x => x.name === e.name)}
+                onToggle={() => toggleExtra(e.name, e.price)}
+              />
+            ))}
+            <div style={{ padding: "12px 16px 4px" }}>
+              <button
+                onClick={() => setOpenStep("crack")}
+                style={{
+                  width: "100%", padding: "12px 0", borderRadius: 14,
+                  background: MAGENTA, color: "#fff", border: "none",
+                  fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: FONT,
+                }}
+              >
+                Continuar →
+              </button>
             </div>
-          ) : (
-            <div style={{ textAlign: "center", padding: "12px 0 24px", color: "#CCC" }}>
-              <p style={{ fontSize: 13 }}>Elige cuántos sabores quieres ☝️</p>
-            </div>
-          )}
+          </StepAccordion>
+
+          {/* Paso 4: Crack */}
+          <StepAccordion
+            stepNum={4}
+            title="Cobertura Chocolate Crack"
+            subtitle={crack || null}
+            isOpen={openStep === "crack"}
+            isDone={crack !== null}
+            onToggle={() => setOpenStep(s => s === "crack" ? null : "crack")}
+          >
+            <p style={{ fontSize: 11, color: "#BBA8B0", padding: "8px 16px 4px", margin: 0, fontFamily: FONT }}>
+              Selecciona 1 opción
+            </p>
+            {CRACK_OPTIONS.map(c => (
+              <RadioRow
+                key={c.label}
+                label={c.label}
+                price={c.price}
+                selected={crack === c.label}
+                onSelect={() => handleSelectCrack(c.label)}
+              />
+            ))}
+          </StepAccordion>
+
         </div>
 
         {/* Footer */}
-        <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
-          {!canConfirm && numSabores && (
+        <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#F7F2F5", borderTop: "1px solid #F0E4EA" }}>
+          {!canConfirm && (
             <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8, fontFamily: FONT }}>
-              {selected.length === 0
-                ? `Elige ${numSabores === 1 ? "1 sabor" : "2 sabores"} para continuar`
-                : `Falta ${numSabores - selected.length} sabor${numSabores - selected.length > 1 ? "es" : ""}`}
+              {!numSabores ? "Elige cuántos sabores quieres"
+                : selected.length < numSabores ? `Elige ${numSabores - selected.length} sabor${numSabores - selected.length > 1 ? "es" : ""} más`
+                : !crack ? "Elige cobertura de chocolate crack"
+                : ""}
             </p>
           )}
           <button
@@ -315,9 +392,7 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd, p
               transition: "all 0.2s", fontFamily: FONT,
             }}
           >
-            {canConfirm
-              ? `Agregar al pedido · ${formatCOP(productPrice2)}`
-              : "Personaliza tu helado 🍦"}
+            {canConfirm ? `Agregar al pedido · ${formatCOP(total)}` : "Personaliza tu helado 🍦"}
           </button>
         </div>
       </SheetContent>
