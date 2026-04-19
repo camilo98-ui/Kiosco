@@ -18,6 +18,22 @@ export function StoreProvider({ children }) {
           const stores = await base44.entities.Store.filter({ slug });
           if (stores[0]) {
             setStore(stores[0]);
+            sessionStorage.setItem("popsy_store", JSON.stringify(stores[0]));
+            setLoading(false);
+            return;
+          }
+        } catch (e) {}
+      }
+
+      // Check localStorage (from LoginRoles)
+      const savedId = localStorage.getItem("popsy_selected_store");
+      if (savedId) {
+        try {
+          const stores = await base44.entities.Store.filter({ is_active: true });
+          const found = stores.find(s => s.id === savedId);
+          if (found) {
+            setStore(found);
+            sessionStorage.setItem("popsy_store", JSON.stringify(found));
             setLoading(false);
             return;
           }
