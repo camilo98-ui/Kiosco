@@ -62,7 +62,7 @@ export default function StoreSelector() {
           boxShadow: '0 0 120px rgba(249, 168, 201, 0.85)'
         }} />
       
-      {/* Burbuja grande verde pastel abajo izquierda */}
+      {/* Burbuja grande rosa abajo izquierda */}
       <motion.div
         animate={{
           x: [0, -50, 50, 0],
