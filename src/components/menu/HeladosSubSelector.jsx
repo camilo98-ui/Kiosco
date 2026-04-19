@@ -86,9 +86,9 @@ const ESPECIALES_EXTRA = [
   },
   {
     id: "copa-gelarti",
-    name: "Copa Gelarti Pops",
+    name: "Copa Gelarti",
     price: 24900,
-    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/baec1ff12_image.png",
     category: "especialidades",
     is_available: true,
     tag: "none",
