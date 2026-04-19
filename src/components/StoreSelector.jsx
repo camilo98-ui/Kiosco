@@ -75,15 +75,15 @@ export default function StoreSelector({ onSelect }) {
         <div className="w-full max-w-lg">
           {/* Logo flotante desktop */}
           <div className="text-center mb-8">
-            <motion.img
-              src={LOGO_URL}
-              alt="Popsy" className="text-sm font-bold text-magenta uppercase tracking-widest mb-2 hidden"
+            
 
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              onError={(e) => {
-                e.target.style.display = "none";
-              }} />
+
+
+
+
+
+
+            
             
             
             <motion.h1
