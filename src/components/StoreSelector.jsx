@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { motion } from "framer-motion";
-import { MapPin, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MapPin, Clock, Sparkles } from "lucide-react";
 
 export default function StoreSelector({ onSelect }) {
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [hoveredId, setHoveredId] = useState(null);
+  const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {
     base44.entities.Store.filter({ is_active: true })
@@ -15,225 +15,304 @@ export default function StoreSelector({ onSelect }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const pastelColors = [
-    { bg: "#FFE5F0", accent: "#E8187A" },
-    { bg: "#E5F5FF", accent: "#0099CC" },
-    { bg: "#F0F5E5", accent: "#7CB342" },
-    { bg: "#FFF5E5", accent: "#FF8C00" },
+  const bgGradients = [
+    "linear-gradient(135deg, #1F1A2E 0%, #16213E 100%)",
+    "linear-gradient(135deg, #2D1B3D 0%, #1A0F2E 100%)",
+    "linear-gradient(135deg, #0D1B2A 0%, #1B2633 100%)",
   ];
+
+  const accentColors = ["#FF006E", "#00D9FF", "#FFB703"];
 
   return (
     <div style={{
       minHeight: "100vh",
-      background: "linear-gradient(135deg, #FFFBF7 0%, #F5E6F0 100%)",
+      background: "#0A0E27",
       display: "flex",
       flexDirection: "column",
       fontFamily: "'Poppins', sans-serif",
-      padding: 0,
-      margin: 0,
+      position: "relative",
+      overflow: "hidden",
     }}>
-      {/* Minimalist Header */}
+      {/* Animated background blobs */}
+      <div style={{
+        position: "fixed",
+        top: "10%",
+        left: "5%",
+        width: 300,
+        height: 300,
+        background: "radial-gradient(circle, rgba(255, 0, 110, 0.15) 0%, transparent 70%)",
+        borderRadius: "50%",
+        filter: "blur(60px)",
+        animation: "float 8s ease-in-out infinite",
+      }} />
+      <div style={{
+        position: "fixed",
+        bottom: "10%",
+        right: "10%",
+        width: 250,
+        height: 250,
+        background: "radial-gradient(circle, rgba(0, 217, 255, 0.15) 0%, transparent 70%)",
+        borderRadius: "50%",
+        filter: "blur(60px)",
+        animation: "float 10s ease-in-out infinite reverse",
+      }} />
+
+      {/* Simple Header */}
       <motion.div
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
         style={{
-          padding: "80px 40px 60px",
+          padding: "60px 32px 40px",
           textAlign: "center",
-          background: "transparent",
+          position: "relative",
+          zIndex: 1,
         }}
       >
-        <motion.div
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          style={{ fontSize: 80, marginBottom: 24 }}
-        >
-          🍦
-        </motion.div>
+        <p style={{
+          fontSize: 13,
+          color: "#999",
+          margin: "0 0 12px",
+          letterSpacing: "2px",
+          textTransform: "uppercase",
+          fontWeight: 600,
+        }}>
+          BIENVENIDO
+        </p>
         <h1 style={{
-          fontSize: 42,
+          fontSize: 48,
           fontWeight: 900,
-          color: "#1A0A10",
-          margin: "0 0 16px",
-          letterSpacing: "-1px",
+          color: "#fff",
+          margin: "0 0 8px",
+          letterSpacing: "-2px",
         }}>
           Popsy
         </h1>
         <p style={{
-          fontSize: 16,
-          color: "#999",
+          fontSize: 14,
+          color: "#AAA",
           margin: 0,
           fontWeight: 400,
-          letterSpacing: "0.5px",
         }}>
-          Selecciona dónde deseas ordenar
+          Elige tu ubicación favorita
         </p>
       </motion.div>
 
       {/* Content */}
       <div style={{
         flex: 1,
-        padding: "0 24px 80px",
+        padding: "40px 24px 60px",
         display: "flex",
+        alignItems: "center",
         justifyContent: "center",
+        position: "relative",
+        zIndex: 1,
       }}>
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 300 }}>
+          <div style={{ textAlign: "center" }}>
             <div style={{
               width: 50,
               height: 50,
-              border: "3px solid #F0E6F0",
-              borderTopColor: "#E8187A",
+              border: "2px solid #333",
+              borderTopColor: "#FF006E",
               borderRadius: "50%",
               animation: "spin 1s linear infinite",
+              margin: "0 auto 20px",
             }} />
+            <p style={{ color: "#666" }}>Cargando tiendas...</p>
           </div>
         ) : stores.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "80px 32px" }}>
-            <div style={{ fontSize: 56, marginBottom: 20 }}>😔</div>
-            <p style={{ fontSize: 18, color: "#999" }}>Sin tiendas disponibles</p>
+          <div style={{ textAlign: "center" }}>
+            <p style={{ fontSize: 18, color: "#666" }}>Sin tiendas disponibles</p>
           </div>
         ) : (
-          <div style={{ maxWidth: 520, width: "100%" }}>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: stores.length === 1 ? "1fr" : stores.length === 2 ? "1fr" : "1fr",
-              gap: 20,
-              width: "100%",
-            }}>
-              {stores.map((store, idx) => {
-                const colorPair = pastelColors[idx % pastelColors.length];
-                return (
-                  <motion.button
-                    key={store.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: idx * 0.12, duration: 0.5 }}
-                    whileHover={{ scale: 1.04 }}
-                    onClick={() => onSelect(store)}
-                    onMouseEnter={() => setHoveredId(store.id)}
-                    onMouseLeave={() => setHoveredId(null)}
-                    style={{
-                      background: "#fff",
-                      border: "2px solid " + (hoveredId === store.id ? colorPair.accent : "#F0E6F0"),
-                      borderRadius: 32,
-                      padding: "32px 28px",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      boxShadow: hoveredId === store.id
-                        ? `0 20px 40px ${colorPair.accent}20`
-                        : "0 4px 16px rgba(0,0,0,0.05)",
-                      position: "relative",
-                      overflow: "hidden",
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    }}
-                  >
-                    {/* Decorative background */}
-                    <div style={{
-                      position: "absolute",
-                      top: 0,
-                      right: 0,
-                      width: 120,
-                      height: 120,
-                      background: colorPair.bg,
-                      borderRadius: "50%",
-                      opacity: hoveredId === store.id ? 1 : 0.4,
-                      transition: "opacity 0.3s",
-                      pointerEvents: "none",
-                    }} />
+          <div style={{ maxWidth: 500, width: "100%" }}>
+            {/* Full Screen Card Carousel */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIdx}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                style={{
+                  background: bgGradients[activeIdx % bgGradients.length],
+                  borderRadius: 32,
+                  padding: 48,
+                  position: "relative",
+                  border: `1px solid ${accentColors[activeIdx % accentColors.length]}20`,
+                  boxShadow: `0 20px 60px rgba(${
+                    accentColors[activeIdx % accentColors.length] === "#FF006E"
+                      ? "255, 0, 110"
+                      : accentColors[activeIdx % accentColors.length] === "#00D9FF"
+                      ? "0, 217, 255"
+                      : "255, 183, 3"
+                  }, 0.2)`,
+                }}
+              >
+                {/* Corner decoration */}
+                <div style={{
+                  position: "absolute",
+                  top: -20,
+                  right: -20,
+                  width: 100,
+                  height: 100,
+                  background: `radial-gradient(circle, ${accentColors[activeIdx % accentColors.length]}30 0%, transparent 70%)`,
+                  borderRadius: "50%",
+                }} />
 
-                    <div style={{ position: "relative", zIndex: 1 }}>
-                      {/* Store Name */}
-                      <div style={{
+                <div style={{ position: "relative", zIndex: 2 }}>
+                  {/* Store Content */}
+                  <div style={{ marginBottom: 32 }}>
+                    <div style={{
+                      fontSize: 56,
+                      marginBottom: 20,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                    }}>
+                      🎯
+                      <span style={{
+                        fontSize: 24,
+                        color: accentColors[activeIdx % accentColors.length],
                         display: "flex",
                         alignItems: "center",
-                        gap: 12,
-                        marginBottom: 16,
                       }}>
-                        <div style={{
-                          width: 64,
-                          height: 64,
-                          borderRadius: 20,
-                          background: colorPair.bg,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: 32,
-                        }}>
-                          🍦
-                        </div>
-                        <h3 style={{
-                          fontSize: 20,
-                          fontWeight: 900,
-                          color: "#1A0A10",
-                          margin: 0,
-                          textTransform: "uppercase",
-                          letterSpacing: "0.5px",
-                          lineHeight: 1.2,
-                        }}>
-                          {store.name}
-                        </h3>
-                      </div>
-
-                      {/* Details */}
-                      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                        {store.address && (
-                          <div style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 10,
-                            fontSize: 14,
-                            color: "#666",
-                            fontWeight: 500,
-                          }}>
-                            <MapPin size={16} color={colorPair.accent} strokeWidth={2.5} />
-                            {store.address}
-                          </div>
-                        )}
-                        {store.schedule && (
-                          <div style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 10,
-                            fontSize: 14,
-                            color: "#666",
-                            fontWeight: 500,
-                          }}>
-                            <Clock size={16} color={colorPair.accent} strokeWidth={2.5} />
-                            {store.schedule}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* CTA */}
-                      <motion.div
-                        animate={{ x: hoveredId === store.id ? 8 : 0 }}
-                        style={{
-                          marginTop: 20,
-                          display: "inline-block",
-                          padding: "12px 28px",
-                          borderRadius: 20,
-                          background: colorPair.accent,
-                          color: "#fff",
-                          fontSize: 13,
-                          fontWeight: 800,
-                          letterSpacing: "1px",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        Ingresar →
-                      </motion.div>
+                        <Sparkles size={20} />
+                      </span>
                     </div>
+                    <h2 style={{
+                      fontSize: 32,
+                      fontWeight: 900,
+                      color: "#fff",
+                      margin: "0 0 12px",
+                      lineHeight: 1.2,
+                      textTransform: "uppercase",
+                      letterSpacing: "-0.5px",
+                    }}>
+                      {stores[activeIdx].name}
+                    </h2>
+                  </div>
+
+                  {/* Details */}
+                  <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 16,
+                    marginBottom: 32,
+                  }}>
+                    {stores[activeIdx].address && (
+                      <div style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 12,
+                      }}>
+                        <MapPin
+                          size={20}
+                          color={accentColors[activeIdx % accentColors.length]}
+                          strokeWidth={2}
+                          style={{ marginTop: 2, flexShrink: 0 }}
+                        />
+                        <p style={{
+                          fontSize: 15,
+                          color: "#CCC",
+                          margin: 0,
+                          fontWeight: 500,
+                          lineHeight: 1.6,
+                        }}>
+                          {stores[activeIdx].address}
+                        </p>
+                      </div>
+                    )}
+                    {stores[activeIdx].schedule && (
+                      <div style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 12,
+                      }}>
+                        <Clock
+                          size={20}
+                          color={accentColors[activeIdx % accentColors.length]}
+                          strokeWidth={2}
+                          style={{ marginTop: 2, flexShrink: 0 }}
+                        />
+                        <p style={{
+                          fontSize: 15,
+                          color: "#CCC",
+                          margin: 0,
+                          fontWeight: 500,
+                          lineHeight: 1.6,
+                        }}>
+                          {stores[activeIdx].schedule}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* CTA Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onSelect(stores[activeIdx])}
+                    style={{
+                      width: "100%",
+                      padding: "16px 32px",
+                      borderRadius: 18,
+                      border: "none",
+                      background: `linear-gradient(135deg, ${accentColors[activeIdx % accentColors.length]}, ${accentColors[activeIdx % accentColors.length]}CC)`,
+                      color: "#fff",
+                      fontSize: 15,
+                      fontWeight: 800,
+                      cursor: "pointer",
+                      letterSpacing: "1px",
+                      textTransform: "uppercase",
+                      boxShadow: `0 8px 20px ${accentColors[activeIdx % accentColors.length]}40`,
+                      transition: "all 0.3s",
+                    }}
+                  >
+                    Continuar
                   </motion.button>
-                );
-              })}
-            </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Navigation Dots */}
+            {stores.length > 1 && (
+              <div style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: 8,
+                marginTop: 32,
+              }}>
+                {stores.map((_, idx) => (
+                  <motion.button
+                    key={idx}
+                    onClick={() => setActiveIdx(idx)}
+                    style={{
+                      width: activeIdx === idx ? 32 : 10,
+                      height: 10,
+                      borderRadius: 5,
+                      border: "none",
+                      background: activeIdx === idx
+                        ? accentColors[idx % accentColors.length]
+                        : "#333",
+                      cursor: "pointer",
+                      transition: "all 0.3s",
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(30px); }
+        }
       `}</style>
     </div>
   );
