@@ -571,7 +571,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
 
   const renderLayout = () => {
     switch (category) {
-      case "helados":       return <HeladosSubSelector products={sortedProducts} onAdd={handleAdd} addedFlash={addedFlash} />;
+      case "helados":       return <HeladosSubSelector products={sortedProducts} onAdd={handleAdd} onDirectAdd={onAdd} addedFlash={addedFlash} />;
       case "malteadas":     return <MalteadasLayout {...layoutProps} />;
       case "granizados":    return <GranizadosLayout products={sortedProducts} onAdd={handleAdd} />;
       case "especialidades": return <EspecialesLayout {...layoutProps} />;

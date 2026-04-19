@@ -70,7 +70,7 @@ const ESPECIALES_EXTRA = [
     id: "charlie-brownie",
     name: "Charlie Brownie",
     price: 29900,
-    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/8f4fd3225_CharlieBrownie29900.png",
     category: "especialidades",
     is_available: true,
     tag: "recomendado",
@@ -79,7 +79,7 @@ const ESPECIALES_EXTRA = [
     id: "banana-split",
     name: "Banana Split",
     price: 29900,
-    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png",
+    image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/b6e4f0a12_BananaSplit29900.png",
     category: "especialidades",
     is_available: true,
     tag: "recomendado",
@@ -226,7 +226,7 @@ function GridCard2x2({ product, badge, onAdd, imgPosition }) {
       <div style={{ height: 200, width: "100%", overflow: "hidden", flexShrink: 0, background: "#FFF0F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "contain", padding: "8px" }} />
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
         ) : (
           <span style={{ fontSize: 36 }}>🍦</span>
         )}
@@ -635,7 +635,7 @@ function CategoryCard({ cat, onSelect, index }) {
 }
 
 // ─── Main Export ──────────────────────────────────────────────────────────────
-export default function HeladosSubSelector({ products, onAdd }) {
+export default function HeladosSubSelector({ products, onAdd, onDirectAdd }) {
   const [activeSubcat, setActiveSubcat] = useState(null);
 
   // Parchear imagen Fiore y Maxicono
@@ -667,12 +667,16 @@ export default function HeladosSubSelector({ products, onAdd }) {
         <TendenciaSection onAdd={onAdd} />
       </div>
 
-      {/* Customizer sheet directo por subcategoría */}
+      {/* Customizer sheet — usa onDirectAdd para ir al carrito sin pasar por handleAdd */}
       <HeladoSubcatCustomizer
         subcat={activeSubcat}
         open={!!activeSubcat}
         onClose={() => setActiveSubcat(null)}
-        onAdd={onAdd}
+        onAdd={(product, notes) => {
+          setActiveSubcat(null);
+          const addFn = onDirectAdd || onAdd;
+          addFn(product, notes);
+        }}
       />
     </>
   );

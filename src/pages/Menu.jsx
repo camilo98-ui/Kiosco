@@ -345,8 +345,6 @@ export default function Menu() {
       total: orderTotal,
       id: `temp-${Date.now()}`
     });
-    // Show rating after a short delay
-    setTimeout(() => setShowRating(true), 1200);
     setIsSubmitting(false);
 
     // Guardar orden en background sin esperar
@@ -380,18 +378,8 @@ export default function Menu() {
     return <StoreSelector onSelect={selectStore} />;
   }
 
-  if (confirmedOrder && showRating) {
-    return (
-      <RatingScreen
-        order={confirmedOrder}
-        store={store}
-        onDone={() => {setShowRating(false);setConfirmedOrder(null);}} />);
-
-
-  }
-
   if (confirmedOrder) {
-    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => {setConfirmedOrder(null);setShowRating(false);}} onEditOrder={handleEditOrder} />;
+    return <ConfirmationScreen order={confirmedOrder} onNewOrder={() => setConfirmedOrder(null)} onEditOrder={handleEditOrder} />;
   }
 
   if (activeCategory) {

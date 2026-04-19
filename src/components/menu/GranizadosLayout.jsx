@@ -71,8 +71,19 @@ function GranizadoCard({ product, onAdd }) {
   );
 }
 
+// Granizados hardcodeados con sus imágenes correctas (siempre disponibles)
+const GRANIZADOS_FIJOS = [
+  { id: "gran-maracuya-16", name: "Granizado Maracuyá 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa74e5737_GranizadoMaracuy16Onzas16900.png", is_available: true },
+  { id: "gran-mandarina-16", name: "Granizado Mandarina 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c2ed50391_GranizadoMandarina16Onzas16900.png", is_available: true },
+  { id: "gran-limon-16", name: "Granizado Limón 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/27c9386e4_GranizadodeLimn16Onzas16900.png", is_available: true },
+  { id: "gran-mandarina-12", name: "Granizado Mandarina 12oz", price: 14900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6305d3859_GranizadoMandarina12Onzas14900.png", is_available: true },
+  { id: "gran-maracuya-12", name: "Granizado Maracuyá 12oz", price: 14900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/a0dbfe535_GranizadoMaracuy12Onzas14900.png", is_available: true },
+];
+
 export default function GranizadosLayout({ products, onAdd }) {
-  const available = products.filter(p => p.is_available !== false);
+  // Usar los productos de la BD si existen, sino los fijos
+  const dbProducts = products.filter(p => p.is_available !== false && p.name.toLowerCase().includes("granizado"));
+  const available = dbProducts.length > 0 ? dbProducts : GRANIZADOS_FIJOS;
   const g16 = available.filter(p => p.name.includes("16oz"));
   const g12 = available.filter(p => p.name.includes("12oz"));
   const other = available.filter(p => !p.name.includes("16oz") && !p.name.includes("12oz"));
