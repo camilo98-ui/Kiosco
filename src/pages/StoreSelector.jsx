@@ -72,9 +72,9 @@ export default function StoreSelector() {
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         className="absolute -bottom-32 -left-32 w-[518px] h-[518px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(240, 198, 224, 0.85), rgba(240, 198, 224, 0.45), rgba(240, 198, 224, 0.05), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(32, 201, 151, 0.85), rgba(32, 201, 151, 0.45), rgba(32, 201, 151, 0.05), transparent)',
           filter: 'blur(30px)',
-          boxShadow: '0 0 110px rgba(240, 198, 224, 0.75)'
+          boxShadow: '0 0 110px rgba(32, 201, 151, 0.75)'
         }} />
       
       {/* Burbuja verde pastel claro - derecha */}
@@ -87,9 +87,9 @@ export default function StoreSelector() {
         transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute top-1/4 -right-24 w-[300px] h-[300px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(240, 198, 224, 0.85), rgba(240, 198, 224, 0.3), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(255, 159, 64, 0.85), rgba(255, 159, 64, 0.3), transparent)',
           filter: 'blur(28px)',
-          boxShadow: '0 0 100px rgba(240, 198, 224, 0.65)'
+          boxShadow: '0 0 100px rgba(255, 159, 64, 0.65)'
         }} />
       
       {/* Burbuja rosa suave - arriba izquierda */}
@@ -132,9 +132,9 @@ export default function StoreSelector() {
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
         className="absolute top-1/3 -left-40 w-[312px] h-[312px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(240, 198, 224, 0.85), rgba(240, 198, 224, 0.3), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(32, 201, 151, 0.85), rgba(32, 201, 151, 0.3), transparent)',
           filter: 'blur(29px)',
-          boxShadow: '0 0 95px rgba(240, 198, 224, 0.65)'
+          boxShadow: '0 0 95px rgba(32, 201, 151, 0.65)'
         }} />
 
       {/* Card Principal */}
