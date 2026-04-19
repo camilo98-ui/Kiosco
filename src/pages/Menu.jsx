@@ -8,7 +8,7 @@ import { useCart } from "@/lib/cartStore";
 import { useStore } from "@/lib/storeContext";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
 import { Search, Loader2, ChevronRight, ArrowLeft, MapPin } from "lucide-react";
-import StoreSelector from "@/components/StoreSelector";
+import LoginRoles from "@/components/LoginRoles";
 import RatingScreen from "@/components/RatingScreen";
 import PopsyLogo from "@/components/menu/PopsyLogo";
 import SearchModal from "@/components/menu/SearchModal";
@@ -375,7 +375,7 @@ export default function Menu() {
 
   // Store selector screen
   if (!storeLoading && !store) {
-    return <StoreSelector onSelect={selectStore} />;
+    return <LoginRoles />;
   }
 
   if (confirmedOrder) {
