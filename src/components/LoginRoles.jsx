@@ -15,28 +15,28 @@ export default function LoginRoles() {
 
   useEffect(() => {
     const savedStore = localStorage.getItem('popsy_selected_store');
-    base44.entities.Store.filter({ is_active: true })
-      .then(data => {
-        setStores(data);
-        if (savedStore) {
-          setSelectedStore(savedStore);
-          setTimeout(() => navigate('/menu'), 300);
-        }
-      })
-      .catch(() => setStores([]))
-      .finally(() => setLoading(false));
+    base44.entities.Store.filter({ is_active: true }).
+    then((data) => {
+      setStores(data);
+      if (savedStore) {
+        setSelectedStore(savedStore);
+        setTimeout(() => navigate('/menu'), 300);
+      }
+    }).
+    catch(() => setStores([])).
+    finally(() => setLoading(false));
   }, [navigate]);
 
   const filtered = useMemo(() => {
-    return stores.filter(store =>
-      store.name.toLowerCase().includes(search.toLowerCase()) ||
-      (store.address && store.address.toLowerCase().includes(search.toLowerCase()))
+    return stores.filter((store) =>
+    store.name.toLowerCase().includes(search.toLowerCase()) ||
+    store.address && store.address.toLowerCase().includes(search.toLowerCase())
     );
   }, [search, stores]);
 
   const handleEnter = () => {
     if (selectedStore) {
-      const store = stores.find(s => s.id === selectedStore);
+      const store = stores.find((s) => s.id === selectedStore);
       if (store) {
         localStorage.setItem('popsy_selected_store', selectedStore);
         selectStore(store);
@@ -49,105 +49,105 @@ export default function LoginRoles() {
     <div
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #FFF0F8 0%, #FFFBFC 50%, #FFF5F8 100%)",
-      }}
-    >
+        background: "linear-gradient(135deg, #FFF0F8 0%, #FFFBFC 50%, #FFF5F8 100%)"
+      }}>
+      
       {/* Burbujas animadas de fondo - Magenta y Verde pastel */}
       {/* Burbuja grande magenta arriba derecha */}
       <motion.div
         animate={{
           x: [0, 50, -50, 0],
           y: [-80, 80, -80, 0],
-          scale: [1, 1.15, 0.9, 1],
+          scale: [1, 1.15, 0.9, 1]
         }}
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -top-32 -right-32 w-[320px] h-[320px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 35% 35%, rgba(233, 30, 99, 0.7), rgba(233, 30, 99, 0.3), rgba(233, 30, 99, 0.1), transparent)',
           filter: 'blur(50px)',
-          boxShadow: '0 0 120px rgba(233, 30, 99, 0.5)',
-        }}
-      />
+          boxShadow: '0 0 120px rgba(233, 30, 99, 0.5)'
+        }} />
+      
       
       {/* Burbuja grande verde pastel abajo izquierda */}
       <motion.div
         animate={{
           x: [0, -50, 50, 0],
           y: [80, -80, 80, 0],
-          scale: [1, 0.95, 1.15, 1],
+          scale: [1, 0.95, 1.15, 1]
         }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         className="absolute -bottom-32 -left-32 w-[300px] h-[300px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.65), rgba(144, 238, 144, 0.25), rgba(144, 238, 144, 0.05), transparent)',
           filter: 'blur(48px)',
-          boxShadow: '0 0 110px rgba(144, 238, 144, 0.4)',
-        }}
-      />
+          boxShadow: '0 0 110px rgba(144, 238, 144, 0.4)'
+        }} />
+      
       
       {/* Burbuja verde pastel claro - derecha */}
       <motion.div
         animate={{
           x: [0, 40, -40, 0],
           y: [0, -50, 50, 0],
-          scale: [1, 1.1, 0.95, 1],
+          scale: [1, 1.1, 0.95, 1]
         }}
         transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute top-1/4 -right-24 w-[250px] h-[250px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.55), rgba(144, 238, 144, 0.15), transparent)',
           filter: 'blur(45px)',
-          boxShadow: '0 0 100px rgba(144, 238, 144, 0.35)',
-        }}
-      />
+          boxShadow: '0 0 100px rgba(144, 238, 144, 0.35)'
+        }} />
+      
       
       {/* Burbuja rosa suave - arriba izquierda */}
       <motion.div
         animate={{
           x: [0, -40, 40, 0],
           y: [-60, 60, -60, 0],
-          scale: [1, 1.12, 0.92, 1],
+          scale: [1, 1.12, 0.92, 1]
         }}
         transition={{ duration: 23, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
         className="absolute top-0 -left-28 w-[280px] h-[280px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 35% 35%, rgba(255, 179, 210, 0.6), rgba(255, 179, 210, 0.2), transparent)',
           filter: 'blur(46px)',
-          boxShadow: '0 0 105px rgba(255, 179, 210, 0.4)',
-        }}
-      />
+          boxShadow: '0 0 105px rgba(255, 179, 210, 0.4)'
+        }} />
+      
       
       {/* Burbuja magenta suave - centro derecha */}
       <motion.div
         animate={{
           x: [0, 30, -30, 0],
           y: [40, -40, 40, 0],
-          scale: [1, 1.08, 0.98, 1],
+          scale: [1, 1.08, 0.98, 1]
         }}
         transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
         className="absolute bottom-1/4 right-1/4 w-[220px] h-[220px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 35% 35%, rgba(233, 100, 150, 0.5), rgba(233, 100, 150, 0.15), transparent)',
           filter: 'blur(42px)',
-          boxShadow: '0 0 90px rgba(233, 100, 150, 0.3)',
-        }}
-      />
+          boxShadow: '0 0 90px rgba(233, 100, 150, 0.3)'
+        }} />
+      
       
       {/* Burbuja verde claro - izquierda centro */}
       <motion.div
         animate={{
           x: [0, 50, -50, 0],
           y: [30, -30, 30, 0],
-          scale: [1, 0.95, 1.1, 1],
+          scale: [1, 0.95, 1.1, 1]
         }}
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
         className="absolute top-1/3 -left-40 w-[260px] h-[260px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 40% 40%, rgba(152, 251, 152, 0.5), rgba(152, 251, 152, 0.12), transparent)',
           filter: 'blur(44px)',
-          boxShadow: '0 0 95px rgba(152, 251, 152, 0.3)',
-        }}
-      />
+          boxShadow: '0 0 95px rgba(152, 251, 152, 0.3)'
+        }} />
+      
 
       {/* Card Principal */}
       <motion.div
@@ -165,9 +165,9 @@ export default function LoginRoles() {
             0 0 50px rgba(233, 30, 99, 0.3),
             0 0 100px rgba(233, 30, 99, 0.15)
           `,
-          minHeight: "520px",
-        }}
-      >
+          minHeight: "520px"
+        }}>
+        
         {/* Header */}
         <div className="text-center mb-6">
           <motion.img
@@ -176,9 +176,9 @@ export default function LoginRoles() {
             className="h-20 mb-4 mx-auto"
             style={{ filter: 'drop-shadow(0 0 0px rgba(233, 30, 99, 0))', mixBlendMode: 'multiply' }}
             animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <h2 className="text-xl font-bold mb-1" style={{ color: "#1A1A1A" }}>
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} />
+          
+          <h2 className="text-[hsl(var(--muted-foreground))] mb-1 text-xl font-bold" style={{ color: "#1A1A1A" }}>
             Bienvenido
           </h2>
           <p className="text-xs text-gray-500 font-medium">
@@ -202,42 +202,42 @@ export default function LoginRoles() {
                 border: "1.5px solid rgba(255, 255, 255, 0.4)",
                 boxShadow: search ? "0 0 0 3px rgba(233, 30, 99, 0.15)" : "none",
                 color: "#1A1A1A"
-              }}
-            />
+              }} />
+            
           </div>
 
-          {loading ? (
-            <p className="text-center text-gray-400 text-sm py-4">Cargando tiendas...</p>
-          ) : filtered.length > 0 ? (
-            <div className="space-y-2 max-h-40 overflow-y-auto pr-2">
-               {filtered.map((store, idx) => (
-                 <motion.button
-                   key={store.id}
-                   onClick={() => setSelectedStore(store.id)}
-                   whileTap={{ scale: 1.02 }}
-                   initial={{ opacity: 0, y: 10 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   transition={{ delay: idx * 0.05 }}
-                   className="w-full p-2.5 rounded-2xl text-left transition-all"
-                   style={{
-                    background: selectedStore === store.id ? "rgba(233, 30, 99, 0.2)" : "rgba(255, 255, 255, 0.25)",
-                    backdropFilter: "blur(10px)",
-                    border: selectedStore === store.id ? "1.5px solid rgba(233, 30, 99, 0.6)" : "1.5px solid rgba(255, 255, 255, 0.3)",
-                    boxShadow: selectedStore === store.id ? "inset 0 0 0 1px rgba(233, 30, 99, 0.3)" : "none",
-                   }}
-                >
+          {loading ?
+          <p className="text-center text-gray-400 text-sm py-4">Cargando tiendas...</p> :
+          filtered.length > 0 ?
+          <div className="space-y-2 max-h-40 overflow-y-auto pr-2">
+               {filtered.map((store, idx) =>
+            <motion.button
+              key={store.id}
+              onClick={() => setSelectedStore(store.id)}
+              whileTap={{ scale: 1.02 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.05 }}
+              className="w-full p-2.5 rounded-2xl text-left transition-all"
+              style={{
+                background: selectedStore === store.id ? "rgba(233, 30, 99, 0.2)" : "rgba(255, 255, 255, 0.25)",
+                backdropFilter: "blur(10px)",
+                border: selectedStore === store.id ? "1.5px solid rgba(233, 30, 99, 0.6)" : "1.5px solid rgba(255, 255, 255, 0.3)",
+                boxShadow: selectedStore === store.id ? "inset 0 0 0 1px rgba(233, 30, 99, 0.3)" : "none"
+              }}>
+              
                   <p className="font-semibold text-xs" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
                     {store.name}
                   </p>
-                  {store.address && (
-                    <p className="text-xs text-gray-400 mt-0.5">{store.address}</p>
-                  )}
+                  {store.address &&
+              <p className="text-xs text-gray-400 mt-0.5">{store.address}</p>
+              }
                 </motion.button>
-              ))}
-            </div>
-          ) : search.length > 0 ? (
-            <p className="text-center text-gray-400 text-sm py-4">No encontramos tiendas</p>
-          ) : null}
+            )}
+            </div> :
+          search.length > 0 ?
+          <p className="text-center text-gray-400 text-sm py-4">No encontramos tiendas</p> :
+          null}
         </div>
 
         {/* Botón Entrar */}
@@ -250,9 +250,9 @@ export default function LoginRoles() {
             background: selectedStore ? "linear-gradient(135deg, #E91E63, #F06292)" : "#E8E8E8",
             color: selectedStore ? "#FFFFFF" : "#999",
             cursor: selectedStore ? "pointer" : "not-allowed",
-            boxShadow: selectedStore ? "0 6px 16px rgba(233, 30, 99, 0.3)" : "none",
-          }}
-        >
+            boxShadow: selectedStore ? "0 6px 16px rgba(233, 30, 99, 0.3)" : "none"
+          }}>
+          
           Ir a Popsy 🍦
         </motion.button>
 
@@ -261,6 +261,6 @@ export default function LoginRoles() {
           Elige tu ubicación favorita
         </p>
       </motion.div>
-    </div>
-  );
+    </div>);
+
 }
