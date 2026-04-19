@@ -73,11 +73,11 @@ function GranizadoCard({ product, onAdd }) {
 
 // Granizados hardcodeados con sus imágenes correctas (siempre disponibles)
 const GRANIZADOS_FIJOS = [
-  { id: "gran-maracuya-16", name: "Granizado Maracuyá 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa74e5737_GranizadoMaracuy16Onzas16900.png", is_available: true },
-  { id: "gran-mandarina-16", name: "Granizado Mandarina 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/c2ed50391_GranizadoMandarina16Onzas16900.png", is_available: true },
-  { id: "gran-limon-16", name: "Granizado Limón 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/27c9386e4_GranizadodeLimn16Onzas16900.png", is_available: true },
-  { id: "gran-mandarina-12", name: "Granizado Mandarina 12oz", price: 14900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6305d3859_GranizadoMandarina12Onzas14900.png", is_available: true },
-  { id: "gran-maracuya-12", name: "Granizado Maracuyá 12oz", price: 14900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/a0dbfe535_GranizadoMaracuy12Onzas14900.png", is_available: true },
+  { id: "gran-maracuya-16", name: "Granizado Maracuyá 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/9e4dc2ba3_GranizadoMaracuy16Onzas16900.png", is_available: true },
+  { id: "gran-mandarina-16", name: "Granizado Mandarina 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/a6c44a954_GranizadoMandarina16Onzas16900.png", is_available: true },
+  { id: "gran-limon-16", name: "Granizado Limón 16oz", price: 16900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e5c05c503_GranizadodeLimn16Onzas16900.png", is_available: true },
+  { id: "gran-mandarina-12", name: "Granizado Mandarina 12oz", price: 14900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/f250a375a_GranizadoMandarina12Onzas14900.png", is_available: true },
+  { id: "gran-maracuya-12", name: "Granizado Maracuyá 12oz", price: 14900, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6b8736279_GranizadoMaracuy12Onzas14900.png", is_available: true },
 ];
 
 export default function GranizadosLayout({ products, onAdd }) {
