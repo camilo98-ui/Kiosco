@@ -41,30 +41,58 @@ export default function LoginRoles() {
       {/* Burbujas animadas de fondo */}
       <motion.div
         animate={{
-          x: [0, 60, -30, 0],
-          y: [0, -50, 20, 0],
-          scale: [1, 1.2, 0.95, 1],
+          x: [0, 40, -40, 0],
+          y: [0, -40, 40, 0],
+          scale: [1, 1.15, 0.95, 1],
         }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-32 -right-32 w-80 h-80 rounded-full pointer-events-none"
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-20 -right-40 w-96 h-96 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(233, 30, 99, 0.5), rgba(233, 30, 99, 0.15), transparent)',
-          filter: 'blur(35px)',
-          boxShadow: '0 0 100px rgba(233, 30, 99, 0.4)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(230, 150, 200, 0.7), rgba(230, 150, 200, 0.2), transparent)',
+          filter: 'blur(40px)',
+          boxShadow: '0 0 120px rgba(230, 150, 200, 0.5)',
         }}
       />
       <motion.div
         animate={{
-          x: [0, -50, 40, 0],
-          y: [0, 60, -30, 0],
-          scale: [1, 0.9, 1.15, 1],
+          x: [0, -40, 40, 0],
+          y: [0, 40, -40, 0],
+          scale: [1, 0.95, 1.15, 1],
         }}
-        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full pointer-events-none"
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.45), rgba(168, 85, 247, 0.12), transparent)',
-          filter: 'blur(45px)',
-          boxShadow: '0 0 120px rgba(168, 85, 247, 0.35)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(200, 180, 240, 0.65), rgba(200, 180, 240, 0.15), transparent)',
+          filter: 'blur(40px)',
+          boxShadow: '0 0 130px rgba(200, 180, 240, 0.45)',
+        }}
+      />
+      <motion.div
+        animate={{
+          x: [0, 30, -30, 0],
+          y: [0, 50, -50, 0],
+          scale: [1, 1.1, 0.9, 1],
+        }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute top-1/3 -left-32 w-80 h-80 rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 35% 35%, rgba(220, 200, 230, 0.6), rgba(220, 200, 230, 0.1), transparent)',
+          filter: 'blur(38px)',
+          boxShadow: '0 0 110px rgba(220, 200, 230, 0.4)',
+        }}
+      />
+      <motion.div
+        animate={{
+          x: [0, -35, 35, 0],
+          y: [0, -45, 45, 0],
+          scale: [1, 1.05, 1.1, 1],
+        }}
+        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        className="absolute bottom-1/4 -right-32 w-72 h-72 rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 40% 40%, rgba(230, 210, 240, 0.55), rgba(230, 210, 240, 0.08), transparent)',
+          filter: 'blur(38px)',
+          boxShadow: '0 0 100px rgba(230, 210, 240, 0.38)',
         }}
       />
 
