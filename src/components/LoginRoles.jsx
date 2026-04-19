@@ -69,10 +69,10 @@ export default function LoginRoles() {
         transition={{ duration: 0.5 }}
         className="relative z-10 w-full max-w-[420px] p-8 rounded-3xl"
         style={{
-          background: "rgba(255, 255, 255, 0.35)",
-          boxShadow: "0 0 40px rgba(244, 194, 219, 0.8), 0 0 80px rgba(233, 30, 99, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.6)",
-          backdropFilter: "blur(40px)",
-          border: "2px solid rgba(244, 194, 219, 0.8)",
+          background: "rgba(255, 255, 255, 0.25)",
+          boxShadow: "0 0 60px rgba(244, 194, 219, 1), 0 0 100px rgba(233, 30, 99, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.7)",
+          backdropFilter: "blur(50px) saturate(180%)",
+          border: "2.5px solid rgba(244, 194, 219, 1)",
         }}
       >
         {/* Header */}
