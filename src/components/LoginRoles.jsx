@@ -35,8 +35,7 @@ export default function LoginRoles() {
   const handleEnter = () => {
     if (selectedStore) {
       localStorage.setItem('popsy_selected_store', selectedStore);
-      // Force page reload to trigger storeContext initialization
-      window.location.href = '/menu';
+      navigate(`/menu`);
     }
   };
 
