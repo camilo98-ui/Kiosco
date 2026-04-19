@@ -57,9 +57,9 @@ export default function StoreSelector() {
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -top-32 -right-32 w-[380px] h-[380px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.65), rgba(244, 167, 192, 0.35), rgba(244, 167, 192, 0.1), transparent)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.75), rgba(244, 167, 192, 0.4), rgba(244, 167, 192, 0.1), transparent)',
           filter: 'blur(50px)',
-          boxShadow: '0 0 120px rgba(244, 167, 192, 0.6)'
+          boxShadow: '0 0 120px rgba(244, 167, 192, 0.7)'
         }} />
       
       {/* Burbuja grande verde pastel abajo izquierda */}
@@ -70,11 +70,11 @@ export default function StoreSelector() {
           scale: [1, 0.95, 1.15, 1]
         }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute -bottom-32 -left-32 w-[360px] h-[360px] rounded-full pointer-events-none"
+        className="absolute -bottom-32 -left-32 w-[414px] h-[414px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.65), rgba(168, 230, 216, 0.3), rgba(168, 230, 216, 0.05), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.7), rgba(168, 230, 216, 0.35), rgba(168, 230, 216, 0.05), transparent)',
           filter: 'blur(48px)',
-          boxShadow: '0 0 110px rgba(168, 230, 216, 0.5)'
+          boxShadow: '0 0 110px rgba(168, 230, 216, 0.6)'
         }} />
       
       {/* Burbuja verde pastel claro - derecha */}
@@ -87,9 +87,9 @@ export default function StoreSelector() {
         transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute top-1/4 -right-24 w-[300px] h-[300px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.6), rgba(168, 230, 216, 0.18), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.65), rgba(168, 230, 216, 0.2), transparent)',
           filter: 'blur(45px)',
-          boxShadow: '0 0 100px rgba(168, 230, 216, 0.45)'
+          boxShadow: '0 0 100px rgba(168, 230, 216, 0.5)'
         }} />
       
       {/* Burbuja rosa suave - arriba izquierda */}
@@ -102,9 +102,9 @@ export default function StoreSelector() {
         transition={{ duration: 23, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
         className="absolute top-0 -left-28 w-[336px] h-[336px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.65), rgba(244, 167, 192, 0.25), transparent)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.65), rgba(244, 167, 192, 0.28), transparent)',
           filter: 'blur(46px)',
-          boxShadow: '0 0 105px rgba(244, 167, 192, 0.5)'
+          boxShadow: '0 0 105px rgba(244, 167, 192, 0.55)'
         }} />
       
       {/* Burbuja magenta suave - centro derecha */}
@@ -117,9 +117,9 @@ export default function StoreSelector() {
         transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
         className="absolute bottom-1/4 right-1/4 w-[264px] h-[264px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.6), rgba(244, 167, 192, 0.2), transparent)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.65), rgba(244, 167, 192, 0.22), transparent)',
           filter: 'blur(42px)',
-          boxShadow: '0 0 90px rgba(244, 167, 192, 0.4)'
+          boxShadow: '0 0 90px rgba(244, 167, 192, 0.5)'
         }} />
       
       {/* Burbuja verde claro - izquierda centro */}
@@ -132,9 +132,9 @@ export default function StoreSelector() {
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
         className="absolute top-1/3 -left-40 w-[312px] h-[312px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.6), rgba(168, 230, 216, 0.15), transparent)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.65), rgba(168, 230, 216, 0.18), transparent)',
           filter: 'blur(44px)',
-          boxShadow: '0 0 95px rgba(168, 230, 216, 0.4)'
+          boxShadow: '0 0 95px rgba(168, 230, 216, 0.5)'
         }} />
 
       {/* Card Principal */}
@@ -192,7 +192,8 @@ export default function StoreSelector() {
         {loading ?
           <p className="text-center text-gray-400 text-sm py-8">Cargando tiendas...</p> :
           filtered.length > 0 ?
-          <div className="space-y-2 max-h-72 overflow-y-auto pr-2 mb-5">
+          <div className="space-y-2 pr-2 mb-5" style={{ maxHeight: "260px", overflowY: "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none", paddingBottom: "16px" }}>
+            <style>{`div::-webkit-scrollbar { display: none; }`}</style>
             {filtered.map((store, idx) => (
               <motion.button
                 key={store.id}
@@ -203,7 +204,7 @@ export default function StoreSelector() {
                 transition={{ delay: idx * 0.05 }}
                 className="w-full flex items-start gap-3 transition-all text-left"
                 style={{
-                  background: selectedStore === store.id ? "#E8187A" : "rgba(255, 255, 255, 0.55)",
+                  background: selectedStore === store.id ? "#E8187A" : "rgba(255, 255, 255, 0.45)",
                   border: selectedStore === store.id ? "1.5px solid #E8187A" : "1px solid rgba(240, 210, 225, 0.6)",
                   borderRadius: "14px",
                   padding: "12px 14px",
