@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import { useStore } from "@/lib/storeContext";
 
 export default function LoginRoles() {
   const [stores, setStores] = useState([]);
@@ -10,6 +11,7 @@ export default function LoginRoles() {
   const [selectedStore, setSelectedStore] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { selectStore } = useStore();
 
   useEffect(() => {
     const savedStore = localStorage.getItem('popsy_selected_store');
@@ -34,8 +36,12 @@ export default function LoginRoles() {
 
   const handleEnter = () => {
     if (selectedStore) {
-      localStorage.setItem('popsy_selected_store', selectedStore);
-      navigate(`/menu`);
+      const store = stores.find(s => s.id === selectedStore);
+      if (store) {
+        localStorage.setItem('popsy_selected_store', selectedStore);
+        selectStore(store);
+        navigate(`/menu`);
+      }
     }
   };
 
