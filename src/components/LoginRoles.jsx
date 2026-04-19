@@ -52,61 +52,100 @@ export default function LoginRoles() {
         background: "linear-gradient(135deg, #FFF0F8 0%, #FFFBFC 50%, #FFF5F8 100%)",
       }}
     >
-      {/* Burbujas animadas de fondo - Magenta y Verde pastel pequeñas */}
+      {/* Burbujas animadas de fondo - Magenta y Verde pastel */}
+      {/* Burbuja grande magenta arriba derecha */}
+      <motion.div
+        animate={{
+          x: [0, 50, -50, 0],
+          y: [-80, 80, -80, 0],
+          scale: [1, 1.15, 0.9, 1],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-32 -right-32 w-[320px] h-[320px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 35% 35%, rgba(233, 30, 99, 0.7), rgba(233, 30, 99, 0.3), rgba(233, 30, 99, 0.1), transparent)',
+          filter: 'blur(50px)',
+          boxShadow: '0 0 120px rgba(233, 30, 99, 0.5)',
+        }}
+      />
+      
+      {/* Burbuja grande verde pastel abajo izquierda */}
+      <motion.div
+        animate={{
+          x: [0, -50, 50, 0],
+          y: [80, -80, 80, 0],
+          scale: [1, 0.95, 1.15, 1],
+        }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute -bottom-32 -left-32 w-[300px] h-[300px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.65), rgba(144, 238, 144, 0.25), rgba(144, 238, 144, 0.05), transparent)',
+          filter: 'blur(48px)',
+          boxShadow: '0 0 110px rgba(144, 238, 144, 0.4)',
+        }}
+      />
+      
+      {/* Burbuja verde pastel claro - derecha */}
       <motion.div
         animate={{
           x: [0, 40, -40, 0],
-          y: [-50, 50, -50, 0],
-          scale: [1, 1.1, 0.9, 1],
+          y: [0, -50, 50, 0],
+          scale: [1, 1.1, 0.95, 1],
         }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-20 -right-20 w-[200px] h-[200px] rounded-full pointer-events-none"
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute top-1/4 -right-24 w-[250px] h-[250px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 30% 30%, rgba(233, 30, 99, 0.5), rgba(233, 30, 99, 0.15), transparent)',
-          filter: 'blur(40px)',
-          boxShadow: '0 0 80px rgba(233, 30, 99, 0.3)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.55), rgba(144, 238, 144, 0.15), transparent)',
+          filter: 'blur(45px)',
+          boxShadow: '0 0 100px rgba(144, 238, 144, 0.35)',
         }}
       />
+      
+      {/* Burbuja rosa suave - arriba izquierda */}
       <motion.div
         animate={{
-          x: [0, -35, 35, 0],
-          y: [50, -50, 50, 0],
-          scale: [1, 0.9, 1.1, 1],
+          x: [0, -40, 40, 0],
+          y: [-60, 60, -60, 0],
+          scale: [1, 1.12, 0.92, 1],
         }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        className="absolute -bottom-16 -left-16 w-[180px] h-[180px] rounded-full pointer-events-none"
+        transition={{ duration: 23, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        className="absolute top-0 -left-28 w-[280px] h-[280px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 40% 40%, rgba(144, 238, 144, 0.45), rgba(144, 238, 144, 0.1), transparent)',
-          filter: 'blur(38px)',
-          boxShadow: '0 0 75px rgba(144, 238, 144, 0.25)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(255, 179, 210, 0.6), rgba(255, 179, 210, 0.2), transparent)',
+          filter: 'blur(46px)',
+          boxShadow: '0 0 105px rgba(255, 179, 210, 0.4)',
         }}
       />
+      
+      {/* Burbuja magenta suave - centro derecha */}
       <motion.div
         animate={{
           x: [0, 30, -30, 0],
-          y: [0, -40, 40, 0],
-          scale: [1, 1.15, 0.85, 1],
+          y: [40, -40, 40, 0],
+          scale: [1, 1.08, 0.98, 1],
         }}
-        transition={{ duration: 19, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-        className="absolute top-1/2 right-1/3 w-[160px] h-[160px] rounded-full pointer-events-none"
+        transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        className="absolute bottom-1/4 right-1/4 w-[220px] h-[220px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(233, 100, 150, 0.4), rgba(233, 100, 150, 0.08), transparent)',
-          filter: 'blur(35px)',
-          boxShadow: '0 0 70px rgba(233, 100, 150, 0.2)',
+          background: 'radial-gradient(circle at 35% 35%, rgba(233, 100, 150, 0.5), rgba(233, 100, 150, 0.15), transparent)',
+          filter: 'blur(42px)',
+          boxShadow: '0 0 90px rgba(233, 100, 150, 0.3)',
         }}
       />
+      
+      {/* Burbuja verde claro - izquierda centro */}
       <motion.div
         animate={{
-          x: [0, -30, 30, 0],
+          x: [0, 50, -50, 0],
           y: [30, -30, 30, 0],
           scale: [1, 0.95, 1.1, 1],
         }}
-        transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 2.2 }}
-        className="absolute bottom-1/3 left-1/4 w-[150px] h-[150px] rounded-full pointer-events-none"
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
+        className="absolute top-1/3 -left-40 w-[260px] h-[260px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 35% 35%, rgba(152, 251, 152, 0.4), rgba(152, 251, 152, 0.08), transparent)',
-          filter: 'blur(36px)',
-          boxShadow: '0 0 65px rgba(152, 251, 152, 0.2)',
+          background: 'radial-gradient(circle at 40% 40%, rgba(152, 251, 152, 0.5), rgba(152, 251, 152, 0.12), transparent)',
+          filter: 'blur(44px)',
+          boxShadow: '0 0 95px rgba(152, 251, 152, 0.3)',
         }}
       />
 
@@ -117,14 +156,14 @@ export default function LoginRoles() {
         transition={{ duration: 0.5 }}
         className="relative z-10 w-full max-w-[340px] p-6 rounded-3xl mx-auto"
         style={{
-          background: "rgba(255, 245, 250, 0.6)",
-          backdropFilter: "blur(30px)",
-          border: "1.5px solid rgba(255, 255, 255, 0.5)",
+          background: "rgba(255, 255, 255, 0.35)",
+          backdropFilter: "blur(35px)",
+          border: "1.5px solid rgba(255, 255, 255, 0.6)",
           boxShadow: `
-            0 8px 32px rgba(233, 30, 99, 0.08),
-            inset 0 0 0 1px rgba(255, 255, 255, 0.3),
-            0 0 40px rgba(233, 30, 99, 0.25),
-            0 0 80px rgba(233, 30, 99, 0.15)
+            0 8px 32px rgba(233, 30, 99, 0.12),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+            0 0 50px rgba(233, 30, 99, 0.3),
+            0 0 100px rgba(233, 30, 99, 0.15)
           `,
           minHeight: "520px",
         }}
@@ -156,9 +195,13 @@ export default function LoginRoles() {
               placeholder="Busca tu tienda..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-2.5 rounded-2xl border-2 border-gray-100 focus:border-pink-400 focus:outline-none transition-all text-sm bg-gray-50 focus:bg-white"
+              className="w-full pl-12 pr-4 py-2.5 rounded-2xl border-2 focus:border-pink-400 focus:outline-none transition-all text-sm"
               style={{
-                boxShadow: search ? "0 0 0 3px rgba(233, 30, 99, 0.1)" : "none",
+                background: "rgba(255, 255, 255, 0.3)",
+                backdropFilter: "blur(10px)",
+                border: "1.5px solid rgba(255, 255, 255, 0.4)",
+                boxShadow: search ? "0 0 0 3px rgba(233, 30, 99, 0.15)" : "none",
+                color: "#1A1A1A"
               }}
             />
           </div>
@@ -176,11 +219,12 @@ export default function LoginRoles() {
                    animate={{ opacity: 1, y: 0 }}
                    transition={{ delay: idx * 0.05 }}
                    className="w-full p-2.5 rounded-2xl text-left transition-all"
-                  style={{
-                    background: selectedStore === store.id ? "rgba(233, 30, 99, 0.08)" : "#F9F9F9",
-                    border: selectedStore === store.id ? "1.5px solid #E91E63" : "1.5px solid #F0F0F0",
-                    boxShadow: selectedStore === store.id ? "0 0 0 3px rgba(233, 30, 99, 0.08)" : "none",
-                  }}
+                   style={{
+                    background: selectedStore === store.id ? "rgba(233, 30, 99, 0.2)" : "rgba(255, 255, 255, 0.25)",
+                    backdropFilter: "blur(10px)",
+                    border: selectedStore === store.id ? "1.5px solid rgba(233, 30, 99, 0.6)" : "1.5px solid rgba(255, 255, 255, 0.3)",
+                    boxShadow: selectedStore === store.id ? "inset 0 0 0 1px rgba(233, 30, 99, 0.3)" : "none",
+                   }}
                 >
                   <p className="font-semibold text-xs" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
                     {store.name}
