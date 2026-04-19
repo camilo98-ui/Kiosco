@@ -128,10 +128,20 @@ export default function StoreSelector({ onSelect }) {
 
       {/* Mobile View */}
       <div className="lg:hidden flex flex-col items-center justify-center min-h-screen px-4 py-8 relative z-10">
+        <motion.img
+          src={LOGO_URL}
+          alt="Popsy"
+          className="h-24 object-contain mx-auto mb-4"
+          animate={{ y: [0, -8, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
+        />
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-4xl font-black text-pink-600 italic mb-4"
+          className="text-4xl font-black text-pink-600 italic mb-2"
         >
           Popsy
         </motion.h1>
