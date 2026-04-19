@@ -12,6 +12,7 @@ import Datafono from './pages/Datafono';
 import Admin from './pages/Admin';
 import PopsyApp from './pages/PopsyApp';
 import LoginRoles from './components/LoginRoles';
+import StoreSelector from './pages/StoreSelector';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -39,7 +40,8 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<LoginRoles />} />
+      <Route path="/" element={<StoreSelector />} />
+      <Route path="/login-roles" element={<LoginRoles />} />
       <Route path="/menu" element={<Menu />} />
       <Route path="/cajero" element={<Cajero />} />
       <Route path="/datafono" element={<Datafono />} />

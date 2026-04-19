@@ -1,0 +1,257 @@
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { MapPin, Search } from "lucide-react";
+import { base44 } from "@/api/base44Client";
+import { useStore } from "@/lib/storeContext";
+
+export default function StoreSelector() {
+  const [stores, setStores] = useState([]);
+  const [search, setSearch] = useState("");
+  const [selectedStore, setSelectedStore] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { selectStore } = useStore();
+
+  useEffect(() => {
+    base44.entities.Store.filter({ is_active: true })
+      .then((data) => {
+        setStores(data);
+      })
+      .catch(() => setStores([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = useMemo(() => {
+    return stores.filter((store) =>
+      store.name.toLowerCase().includes(search.toLowerCase()) ||
+      (store.address && store.address.toLowerCase().includes(search.toLowerCase()))
+    );
+  }, [search, stores]);
+
+  const handleEnter = () => {
+    if (selectedStore) {
+      const store = stores.find((s) => s.id === selectedStore);
+      if (store) {
+        selectStore(store);
+        navigate("/login-roles");
+      }
+    }
+  };
+
+  return (
+    <div
+      className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #FFF0F8 0%, #FFFBFC 50%, #FFF5F8 100%)"
+      }}>
+      
+      {/* Burbujas animadas de fondo - Magenta y Verde pastel */}
+      {/* Burbuja grande magenta arriba derecha */}
+      <motion.div
+        animate={{
+          x: [0, 50, -50, 0],
+          y: [-80, 80, -80, 0],
+          scale: [1, 1.15, 0.9, 1]
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-32 -right-32 w-[380px] h-[380px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.65), rgba(244, 167, 192, 0.35), rgba(244, 167, 192, 0.1), transparent)',
+          filter: 'blur(50px)',
+          boxShadow: '0 0 120px rgba(244, 167, 192, 0.6)'
+        }} />
+      
+      {/* Burbuja grande verde pastel abajo izquierda */}
+      <motion.div
+        animate={{
+          x: [0, -50, 50, 0],
+          y: [80, -80, 80, 0],
+          scale: [1, 0.95, 1.15, 1]
+        }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute -bottom-32 -left-32 w-[360px] h-[360px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.65), rgba(168, 230, 216, 0.3), rgba(168, 230, 216, 0.05), transparent)',
+          filter: 'blur(48px)',
+          boxShadow: '0 0 110px rgba(168, 230, 216, 0.5)'
+        }} />
+      
+      {/* Burbuja verde pastel claro - derecha */}
+      <motion.div
+        animate={{
+          x: [0, 40, -40, 0],
+          y: [0, -50, 50, 0],
+          scale: [1, 1.1, 0.95, 1]
+        }}
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute top-1/4 -right-24 w-[300px] h-[300px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.6), rgba(168, 230, 216, 0.18), transparent)',
+          filter: 'blur(45px)',
+          boxShadow: '0 0 100px rgba(168, 230, 216, 0.45)'
+        }} />
+      
+      {/* Burbuja rosa suave - arriba izquierda */}
+      <motion.div
+        animate={{
+          x: [0, -40, 40, 0],
+          y: [-60, 60, -60, 0],
+          scale: [1, 1.12, 0.92, 1]
+        }}
+        transition={{ duration: 23, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        className="absolute top-0 -left-28 w-[336px] h-[336px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.65), rgba(244, 167, 192, 0.25), transparent)',
+          filter: 'blur(46px)',
+          boxShadow: '0 0 105px rgba(244, 167, 192, 0.5)'
+        }} />
+      
+      {/* Burbuja magenta suave - centro derecha */}
+      <motion.div
+        animate={{
+          x: [0, 30, -30, 0],
+          y: [40, -40, 40, 0],
+          scale: [1, 1.08, 0.98, 1]
+        }}
+        transition={{ duration: 21, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        className="absolute bottom-1/4 right-1/4 w-[264px] h-[264px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 35% 35%, rgba(244, 167, 192, 0.6), rgba(244, 167, 192, 0.2), transparent)',
+          filter: 'blur(42px)',
+          boxShadow: '0 0 90px rgba(244, 167, 192, 0.4)'
+        }} />
+      
+      {/* Burbuja verde claro - izquierda centro */}
+      <motion.div
+        animate={{
+          x: [0, 50, -50, 0],
+          y: [30, -30, 30, 0],
+          scale: [1, 0.95, 1.1, 1]
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
+        className="absolute top-1/3 -left-40 w-[312px] h-[312px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 40% 40%, rgba(168, 230, 216, 0.6), rgba(168, 230, 216, 0.15), transparent)',
+          filter: 'blur(44px)',
+          boxShadow: '0 0 95px rgba(168, 230, 216, 0.4)'
+        }} />
+
+      {/* Card Principal */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-[360px] rounded-3xl mx-auto overflow-visible"
+        style={{
+          background: "rgba(255, 255, 255, 0.35)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1px solid rgba(255, 255, 255, 0.7)",
+          boxShadow: "0 8px 32px rgba(232, 24, 122, 0.1)",
+          padding: "28px 24px 20px"
+        }}>
+        
+        {/* Header */}
+        <div className="text-center mb-6">
+          <motion.img
+            src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/bfc0077cd_images__2_-removebg-preview.png"
+            alt="Popsy"
+            className="h-20 mb-3 mx-auto"
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} />
+          
+          <p className="text-xs text-pink-500 font-bold tracking-widest mb-2">HELADO GOURMET</p>
+          
+          <h2 className="text-xl font-bold mb-1" style={{ color: "#888" }}>
+            Bienvenido
+          </h2>
+          <p className="text-xs text-gray-500 font-medium">
+            ¿A cuál tienda Popsy vienes hoy?
+          </p>
+        </div>
+
+        {/* Buscador */}
+        <div className="relative mb-5">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Busca tu tienda..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl text-sm focus:outline-none transition-all"
+            style={{
+              background: "rgba(255, 255, 255, 0.7)",
+              border: "1px solid rgba(240, 210, 225, 0.6)",
+              color: "#1A1A1A",
+              boxShadow: search ? "0 0 0 3px rgba(233, 30, 99, 0.15)" : "none"
+            }} />
+        </div>
+
+        {/* Lista de Sedes */}
+        {loading ?
+          <p className="text-center text-gray-400 text-sm py-8">Cargando tiendas...</p> :
+          filtered.length > 0 ?
+          <div className="space-y-2 max-h-72 overflow-y-auto pr-2 mb-5">
+            {filtered.map((store, idx) => (
+              <motion.button
+                key={store.id}
+                onClick={() => setSelectedStore(store.id)}
+                whileTap={{ scale: 1.02 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                className="w-full flex items-start gap-3 transition-all text-left"
+                style={{
+                  background: selectedStore === store.id ? "#E8187A" : "rgba(255, 255, 255, 0.55)",
+                  border: selectedStore === store.id ? "1.5px solid #E8187A" : "1px solid rgba(240, 210, 225, 0.6)",
+                  borderRadius: "14px",
+                  padding: "12px 14px",
+                  boxShadow: selectedStore === store.id ? "0 4px 16px rgba(232, 24, 122, 0.3)" : "none"
+                }}>
+                <MapPin
+                  size={16}
+                  style={{
+                    color: selectedStore === store.id ? "#fff" : "#E8187A",
+                    marginTop: "2px",
+                    flexShrink: 0
+                  }} />
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-xs leading-tight" style={{ color: selectedStore === store.id ? "#fff" : "#1A1A1A" }}>
+                    {store.name}
+                  </p>
+                  <p className="text-xs mt-1" style={{ color: selectedStore === store.id ? "rgba(255,255,255,0.8)" : "#999" }}>
+                    {store.address || store.name}
+                  </p>
+                </div>
+              </motion.button>
+            ))}
+          </div> :
+          search.length > 0 ?
+          <p className="text-center text-gray-400 text-sm py-8">No encontramos tiendas</p> :
+          null}
+
+        {/* Botón Entrar */}
+        <motion.button
+          onClick={handleEnter}
+          disabled={!selectedStore}
+          whileTap={selectedStore ? { scale: 0.98 } : {}}
+          className="w-full h-11 rounded-2xl font-bold text-sm transition-all"
+          style={{
+            background: selectedStore ? "linear-gradient(135deg, #E91E63, #F06292)" : "#E8E8E8",
+            color: selectedStore ? "#FFFFFF" : "#999",
+            cursor: selectedStore ? "pointer" : "not-allowed",
+            boxShadow: selectedStore ? "0 6px 16px rgba(233, 30, 99, 0.3)" : "none",
+            marginTop: "20px"
+          }}>
+          {selectedStore ? `Ir a ${stores.find(s => s.id === selectedStore)?.name} 🍦` : "Ir a Popsy 🍦"}
+        </motion.button>
+
+        {/* Footer */}
+        <p className="text-center text-xs text-gray-400 mt-4">
+          Elige tu ubicación favorita
+        </p>
+      </motion.div>
+    </div>
+  );
+}
