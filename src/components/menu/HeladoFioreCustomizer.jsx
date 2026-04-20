@@ -4,10 +4,12 @@ import { formatCOP } from "@/lib/constants";
 
 const MAGENTA = "#C41E6A";
 const SALSAS = ["Caramelo", "Chocolate", "Mora", "Arequipe", "Fresa", "Frutas", "Cereza Italiana"];
-const SABORES_HELADO = [
+const SABORES_GOURMET = [
   "Arequipe", "Chocolate Belga", "Chocolate", "Fresa", "Frutos Del Bosque",
   "Nieves Limón", "Mandarina", "Nieves Mandarina", "Nieves Maracuyá",
   "Ron Pasas", "Vainilla Francesa", "Vainilla",
+];
+const SABORES_EXCLUSIVO = [
   "Yogo Yogo Fresa", "Brownie", "Cherry Mania", "Crema Limón", "MM",
   "Macadamia", "Milky Way", "Mocaccino", "Oreo", "Vainilla Chips",
   "Arroz Con Leche", "Yogurt De Cereza Italiana", "Chicle", "Snickers Almond",
@@ -85,12 +87,16 @@ function CheckOption({ name, price, selected, onToggle }) {
 }
 
 export default function HeladoFioreCustomizer({ product, open, onClose, onAdd }) {
+  const [tipo, setTipo] = useState(null);
   const [sabor, setSabor] = useState(null);
   const [salsa, setSalsa] = useState(null);
   const [extras, setExtras] = useState([]);
-  const [openSec, setOpenSec] = useState("sabor");
+  const [openSec, setOpenSec] = useState("tipo");
 
   if (!product) return null;
+
+  const TIPO_PRICES = { gourmet: 9900, exclusivo: 12900 };
+  const saboresDisponibles = tipo === "gourmet" ? SABORES_GOURMET : tipo === "exclusivo" ? SABORES_EXCLUSIVO : [];
 
   const toggleExtra = (name, price) => {
     setExtras(prev =>
@@ -100,22 +106,25 @@ export default function HeladoFioreCustomizer({ product, open, onClose, onAdd })
     );
   };
 
+  const tipoPrice = tipo ? TIPO_PRICES[tipo] : 0;
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
-  const total = (product.price || 0) + extrasTotal;
-  const ready = sabor && salsa;
+  const total = tipoPrice + extrasTotal;
+  const ready = tipo && sabor && salsa;
 
   const handleConfirm = () => {
-    if (!ready) return;
-    const notes = [
-      `Helado: ${sabor}`,
-      `Salsa: ${salsa}`,
-      extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
-    ].filter(Boolean).join(" | ");
-    onAdd({ product_id: product.id, product_name: product.name, price: total, quantity: 1 }, notes);
-    setSabor(null);
-    setSalsa(null);
-    setExtras([]);
-    onClose();
+   if (!ready) return;
+   const notes = [
+     `Tipo: ${tipo === "gourmet" ? "Gourmet" : "Exclusivo"}`,
+     `Helado: ${sabor}`,
+     `Salsa: ${salsa}`,
+     extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
+   ].filter(Boolean).join(" | ");
+   onAdd({ product_id: product.id, product_name: product.name, price: total, quantity: 1 }, notes);
+   setTipo(null);
+   setSabor(null);
+   setSalsa(null);
+   setExtras([]);
+   onClose();
   };
 
   return (
@@ -127,6 +136,23 @@ export default function HeladoFioreCustomizer({ product, open, onClose, onAdd })
           </SheetTitle>
         </div>
 
+        {/* Tipo de Helado */}
+        <div style={{ borderBottom: "1px solid #F0E4EA" }}>
+          <button 
+            onClick={() => setOpenSec(s => s === "tipo" ? null : "tipo")}
+            style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}
+          >
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Tipo de Helado {tipo && `✓ ${tipo === "gourmet" ? "Gourmet" : "Exclusivo"}`}</span>
+            <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "tipo" ? "∧" : "∨"}</span>
+          </button>
+          {openSec === "tipo" && (
+            <>
+              <RadioOption label="Gourmet" price={0} selected={tipo === "gourmet"} onSelect={() => { setTipo("gourmet"); setOpenSec("sabor"); }} />
+              <RadioOption label="Exclusivo" price={3000} selected={tipo === "exclusivo"} onSelect={() => { setTipo("exclusivo"); setOpenSec("sabor"); }} />
+            </>
+          )}
+        </div>
+
         {/* Helado */}
         <div style={{ borderBottom: "1px solid #F0E4EA" }}>
           <button 
@@ -136,7 +162,7 @@ export default function HeladoFioreCustomizer({ product, open, onClose, onAdd })
             <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Sabor de Helado {sabor && `✓ ${sabor}`}</span>
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "sabor" ? "∧" : "∨"}</span>
           </button>
-          {openSec === "sabor" && SABORES_HELADO.map(h => (
+          {openSec === "sabor" && saboresDisponibles.map(h => (
             <RadioOption key={h} label={h} price={0} selected={sabor === h} onSelect={() => { setSabor(h); setOpenSec("salsa"); }} />
           ))}
         </div>
@@ -175,7 +201,7 @@ export default function HeladoFioreCustomizer({ product, open, onClose, onAdd })
 
         {/* Footer */}
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
-          {!ready && <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>* Elige helado y salsa</p>}
+          {!ready && <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>* Elige tipo de helado, sabor y salsa</p>}
           <button
             onClick={handleConfirm}
             disabled={!ready}
