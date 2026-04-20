@@ -291,17 +291,19 @@ export default function MaxiConoCustomizer({ product, open, onClose, onAdd }) {
               onToggle={() => toggleExtra(e.name, e.price)}
             />
           ))}
-          <button
-            onClick={() => setOpenSection(null)}
-            style={{
-              width: "100%", display: "flex", alignItems: "center",
-              justifyContent: "space-between", padding: "12px 16px",
-              background: "none", border: "none", cursor: "pointer", textAlign: "left",
-              borderTop: "1px solid #F9F0F4", fontWeight: 700, fontSize: 13, color: "#1A0A10"
-            }}
-          >
-            No quiero extras
-          </button>
+          <div style={{ padding: "12px 16px 4px" }}>
+            <button
+              onClick={() => setOpenSection(null)}
+              style={{
+                width: "100%", padding: "13px 0", borderRadius: 14,
+                background: "#C2185B", color: "#fff", border: "none",
+                fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "'Poppins', sans-serif",
+                boxShadow: "0 4px 14px rgba(196,30,106,0.35)",
+              }}
+            >
+              Sin extras, continuar ✓
+            </button>
+          </div>
         </AccordionSection>
 
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
