@@ -330,11 +330,21 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd })
                 onToggle={() => toggleExtra(e.name, e.price)}
               />
             ))}
-            <div style={{ padding: "12px 16px 4px" }}>
+            <div style={{ padding: "12px 16px 4px", display: "flex", gap: 8 }}>
               <button
                 onClick={() => setOpenStep("crack")}
                 style={{
-                  width: "100%", padding: "12px 0", borderRadius: 14,
+                  flex: 1, padding: "12px 0", borderRadius: 14,
+                  background: "#F5F5F5", color: "#888", border: "none",
+                  fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: FONT,
+                }}
+              >
+                No quiero extras
+              </button>
+              <button
+                onClick={() => setOpenStep("crack")}
+                style={{
+                  flex: 1, padding: "12px 0", borderRadius: 14,
                   background: MAGENTA, color: "#fff", border: "none",
                   fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: FONT,
                 }}
