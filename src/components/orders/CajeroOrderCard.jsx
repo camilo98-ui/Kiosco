@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { formatCOP } from "@/lib/constants";
-import { CheckCircle, Printer, FileText } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import moment from "moment";
 import ProductDetailLine from "@/components/menu/ProductDetailLine.jsx";
 
@@ -69,7 +69,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
     if (order.status === "finalizado") return;
     const update = () => setElapsed(Math.max(0, moment().diff(moment(order.created_date), "seconds")));
     update();
-    const interval = setInterval(update, 10000);
+    const interval = setInterval(update, 30000);
     return () => clearInterval(interval);
   }, [order.created_date, order.status]);
 
@@ -120,17 +120,19 @@ export default function CajeroOrderCard({ order, onFinalize }) {
       </div>
 
       <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
-        {/* Top row: order number + timer */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 28, fontWeight: 900, color: "#111", lineHeight: 1, fontFamily: FONT }}>
+        {/* Top row: order number centrado + timer arriba a la derecha */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 36, fontWeight: 900, color: "#111", lineHeight: 1, fontFamily: FONT, flex: 1, textAlign: "center" }}>
             #{order.order_number}
           </span>
-          {!isFinalized && <TimeBadge elapsedSeconds={elapsed} />}
-          {isFinalized && (
-            <span style={{ fontSize: 11, fontWeight: 700, background: "#F0F0F0", color: "#999", borderRadius: 20, padding: "3px 10px" }}>
-              ✅ Cobrado
-            </span>
-          )}
+          <div style={{ position: "absolute", top: 14, right: 16 }}>
+            {!isFinalized && <TimeBadge elapsedSeconds={elapsed} />}
+            {isFinalized && (
+              <span style={{ fontSize: 11, fontWeight: 700, background: "#F0F0F0", color: "#999", borderRadius: 20, padding: "3px 10px" }}>
+                ✅ Cobrado
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Cliente */}
@@ -138,7 +140,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
           <ClientAvatar name={order.customer_name} />
           <span style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A" }}>{order.customer_name}</span>
           {order.payment_method === "tarjeta" && (
-            <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, background: "#E8F0FF", color: "#1A56DB", borderRadius: 20, padding: "2px 8px" }}>💳 Tarjeta</span>
+            <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 700, background: "#1A56DB", color: "#fff", borderRadius: 20, padding: "3px 10px" }}>💳 Datáfono</span>
           )}
         </div>
 
@@ -201,23 +203,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
           </button>
         )}
 
-        {/* Botones secundarios */}
-        <div style={{ display: "flex", gap: 8 }}>
-          <button style={{
-            flex: 1, height: 34, borderRadius: 8, border: "1px solid #EEE",
-            background: "#FAFAFA", color: "#666", fontSize: 11, fontWeight: 600,
-            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 4, fontFamily: FONT,
-          }}>
-            <Printer size={12} /> Imprimir
-          </button>
-          <button style={{
-            flex: 1, height: 34, borderRadius: 8, border: "1px solid #EEE",
-            background: "#FAFAFA", color: "#666", fontSize: 11, fontWeight: 600,
-            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 4, fontFamily: FONT,
-          }}>
-            <FileText size={12} /> Detalle
-          </button>
-        </div>
+
       </div>
     </div>
   );
