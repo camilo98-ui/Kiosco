@@ -29,33 +29,23 @@ function getProgressWidth(elapsedSeconds) {
 }
 
 function TimeBadge({ elapsedSeconds }) {
-  const mins = Math.floor(elapsedSeconds / 60);
-  const secs = elapsedSeconds % 60;
-  const timeStr = `${mins}:${String(secs).padStart(2, "0")}`;
-  const state = getTimeState(elapsedSeconds);
+  const totalMins = Math.floor(Math.max(0, elapsedSeconds) / 60);
+  const state = getTimeState(Math.max(0, elapsedSeconds));
 
-  let badgeStyle, label;
-  if (state === "normal") {
-    badgeStyle = { background: "#ECFDF5", color: "#059669" };
-    label = `${mins} min`;
-  } else {
-    badgeStyle = { background: "#FEE2E2", color: "#DC2626" };
-    label = `⚠️ +${mins} min`;
-  }
+  const label = state === "normal"
+    ? `${totalMins} min`
+    : `+${totalMins} min ⚠️`;
+
+  const badgeStyle = state === "normal"
+    ? { background: "#ECFDF5", color: "#059669" }
+    : { background: "#FEE2E2", color: "#DC2626" };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
-      <span style={{
-        fontFamily: FONT, fontSize: 15, fontWeight: 700,
-        color: state === "urgent" ? "#DC2626" : state === "waiting" ? "#D97706" : "#555",
-        letterSpacing: "0.5px", fontVariantNumeric: "tabular-nums",
-      }}>{timeStr}</span>
-      <span style={{
-        ...badgeStyle,
-        fontSize: 10, fontWeight: 700, borderRadius: 20,
-        padding: "2px 8px", fontFamily: FONT,
-      }}>{label}</span>
-    </div>
+    <span style={{
+      ...badgeStyle,
+      fontSize: 12, fontWeight: 700, borderRadius: 20,
+      padding: "4px 10px", fontFamily: FONT,
+    }}>{label}</span>
   );
 }
 
@@ -77,10 +67,9 @@ export default function CajeroOrderCard({ order, onFinalize }) {
 
   useEffect(() => {
     if (order.status === "finalizado") return;
-    const interval = setInterval(() => {
-      setElapsed(moment().diff(moment(order.created_date), "seconds"));
-    }, 1000);
-    setElapsed(moment().diff(moment(order.created_date), "seconds"));
+    const update = () => setElapsed(Math.max(0, moment().diff(moment(order.created_date), "seconds")));
+    update();
+    const interval = setInterval(update, 10000);
     return () => clearInterval(interval);
   }, [order.created_date, order.status]);
 
