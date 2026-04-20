@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { formatCOP } from "@/lib/constants";
-import { CreditCard, Smartphone } from "lucide-react";
+import { CreditCard, Smartphone, Zap } from "lucide-react";
 import moment from "moment";
 import ProductDetailLine from "@/components/menu/ProductDetailLine.jsx";
 
 const FONT = "'Poppins', -apple-system, sans-serif";
+const MAGENTA = "#C41E6A";
+const MAGENTA_LIGHT = "#F9E6F0";
+const MAGENTA_BORDER = "#F0C4DA";
 
 function getTimeState(elapsedSeconds) {
   const mins = elapsedSeconds / 60;
@@ -14,10 +17,10 @@ function getTimeState(elapsedSeconds) {
 }
 
 function getProgressPct(elapsedSeconds) {
-  return Math.min(100, (elapsedSeconds / 600) * 100); // 10 min max
+  return Math.min(100, (elapsedSeconds / 600) * 100);
 }
 
-// ── Card normal (menu cliente) ────────────────────────────────────────────────
+// ─── Card Normal (pedidos del menú cliente) ──────────────────────────────────
 export function NormalOrderCard({ order, onFinalize }) {
   const [elapsed, setElapsed] = useState(0);
   const [confirm, setConfirm] = useState(false);
@@ -35,14 +38,11 @@ export function NormalOrderCard({ order, onFinalize }) {
   const mins = Math.floor(elapsed / 60);
   const secs = elapsed % 60;
   const pct = isFinalized ? 0 : getProgressPct(elapsed);
-
   const isUrgent = timeState === "urgent" && !isFinalized;
   const isWaiting = timeState === "waiting" && !isFinalized;
 
-  const bgColor = isUrgent ? "#FFF2F2" : isWaiting ? "#FFFCF0" : "#FFFFFF";
-  const borderColor = isUrgent ? "#FFBABA" : isWaiting ? "#FFE082" : "#ECECEC";
-  const progressColor = isUrgent ? "#EF4444" : isWaiting ? "#F59E0B" : "#22C55E";
-  const tickerColor = isUrgent ? "#EF4444" : isWaiting ? "#D97706" : "#9CA3AF";
+  const progressColor = isUrgent ? "#EF4444" : isWaiting ? "#F59E0B" : MAGENTA;
+  const tickerColor = isUrgent ? "#EF4444" : isWaiting ? "#D97706" : "#BBA8B0";
 
   const handleClick = () => {
     if (isFinalized) return;
@@ -58,16 +58,16 @@ export function NormalOrderCard({ order, onFinalize }) {
     <div
       onClick={handleClick}
       style={{
-        background: bgColor,
-        border: `1.5px solid ${borderColor}`,
-        borderRadius: 20,
+        background: isUrgent ? "#FFF5F5" : "#FFFFFF",
+        border: `1.5px solid ${isUrgent ? "#FFCDD2" : isWaiting ? "#FFE082" : MAGENTA_BORDER}`,
+        borderRadius: 22,
         overflow: "hidden",
         fontFamily: FONT,
         cursor: isFinalized ? "default" : "pointer",
         transition: "transform 0.15s, box-shadow 0.15s",
         boxShadow: isUrgent
-          ? "0 0 0 3px rgba(239,68,68,0.15), 0 4px 16px rgba(239,68,68,0.1)"
-          : "0 2px 12px rgba(0,0,0,0.06)",
+          ? "0 0 0 3px rgba(239,68,68,0.12), 0 6px 24px rgba(239,68,68,0.08)"
+          : `0 4px 20px rgba(196,30,106,0.08)`,
         position: "relative",
         userSelect: "none",
         WebkitTapHighlightColor: "transparent",
@@ -75,101 +75,117 @@ export function NormalOrderCard({ order, onFinalize }) {
       onMouseEnter={e => { if (!isFinalized) e.currentTarget.style.transform = "translateY(-2px)"; }}
       onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}
     >
-      {/* Progress bar */}
-      <div style={{ height: 3, background: "#F0F0F0" }}>
-        <div style={{ height: "100%", width: `${pct}%`, background: progressColor, transition: "width 1s linear, background 0.3s" }} />
+      {/* Top color band */}
+      <div style={{
+        height: 5,
+        background: isUrgent
+          ? "linear-gradient(90deg, #EF4444, #FF6B6B)"
+          : isWaiting
+          ? "linear-gradient(90deg, #F59E0B, #FBBF24)"
+          : `linear-gradient(90deg, ${MAGENTA}, #FF6EB4)`,
+      }}>
+        <div style={{ height: "100%", width: `${pct}%`, background: "rgba(255,255,255,0.35)", transition: "width 1s linear" }} />
       </div>
 
       {/* Confirm overlay */}
       {confirm && (
         <div style={{
-          position: "absolute", inset: 0, zIndex: 10,
-          background: "rgba(34,197,94,0.92)", borderRadius: 20,
-          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-          gap: 6,
+          position: "absolute", inset: 0, zIndex: 10, borderRadius: 22,
+          background: `linear-gradient(135deg, ${MAGENTA}, #FF6EB4)`,
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8,
         }}>
-          <span style={{ fontSize: 36 }}>✅</span>
-          <p style={{ color: "#fff", fontSize: 16, fontWeight: 800, margin: 0 }}>Toca para confirmar</p>
+          <span style={{ fontSize: 40 }}>✅</span>
+          <p style={{ color: "#fff", fontSize: 17, fontWeight: 900, margin: 0, fontFamily: FONT }}>¡Toca para confirmar!</p>
           <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 12, margin: 0 }}>Cobrado y facturado</p>
         </div>
       )}
 
-      <div style={{ padding: "14px 16px 16px" }}>
-        {/* Top row */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
+      <div style={{ padding: "16px 18px 18px" }}>
+        {/* Número + timer */}
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
           <div>
-            <p style={{ fontSize: 30, fontWeight: 900, color: "#111", margin: 0, lineHeight: 1, letterSpacing: "-1px" }}>
+            <p style={{
+              fontSize: 38, fontWeight: 900, margin: 0, lineHeight: 1,
+              letterSpacing: "-2px", color: MAGENTA,
+            }}>
               #{order.order_number}
             </p>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#333", margin: "4px 0 0" }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#2D1A22", margin: "5px 0 0" }}>
               {order.customer_name}
             </p>
           </div>
+
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
             {isFinalized ? (
-              <span style={{ fontSize: 11, fontWeight: 700, background: "#ECFDF5", color: "#16A34A", borderRadius: 20, padding: "4px 12px" }}>
-                ✓ Cobrado
-              </span>
+              <span style={{
+                fontSize: 11, fontWeight: 700,
+                background: "#ECFDF5", color: "#16A34A",
+                borderRadius: 20, padding: "5px 14px",
+                border: "1px solid #BBF7D0",
+              }}>✓ Cobrado</span>
             ) : (
               <>
-                <span style={{
-                  fontSize: 22, fontWeight: 900, letterSpacing: "-0.5px",
-                  color: tickerColor, fontVariantNumeric: "tabular-nums",
+                <div style={{
+                  background: isUrgent ? "#FEE2E2" : isWaiting ? "#FFFBEB" : MAGENTA_LIGHT,
+                  border: `1px solid ${isUrgent ? "#FECACA" : isWaiting ? "#FDE68A" : MAGENTA_BORDER}`,
+                  borderRadius: 14, padding: "6px 12px", textAlign: "center",
                 }}>
-                  {mins}:{String(secs).padStart(2, "0")}
-                </span>
-                {isUrgent && <span style={{ fontSize: 9, fontWeight: 800, color: "#EF4444", textTransform: "uppercase", letterSpacing: "1px" }}>⚠ URGENTE</span>}
-                {isWaiting && <span style={{ fontSize: 9, fontWeight: 700, color: "#D97706", textTransform: "uppercase", letterSpacing: "1px" }}>EN ESPERA</span>}
+                  <span style={{
+                    fontSize: 20, fontWeight: 900, display: "block",
+                    color: tickerColor, fontVariantNumeric: "tabular-nums", lineHeight: 1,
+                    letterSpacing: "-0.5px",
+                  }}>
+                    {mins}:{String(secs).padStart(2, "0")}
+                  </span>
+                  <span style={{ fontSize: 9, fontWeight: 700, color: tickerColor, opacity: 0.7, textTransform: "uppercase", letterSpacing: "0.8px" }}>
+                    {isUrgent ? "⚠ URGENTE" : isWaiting ? "EN ESPERA" : "min"}
+                  </span>
+                </div>
               </>
             )}
           </div>
         </div>
 
-        {/* Payment badge */}
-        {order.payment_method === "tarjeta" && (
-          <div style={{ marginBottom: 8 }}>
-            <span style={{ fontSize: 10, fontWeight: 700, background: "#EEF2FF", color: "#4F46E5", borderRadius: 20, padding: "3px 10px", display: "inline-flex", alignItems: "center", gap: 4 }}>
-              <CreditCard size={10} /> Tarjeta
-            </span>
-          </div>
-        )}
-
-        {/* Divider */}
-        <div style={{ height: 1, background: "#F0F0F0", margin: "8px 0" }} />
+        {/* Divider dashed */}
+        <div style={{ borderTop: "1.5px dashed #F0E4EA", margin: "10px 0" }} />
 
         {/* Items */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {order.items?.map((item, i) => (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 6 }}>
               <div style={{ flex: 1 }}>
-                <span style={{ fontSize: 12.5, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.35 }}>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: "#1A0A10", lineHeight: 1.35 }}>
                   {item.quantity > 1 && (
-                    <span style={{ display: "inline-block", background: "#E8187A", color: "#fff", borderRadius: 5, fontSize: 9, fontWeight: 800, padding: "0 5px", marginRight: 4 }}>
-                      ×{item.quantity}
-                    </span>
+                    <span style={{
+                      display: "inline-block", background: MAGENTA, color: "#fff",
+                      borderRadius: 6, fontSize: 9, fontWeight: 800, padding: "1px 6px", marginRight: 5,
+                    }}>×{item.quantity}</span>
                   )}
                   {item.product_name}
                 </span>
                 <ProductDetailLine item={item} />
               </div>
-              <span style={{ fontSize: 11.5, fontWeight: 700, color: "#E8187A", flexShrink: 0 }}>{formatCOP(item.price * item.quantity)}</span>
+              <span style={{ fontSize: 12, fontWeight: 800, color: MAGENTA, flexShrink: 0 }}>
+                {formatCOP(item.price * item.quantity)}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Divider */}
-        <div style={{ height: 1, background: "#F0F0F0", margin: "10px 0 8px" }} />
-
         {/* Total */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: 10, fontWeight: 700, color: "#BBB", textTransform: "uppercase", letterSpacing: "1.5px" }}>Total</span>
-          <span style={{ fontSize: 20, fontWeight: 900, color: "#111", letterSpacing: "-0.5px" }}>{formatCOP(order.total)}</span>
+        <div style={{
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          background: MAGENTA_LIGHT, borderRadius: 14, padding: "10px 14px", marginTop: 12,
+        }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: MAGENTA, textTransform: "uppercase", letterSpacing: "1.5px", opacity: 0.7 }}>Total</span>
+          <span style={{ fontSize: 22, fontWeight: 900, color: MAGENTA, letterSpacing: "-0.5px" }}>
+            {formatCOP(order.total)}
+          </span>
         </div>
 
-        {/* Tap hint */}
         {!isFinalized && (
-          <p style={{ textAlign: "center", fontSize: 9, color: "#CCC", margin: "8px 0 0", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase" }}>
-            Toca para cobrar
+          <p style={{ textAlign: "center", fontSize: 9, color: "#D4A8BE", margin: "10px 0 0", fontWeight: 600, letterSpacing: "0.8px", textTransform: "uppercase" }}>
+            toca en cualquier parte para cobrar
           </p>
         )}
       </div>
@@ -177,7 +193,7 @@ export function NormalOrderCard({ order, onFinalize }) {
   );
 }
 
-// ── Card Datafono (estilo dark/premium) ───────────────────────────────────────
+// ─── Card Datafono (Popsy premium, visualmente distinto) ──────────────────────
 export function DatafonoOrderCard({ order, onFinalize }) {
   const [elapsed, setElapsed] = useState(0);
   const [confirm, setConfirm] = useState(false);
@@ -208,32 +224,26 @@ export function DatafonoOrderCard({ order, onFinalize }) {
     }
   };
 
-  // Dark gradient backgrounds
-  const cardBg = isUrgent
-    ? "linear-gradient(145deg, #2A0A0A 0%, #1A0000 100%)"
-    : isWaiting
-    ? "linear-gradient(145deg, #1E1500 0%, #2D1F00 100%)"
-    : "linear-gradient(145deg, #0F0F14 0%, #1A1A24 100%)";
-
-  const accentColor = isUrgent ? "#FF4444" : isWaiting ? "#F59E0B" : "#A78BFA";
-  const tickerColor = isUrgent ? "#FF4444" : isWaiting ? "#FBBF24" : "#C4B5FD";
+  const tickerColor = isUrgent ? "#EF4444" : isWaiting ? "#D97706" : "rgba(255,255,255,0.95)";
 
   return (
     <div
       onClick={handleClick}
       style={{
-        background: cardBg,
-        border: `1.5px solid ${isUrgent ? "rgba(255,68,68,0.4)" : isWaiting ? "rgba(245,158,11,0.3)" : "rgba(167,139,250,0.2)"}`,
-        borderRadius: 20,
+        background: isUrgent
+          ? "linear-gradient(145deg, #7A0A2A 0%, #C41E6A 60%, #FF6EB4 100%)"
+          : isWaiting
+          ? "linear-gradient(145deg, #7A4A00 0%, #C41E6A 60%, #FF6EB4 100%)"
+          : "linear-gradient(145deg, #8B0A3E 0%, #C41E6A 55%, #FF6EB4 100%)",
+        border: `1.5px solid ${isUrgent ? "rgba(255,100,100,0.5)" : "rgba(255,180,220,0.3)"}`,
+        borderRadius: 22,
         overflow: "hidden",
         fontFamily: FONT,
         cursor: isFinalized ? "default" : "pointer",
         transition: "transform 0.15s, box-shadow 0.15s",
         boxShadow: isUrgent
-          ? "0 0 0 3px rgba(255,68,68,0.2), 0 8px 32px rgba(255,68,68,0.15)"
-          : isWaiting
-          ? "0 4px 24px rgba(245,158,11,0.12)"
-          : "0 4px 24px rgba(0,0,0,0.35)",
+          ? "0 0 0 3px rgba(239,68,68,0.2), 0 8px 32px rgba(196,30,106,0.4)"
+          : "0 8px 32px rgba(196,30,106,0.35), 0 2px 8px rgba(196,30,106,0.2)",
         position: "relative",
         userSelect: "none",
         WebkitTapHighlightColor: "transparent",
@@ -241,115 +251,127 @@ export function DatafonoOrderCard({ order, onFinalize }) {
       onMouseEnter={e => { if (!isFinalized) e.currentTarget.style.transform = "translateY(-2px)"; }}
       onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}
     >
-      {/* Top accent line */}
-      <div style={{ height: 3, background: `linear-gradient(90deg, ${accentColor}, transparent)` }}>
-        <div style={{ height: "100%", width: `${pct}%`, background: accentColor, opacity: 0.9, transition: "width 1s linear" }} />
-      </div>
-
-      {/* Datafono badge at top */}
-      <div style={{ padding: "10px 14px 0", display: "flex", alignItems: "center", gap: 6 }}>
+      {/* Shimmer top line */}
+      <div style={{ height: 4, background: "rgba(255,255,255,0.25)" }}>
         <div style={{
-          display: "inline-flex", alignItems: "center", gap: 5,
-          background: "rgba(167,139,250,0.15)", border: "1px solid rgba(167,139,250,0.3)",
-          borderRadius: 20, padding: "3px 10px",
-        }}>
-          <Smartphone size={9} color="#A78BFA" />
-          <span style={{ fontSize: 9, fontWeight: 800, color: "#A78BFA", textTransform: "uppercase", letterSpacing: "1.5px" }}>Datáfono</span>
-        </div>
+          height: "100%", width: `${pct}%`,
+          background: isUrgent ? "#FF4444" : "rgba(255,255,255,0.6)",
+          transition: "width 1s linear",
+        }} />
       </div>
 
       {/* Confirm overlay */}
       {confirm && (
         <div style={{
-          position: "absolute", inset: 0, zIndex: 10,
-          background: "rgba(34,197,94,0.9)", borderRadius: 20,
-          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-          gap: 6, backdropFilter: "blur(4px)",
+          position: "absolute", inset: 0, zIndex: 10, borderRadius: 22,
+          background: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)",
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8,
         }}>
-          <span style={{ fontSize: 40 }}>✅</span>
-          <p style={{ color: "#fff", fontSize: 16, fontWeight: 800, margin: 0 }}>Toca para confirmar</p>
-          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 11, margin: 0 }}>Cobrado y facturado</p>
+          <span style={{ fontSize: 44 }}>✅</span>
+          <p style={{ color: "#fff", fontSize: 17, fontWeight: 900, margin: 0, textShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>¡Toca para confirmar!</p>
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, margin: 0 }}>Cobrado y facturado</p>
         </div>
       )}
 
-      <div style={{ padding: "10px 14px 16px" }}>
-        {/* Top row */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
+      <div style={{ padding: "14px 18px 18px" }}>
+
+        {/* Datafono badge */}
+        <div style={{ marginBottom: 10 }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 5,
+            background: "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.35)",
+            borderRadius: 20, padding: "4px 12px",
+          }}>
+            <CreditCard size={10} color="#fff" />
+            <span style={{ fontSize: 9, fontWeight: 800, color: "#fff", textTransform: "uppercase", letterSpacing: "1.5px" }}>Datáfono · Tarjeta</span>
+          </span>
+        </div>
+
+        {/* Número + timer */}
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
           <div>
             <p style={{
-              fontSize: 32, fontWeight: 900, color: "#FFFFFF", margin: 0, lineHeight: 1,
-              letterSpacing: "-1.5px", textShadow: `0 0 20px ${accentColor}40`,
+              fontSize: 40, fontWeight: 900, margin: 0, lineHeight: 1,
+              letterSpacing: "-2px", color: "#FFFFFF",
+              textShadow: "0 2px 12px rgba(0,0,0,0.2)",
             }}>
               #{order.order_number}
             </p>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.6)", margin: "4px 0 0" }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.85)", margin: "5px 0 0" }}>
               {order.customer_name}
             </p>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
+
+          <div style={{ textAlign: "right" }}>
             {isFinalized ? (
-              <span style={{ fontSize: 10, fontWeight: 700, background: "rgba(34,197,94,0.2)", color: "#4ADE80", borderRadius: 20, padding: "4px 12px", border: "1px solid rgba(34,197,94,0.3)" }}>
-                ✓ Cobrado
-              </span>
+              <span style={{
+                fontSize: 11, fontWeight: 700,
+                background: "rgba(255,255,255,0.2)", color: "#fff",
+                borderRadius: 20, padding: "5px 14px",
+                border: "1px solid rgba(255,255,255,0.3)",
+              }}>✓ Cobrado</span>
             ) : (
-              <>
+              <div style={{
+                background: isUrgent ? "rgba(239,68,68,0.3)" : "rgba(255,255,255,0.18)",
+                border: `1px solid ${isUrgent ? "rgba(255,100,100,0.5)" : "rgba(255,255,255,0.3)"}`,
+                borderRadius: 14, padding: "6px 12px", textAlign: "center",
+              }}>
                 <span style={{
-                  fontSize: 24, fontWeight: 900, letterSpacing: "-1px",
-                  color: tickerColor, fontVariantNumeric: "tabular-nums",
-                  textShadow: `0 0 12px ${tickerColor}60`,
+                  fontSize: 22, fontWeight: 900, display: "block",
+                  color: tickerColor, fontVariantNumeric: "tabular-nums", lineHeight: 1,
+                  letterSpacing: "-0.5px",
                 }}>
                   {mins}:{String(secs).padStart(2, "0")}
                 </span>
-                {isUrgent && <span style={{ fontSize: 9, fontWeight: 800, color: "#FF4444", textTransform: "uppercase", letterSpacing: "1px" }}>⚠ URGENTE</span>}
-              </>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.8px" }}>
+                  {isUrgent ? "⚠ URGENTE" : isWaiting ? "EN ESPERA" : "min"}
+                </span>
+              </div>
             )}
           </div>
         </div>
 
         {/* Divider */}
-        <div style={{ height: 1, background: "rgba(255,255,255,0.07)", margin: "8px 0" }} />
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.2)", margin: "10px 0" }} />
 
         {/* Items */}
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {order.items?.map((item, i) => (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 6 }}>
               <div style={{ flex: 1 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.9)", lineHeight: 1.35 }}>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: "#fff", lineHeight: 1.35 }}>
                   {item.quantity > 1 && (
                     <span style={{
-                      display: "inline-block", background: accentColor, color: "#fff",
-                      borderRadius: 5, fontSize: 9, fontWeight: 800, padding: "0 5px", marginRight: 4,
-                    }}>
-                      ×{item.quantity}
-                    </span>
+                      display: "inline-block", background: "rgba(255,255,255,0.25)", color: "#fff",
+                      borderRadius: 6, fontSize: 9, fontWeight: 800, padding: "1px 6px", marginRight: 5,
+                    }}>×{item.quantity}</span>
                   )}
                   {item.product_name}
                 </span>
                 <ProductDetailLine item={item} darkMode />
               </div>
-              <span style={{ fontSize: 11, fontWeight: 700, color: accentColor, flexShrink: 0 }}>
+              <span style={{ fontSize: 12, fontWeight: 800, color: "rgba(255,255,255,0.9)", flexShrink: 0 }}>
                 {formatCOP(item.price * item.quantity)}
               </span>
             </div>
           ))}
         </div>
 
-        {/* Divider */}
-        <div style={{ height: 1, background: "rgba(255,255,255,0.07)", margin: "10px 0 8px" }} />
-
         {/* Total */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "2px" }}>Total</span>
-          <span style={{
-            fontSize: 22, fontWeight: 900, color: "#FFFFFF", letterSpacing: "-0.5px",
-            textShadow: `0 0 16px ${accentColor}50`,
-          }}>{formatCOP(order.total)}</span>
+        <div style={{
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)",
+          borderRadius: 14, padding: "10px 14px", marginTop: 14,
+        }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.65)", textTransform: "uppercase", letterSpacing: "1.5px" }}>Total</span>
+          <span style={{ fontSize: 22, fontWeight: 900, color: "#fff", letterSpacing: "-0.5px" }}>
+            {formatCOP(order.total)}
+          </span>
         </div>
 
-        {/* Tap hint */}
         {!isFinalized && (
-          <p style={{ textAlign: "center", fontSize: 9, color: "rgba(255,255,255,0.2)", margin: "8px 0 0", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase" }}>
-            Toca para cobrar
+          <p style={{ textAlign: "center", fontSize: 9, color: "rgba(255,255,255,0.4)", margin: "10px 0 0", fontWeight: 600, letterSpacing: "0.8px", textTransform: "uppercase" }}>
+            toca en cualquier parte para cobrar
           </p>
         )}
       </div>
@@ -357,13 +379,9 @@ export function DatafonoOrderCard({ order, onFinalize }) {
   );
 }
 
-// ── Export default (auto-detecta tipo) ───────────────────────────────────────
+// ── Export default ────────────────────────────────────────────────────────────
 export default function CajeroOrderCard({ order, onFinalize }) {
-  const isDatafono = order.items?.some(i =>
-    i.notes?.toLowerCase().includes("datafono") ||
-    i.product_name?.toLowerCase().includes("datafono")
-  ) || order.source === "datafono" || order.payment_method === "tarjeta";
-
+  const isDatafono = order.payment_method === "tarjeta";
   if (isDatafono) return <DatafonoOrderCard order={order} onFinalize={onFinalize} />;
   return <NormalOrderCard order={order} onFinalize={onFinalize} />;
 }
