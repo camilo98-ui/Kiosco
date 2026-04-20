@@ -8,27 +8,24 @@ const FONT = "-apple-system, 'SF Pro Display', 'Poppins', sans-serif";
 
 function getTimeState(elapsedSeconds) {
   const mins = elapsedSeconds / 60;
-  if (mins < 5) return "normal";
-  if (mins < 10) return "waiting";
+  if (mins < 10) return "normal";
   return "urgent";
 }
 
 function getCardStyle(status, timeState) {
   if (status === "finalizado") return { background: "#fff", border: "1px solid #eee" };
   if (timeState === "urgent") return { background: "#FFF5F5", border: "1px solid #FCA5A5" };
-  if (timeState === "waiting") return { background: "#FFFBEB", border: "1px solid #FCD34D" };
   return { background: "#fff", border: "1px solid #eee" };
 }
 
 function getProgressColor(timeState) {
   if (timeState === "urgent") return "#EF4444";
-  if (timeState === "waiting") return "#F59E0B";
   return "#22C55E";
 }
 
 function getProgressWidth(elapsedSeconds) {
-  // 100% at 15 min (900s)
-  return Math.min(100, (elapsedSeconds / 900) * 100);
+  // 100% at 10 min (600s)
+  return Math.min(100, (elapsedSeconds / 600) * 100);
 }
 
 function TimeBadge({ elapsedSeconds }) {
@@ -41,9 +38,6 @@ function TimeBadge({ elapsedSeconds }) {
   if (state === "normal") {
     badgeStyle = { background: "#ECFDF5", color: "#059669" };
     label = `${mins} min`;
-  } else if (state === "waiting") {
-    badgeStyle = { background: "#FFFBEB", color: "#D97706" };
-    label = `Pasó ${mins} min`;
   } else {
     badgeStyle = { background: "#FEE2E2", color: "#DC2626" };
     label = `⚠️ +${mins} min`;
