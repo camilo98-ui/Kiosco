@@ -34,10 +34,11 @@ function capElapsed(elapsedSeconds) {
 }
 
 function TimeBadge({ elapsedSeconds }) {
-  const capped = capElapsed(elapsedSeconds);
-  const mins = Math.floor(capped / 60);
-  const secs = capped % 60;
-  const timeStr = `${mins}:${String(secs).padStart(2, "0")}`;
+  // Display capped at 10:00, but real time used for state
+  const displaySecs = Math.min(elapsedSeconds, 600);
+  const mins = Math.floor(displaySecs / 60);
+  const secs = displaySecs % 60;
+  const timeStr = elapsedSeconds >= 600 ? "10:00" : `${mins}:${String(secs).padStart(2, "0")}`;
   const state = getTimeState(elapsedSeconds);
 
   const badgeStyle = state === "normal"
@@ -80,7 +81,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
 
   useEffect(() => {
     if (order.status === "finalizado") return;
-    const calc = () => Math.min(600, Math.max(0, moment().diff(moment(order.created_date), "seconds")));
+    const calc = () => moment().diff(moment(order.created_date), "seconds");
     const interval = setInterval(() => setElapsed(calc()), 1000);
     setElapsed(calc());
     return () => clearInterval(interval);
