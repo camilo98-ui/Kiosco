@@ -16,6 +16,7 @@ import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer
 import HeladoFioreCustomizer from "@/components/menu/HeladoFioreCustomizer";
 import GalletaMediumHelladoCustomizer from "@/components/menu/GalletaMediumHelladoCustomizer";
 import BrownieHeladoSalsaCustomizer from "@/components/menu/BrownieHeladoSalsaCustomizer";
+import CharlieBrownieCustomizer from "@/components/menu/CharlieBrownieCustomizer";
 import SundaeSalsaCustomizer from "@/components/menu/SundaeSalsaCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
 import BebidasLayout from "@/components/menu/BebidasLayout";
@@ -535,6 +536,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const [fioreProduct, setFioreProduct] = useState(null);
   const [galletaHelladoProduct, setGalletaHelladoProduct] = useState(null);
   const [brownieHelladoProduct, setBrownieHelladoProduct] = useState(null);
+  const [charlieBrownieProduct, setCharlieBrownieProduct] = useState(null);
   const [sundaeProduct, setSundaeProduct] = useState(null);
 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
@@ -551,7 +553,9 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
     }
 
     // Nuevos customizadores
-    if (name.includes("helado fiore")) {
+    if (name.includes("charlie brownie") || name.includes("charly brownie")) {
+      setCharlieBrownieProduct(patchedProduct);
+    } else if (name.includes("helado fiore")) {
       setFioreProduct(patchedProduct);
     } else if (name.includes("galleta mediana") && name.includes("hld")) {
       setGalletaHelladoProduct(patchedProduct);
@@ -707,6 +711,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
         product={brownieHelladoProduct}
         open={!!brownieHelladoProduct}
         onClose={() => setBrownieHelladoProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <CharlieBrownieCustomizer
+        product={charlieBrownieProduct}
+        open={!!charlieBrownieProduct}
+        onClose={() => setCharlieBrownieProduct(null)}
         onAdd={handleCustomizerAdd}
       />
       <SundaeSalsaCustomizer

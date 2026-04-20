@@ -34,21 +34,54 @@ function RadioOption({ label, selected, onSelect }) {
   );
 }
 
-export default function BrownieHeladoSalsaCustomizer({ product, open, onClose, onAdd }) {
+function CheckOption({ label, selected, onToggle }) {
+  return (
+    <button
+      onClick={onToggle}
+      style={{
+        width: "100%", display: "flex", alignItems: "center",
+        justifyContent: "space-between", padding: "12px 16px",
+        background: "none", border: "none", cursor: "pointer", textAlign: "left",
+        borderBottom: "1px solid #F9F0F4",
+      }}
+    >
+      <span style={{ fontSize: 13, color: "#1A0A10" }}>{label}</span>
+      <div style={{
+        width: 22, height: 22, borderRadius: 5, flexShrink: 0,
+        border: selected ? "none" : "2px solid #DDD",
+        background: selected ? MAGENTA : "#fff", transition: "all 0.15s",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        {selected && <span style={{ color: "#fff", fontSize: 13, fontWeight: 900 }}>✓</span>}
+      </div>
+    </button>
+  );
+}
+
+export default function CharlieBrownieCustomizer({ product, open, onClose, onAdd }) {
   const [salsa, setSalsa] = useState(null);
-  const [helado, setHelado] = useState(null);
+  const [helados, setHelados] = useState([]);
   const [openSec, setOpenSec] = useState("helado");
 
   if (!product) return null;
 
-  const ready = salsa && helado;
+  const maxHelados = 2;
+  const ready = salsa && helados.length === maxHelados;
+
+  const toggleHelado = (h) => {
+    setHelados(prev => {
+      if (prev.includes(h)) return prev.filter(x => x !== h);
+      if (prev.length >= maxHelados) return prev;
+      return [...prev, h];
+    });
+  };
 
   const handleConfirm = () => {
     if (!ready) return;
-    const notes = `Helado: ${helado} | Salsa: ${salsa}`;
+    const notes = `Helados: ${helados.join(", ")} | Salsa: ${salsa} (Gratis)`;
     onAdd({ product_id: product.id, product_name: product.name, price: product.price, quantity: 1 }, notes);
     setSalsa(null);
-    setHelado(null);
+    setHelados([]);
     onClose();
   };
 
@@ -59,19 +92,20 @@ export default function BrownieHeladoSalsaCustomizer({ product, open, onClose, o
           <SheetTitle style={{ fontSize: 17, fontWeight: 900, color: "#1A0A10", margin: 0 }}>
             {product.name}
           </SheetTitle>
+          <p style={{ fontSize: 12, color: "#BBA8B0", margin: "6px 0 0", fontWeight: 500 }}>Elige 2 sabores de helado y una salsa (sin costo extra)</p>
         </div>
 
-        {/* Helado */}
+        {/* Helados */}
         <div style={{ borderBottom: "1px solid #F0E4EA" }}>
           <button 
             onClick={() => setOpenSec(s => s === "helado" ? null : "helado")}
             style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}
           >
-            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Sabor Helado {helado && `✓ ${helado}`}</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>2 Sabores de Helado {helados.length}/{maxHelados}</span>
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "helado" ? "∧" : "∨"}</span>
           </button>
           {openSec === "helado" && SABORES_HELADO.map(h => (
-            <RadioOption key={h} label={h} selected={helado === h} onSelect={() => { setHelado(h); setOpenSec("salsa"); }} />
+            <CheckOption key={h} label={h} selected={helados.includes(h)} onToggle={() => toggleHelado(h)} />
           ))}
         </div>
 
@@ -81,7 +115,7 @@ export default function BrownieHeladoSalsaCustomizer({ product, open, onClose, o
             onClick={() => setOpenSec(s => s === "salsa" ? null : "salsa")}
             style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}
           >
-            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Salsa {salsa && `✓ ${salsa}`}</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Salsa (Gratis) {salsa && `✓ ${salsa}`}</span>
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "salsa" ? "∧" : "∨"}</span>
           </button>
           {openSec === "salsa" && SALSAS.map(s => <RadioOption key={s} label={s} selected={salsa === s} onSelect={() => setSalsa(s)} />)}
@@ -89,7 +123,7 @@ export default function BrownieHeladoSalsaCustomizer({ product, open, onClose, o
 
         {/* Footer */}
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
-          {!ready && <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>* Elige helado y salsa</p>}
+          {!ready && <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>* Elige 2 helados y 1 salsa</p>}
           <button
             onClick={handleConfirm}
             disabled={!ready}
