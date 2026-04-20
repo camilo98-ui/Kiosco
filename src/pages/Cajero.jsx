@@ -224,6 +224,7 @@ export default function Cajero() {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))",
             gap: 16,
+            alignItems: "start",
           }}>
             {filteredOrders.map((order) => (
               <CajeroOrderCard

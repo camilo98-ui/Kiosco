@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { formatCOP } from "@/lib/constants";
-import { CheckCircle, Printer, FileText } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import moment from "moment";
 import ProductDetailLine from "@/components/menu/ProductDetailLine.jsx";
 
 const FONT = "-apple-system, 'SF Pro Display', 'Poppins', sans-serif";
+const MAGENTA = "#C41E6A";
 
 function getTimeState(elapsedSeconds) {
   const mins = elapsedSeconds / 60;
@@ -24,7 +25,6 @@ function getProgressColor(timeState) {
 }
 
 function getProgressWidth(elapsedSeconds) {
-  // 100% at 10 min (600s)
   return Math.min(100, (elapsedSeconds / 600) * 100);
 }
 
@@ -34,20 +34,17 @@ function TimeBadge({ elapsedSeconds }) {
   const timeStr = `${mins}:${String(secs).padStart(2, "0")}`;
   const state = getTimeState(elapsedSeconds);
 
-  let badgeStyle, label;
-  if (state === "normal") {
-    badgeStyle = { background: "#ECFDF5", color: "#059669" };
-    label = `${mins} min`;
-  } else {
-    badgeStyle = { background: "#FEE2E2", color: "#DC2626" };
-    label = `⚠️ +${mins} min`;
-  }
+  const badgeStyle = state === "normal"
+    ? { background: "#ECFDF5", color: "#059669" }
+    : { background: "#FEE2E2", color: "#DC2626" };
+
+  const label = state === "normal" ? `${mins} min` : `⚠️ +${mins} min`;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
       <span style={{
         fontFamily: FONT, fontSize: 15, fontWeight: 700,
-        color: state === "urgent" ? "#DC2626" : state === "waiting" ? "#D97706" : "#555",
+        color: state === "urgent" ? "#DC2626" : "#555",
         letterSpacing: "0.5px", fontVariantNumeric: "tabular-nums",
       }}>{timeStr}</span>
       <span style={{
@@ -64,7 +61,7 @@ function ClientAvatar({ name }) {
   return (
     <div style={{
       width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
-      background: "#E8187A", color: "#fff",
+      background: MAGENTA, color: "#fff",
       display: "flex", alignItems: "center", justifyContent: "center",
       fontSize: 13, fontWeight: 800, fontFamily: FONT,
     }}>{initials}</div>
@@ -84,7 +81,6 @@ export default function CajeroOrderCard({ order, onFinalize }) {
     return () => clearInterval(interval);
   }, [order.created_date, order.status]);
 
-  // Pulse animation for urgent
   useEffect(() => {
     if (order.status === "finalizado") return;
     const timeState = getTimeState(elapsed);
@@ -119,6 +115,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
       boxShadow: urgentShadow,
       transition: "background 0.3s, border-color 0.3s, box-shadow 0.3s",
       position: "relative",
+      height: "100%",
     }}>
       {/* Progress bar */}
       <div style={{ height: 4, background: "#F3F3F3", flexShrink: 0 }}>
@@ -131,9 +128,10 @@ export default function CajeroOrderCard({ order, onFinalize }) {
       </div>
 
       <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
-        {/* Top row: order number + timer */}
+
+        {/* Top row: order number (centrado, magenta) + timer */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 28, fontWeight: 900, color: "#111", lineHeight: 1, fontFamily: FONT }}>
+          <span style={{ fontSize: 30, fontWeight: 900, color: MAGENTA, lineHeight: 1, fontFamily: FONT }}>
             #{order.order_number}
           </span>
           {!isFinalized && <TimeBadge elapsedSeconds={elapsed} />}
@@ -149,27 +147,31 @@ export default function CajeroOrderCard({ order, onFinalize }) {
           <ClientAvatar name={order.customer_name} />
           <span style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A" }}>{order.customer_name}</span>
           {order.payment_method === "tarjeta" && (
-            <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, background: "#E8F0FF", color: "#1A56DB", borderRadius: 20, padding: "2px 8px" }}>💳 Tarjeta</span>
+            <span style={{
+              marginLeft: "auto", fontSize: 10, fontWeight: 700,
+              background: MAGENTA, color: "#fff",
+              borderRadius: 20, padding: "2px 10px",
+            }}>💳 Tarjeta</span>
           )}
         </div>
 
         {/* Separador */}
         <div style={{ height: 1, background: "#F5F5F5" }} />
 
-        {/* Items */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {/* Items — flex: 1 para que ocupe el espacio disponible */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
           {order.items?.map((item, i) => (
             <div key={i}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 6 }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, flex: 1 }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, flex: 1 }}>
                   {item.quantity > 1 && (
-                    <span style={{ display: "inline-block", background: "#E8187A", color: "#fff", borderRadius: 5, fontSize: 10, fontWeight: 800, padding: "0px 5px", marginRight: 5 }}>
+                    <span style={{ display: "inline-block", background: MAGENTA, color: "#fff", borderRadius: 5, fontSize: 11, fontWeight: 800, padding: "1px 6px", marginRight: 5 }}>
                       ×{item.quantity}
                     </span>
                   )}
                   {item.product_name}
                 </span>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#E8187A", flexShrink: 0 }}>{formatCOP(item.price * item.quantity)}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: MAGENTA, flexShrink: 0 }}>{formatCOP(item.price * item.quantity)}</span>
               </div>
               <ProductDetailLine item={item} />
             </div>
@@ -211,24 +213,6 @@ export default function CajeroOrderCard({ order, onFinalize }) {
             ✅ Cobrado y facturado
           </button>
         )}
-
-        {/* Botones secundarios */}
-        <div style={{ display: "flex", gap: 8 }}>
-          <button style={{
-            flex: 1, height: 34, borderRadius: 8, border: "1px solid #EEE",
-            background: "#FAFAFA", color: "#666", fontSize: 11, fontWeight: 600,
-            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 4, fontFamily: FONT,
-          }}>
-            <Printer size={12} /> Imprimir
-          </button>
-          <button style={{
-            flex: 1, height: 34, borderRadius: 8, border: "1px solid #EEE",
-            background: "#FAFAFA", color: "#666", fontSize: 11, fontWeight: 600,
-            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 4, fontFamily: FONT,
-          }}>
-            <FileText size={12} /> Detalle
-          </button>
-        </div>
       </div>
     </div>
   );
