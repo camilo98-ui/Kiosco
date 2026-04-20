@@ -49,7 +49,8 @@ export default function LoginRoles() {
     <div
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #FFF0F8 0%, #FFFBFC 50%, #FFF5F8 100%)"
+        background: "linear-gradient(135deg, #FFD6E8 0%, #FFC0D9 25%, #FFE4F1 50%, #FFD6E8 75%, #FFB3D9 100%)",
+        backgroundSize: "200% 200%"
       }}>
       
       {/* Burbujas animadas de fondo - Magenta y Verde pastel */}
@@ -111,12 +112,12 @@ export default function LoginRoles() {
         transition={{ duration: 0.5 }}
         className="relative z-10 w-full max-w-[340px] p-6 rounded-3xl mx-auto"
         style={{
-          background: "rgba(255, 255, 255, 0.35)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          border: "1px solid rgba(255, 255, 255, 0.7)",
-          boxShadow: "0 8px 32px rgba(232, 24, 122, 0.1)",
-          minHeight: "520px"
+          background: "rgba(255, 255, 255, 0.65)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1.5px solid rgba(255, 255, 255, 0.9)",
+          boxShadow: "0 12px 40px rgba(232, 24, 122, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
+          minHeight: "540px"
         }}>
         
         {/* Header */}
@@ -129,18 +130,18 @@ export default function LoginRoles() {
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} />
           
-          <h2 className="text-[hsl(var(--muted-foreground))] mb-1 text-xl font-bold" style={{ color: "#888" }}>
+          <h2 className="text-[hsl(var(--muted-foreground))] mb-1 text-xl font-bold" style={{ color: "#2D1A22" }}>
             Bienvenido
           </h2>
-          <p className="text-xs text-gray-500 font-medium">
-            ¿A cuál tienda Popsy vienes hoy?
+          <p className="text-xs font-medium" style={{ color: "#999" }}>
+            ¿Dónde estás hoy?
           </p>
         </div>
 
         {/* Buscador de Tiendas */}
-        <div className="space-y-3 mb-5">
+         <div className="space-y-4 mb-6">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: "#E91E63" }} />
             <input
               type="text"
               placeholder="Busca tu tienda..."
@@ -148,13 +149,19 @@ export default function LoginRoles() {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-12 pr-4 py-2.5 rounded-2xl border-2 focus:border-pink-400 focus:outline-none transition-all text-sm"
               style={{
-                background: "rgba(255, 255, 255, 0.3)",
+                background: "rgba(255, 255, 255, 0.8)",
                 backdropFilter: "blur(10px)",
-                border: "1.5px solid rgba(255, 255, 255, 0.4)",
-                boxShadow: search ? "0 0 0 3px rgba(233, 30, 99, 0.15)" : "none",
+                border: search ? "2px solid #E91E63" : "1.5px solid rgba(233, 30, 99, 0.3)",
+                boxShadow: search ? "0 4px 12px rgba(233, 30, 99, 0.2), inset 0 1px 3px rgba(233, 30, 99, 0.1)" : "0 2px 8px rgba(233, 30, 99, 0.1)",
                 color: "#1A1A1A"
-              }} />
-            
+              }}
+              style={{
+                background: "rgba(255, 255, 255, 0.8)",
+                color: "#1A1A1A"
+              }}
+              placeholder="Busca tu tienda..."
+            />
+
           </div>
 
           {loading ?
@@ -171,17 +178,21 @@ export default function LoginRoles() {
               transition={{ delay: idx * 0.05 }}
               className="w-full text-left transition-all"
               style={{
-                background: selectedStore === store.id ? "rgba(233, 30, 99, 0.2)" : "rgba(255, 255, 255, 0.7)",
-                border: selectedStore === store.id ? "1.5px solid rgba(233, 30, 99, 0.6)" : "1px solid rgba(240, 210, 225, 0.6)",
+                background: selectedStore === store.id ? "rgba(233, 30, 99, 0.15)" : "rgba(255, 255, 255, 0.5)",
+                border: selectedStore === store.id ? "1.5px solid #E91E63" : "1.5px solid rgba(233, 30, 99, 0.2)",
                 borderRadius: "14px",
                 padding: "12px 14px",
-                boxShadow: selectedStore === store.id ? "inset 0 0 0 1px rgba(233, 30, 99, 0.3)" : "none"
+                boxShadow: selectedStore === store.id ? "0 4px 12px rgba(233, 30, 99, 0.15)" : "none"
               }}>
-              
-                  <p className="font-bold text-xs" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
+              <div className="flex items-start gap-2">
+                {selectedStore === store.id && <span style={{ color: "#E91E63", marginTop: "2px" }}>📍</span>}
+                <div className="flex-1">
+                  <p className="font-bold text-sm" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
                     {store.name}
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">{store.address || store.name}</p>
+                  <p className="text-xs" style={{ color: selectedStore === store.id ? "#C41E6A" : "#999", marginTop: "2px" }}>{store.address || store.name}</p>
+                </div>
+              </div>
                 </motion.button>
             )}
             </div> :
@@ -191,25 +202,25 @@ export default function LoginRoles() {
         </div>
 
         {/* Botón Entrar */}
-        <motion.button
+         <motion.button
           onClick={handleEnter}
           disabled={!selectedStore}
           whileTap={selectedStore ? { scale: 0.98 } : {}}
           className="w-full h-11 rounded-2xl font-bold text-sm transition-all"
           style={{
-            background: selectedStore ? "linear-gradient(135deg, #E91E63, #F06292)" : "#E8E8E8",
+            background: selectedStore ? "linear-gradient(135deg, #E91E63 0%, #F06292 100%)" : "#E8E8E8",
             color: selectedStore ? "#FFFFFF" : "#999",
             cursor: selectedStore ? "pointer" : "not-allowed",
-            boxShadow: selectedStore ? "0 6px 16px rgba(233, 30, 99, 0.3)" : "none",
-            marginTop: "16px"
+            boxShadow: selectedStore ? "0 8px 20px rgba(233, 30, 99, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3)" : "none",
+            marginTop: "20px"
           }}>
-          
-          Ir a Popsy 🍦
+
+          Entrar a Popsy
         </motion.button>
 
         {/* Footer */}
-        <p className="text-center text-xs text-gray-400">
-          Elige tu ubicación favorita
+         <p className="text-center text-xs" style={{ color: "#BBB", marginTop: "20px" }}>
+          Tu helado te espera ✨
         </p>
       </motion.div>
     </div>);
