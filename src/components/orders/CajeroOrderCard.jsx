@@ -80,10 +80,9 @@ export default function CajeroOrderCard({ order, onFinalize }) {
 
   useEffect(() => {
     if (order.status === "finalizado") return;
-    const interval = setInterval(() => {
-      setElapsed(moment().diff(moment(order.created_date), "seconds"));
-    }, 1000);
-    setElapsed(moment().diff(moment(order.created_date), "seconds"));
+    const calc = () => Math.min(600, Math.max(0, moment().diff(moment(order.created_date), "seconds")));
+    const interval = setInterval(() => setElapsed(calc()), 1000);
+    setElapsed(calc());
     return () => clearInterval(interval);
   }, [order.created_date, order.status]);
 
@@ -171,7 +170,7 @@ export default function CajeroOrderCard({ order, onFinalize }) {
           {order.items?.map((item, i) => (
             <div key={i}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                <span style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.35, flex: 1 }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, flex: 1 }}>
                   {item.quantity > 1 && (
                     <span style={{ display: "inline-block", background: MAGENTA, color: "#fff", borderRadius: 6, fontSize: 13, fontWeight: 800, padding: "1px 7px", marginRight: 6 }}>
                       ×{item.quantity}

@@ -49,7 +49,7 @@ export default function ProductDetailLine({ item, compact = false }) {
           <div key={i} style={{ display: "flex", gap: 4, alignItems: "flex-start" }}>
             {item.key && (
               <span style={{
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: 700,
                 color: isSabor ? "#C41E6A" : isExtras ? "#C41E6A" : "#999",
                 flexShrink: 0,
@@ -60,7 +60,7 @@ export default function ProductDetailLine({ item, compact = false }) {
               </span>
             )}
             <span style={{
-              fontSize: 11,
+              fontSize: 13,
               color: isSabor || isExtras ? "#C41E6A" : "#666",
               fontStyle: isSabor || isExtras ? "italic" : "normal",
               lineHeight: 1.4,
