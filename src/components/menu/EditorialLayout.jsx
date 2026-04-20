@@ -21,6 +21,7 @@ import SkilletGalletaSupremaCustomizer from "@/components/menu/SkilletGalletaSup
 import SkilletGalletaCombinada from "@/components/menu/SkilletGalletaCombinada";
 import SkilletGalletaMedianaCustomizer from "@/components/menu/SkilletGalletaMedianaCustomizer";
 import SundaeSalsaCustomizer from "@/components/menu/SundaeSalsaCustomizer";
+import ParaLlevarCustomizer from "@/components/menu/ParaLlevarCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
 import BebidasLayout from "@/components/menu/BebidasLayout";
 import CafeLayoutPremium from "@/components/menu/CafeLayoutPremium";
@@ -544,6 +545,7 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const [skilletCombinada, setSkilletCombinada] = useState(null);
   const [skilletMedianaProduct, setSkilletMedianaProduct] = useState(null);
   const [sundaeProduct, setSundaeProduct] = useState(null);
+  const [paraLlevarProduct, setParaLlevarProduct] = useState(null);
 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
@@ -559,7 +561,9 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
     }
 
     // Nuevos customizadores
-    if (name.includes("charlie brownie") || name.includes("charly brownie")) {
+    if (category === "para_llevar") {
+      setParaLlevarProduct(patchedProduct);
+    } else if (name.includes("charlie brownie") || name.includes("charly brownie")) {
       setCharlieBrownieProduct(patchedProduct);
     } else if (name.includes("skillet") && name.includes("galleta suprema")) {
       setSkilletSupremaProduct(patchedProduct);
@@ -753,6 +757,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
         product={sundaeProduct}
         open={!!sundaeProduct}
         onClose={() => setSundaeProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <ParaLlevarCustomizer
+        product={paraLlevarProduct}
+        open={!!paraLlevarProduct}
+        onClose={() => setParaLlevarProduct(null)}
         onAdd={handleCustomizerAdd}
       />
     </>

@@ -59,14 +59,15 @@ function CheckOption({ label, selected, onToggle }) {
 }
 
 export default function CharlieBrownieCustomizer({ product, open, onClose, onAdd }) {
-  const [salsa, setSalsa] = useState(null);
   const [helados, setHelados] = useState([]);
+  const [salsas, setSalsas] = useState([]);
   const [openSec, setOpenSec] = useState("helado");
 
   if (!product) return null;
 
   const maxHelados = 2;
-  const ready = salsa && helados.length === maxHelados;
+  const maxSalsas = 2;
+  const ready = helados.length === maxHelados && salsas.length === maxSalsas;
 
   const toggleHelado = (h) => {
     setHelados(prev => {
@@ -76,12 +77,20 @@ export default function CharlieBrownieCustomizer({ product, open, onClose, onAdd
     });
   };
 
+  const toggleSalsa = (s) => {
+    setSalsas(prev => {
+      if (prev.includes(s)) return prev.filter(x => x !== s);
+      if (prev.length >= maxSalsas) return prev;
+      return [...prev, s];
+    });
+  };
+
   const handleConfirm = () => {
     if (!ready) return;
-    const notes = `Helados: ${helados.join(", ")} | Salsa: ${salsa} (Gratis)`;
+    const notes = `Helados: ${helados.join(", ")} | Salsas: ${salsas.join(", ")} (Gratis)`;
     onAdd({ product_id: product.id, product_name: product.name, price: product.price, quantity: 1 }, notes);
-    setSalsa(null);
     setHelados([]);
+    setSalsas([]);
     onClose();
   };
 
@@ -92,7 +101,7 @@ export default function CharlieBrownieCustomizer({ product, open, onClose, onAdd
           <SheetTitle style={{ fontSize: 17, fontWeight: 900, color: "#1A0A10", margin: 0 }}>
             {product.name}
           </SheetTitle>
-          <p style={{ fontSize: 12, color: "#BBA8B0", margin: "6px 0 0", fontWeight: 500 }}>Elige 2 sabores de helado y una salsa (sin costo extra)</p>
+          <p style={{ fontSize: 12, color: "#BBA8B0", margin: "6px 0 0", fontWeight: 500 }}>Elige 2 sabores de helado y 2 salsas (sin costo extra)</p>
         </div>
 
         {/* Helados */}
@@ -109,21 +118,23 @@ export default function CharlieBrownieCustomizer({ product, open, onClose, onAdd
           ))}
         </div>
 
-        {/* Salsa */}
+        {/* Salsas */}
         <div style={{ borderBottom: "1px solid #F0E4EA" }}>
           <button 
             onClick={() => setOpenSec(s => s === "salsa" ? null : "salsa")}
             style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}
           >
-            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Salsa (Gratis) {salsa && `✓ ${salsa}`}</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>2 Salsas (Gratis) {salsas.length}/{maxSalsas}</span>
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "salsa" ? "∧" : "∨"}</span>
           </button>
-          {openSec === "salsa" && SALSAS.map(s => <RadioOption key={s} label={s} selected={salsa === s} onSelect={() => setSalsa(s)} />)}
+          {openSec === "salsa" && SALSAS.map(s => (
+            <CheckOption key={s} label={s} selected={salsas.includes(s)} onToggle={() => toggleSalsa(s)} />
+          ))}
         </div>
 
         {/* Footer */}
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
-          {!ready && <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>* Elige 2 helados y 1 salsa</p>}
+          {!ready && <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>* Elige 2 helados y 2 salsas</p>}
           <button
             onClick={handleConfirm}
             disabled={!ready}
