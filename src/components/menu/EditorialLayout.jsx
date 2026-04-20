@@ -467,6 +467,8 @@ function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
       return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2df60753e_Sundae1sabor10900.png" };
     } else if (name.includes("sundae 2 sabor")) {
       return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/4ec8da0eb_Sundae2sabores14900.png" };
+    } else if (name.includes("especiales")) {
+      return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/367f2ac12_image.png" };
     }
     return p;
   });
