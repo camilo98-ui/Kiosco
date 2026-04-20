@@ -467,8 +467,8 @@ function EspecialesLayout({ products, onAdd, addedFlash, bg, catLabel }) {
       return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2df60753e_Sundae1sabor10900.png" };
     } else if (name.includes("sundae 2 sabor")) {
       return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/4ec8da0eb_Sundae2sabores14900.png" };
-    } else if (name.includes("especiales")) {
-      return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/367f2ac12_image.png" };
+    } else if (!name.includes("granizado")) {
+      return { ...p, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/ce92a82cd_image.png" };
     }
     return p;
   });
@@ -553,13 +553,15 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
 
   const handleAdd = useCallback((product) => {
-    // Patch images for Sundaes
+    // Patch images for Sundaes and Especiales
     let patchedProduct = product;
     const name = product.name.toLowerCase();
     if (name.includes("sundae 1 sabor")) {
       patchedProduct = { ...product, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2df60753e_Sundae1sabor10900.png" };
     } else if (name.includes("sundae 2 sabor")) {
       patchedProduct = { ...product, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/4ec8da0eb_Sundae2sabores14900.png" };
+    } else if (category === "especialidades") {
+      patchedProduct = { ...product, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/ce92a82cd_image.png" };
     }
 
     // Nuevos customizadores
