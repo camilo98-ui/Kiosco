@@ -152,7 +152,7 @@ export default function CharlieBrownieCustomizer({ product, open, onClose, onAdd
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "helado" ? "∧" : "∨"}</span>
           </button>
           {openSec === "helado" && SABORES_HELADO.map(h => (
-            <CheckOption key={h} label={h} price={0} selected={helados.includes(h)} onToggle={() => toggleHelado(h)} />
+            <CheckOption key={h} label={h} price={0} selected={helados.includes(h)} onToggle={() => { toggleHelado(h); if (helados.length + 1 === maxHelados) setOpenSec("salsa"); }} />
           ))}
         </div>
 
@@ -166,7 +166,7 @@ export default function CharlieBrownieCustomizer({ product, open, onClose, onAdd
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "salsa" ? "∧" : "∨"}</span>
           </button>
           {openSec === "salsa" && SALSAS.map(s => (
-            <CheckOption key={s} label={s} price={0} selected={salsas.includes(s)} onToggle={() => toggleSalsa(s)} />
+            <CheckOption key={s} label={s} price={0} selected={salsas.includes(s)} onToggle={() => { toggleSalsa(s); if (salsas.length + 1 === maxSalsas) setOpenSec("extras"); }} />
           ))}
         </div>
 

@@ -143,7 +143,7 @@ export default function SundaeSalsaCustomizer({ product, open, onClose, onAdd })
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "helado" ? "∧" : "∨"}</span>
           </button>
           {openSec === "helado" && SABORES_HELADO.map(h => (
-            <CheckOption key={h} label={h} price={0} selected={helados.includes(h)} onToggle={() => toggleHelado(h)} />
+            <CheckOption key={h} label={h} price={0} selected={helados.includes(h)} onToggle={() => { toggleHelado(h); if (helados.length + 1 === maxHelados) setOpenSec("salsa"); }} />
           ))}
         </div>
 
@@ -157,7 +157,7 @@ export default function SundaeSalsaCustomizer({ product, open, onClose, onAdd })
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "salsa" ? "∧" : "∨"}</span>
           </button>
           {openSec === "salsa" && SALSAS.map(s => (
-            <RadioOption key={s} label={s} selected={salsa === s} onSelect={() => setSalsa(s)} />
+            <RadioOption key={s} label={s} selected={salsa === s} onSelect={() => { setSalsa(s); setOpenSec("extras"); }} />
           ))}
         </div>
 
