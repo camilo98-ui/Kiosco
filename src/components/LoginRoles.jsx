@@ -172,19 +172,19 @@ export default function LoginRoles() {
               transition={{ delay: idx * 0.04 }}
               className="w-full text-left transition-all duration-150"
               style={{
-                background: selectedStore === store.id ? "linear-gradient(135deg, rgba(216, 27, 96, 0.08) 0%, rgba(232, 30, 99, 0.05) 100%)" : "#FFFFFF",
-                border: selectedStore === store.id ? "1.2px solid #D81B60" : "1px solid rgba(196, 30, 106, 0.1)",
+                background: "linear-gradient(135deg, rgba(216, 27, 96, 0.06) 0%, rgba(232, 30, 99, 0.03) 100%)",
+                border: selectedStore === store.id ? "1.2px solid #D81B60" : "1px solid rgba(196, 30, 106, 0.08)",
                 borderRadius: "12px",
                 padding: "13px 14px",
-                boxShadow: selectedStore === store.id ? "0 2px 6px rgba(216, 27, 96, 0.08), inset 0 1px 2px rgba(216, 27, 96, 0.04)" : "0 1px 2px rgba(0, 0, 0, 0.02)"
+                boxShadow: selectedStore === store.id ? "0 2px 6px rgba(216, 27, 96, 0.08), inset 0 1px 2px rgba(216, 27, 96, 0.04)" : "none"
               }}>
               <div className="flex items-start gap-2.5">
                 {selectedStore === store.id && <span style={{ color: "#D81B60", marginTop: "1px", fontSize: "13px" }}>📍</span>}
                 <div className="flex-1 min-w-0">
                   <p className="font-700 text-sm" style={{ color: selectedStore === store.id ? "#D81B60" : "#1A0A10", margin: 0 }}>
-                    {store.name}
+                    {store.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                   </p>
-                  <p className="text-xs" style={{ color: selectedStore === store.id ? "#B8297C" : "#9A8A99", marginTop: "2px", margin: 0 }}>{store.address || store.name}</p>
+                  <p className="text-xs" style={{ color: selectedStore === store.id ? "#B8297C" : "#8A7880", marginTop: "2px", margin: 0 }}>{store.address || store.name}</p>
                 </div>
               </div>
                 </motion.button>
@@ -205,7 +205,7 @@ export default function LoginRoles() {
             background: selectedStore ? "linear-gradient(180deg, #E8187A 0%, #D81B60 100%)" : "#E8E8E8",
             color: selectedStore ? "#FFFFFF" : "#CCC",
             cursor: selectedStore ? "pointer" : "not-allowed",
-            boxShadow: selectedStore ? "0 6px 16px rgba(216, 27, 96, 0.18), 0 0 1px rgba(216, 27, 96, 0.1)" : "none",
+            boxShadow: selectedStore ? "0 8px 20px rgba(216, 27, 96, 0.2), 0 0 8px rgba(216, 27, 96, 0.12)" : "none",
             marginTop: "24px",
             letterSpacing: "0.2px"
           }}>
@@ -214,7 +214,7 @@ export default function LoginRoles() {
         </motion.button>
 
         {/* Footer */}
-         <p className="text-center text-xs" style={{ color: "#C8B3BE", marginTop: "22px", fontWeight: 500, letterSpacing: "0.3px" }}>
+         <p className="text-center text-xs" style={{ color: "#C8B3BE", marginTop: "28px", marginBottom: 0, fontWeight: 500, letterSpacing: "0.3px" }}>
           Tu helado te espera ✨
         </p>
       </motion.div>
