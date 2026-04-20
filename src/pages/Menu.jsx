@@ -51,7 +51,7 @@ const FAMILY_CARDS = [
 { id: "helados", label: "Helados", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/2c9474e0e_Helados.png" },
 { id: "combos", label: "Cookie Jar", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/6dd912084_cookie-jaar-img.jpg" },
 { id: "granizados", label: "Granizados", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/923ba973b_images2.jpg" },
-{ id: "especialidades", label: "Especiales", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/dda55ee2f_Especialidades.png" },
+{ id: "especialidades", label: "Especiales", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/1807355a4_Gemini_Generated_Image_11bn4311bn4311bn1.png" },
 { id: "cafe", label: "Café", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/e15d81047_Coffee.png" },
 { id: "bebidas", label: "Otras bebidas", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/26de2b565_image.png" },
 { id: "para_llevar", label: "Para llevar", image: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/fa4c65c0f_ComboLitrodeheladoBrownie8Und.png" }];
