@@ -82,8 +82,9 @@ export default function CajeroOrderCard({ order, onFinalize }) {
   useEffect(() => {
     if (order.status === "finalizado") return;
     const calc = () => {
-      const created = moment.utc(order.created_date).local();
-      const diff = moment().diff(created, "seconds");
+      const now = Date.now();
+      const created = new Date(order.created_date).getTime();
+      const diff = Math.floor((now - created) / 1000);
       return Math.max(0, diff);
     };
     const interval = setInterval(() => setElapsed(calc()), 1000);
