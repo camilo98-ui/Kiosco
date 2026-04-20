@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { COMBOS_DATA } from "@/lib/combosData";
-import ComboSaborSheet from "@/components/menu/ComboSaborSheet";
+import ComboCustomizer from "@/components/menu/ComboCustomizer";
 
 const COMBOS = COMBOS_DATA;
 const CARD_WIDTH = 160;
@@ -209,8 +209,9 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
     }
   };
 
-  const handleSaborAdd = (item, notes) => {
+  const handleCustomizerAdd = (item, notes) => {
     onAdd && onAdd(item, notes);
+    setSelectedCombo(null);
   };
 
   return (
@@ -271,11 +272,11 @@ export default function CombosCarousel({ onAdd, onOpenAll }) {
         ))}
       </div>
 
-      <ComboSaborSheet
+      <ComboCustomizer
         combo={selectedCombo}
         open={!!selectedCombo}
         onClose={() => setSelectedCombo(null)}
-        onAdd={handleSaborAdd}
+        onAdd={handleCustomizerAdd}
       />
     </div>
   );
