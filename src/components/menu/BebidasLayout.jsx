@@ -38,7 +38,7 @@ function HeroCard({ product, onAdd }) {
       }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }} />
         ) : (
           <div style={{ width: "100%", height: "100%", background: "#F9F0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 64 }}>
             {product.emoji || "💧"}
@@ -82,11 +82,11 @@ function SingleHero({ product, onAdd }) {
     >
       <div style={{
         width: "100%", height: 250, overflow: "hidden", borderRadius: "20px 20px 0 0",
-        position: "relative", flexShrink: 0,
+        position: "relative", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center"
       }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+            style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center" }} />
         ) : (
           <div style={{ width: "100%", height: "100%", background: "#F9F0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 80 }}>
             {product.emoji || "💧"}
