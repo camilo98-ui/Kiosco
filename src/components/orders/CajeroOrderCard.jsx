@@ -82,8 +82,15 @@ export default function CajeroOrderCard({ order, onFinalize }) {
   useEffect(() => {
     if (order.status === "finalizado") return;
     const calc = () => {
+      // created_date viene como string ISO UTC desde el servidor
+      // Forzamos parseo UTC en ambos lados para evitar problemas de zona horaria
       const now = Date.now();
-      const created = new Date(order.created_date).getTime();
+      const raw = order.created_date;
+      // Si ya tiene Z o +00 lo usamos directo, si no le agregamos Z para indicar UTC
+      const isoStr = (typeof raw === "string" && /Z|[+-]\d{2}:?\d{2}$/.test(raw))
+        ? raw
+        : (typeof raw === "string" ? raw + "Z" : new Date(raw).toISOString());
+      const created = new Date(isoStr).getTime();
       const diff = Math.floor((now - created) / 1000);
       return Math.max(0, diff);
     };
