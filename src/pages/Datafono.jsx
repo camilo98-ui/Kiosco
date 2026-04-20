@@ -2,162 +2,14 @@ import React, { useState, useCallback, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { ArrowLeft, CreditCard, Plus, Minus, X, CheckCircle2, ShoppingBag, Search } from "lucide-react";
-import { formatCOP, CATEGORIES } from "@/lib/constants";
+import { ArrowLeft, CreditCard, Plus, Minus, X, CheckCircle2, ShoppingBag } from "lucide-react";
+import { formatCOP } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
+import DatafonoMenuView from "@/components/datafono/DatafonoMenuView";
 
 const MAGENTA = "#E91B8B";
-
-// ── Mini product grid ──────────────────────────────────────────────────────────
-
-function ProductCard({ product, onAdd, flashId }) {
-  const [imgError, setImgError] = useState(false);
-  const isFlash = flashId === product.id;
-
-  return (
-    <motion.div
-      animate={isFlash ? { scale: 1.05 } : { scale: 1 }}
-      transition={{ duration: 0.2 }}
-      style={{
-        background: "#fff",
-        border: "1px solid #FFE4F3",
-        borderRadius: 16,
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        boxShadow: "0 2px 8px rgba(233,27,139,0.06)",
-      }}
-    >
-      <div style={{ height: 100, background: "#FFF0F8", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-        {product.image_url && !imgError ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-        ) : (
-          <span style={{ fontSize: 36 }}>{product.emoji || "🍦"}</span>
-        )}
-      </div>
-      <div style={{ padding: "8px 10px 10px", flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: "#2D1A22", lineHeight: 1.3, margin: 0, flex: 1 }}>{product.name}</p>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4 }}>
-          <span style={{ fontSize: 13, fontWeight: 800, color: MAGENTA }}>{formatCOP(product.price)}</span>
-          <button
-            onClick={() => onAdd(product)}
-            style={{
-              width: 26, height: 26, borderRadius: "50%",
-              background: MAGENTA, color: "#fff", border: "none",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", boxShadow: "0 2px 8px rgba(233,27,139,0.3)",
-            }}
-          >
-            <Plus size={13} />
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function MenuView({ onAddItem }) {
-  const [activeCat, setActiveCat] = useState(CATEGORIES[0]?.id || "malteadas");
-  const [flashId, setFlashId] = useState(null);
-  const [search, setSearch] = useState("");
-
-  const { data: products = [] } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => base44.entities.Product.list("sort_order", 200),
-    staleTime: 10 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
-  });
-
-  const isSearching = search.trim().length > 0;
-  const displayProducts = isSearching
-    ? products.filter(p => p.is_available !== false && p.name.toLowerCase().includes(search.toLowerCase()))
-    : products.filter(p => p.category === activeCat && p.is_available !== false);
-
-  const handleAdd = (product) => {
-    onAddItem(product);
-    setFlashId(product.id);
-    setTimeout(() => setFlashId(null), 300);
-  };
-
-  return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-
-      {/* Search bar */}
-      <div style={{ padding: "10px 16px 6px", background: "#fff", flexShrink: 0 }}>
-        <div style={{
-          display: "flex", alignItems: "center", gap: 8,
-          background: "#FFF0F8", borderRadius: 12,
-          padding: "8px 12px", border: "1.5px solid #FFE4F3",
-        }}>
-          <Search size={15} color={MAGENTA} />
-          <input
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Buscar producto..."
-            style={{
-              flex: 1, background: "none", border: "none", outline: "none",
-              fontSize: 13, color: "#1A1A1A", fontFamily: "'Poppins', sans-serif",
-            }}
-          />
-          {search && (
-            <button onClick={() => setSearch("")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}>
-              <X size={14} color="#BBBBBB" />
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Category tabs — hidden while searching */}
-      {!isSearching && (
-        <div style={{
-          display: "flex", gap: 8, padding: "6px 16px 10px",
-          overflowX: "auto", scrollbarWidth: "none", background: "#fff",
-          borderBottom: "1px solid #FFE4F3", flexShrink: 0,
-        }}>
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCat(cat.id)}
-              style={{
-                flexShrink: 0,
-                padding: "6px 14px",
-                borderRadius: 20,
-                fontSize: 12, fontWeight: 700,
-                border: "none", cursor: "pointer",
-                background: activeCat === cat.id ? MAGENTA : "#FFE4F3",
-                color: activeCat === cat.id ? "#fff" : MAGENTA,
-                transition: "all 0.18s ease",
-              }}
-            >
-              {cat.emoji} {cat.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Products grid */}
-      <div style={{
-        flex: 1, overflowY: "auto", padding: 12,
-        display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10,
-        alignContent: "start",
-      }}>
-        {displayProducts.length === 0 ? (
-          <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px 0", color: "#CCCCCC" }}>
-            <p style={{ fontSize: 32 }}>🔍</p>
-            <p style={{ fontWeight: 600, fontSize: 13 }}>{isSearching ? "Sin resultados para esa búsqueda" : "Sin productos en esta categoría"}</p>
-          </div>
-        ) : (
-          displayProducts.map(p => (
-            <ProductCard key={p.id} product={p} onAdd={handleAdd} flashId={flashId} />
-          ))
-        )}
-      </div>
-    </div>
-  );
-}
 
 // ── Cart / Order summary ───────────────────────────────────────────────────────
 
@@ -496,14 +348,22 @@ export default function Datafono() {
   });
 
   const handleAddItem = useCallback((product) => {
+    // Acepta tanto el formato antiguo (product.id, product.name) como el nuevo ({ id, name, price, notes })
+    const id = product.id || product.product_id;
+    const name = product.name || product.product_name;
+    const notes = product.notes || "";
     setCartItems(prev => {
-      const existing = prev.findIndex(i => i.id === product.id);
+      // Si tiene notas (personalización), siempre agregar como ítem nuevo para preservar customización
+      if (notes) {
+        return [...prev, { id, name, price: product.price, qty: 1, notes }];
+      }
+      const existing = prev.findIndex(i => i.id === id && !i.notes);
       if (existing >= 0) {
         const next = [...prev];
         next[existing] = { ...next[existing], qty: next[existing].qty + 1 };
         return next;
       }
-      return [...prev, { id: product.id, name: product.name, price: product.price, qty: 1 }];
+      return [...prev, { id, name, price: product.price, qty: 1, notes: "" }];
     });
   }, []);
 
@@ -597,7 +457,7 @@ export default function Datafono() {
       {/* Content */}
       <div style={{ flex: 1, maxWidth: 600, margin: "0 auto", width: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {activeTab === "menu" && (
-          <MenuView onAddItem={handleAddItem} />
+          <DatafonoMenuView onAddItem={handleAddItem} />
         )}
 
         {activeTab === "cobrar" && (
