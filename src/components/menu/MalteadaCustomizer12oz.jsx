@@ -168,7 +168,10 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
   const advanceToNext = (currentSection) => {
     const idx = SECTIONS.indexOf(currentSection);
     const next = SECTIONS[idx + 1];
-    if (next) setTimeout(() => setOpenSection(next), 200);
+    if (next) {
+      setOpenSection(null);
+      setTimeout(() => setOpenSection(next), 150);
+    }
   };
 
   const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
@@ -283,6 +286,19 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
               onToggle={() => toggleExtra(e.name, e.price)}
             />
           ))}
+          <div style={{ padding: "12px 16px 4px" }}>
+            <button
+              onClick={() => setOpenSection(null)}
+              style={{
+                width: "100%", padding: "13px 0", borderRadius: 14,
+                background: "#C2185B", color: "#fff", border: "none",
+                fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "'Poppins', sans-serif",
+                boxShadow: "0 4px 14px rgba(196,30,106,0.35)",
+              }}
+            >
+              Sin extras, continuar ✓
+            </button>
+          </div>
         </AccordionSection>
 
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
