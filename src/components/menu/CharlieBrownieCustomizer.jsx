@@ -127,9 +127,18 @@ export default function CharlieBrownieCustomizer({ product, open, onClose, onAdd
             <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>2 Salsas (Gratis) {salsas.length}/{maxSalsas}</span>
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "salsa" ? "∧" : "∨"}</span>
           </button>
-          {openSec === "salsa" && SALSAS.map(s => (
-            <CheckOption key={s} label={s} selected={salsas.includes(s)} onToggle={() => toggleSalsa(s)} />
-          ))}
+          {openSec === "salsa" && (
+            <div>
+              {SALSAS.map(s => (
+                <CheckOption key={s} label={s} selected={salsas.includes(s)} onToggle={() => toggleSalsa(s)} />
+              ))}
+              <div style={{ padding: "12px 16px 4px" }}>
+                <button onClick={() => setOpenSec(null)} style={{ width: "100%", padding: "13px 0", borderRadius: 14, background: "#C41E6A", color: "#fff", border: "none", fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "'Poppins', sans-serif", boxShadow: "0 4px 14px rgba(196,30,106,0.35)" }}>
+                  Continuar ✓
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer */}

@@ -104,9 +104,18 @@ export default function SundaeSalsaCustomizer({ product, open, onClose, onAdd })
             <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Helados {helados.length}/{maxHelados}</span>
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "helado" ? "∧" : "∨"}</span>
           </button>
-          {openSec === "helado" && SABORES_HELADO.map(h => (
-            <CheckOption key={h} label={h} selected={helados.includes(h)} onToggle={() => toggleHelado(h)} />
-          ))}
+          {openSec === "helado" && (
+            <div>
+              {SABORES_HELADO.map(h => (
+                <CheckOption key={h} label={h} selected={helados.includes(h)} onToggle={() => toggleHelado(h)} />
+              ))}
+              <div style={{ padding: "12px 16px 4px" }}>
+                <button onClick={() => setOpenSec("salsa")} style={{ width: "100%", padding: "13px 0", borderRadius: 14, background: "#C41E6A", color: "#fff", border: "none", fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "'Poppins', sans-serif", boxShadow: "0 4px 14px rgba(196,30,106,0.35)" }}>
+                  Continuar ✓
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Salsa */}
@@ -118,7 +127,13 @@ export default function SundaeSalsaCustomizer({ product, open, onClose, onAdd })
             <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Salsa (Gratis) {salsa && `✓ ${salsa}`}</span>
             <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "salsa" ? "∧" : "∨"}</span>
           </button>
-          {openSec === "salsa" && SALSAS.map(s => <RadioOption key={s} label={s} selected={salsa === s} onSelect={() => setSalsa(s)} />)}
+          {openSec === "salsa" && (
+            <div>
+              {SALSAS.map(s => (
+                <RadioOption key={s} label={s} selected={salsa === s} onSelect={() => { setSalsa(s); setOpenSec(null); }} />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Footer */}
