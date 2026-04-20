@@ -16,11 +16,11 @@ const SALSAS = [
   "Salsa Cereza Italiana",
 ];
 
-const CHANTILLY = ["Crema Chantilly", "Sin Crema Chantilly"];
+const CHANTILLY = ["Con Crema Chantilly", "Sin Crema Chantilly"];
 
 const CHOCOLATE_CRACK = [
   { label: "Sin Crack", price: 0 },
-  { label: "Con Crack", price: 4000 },
+  { label: "Con Crack", price: 0 },
 ];
 
 // Extras basados en la entidad adiciones (lista fija)

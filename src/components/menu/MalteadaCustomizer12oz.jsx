@@ -34,9 +34,11 @@ const SABORES_HELADO = [
   "Vainilla Francesa Gourmet",
 ];
 
+const CHANTILLY = ["Con Crema Chantilly", "Sin Crema Chantilly"];
+
 const CHOCOLATE_CRACK = [
   { label: "Sin Crack", price: 0 },
-  { label: "Con Crack", price: 4000 },
+  { label: "Con Crack", price: 0 },
 ];
 
 const EXTRAS = [
@@ -147,10 +149,11 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
   const [openSection, setOpenSection] = useState("salsa");
   const [salsa, setSalsa] = useState(null);
   const [sabor, setSabor] = useState(null);
+  const [chantilly, setChantilly] = useState(null);
   const [crack, setCrack] = useState(null);
   const [extras, setExtras] = useState([]);
 
-  const SECTIONS = ["salsa", "sabor", "crack", "extras"];
+  const SECTIONS = ["salsa", "sabor", "chantilly", "crack", "extras"];
 
   const toggleExtra = (name, price) => {
     setExtras(prev =>
@@ -172,7 +175,7 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
   const crackPrice = CHOCOLATE_CRACK.find(c => c.label === crack)?.price || 0;
   const total = (product?.price || 0) + extrasTotal + crackPrice;
 
-  const allRequired = salsa && sabor && crack;
+  const allRequired = salsa && sabor && chantilly && crack;
 
   const handleConfirm = () => {
     if (!allRequired) return;
@@ -180,6 +183,7 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
     const notes = [
       `Salsa: ${salsa}`,
       `Sabor: ${sabor}`,
+      `Chantilly: ${chantilly}`,
       `Crack: ${crack}`,
       extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
     ].filter(Boolean).join(" | ");
@@ -188,7 +192,7 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
     const nameWithSize = `${product.name} · Malteada 12oz`;
     onAdd({ ...product, name: nameWithSize, product_name: nameWithSize, price: total }, notes);
     toast.success("✓ Agregado al pedido", { duration: 1500, style: { background: "#E91B8B", color: "#fff", border: "none", borderRadius: 12 } });
-    setSalsa(null); setSabor(null); setCrack(null); setExtras([]);
+    setSalsa(null); setSabor(null); setChantilly(null); setCrack(null); setExtras([]);
     setOpenSection("salsa");
     setTimeout(() => onClose(), 150);
   };
@@ -236,6 +240,18 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
           <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
           {SABORES_HELADO.map(s => (
             <RadioOption key={s} label={s} price={0} selected={sabor === s} onSelect={() => { setSabor(s); advanceToNext("sabor"); }} />
+          ))}
+        </AccordionSection>
+
+        <AccordionSection
+          title="¿Deseas Crema Chantilly?"
+          required
+          open={openSection === "chantilly"}
+          onToggle={() => toggle("chantilly")}
+        >
+          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Selecciona 1 opción</p>
+          {CHANTILLY.map(c => (
+            <RadioOption key={c} label={c} price={0} selected={chantilly === c} onSelect={() => { setChantilly(c); advanceToNext("chantilly"); }} />
           ))}
         </AccordionSection>
 

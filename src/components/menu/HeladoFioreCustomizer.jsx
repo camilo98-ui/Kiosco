@@ -3,7 +3,34 @@ import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { formatCOP } from "@/lib/constants";
 
 const MAGENTA = "#C41E6A";
-const SALSAS = ["Caramelo", "Chocolate", "Mora", "Crack", "Sin salsa"];
+const SALSAS = ["Caramelo", "Chocolate", "Mora", "Arequipe", "Fresa", "Frutas", "Cereza Italiana"];
+const SABORES_HELADO = [
+  "Arequipe", "Chocolate Belga", "Chocolate", "Fresa", "Frutos Del Bosque",
+  "Nieves Limón", "Mandarina", "Nieves Mandarina", "Nieves Maracuyá",
+  "Ron Pasas", "Vainilla Francesa", "Vainilla",
+  "Yogo Yogo Fresa", "Brownie", "Cherry Mania", "Crema Limón", "MM",
+  "Macadamia", "Milky Way", "Mocaccino", "Oreo", "Vainilla Chips",
+  "Arroz Con Leche", "Yogurt De Cereza Italiana", "Chicle", "Snickers Almond",
+];
+const EXTRAS = [
+  { name: "Gomas Ositos", price: 2900 },
+  { name: "Cerezas", price: 2900 },
+  { name: "M&M's", price: 2900 },
+  { name: "Banano", price: 2900 },
+  { name: "Fresas", price: 2900 },
+  { name: "Durazno", price: 2900 },
+  { name: "Mini Masmelos", price: 2900 },
+  { name: "Chantilly", price: 2900 },
+  { name: "Chips De Chocolate", price: 2900 },
+  { name: "Brownie", price: 2900 },
+  { name: "Galleta Oreo", price: 2900 },
+  { name: "Nueces", price: 2900 },
+  { name: "Barquillos", price: 2900 },
+  { name: "Chocolatina Milky Way", price: 2900 },
+  { name: "Leche Condensada", price: 2900 },
+  { name: "Sprinkles", price: 2900 },
+  { name: "Agua", price: 5900 },
+];
 
 function RadioOption({ label, price, selected, onSelect }) {
   return (
@@ -29,22 +56,65 @@ function RadioOption({ label, price, selected, onSelect }) {
   );
 }
 
+function CheckOption({ name, price, selected, onToggle }) {
+  return (
+    <button
+      onClick={onToggle}
+      style={{
+        width: "100%", display: "flex", alignItems: "center",
+        justifyContent: "space-between", padding: "12px 16px",
+        background: "none", border: "none", cursor: "pointer",
+        textAlign: "left", borderBottom: "1px solid #F9F0F4",
+      }}
+    >
+      <div>
+        <span style={{ fontSize: 13, color: "#1A0A10" }}>{name}</span>
+        <span style={{ fontSize: 11, color: MAGENTA, marginLeft: 6, fontWeight: 700 }}>+ {formatCOP(price)}</span>
+      </div>
+      <div style={{
+        width: 22, height: 22, borderRadius: 5,
+        background: selected ? MAGENTA : "#fff",
+        border: selected ? "none" : "2px solid #DDD",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0, transition: "all 0.15s",
+      }}>
+        {selected && <span style={{ color: "#fff", fontSize: 13, fontWeight: 900 }}>✓</span>}
+      </div>
+    </button>
+  );
+}
+
 export default function HeladoFioreCustomizer({ product, open, onClose, onAdd }) {
   const [sabor, setSabor] = useState(null);
   const [salsa, setSalsa] = useState(null);
+  const [extras, setExtras] = useState([]);
+  const [openSec, setOpenSec] = useState("sabor");
 
   if (!product) return null;
 
-  const saborPrice = sabor === "exclusivo" ? 11900 : sabor === "gourmet" ? 9900 : 0;
-  const total = (product.price || 0) + saborPrice;
+  const toggleExtra = (name, price) => {
+    setExtras(prev =>
+      prev.find(e => e.name === name)
+        ? prev.filter(e => e.name !== name)
+        : [...prev, { name, price }]
+    );
+  };
+
+  const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
+  const total = (product.price || 0) + extrasTotal;
   const ready = sabor && salsa;
 
   const handleConfirm = () => {
     if (!ready) return;
-    const notes = `Sabor: ${sabor.charAt(0).toUpperCase() + sabor.slice(1)} | Salsa: ${salsa}`;
+    const notes = [
+      `Helado: ${sabor}`,
+      `Salsa: ${salsa}`,
+      extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
+    ].filter(Boolean).join(" | ");
     onAdd({ product_id: product.id, product_name: product.name, price: total, quantity: 1 }, notes);
     setSabor(null);
     setSalsa(null);
+    setExtras([]);
     onClose();
   };
 
@@ -57,28 +127,55 @@ export default function HeladoFioreCustomizer({ product, open, onClose, onAdd })
           </SheetTitle>
         </div>
 
-        {/* Sabor */}
+        {/* Helado */}
         <div style={{ borderBottom: "1px solid #F0E4EA" }}>
-          <button style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}>
-            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Sabor</span>
-            <span style={{ fontSize: 18, color: "#BBA8B0" }}>∧</span>
+          <button 
+            onClick={() => setOpenSec(s => s === "sabor" ? null : "sabor")}
+            style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}
+          >
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Sabor de Helado {sabor && `✓ ${sabor}`}</span>
+            <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "sabor" ? "∧" : "∨"}</span>
           </button>
-          <RadioOption label="Gourmet" price={9900} selected={sabor === "gourmet"} onSelect={() => setSabor("gourmet")} />
-          <RadioOption label="Exclusivo" price={11900} selected={sabor === "exclusivo"} onSelect={() => setSabor("exclusivo")} />
+          {openSec === "sabor" && SABORES_HELADO.map(h => (
+            <RadioOption key={h} label={h} price={0} selected={sabor === h} onSelect={() => { setSabor(h); setOpenSec("salsa"); }} />
+          ))}
         </div>
 
         {/* Salsa */}
         <div style={{ borderBottom: "1px solid #F0E4EA" }}>
-          <button style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}>
-            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Salsa</span>
-            <span style={{ fontSize: 18, color: "#BBA8B0" }}>∧</span>
+          <button 
+            onClick={() => setOpenSec(s => s === "salsa" ? null : "salsa")}
+            style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}
+          >
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Salsa {salsa && `✓ ${salsa}`}</span>
+            <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "salsa" ? "∧" : "∨"}</span>
           </button>
-          {SALSAS.map(s => <RadioOption key={s} label={s} price={0} selected={salsa === s} onSelect={() => setSalsa(s)} />)}
+          {openSec === "salsa" && SALSAS.map(s => <RadioOption key={s} label={s} price={0} selected={salsa === s} onSelect={() => { setSalsa(s); setOpenSec("extras"); }} />)}
+        </div>
+
+        {/* Extras */}
+        <div style={{ borderBottom: "1px solid #F0E4EA" }}>
+          <button 
+            onClick={() => setOpenSec(s => s === "extras" ? null : "extras")}
+            style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}
+          >
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Extras</span>
+            <span style={{ fontSize: 18, color: "#BBA8B0" }}>{openSec === "extras" ? "∧" : "∨"}</span>
+          </button>
+          {openSec === "extras" && EXTRAS.map(e => (
+            <CheckOption
+              key={e.name}
+              name={`Adición ${e.name}`}
+              price={e.price}
+              selected={!!extras.find(x => x.name === e.name)}
+              onToggle={() => toggleExtra(e.name, e.price)}
+            />
+          ))}
         </div>
 
         {/* Footer */}
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
-          {!ready && <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>* Elige sabor y salsa</p>}
+          {!ready && <p style={{ fontSize: 11, color: "#BBA8B0", textAlign: "center", marginBottom: 8 }}>* Elige helado y salsa</p>}
           <button
             onClick={handleConfirm}
             disabled={!ready}

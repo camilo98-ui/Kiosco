@@ -17,6 +17,9 @@ import HeladoFioreCustomizer from "@/components/menu/HeladoFioreCustomizer";
 import GalletaMediumHelladoCustomizer from "@/components/menu/GalletaMediumHelladoCustomizer";
 import BrownieHeladoSalsaCustomizer from "@/components/menu/BrownieHeladoSalsaCustomizer";
 import CharlieBrownieCustomizer from "@/components/menu/CharlieBrownieCustomizer";
+import SkilletGalletaSupremaCustomizer from "@/components/menu/SkilletGalletaSupremaCustomizer";
+import SkilletGalletaCombinada from "@/components/menu/SkilletGalletaCombinada";
+import SkilletGalletaMedianaCustomizer from "@/components/menu/SkilletGalletaMedianaCustomizer";
 import SundaeSalsaCustomizer from "@/components/menu/SundaeSalsaCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
 import BebidasLayout from "@/components/menu/BebidasLayout";
@@ -537,6 +540,9 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const [galletaHelladoProduct, setGalletaHelladoProduct] = useState(null);
   const [brownieHelladoProduct, setBrownieHelladoProduct] = useState(null);
   const [charlieBrownieProduct, setCharlieBrownieProduct] = useState(null);
+  const [skilletSupremaProduct, setSkilletSupremaProduct] = useState(null);
+  const [skilletCombinada, setSkilletCombinada] = useState(null);
+  const [skilletMedianaProduct, setSkilletMedianaProduct] = useState(null);
   const [sundaeProduct, setSundaeProduct] = useState(null);
 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
@@ -555,6 +561,12 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
     // Nuevos customizadores
     if (name.includes("charlie brownie") || name.includes("charly brownie")) {
       setCharlieBrownieProduct(patchedProduct);
+    } else if (name.includes("skillet") && name.includes("galleta suprema")) {
+      setSkilletSupremaProduct(patchedProduct);
+    } else if (name.includes("skillet") && name.includes("galleta combinada")) {
+      setSkilletCombinada(patchedProduct);
+    } else if (name.includes("skillet") && name.includes("galleta mediana")) {
+      setSkilletMedianaProduct(patchedProduct);
     } else if (name.includes("helado fiore")) {
       setFioreProduct(patchedProduct);
     } else if (name.includes("galleta mediana") && name.includes("hld")) {
@@ -717,6 +729,24 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
         product={charlieBrownieProduct}
         open={!!charlieBrownieProduct}
         onClose={() => setCharlieBrownieProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <SkilletGalletaSupremaCustomizer
+        product={skilletSupremaProduct}
+        open={!!skilletSupremaProduct}
+        onClose={() => setSkilletSupremaProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <SkilletGalletaCombinada
+        product={skilletCombinada}
+        open={!!skilletCombinada}
+        onClose={() => setSkilletCombinada(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <SkilletGalletaMedianaCustomizer
+        product={skilletMedianaProduct}
+        open={!!skilletMedianaProduct}
+        onClose={() => setSkilletMedianaProduct(null)}
         onAdd={handleCustomizerAdd}
       />
       <SundaeSalsaCustomizer
