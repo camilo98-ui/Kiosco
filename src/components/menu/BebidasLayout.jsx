@@ -114,53 +114,58 @@ function SingleHero({ product, onAdd }) {
   );
 }
 
-function SmallCard({ product, onAdd }) {
+function VerticalCard({ product, onAdd }) {
   const [imgErr, setImgErr] = React.useState(false);
   return (
     <motion.div
       whileTap={{ scale: 0.97 }}
       onClick={() => product.is_available !== false && onAdd(product)}
       style={{
-        background: "#fff", borderRadius: 18, overflow: "hidden",
+        background: "#F9F0F5", borderRadius: 18, overflow: "hidden",
         boxShadow: "0 2px 12px rgba(232,24,122,0.08)", cursor: "pointer",
-        display: "flex", flexDirection: "column",
+        display: "flex", flexDirection: "column", position: "relative",
       }}
     >
       <div style={{
-        width: "100%", height: 140, overflow: "hidden", borderRadius: "18px 18px 0 0",
-        position: "relative", flexShrink: 0,
+        width: "100%", minHeight: 200, padding: "16px", display: "flex",
+        alignItems: "center", justifyContent: "center", position: "relative",
+        flexShrink: 0, background: "#F9F0F5",
       }}>
         {product.image_url && !imgErr ? (
           <img src={product.image_url} alt={product.name} onError={() => setImgErr(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+            style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", objectPosition: "center" }} />
         ) : (
-          <div style={{ width: "100%", height: "100%", background: "#F9F0F5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44 }}>
-            {product.emoji || "💧"}
-          </div>
+          <span style={{ fontSize: 80 }}>{product.emoji || "💧"}</span>
         )}
-        <AvailabilityBadge available={product.is_available} />
-      </div>
-      <div style={{ padding: "12px 14px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#111", margin: 0, lineHeight: 1.3, fontFamily: FONT,
-            overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
-            {product.name}
-          </p>
-          <p style={{ fontSize: 14, fontWeight: 900, color: MAGENTA, margin: "4px 0 0", fontFamily: FONT }}>{formatCOP(product.price)}</p>
+        <div style={{
+          position: "absolute", top: 12, left: 12, fontSize: 10, fontWeight: 700,
+          borderRadius: 6, padding: "4px 10px", background: "#FFF0F5", color: "#E91E8C",
+        }}>
+          Disponible
         </div>
-        {product.is_available !== false && (
-          <button
-            onClick={(e) => { e.stopPropagation(); onAdd(product); }}
-            style={{
-              width: 30, height: 30, borderRadius: "50%", background: MAGENTA,
-              color: "#fff", border: "none", display: "flex", alignItems: "center",
-              justifyContent: "center", cursor: "pointer", flexShrink: 0, marginLeft: 8,
-              boxShadow: "0 2px 8px rgba(232,24,122,0.3)",
-            }}
-          >
-            <Plus size={14} />
-          </button>
-        )}
+      </div>
+      <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
+        <p style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10", margin: 0, lineHeight: 1.3, fontFamily: FONT }}>
+          {product.name}
+        </p>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <p style={{ fontSize: 16, fontWeight: 900, color: "#E91E8C", margin: 0, fontFamily: FONT }}>
+            {formatCOP(product.price)}
+          </p>
+          {product.is_available !== false && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onAdd(product); }}
+              style={{
+                width: 40, height: 40, borderRadius: "50%", background: "#E91E8C",
+                color: "#fff", border: "none", display: "flex", alignItems: "center",
+                justifyContent: "center", cursor: "pointer", flexShrink: 0,
+                boxShadow: "0 4px 12px rgba(233,30,140,0.3)",
+              }}
+            >
+              <Plus size={18} />
+            </button>
+          )}
+        </div>
       </div>
     </motion.div>
   );
@@ -186,14 +191,11 @@ export default function BebidasLayout({ products, onAdd }) {
     );
   }
 
-  // 3+ productos: grid 2 columnas
+  // 3+ productos: grid vertical
   return (
     <div style={{ padding: "8px 14px" }}>
-      <p style={{ fontSize: 9, fontWeight: 800, color: "#BBA8B0", textTransform: "uppercase", letterSpacing: "1.5px", margin: "0 0 12px", fontFamily: FONT }}>
-        {all.length} productos disponibles
-      </p>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-        {all.map(p => <SmallCard key={p.id} product={p} onAdd={onAdd} />)}
+        {all.map(p => <VerticalCard key={p.id} product={p} onAdd={onAdd} />)}
       </div>
     </div>
   );
