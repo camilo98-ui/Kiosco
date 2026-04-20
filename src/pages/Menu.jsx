@@ -223,6 +223,10 @@ export default function Menu() {
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [editingCustomerName, setEditingCustomerName] = useState(null);
   const [editingOrderNumber, setEditingOrderNumber] = useState(null);
+  // Refs para que doCheckout siempre lea los valores más recientes sin depender del closure
+  const editingOrderIdRef = useRef(null);
+  const editingCustomerNameRef = useRef(null);
+  const editingOrderNumberRef = useRef(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -345,9 +349,19 @@ export default function Menu() {
     const cartSnapshot = [...cart, ...extraItems];
     const orderTotal = passedTotal || cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
     
-    // Si editando, usar número de orden existente; si no, generar uno nuevo
-    const isEditing = !!editingOrderId;
-    const currentNum = isEditing ? editingOrderNumber : (nextOrderNum || 101);
+    // Leer desde refs para garantizar el valor más reciente (evita el problema de closure)
+    const currentEditingOrderId = editingOrderIdRef.current;
+    const currentEditingOrderNumber = editingOrderNumberRef.current;
+    const isEditing = !!currentEditingOrderId;
+    const currentNum = isEditing ? currentEditingOrderNumber : (nextOrderNum || 101);
+
+    // Limpiar refs y estado de edición ANTES de cualquier async
+    editingOrderIdRef.current = null;
+    editingCustomerNameRef.current = null;
+    editingOrderNumberRef.current = null;
+    setEditingOrderId(null);
+    setEditingCustomerName(null);
+    setEditingOrderNumber(null);
 
     clearCart();
     // Mostrar ticket inmediatamente
@@ -356,61 +370,61 @@ export default function Menu() {
       customer_name: name,
       items: cartSnapshot,
       total: orderTotal,
-      id: editingOrderId || `temp-${Date.now()}`,
-      isEdited: !!isEditing,
+      id: currentEditingOrderId || `temp-${Date.now()}`,
+      isEdited: isEditing,
     });
     setIsSubmitting(false);
 
-    // Guardar orden en background sin esperar
     const itemsData = cartSnapshot.map((i) => ({ product_id: i.product_id, product_name: i.product_name, price: i.price, quantity: i.quantity, notes: i.notes }));
 
     if (isEditing) {
-      // Actualizar orden existente
-      base44.entities.Order.update(editingOrderId, {
+      // Actualizar orden existente — await para asegurar que llega al servidor
+      await base44.entities.Order.update(currentEditingOrderId, {
         customer_name: name,
         items: itemsData,
         total: orderTotal
-      }).catch(() => {});
+      });
     } else {
       // Crear nueva orden
       const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
       const settingsId = settings[0]?.id;
-      Promise.all([
-      base44.entities.Order.create({
-        order_number: currentNum,
-        customer_name: name,
-        items: itemsData,
-        total: orderTotal,
-        status: "pendiente"
-      }),
-      settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) })]
-      ).catch(() => {});
+      await Promise.all([
+        base44.entities.Order.create({
+          order_number: currentNum,
+          customer_name: name,
+          items: itemsData,
+          total: orderTotal,
+          status: "pendiente"
+        }),
+        settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) })
+      ]);
       setNextOrderNum(currentNum + 1);
     }
-    setEditingOrderId(null);
-    setEditingCustomerName(null);
-    setEditingOrderNumber(null);
   };
 
   const handleCheckout = handleCheckoutStart;
 
   // Al abrir checkout en modo edición, saltar directamente sin pedir nombre
   const handleOpenCheckout = useCallback(() => {
-    if (editingOrderId && editingCustomerName) {
-      doCheckout(editingCustomerName, [], total);
+    if (editingOrderIdRef.current && editingCustomerNameRef.current) {
+      doCheckout(editingCustomerNameRef.current, [], total);
     } else {
       setCheckoutOpen(true);
     }
-  }, [editingOrderId, editingCustomerName, total]);
+  }, [total]);
 
   const handleEditOrder = (order) => {
     // Restaurar el carrito con los items del pedido confirmado
     clearCart();
     order.items.forEach((item) => addItem(item, item.notes || ""));
+    // Actualizar estado Y refs al mismo tiempo
+    editingOrderIdRef.current = order.id;
+    editingCustomerNameRef.current = order.customer_name;
+    editingOrderNumberRef.current = order.order_number;
     setEditingCustomerName(order.customer_name);
     setEditingOrderNumber(order.order_number);
-    setConfirmedOrder(null);
     setEditingOrderId(order.id);
+    setConfirmedOrder(null);
   };
 
   // Store selector screen
