@@ -51,8 +51,9 @@ function EditConfirmModal({ open, onCancel, onConfirm }) {
 export default function ConfirmationScreen({ order, onNewOrder, onEditOrder }) {
   const [showEditModal, setShowEditModal] = useState(false);
 
-  // Confeti inicial
+  // Confeti solo en pedidos nuevos (no ediciones)
   useEffect(() => {
+    if (order.isEdited) return;
     const duration = 2500;
     const end = Date.now() + duration;
     const colors = ["#C8145C", "#F7C5D0", "#B2DFD8", "#F9E4A0"];
@@ -105,7 +106,7 @@ export default function ConfirmationScreen({ order, onNewOrder, onEditOrder }) {
             {order.customer_name}
           </p>
           <p style={{ fontSize: 13, color: "#888", margin: 0 }}>
-            Preséntate en caja con este número 🍦
+            {order.isEdited ? "✅ Pedido actualizado correctamente" : "Preséntate en caja con este número 🍦"}
           </p>
         </motion.div>
 

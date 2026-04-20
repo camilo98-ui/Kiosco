@@ -196,6 +196,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={onAddProduct} />
 
+
     </div>);
 
 }
@@ -220,6 +221,7 @@ export default function Menu() {
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const [showRating, setShowRating] = useState(false);
   const [editingOrderId, setEditingOrderId] = useState(null);
+  const [editingCustomerName, setEditingCustomerName] = useState(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -332,6 +334,12 @@ export default function Menu() {
     doCheckout(name, [], total);
   }, [total]);
 
+  // Confirmación directa al editar (sin pedir nombre)
+  const handleConfirmEdit = useCallback(() => {
+    if (!confirmedOrder) return;
+    doCheckout(confirmedOrder.customer_name, [], total);
+  }, [confirmedOrder, total]);
+
   const doCheckout = async (name, extraItems = [], passedTotal = 0) => {
     const cartSnapshot = [...cart, ...extraItems];
     const orderTotal = passedTotal || cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
@@ -347,7 +355,8 @@ export default function Menu() {
       customer_name: name,
       items: cartSnapshot,
       total: orderTotal,
-      id: editingOrderId || `temp-${Date.now()}`
+      id: editingOrderId || `temp-${Date.now()}`,
+      isEdited: !!isEditing,
     });
     setIsSubmitting(false);
 
@@ -378,14 +387,25 @@ export default function Menu() {
       setNextOrderNum(currentNum + 1);
     }
     setEditingOrderId(null);
+    setEditingCustomerName(null);
   };
 
   const handleCheckout = handleCheckoutStart;
+
+  // Al abrir checkout en modo edición, saltar directamente sin pedir nombre
+  const handleOpenCheckout = useCallback(() => {
+    if (editingOrderId && editingCustomerName) {
+      doCheckout(editingCustomerName, [], total);
+    } else {
+      setCheckoutOpen(true);
+    }
+  }, [editingOrderId, editingCustomerName, total]);
 
   const handleEditOrder = (order) => {
     // Restaurar el carrito con los items del pedido confirmado
     clearCart();
     order.items.forEach((item) => addItem(item, item.notes || ""));
+    setEditingCustomerName(order.customer_name);
     setConfirmedOrder(null);
     setEditingOrderId(order.id);
   };
@@ -418,7 +438,7 @@ export default function Menu() {
         products={products}
         onAddProduct={handleAddProduct}
         checkoutOpen={checkoutOpen}
-        setCheckoutOpen={setCheckoutOpen}
+        setCheckoutOpen={(v) => v ? handleOpenCheckout() : setCheckoutOpen(false)}
         handleCheckout={handleCheckout}
         isSubmitting={isSubmitting}
         hiddenMenuOpen={hiddenMenuOpen}
@@ -426,7 +446,7 @@ export default function Menu() {
         upsellMsg={upsellMsg}
         setUpsellMsg={setUpsellMsg}
         handleUpsellAccept={handleUpsellAccept}
-          autoOpenProduct={autoOpenProduct}
+        autoOpenProduct={autoOpenProduct}
         onAutoOpenDone={() => setAutoOpenProduct(null)} />);
 
 
@@ -495,7 +515,7 @@ export default function Menu() {
       </div>
 
       {/* ── OVERLAYS ── */}
-      <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
+      <PremiumCartBar onCheckout={handleOpenCheckout} />
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
