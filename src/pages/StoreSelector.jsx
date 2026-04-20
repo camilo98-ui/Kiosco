@@ -80,29 +80,6 @@ export default function StoreSelector() {
           </p>
         </div>
 
-        {/* Opción usar ubicación */}
-        <motion.button
-          whileTap={{ scale: 0.96 }}
-          style={{
-            width: "100%",
-            padding: "12px 14px",
-            borderRadius: "14px",
-            border: "1px solid #FFE4F3",
-            background: "#FFF9FB",
-            fontSize: "13px",
-            fontWeight: 600,
-            color: "#C41E6A",
-            cursor: "pointer",
-            marginBottom: "12px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "6px",
-            transition: "all 0.2s"
-          }}>
-          📍 Usar mi ubicación
-        </motion.button>
-
         {/* Última tienda usada */}
         {lastStore && (
           <motion.button
