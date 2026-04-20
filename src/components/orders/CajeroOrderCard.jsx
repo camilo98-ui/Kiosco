@@ -28,15 +28,15 @@ function getProgressWidth(elapsedSeconds) {
   return Math.min(100, (elapsedSeconds / 600) * 100);
 }
 
-// Cap display time to 10 minutes max
-function getDisplaySeconds(elapsedSeconds) {
-  return Math.min(elapsedSeconds, 599);
+// Cap display/visual time to 10 minutes max (600s)
+function capElapsed(elapsedSeconds) {
+  return Math.min(elapsedSeconds, 600);
 }
 
 function TimeBadge({ elapsedSeconds }) {
-  const display = getDisplaySeconds(elapsedSeconds);
-  const mins = Math.floor(display / 60);
-  const secs = display % 60;
+  const capped = capElapsed(elapsedSeconds);
+  const mins = Math.floor(capped / 60);
+  const secs = capped % 60;
   const timeStr = `${mins}:${String(secs).padStart(2, "0")}`;
   const state = getTimeState(elapsedSeconds);
 
@@ -44,7 +44,7 @@ function TimeBadge({ elapsedSeconds }) {
     ? { background: "#ECFDF5", color: "#059669" }
     : { background: "#FEE2E2", color: "#DC2626" };
 
-  const label = state === "normal" ? `${mins} min` : `⚠️ +${mins} min`;
+  const label = state === "normal" ? `${mins} min` : `⚠️ 10+ min`;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
