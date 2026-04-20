@@ -261,22 +261,28 @@ export default function HeladoSubcatCustomizer({ subcat, open, onClose, onAdd })
             isDone={numSabores !== null}
             onToggle={() => setOpenStep(s => s === "cantidad" ? null : "cantidad")}
           >
-            <div style={{ display: "flex", gap: 10, padding: "12px 16px" }}>
+            {!numSabores && (
+              <p style={{ fontSize: 12, color: MAGENTA, fontWeight: 700, padding: "4px 16px 0", margin: 0, fontFamily: FONT }}>
+                👇 Toca una opción para empezar
+              </p>
+            )}
+            <div style={{ display: "flex", gap: 10, padding: "10px 16px 14px" }}>
               {[1, 2].map(n => (
                 <button
                   key={n}
                   onClick={() => handleSelectNumSabores(n)}
                   style={{
-                    flex: 1, padding: "14px 0", borderRadius: 14,
-                    border: numSabores === n ? `2.5px solid ${MAGENTA}` : "1.5px solid #F0E4EA",
-                    background: numSabores === n ? "#FFF0F5" : "#fff",
+                    flex: 1, padding: "16px 0", borderRadius: 14,
+                    border: numSabores === n ? `2.5px solid ${MAGENTA}` : `2px solid ${MAGENTA}`,
+                    background: numSabores === n ? MAGENTA : "#FFF0F5",
                     cursor: "pointer", fontWeight: 800, fontSize: 15,
-                    color: numSabores === n ? MAGENTA : "#888",
+                    color: numSabores === n ? "#fff" : MAGENTA,
                     fontFamily: FONT, transition: "all 0.15s",
+                    boxShadow: numSabores === n ? "0 4px 14px rgba(196,30,106,0.35)" : "none",
                   }}
                 >
                   {n} {n === 1 ? "Sabor" : "Sabores"}
-                  <div style={{ fontSize: 11, fontWeight: 600, color: numSabores === n ? MAGENTA : "#BBB", marginTop: 2 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: numSabores === n ? "rgba(255,255,255,0.85)" : MAGENTA, marginTop: 2 }}>
                     {formatCOP(prices[n === 1 ? "1 Sabor" : "2 Sabores"])}
                   </div>
                 </button>
