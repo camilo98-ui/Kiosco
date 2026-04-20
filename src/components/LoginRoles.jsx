@@ -139,7 +139,7 @@ export default function LoginRoles() {
         </div>
 
         {/* Buscador de Tiendas */}
-         <div className="mb-6">
+         <div className="mb-8">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#D81B60", opacity: 0.7 }} />
             <input
@@ -161,7 +161,7 @@ export default function LoginRoles() {
           {loading ?
           <p className="text-center text-sm py-4" style={{ color: "#BBA8B0" }}>Cargando tiendas...</p> :
           filtered.length > 0 ?
-          <div className="space-y-2 max-h-44 overflow-y-auto pr-1 mb-4">
+          <div className="space-y-3 max-h-44 overflow-y-auto pr-1 mb-6">
                {filtered.map((store, idx) =>
             <motion.button
               key={store.id}
@@ -205,7 +205,7 @@ export default function LoginRoles() {
             background: selectedStore ? "linear-gradient(180deg, #E8187A 0%, #D81B60 100%)" : "#E8E8E8",
             color: selectedStore ? "#FFFFFF" : "#CCC",
             cursor: selectedStore ? "pointer" : "not-allowed",
-            boxShadow: selectedStore ? "0 8px 20px rgba(216, 27, 96, 0.2), 0 0 8px rgba(216, 27, 96, 0.12)" : "none",
+            boxShadow: selectedStore ? "0 10px 24px rgba(216, 27, 96, 0.2)" : "none",
             marginTop: "24px",
             letterSpacing: "0.2px"
           }}>
@@ -214,7 +214,7 @@ export default function LoginRoles() {
         </motion.button>
 
         {/* Footer */}
-         <p className="text-center text-xs" style={{ color: "#C8B3BE", marginTop: "28px", marginBottom: 0, fontWeight: 500, letterSpacing: "0.3px" }}>
+         <p className="text-center text-xs" style={{ color: "#C8B3BE", marginTop: "32px", marginBottom: "4px", fontWeight: 500, letterSpacing: "0.3px" }}>
           Tu helado te espera ✨
         </p>
       </motion.div>
