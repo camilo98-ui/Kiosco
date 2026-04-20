@@ -270,36 +270,63 @@ export default function MalteadaCustomizer12oz({ product, open, onClose, onAdd }
           ))}
         </AccordionSection>
 
-        <AccordionSection
-          title="Elige Tus Adiciones"
-          required={false}
-          open={openSection === "extras"}
-          onToggle={() => toggle("extras")}
-        >
-          <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Puedes elegir varias opciones</p>
-          {EXTRAS.map(e => (
-            <CheckOption
-              key={e.name}
-              name={`Adición ${e.name}`}
-              price={e.price}
-              selected={!!extras.find(x => x.name === e.name)}
-              onToggle={() => toggleExtra(e.name, e.price)}
-            />
-          ))}
-          <div style={{ padding: "12px 16px 4px" }}>
+        {openSection === "extras" && (
+          <>
+            <div style={{ borderBottom: "1px solid #F0E4EA", background: "#FFFCFD" }}>
+              <button
+                onClick={() => setOpenSection(null)}
+                style={{
+                  width: "100%", display: "flex", alignItems: "center",
+                  justifyContent: "space-between", padding: "14px 16px",
+                  background: "none", border: "none", cursor: "pointer",
+                }}
+              >
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Elige Tus Adiciones</span>
+                <ChevronUp size={18} color="#BBA8B0" />
+              </button>
+              <div style={{ paddingBottom: 8 }}>
+                <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Puedes elegir varias opciones</p>
+                {EXTRAS.map(e => (
+                  <CheckOption
+                    key={e.name}
+                    name={`Adición ${e.name}`}
+                    price={e.price}
+                    selected={!!extras.find(x => x.name === e.name)}
+                    onToggle={() => toggleExtra(e.name, e.price)}
+                  />
+                ))}
+                <div style={{ padding: "12px 16px 4px" }}>
+                  <button
+                    onClick={() => setOpenSection(null)}
+                    style={{
+                      width: "100%", padding: "13px 0", borderRadius: 14,
+                      background: "#C2185B", color: "#fff", border: "none",
+                      fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "'Poppins', sans-serif",
+                      boxShadow: "0 4px 14px rgba(196,30,106,0.35)",
+                    }}
+                  >
+                    Sin extras, continuar ✓
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+        {openSection !== "extras" && (
+          <div style={{ borderBottom: "1px solid #F0E4EA" }}>
             <button
-              onClick={() => setOpenSection(null)}
+              onClick={() => setOpenSection("extras")}
               style={{
-                width: "100%", padding: "13px 0", borderRadius: 14,
-                background: "#C2185B", color: "#fff", border: "none",
-                fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "'Poppins', sans-serif",
-                boxShadow: "0 4px 14px rgba(196,30,106,0.35)",
+                width: "100%", display: "flex", alignItems: "center",
+                justifyContent: "space-between", padding: "14px 16px",
+                background: "none", border: "none", cursor: "pointer",
               }}
             >
-              Sin extras, continuar ✓
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#1A0A10" }}>Elige Tus Adiciones</span>
+              <ChevronDown size={18} color="#BBA8B0" />
             </button>
           </div>
-        </AccordionSection>
+        )}
 
         <div style={{ padding: "16px", position: "sticky", bottom: 0, background: "#FFFCFD", borderTop: "1px solid #F0E4EA" }}>
           {!allRequired && (
