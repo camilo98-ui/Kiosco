@@ -110,94 +110,88 @@ export default function LoginRoles() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-[340px] p-6 rounded-3xl mx-auto"
+        className="relative z-10 w-full max-w-[340px] rounded-3xl mx-auto"
         style={{
-          background: "rgba(255, 255, 255, 0.65)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          border: "1.5px solid rgba(255, 255, 255, 0.9)",
-          boxShadow: "0 12px 40px rgba(232, 24, 122, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
-          minHeight: "540px"
+          background: "rgba(255, 255, 255, 0.7)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          border: "1px solid rgba(255, 255, 255, 0.85)",
+          boxShadow: "0 8px 28px rgba(232, 24, 122, 0.15), inset 0 0 1px rgba(255, 255, 255, 0.6)",
+          padding: "28px"
         }}>
         
         {/* Header */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-7">
           <motion.img
             src="https://media.base44.com/images/public/69cc99522394d529d2756aa4/bfc0077cd_images__2_-removebg-preview.png"
             alt="Popsy"
-            className="h-20 mb-4 mx-auto"
-            style={{ filter: 'drop-shadow(0 0 0px rgba(233, 30, 99, 0))', mixBlendMode: 'multiply' }}
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} />
+            className="h-20 mb-5 mx-auto"
+            style={{ filter: 'drop-shadow(0 2px 8px rgba(233, 30, 99, 0.08))', mixBlendMode: 'multiply' }}
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }} />
           
-          <h2 className="text-[hsl(var(--muted-foreground))] mb-1 text-xl font-bold" style={{ color: "#2D1A22" }}>
+          <h2 className="text-center font-900" style={{ fontSize: "22px", color: "#1A0A10", margin: "0 0 6px", letterSpacing: "-0.5px" }}>
             Bienvenido
           </h2>
-          <p className="text-xs font-medium" style={{ color: "#999" }}>
+          <p className="text-xs" style={{ color: "#8A7880", margin: 0, fontWeight: 500, letterSpacing: "0.3px" }}>
             ¿Dónde estás hoy?
           </p>
         </div>
 
         {/* Buscador de Tiendas */}
-         <div className="space-y-4 mb-6">
+         <div className="mb-6">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: "#E91E63" }} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#D81B60", opacity: 0.7 }} />
             <input
               type="text"
               placeholder="Busca tu tienda..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-2.5 rounded-2xl border-2 focus:border-pink-400 focus:outline-none transition-all text-sm"
+              className="w-full pl-11 pr-4 py-2.5 rounded-xl border transition-all text-sm font-400"
               style={{
-                background: "rgba(255, 255, 255, 0.8)",
-                backdropFilter: "blur(10px)",
-                border: search ? "2px solid #E91E63" : "1.5px solid rgba(233, 30, 99, 0.3)",
-                boxShadow: search ? "0 4px 12px rgba(233, 30, 99, 0.2), inset 0 1px 3px rgba(233, 30, 99, 0.1)" : "0 2px 8px rgba(233, 30, 99, 0.1)",
-                color: "#1A1A1A"
-              }}
-              style={{
-                background: "rgba(255, 255, 255, 0.8)",
-                color: "#1A1A1A"
-              }}
-              placeholder="Busca tu tienda..."
-            />
+                background: "rgba(255, 255, 255, 0.9)",
+                border: search ? "1.5px solid #D81B60" : "1px solid rgba(196, 30, 106, 0.15)",
+                boxShadow: search ? "0 3px 8px rgba(196, 30, 106, 0.12), inset 0 1px 2px rgba(196, 30, 106, 0.06)" : "0 1px 3px rgba(0, 0, 0, 0.05)",
+                color: "#1A0A10",
+                fontSize: "14px"
+              }} />
 
           </div>
 
           {loading ?
-          <p className="text-center text-gray-400 text-sm py-4">Cargando tiendas...</p> :
+          <p className="text-center text-sm py-4" style={{ color: "#BBA8B0" }}>Cargando tiendas...</p> :
           filtered.length > 0 ?
-          <div className="space-y-2 max-h-40 overflow-y-auto pr-2 mb-3">
+          <div className="space-y-2 max-h-44 overflow-y-auto pr-1 mb-4">
                {filtered.map((store, idx) =>
             <motion.button
               key={store.id}
               onClick={() => setSelectedStore(store.id)}
-              whileTap={{ scale: 1.02 }}
-              initial={{ opacity: 0, y: 10 }}
+              whileTap={{ scale: 0.99 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.05 }}
-              className="w-full text-left transition-all"
+              transition={{ delay: idx * 0.04 }}
+              className="w-full text-left transition-all duration-150"
               style={{
-                background: selectedStore === store.id ? "rgba(233, 30, 99, 0.15)" : "rgba(255, 255, 255, 0.5)",
-                border: selectedStore === store.id ? "1.5px solid #E91E63" : "1.5px solid rgba(233, 30, 99, 0.2)",
-                borderRadius: "14px",
-                padding: "12px 14px",
-                boxShadow: selectedStore === store.id ? "0 4px 12px rgba(233, 30, 99, 0.15)" : "none"
+                background: selectedStore === store.id ? "linear-gradient(135deg, rgba(216, 27, 96, 0.08) 0%, rgba(232, 30, 99, 0.05) 100%)" : "#FFFFFF",
+                border: selectedStore === store.id ? "1.2px solid #D81B60" : "1px solid rgba(196, 30, 106, 0.1)",
+                borderRadius: "12px",
+                padding: "13px 14px",
+                boxShadow: selectedStore === store.id ? "0 2px 6px rgba(216, 27, 96, 0.08), inset 0 1px 2px rgba(216, 27, 96, 0.04)" : "0 1px 2px rgba(0, 0, 0, 0.02)"
               }}>
-              <div className="flex items-start gap-2">
-                {selectedStore === store.id && <span style={{ color: "#E91E63", marginTop: "2px" }}>📍</span>}
-                <div className="flex-1">
-                  <p className="font-bold text-sm" style={{ color: selectedStore === store.id ? "#E91E63" : "#1A1A1A" }}>
+              <div className="flex items-start gap-2.5">
+                {selectedStore === store.id && <span style={{ color: "#D81B60", marginTop: "1px", fontSize: "13px" }}>📍</span>}
+                <div className="flex-1 min-w-0">
+                  <p className="font-700 text-sm" style={{ color: selectedStore === store.id ? "#D81B60" : "#1A0A10", margin: 0 }}>
                     {store.name}
                   </p>
-                  <p className="text-xs" style={{ color: selectedStore === store.id ? "#C41E6A" : "#999", marginTop: "2px" }}>{store.address || store.name}</p>
+                  <p className="text-xs" style={{ color: selectedStore === store.id ? "#B8297C" : "#9A8A99", marginTop: "2px", margin: 0 }}>{store.address || store.name}</p>
                 </div>
               </div>
                 </motion.button>
             )}
             </div> :
           search.length > 0 ?
-          <p className="text-center text-gray-400 text-sm py-4">No encontramos tiendas</p> :
+          <p className="text-center text-sm py-4" style={{ color: "#BBA8B0" }}>No encontramos tiendas</p> :
           null}
         </div>
 
@@ -205,21 +199,22 @@ export default function LoginRoles() {
          <motion.button
           onClick={handleEnter}
           disabled={!selectedStore}
-          whileTap={selectedStore ? { scale: 0.98 } : {}}
-          className="w-full h-11 rounded-2xl font-bold text-sm transition-all"
+          whileTap={selectedStore ? { scale: 0.97 } : {}}
+          className="w-full h-12 rounded-xl font-800 text-sm transition-all"
           style={{
-            background: selectedStore ? "linear-gradient(135deg, #E91E63 0%, #F06292 100%)" : "#E8E8E8",
-            color: selectedStore ? "#FFFFFF" : "#999",
+            background: selectedStore ? "linear-gradient(180deg, #E8187A 0%, #D81B60 100%)" : "#E8E8E8",
+            color: selectedStore ? "#FFFFFF" : "#CCC",
             cursor: selectedStore ? "pointer" : "not-allowed",
-            boxShadow: selectedStore ? "0 8px 20px rgba(233, 30, 99, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3)" : "none",
-            marginTop: "20px"
+            boxShadow: selectedStore ? "0 6px 16px rgba(216, 27, 96, 0.18), 0 0 1px rgba(216, 27, 96, 0.1)" : "none",
+            marginTop: "24px",
+            letterSpacing: "0.2px"
           }}>
 
           Entrar a Popsy
         </motion.button>
 
         {/* Footer */}
-         <p className="text-center text-xs" style={{ color: "#BBB", marginTop: "20px" }}>
+         <p className="text-center text-xs" style={{ color: "#C8B3BE", marginTop: "22px", fontWeight: 500, letterSpacing: "0.3px" }}>
           Tu helado te espera ✨
         </p>
       </motion.div>
