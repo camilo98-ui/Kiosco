@@ -28,9 +28,15 @@ function getProgressWidth(elapsedSeconds) {
   return Math.min(100, (elapsedSeconds / 600) * 100);
 }
 
+// Cap display time to 10 minutes max
+function getDisplaySeconds(elapsedSeconds) {
+  return Math.min(elapsedSeconds, 599);
+}
+
 function TimeBadge({ elapsedSeconds }) {
-  const mins = Math.floor(elapsedSeconds / 60);
-  const secs = elapsedSeconds % 60;
+  const display = getDisplaySeconds(elapsedSeconds);
+  const mins = Math.floor(display / 60);
+  const secs = display % 60;
   const timeStr = `${mins}:${String(secs).padStart(2, "0")}`;
   const state = getTimeState(elapsedSeconds);
 
@@ -129,17 +135,19 @@ export default function CajeroOrderCard({ order, onFinalize }) {
 
       <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
 
-        {/* Top row: order number (centrado, magenta) + timer */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 30, fontWeight: 900, color: MAGENTA, lineHeight: 1, fontFamily: FONT }}>
+        {/* Top row: order number centrado + timer en esquina */}
+        <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 40 }}>
+          <span style={{ fontSize: 32, fontWeight: 900, color: MAGENTA, lineHeight: 1, fontFamily: FONT }}>
             #{order.order_number}
           </span>
-          {!isFinalized && <TimeBadge elapsedSeconds={elapsed} />}
-          {isFinalized && (
-            <span style={{ fontSize: 11, fontWeight: 700, background: "#F0F0F0", color: "#999", borderRadius: 20, padding: "3px 10px" }}>
-              ✅ Cobrado
-            </span>
-          )}
+          <div style={{ position: "absolute", right: 0, top: 0 }}>
+            {!isFinalized && <TimeBadge elapsedSeconds={elapsed} />}
+            {isFinalized && (
+              <span style={{ fontSize: 11, fontWeight: 700, background: "#F0F0F0", color: "#999", borderRadius: 20, padding: "3px 10px" }}>
+                ✅ Cobrado
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Cliente */}
@@ -158,20 +166,20 @@ export default function CajeroOrderCard({ order, onFinalize }) {
         {/* Separador */}
         <div style={{ height: 1, background: "#F5F5F5" }} />
 
-        {/* Items — flex: 1 para que ocupe el espacio disponible */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
+        {/* Items */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
           {order.items?.map((item, i) => (
             <div key={i}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 6 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, flex: 1 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                <span style={{ fontSize: 16, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.35, flex: 1 }}>
                   {item.quantity > 1 && (
-                    <span style={{ display: "inline-block", background: MAGENTA, color: "#fff", borderRadius: 5, fontSize: 11, fontWeight: 800, padding: "1px 6px", marginRight: 5 }}>
+                    <span style={{ display: "inline-block", background: MAGENTA, color: "#fff", borderRadius: 6, fontSize: 13, fontWeight: 800, padding: "1px 7px", marginRight: 6 }}>
                       ×{item.quantity}
                     </span>
                   )}
                   {item.product_name}
                 </span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: MAGENTA, flexShrink: 0 }}>{formatCOP(item.price * item.quantity)}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: MAGENTA, flexShrink: 0 }}>{formatCOP(item.price * item.quantity)}</span>
               </div>
               <ProductDetailLine item={item} />
             </div>
