@@ -385,10 +385,10 @@ export default function Menu() {
         total: orderTotal
       });
     } else {
-      // Crear nueva orden
+      // Crear nueva orden y guardar el ID real para que "Editar pedido" funcione
       const settings = await base44.entities.Settings.filter({ key: "next_order_number" });
       const settingsId = settings[0]?.id;
-      await Promise.all([
+      const [newOrder] = await Promise.all([
         base44.entities.Order.create({
           order_number: currentNum,
           customer_name: name,
@@ -399,6 +399,10 @@ export default function Menu() {
         settingsId && base44.entities.Settings.update(settingsId, { value: String(currentNum + 1) })
       ]);
       setNextOrderNum(currentNum + 1);
+      // Actualizar confirmedOrder con el ID real de la BD
+      if (newOrder?.id) {
+        setConfirmedOrder(prev => prev ? { ...prev, id: newOrder.id } : prev);
+      }
     }
   };
 
