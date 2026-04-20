@@ -13,6 +13,10 @@ import GranizadoCustomizer from "@/components/menu/GranizadoCustomizer";
 import ConeCustomizer from "@/components/menu/ConeCustomizer";
 import GenericCustomizer from "@/components/menu/GenericCustomizer";
 import EspecialidadesCustomizer from "@/components/menu/EspecialidadesCustomizer";
+import HeladoFioreCustomizer from "@/components/menu/HeladoFioreCustomizer";
+import GalletaMediumHelladoCustomizer from "@/components/menu/GalletaMediumHelladoCustomizer";
+import BrownieHeladoSalsaCustomizer from "@/components/menu/BrownieHeladoSalsaCustomizer";
+import SundaeSalsaCustomizer from "@/components/menu/SundaeSalsaCustomizer";
 import ProductDetailLine from "@/components/menu/ProductDetailLine";
 import BebidasLayout from "@/components/menu/BebidasLayout";
 import CafeLayoutPremium from "@/components/menu/CafeLayoutPremium";
@@ -528,6 +532,10 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
   const [coneProduct, setConeProduct] = useState(null);
   const [genericProduct, setGenericProduct] = useState(null);
   const [especialidadesProduct, setEspecialidadesProduct] = useState(null);
+  const [fioreProduct, setFioreProduct] = useState(null);
+  const [galletaHelladoProduct, setGalletaHelladoProduct] = useState(null);
+  const [brownieHelladoProduct, setBrownieHelladoProduct] = useState(null);
+  const [sundaeProduct, setSundaeProduct] = useState(null);
 
   const bg = CATEGORY_BG[category] || "#FFF0F5";
   const catLabel = CATEGORIES.find(c => c.id === category)?.label || category;
@@ -542,7 +550,18 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
       patchedProduct = { ...product, image_url: "https://media.base44.com/images/public/69cc99522394d529d2756aa4/4ec8da0eb_Sundae2sabores14900.png" };
     }
 
-    if (category === "malteadas") {
+    // Nuevos customizadores
+    if (name.includes("helado fiore")) {
+      setFioreProduct(patchedProduct);
+    } else if (name.includes("galleta mediana") && name.includes("hld")) {
+      setGalletaHelladoProduct(patchedProduct);
+    } else if (name.includes("brownie con helado")) {
+      setBrownieHelladoProduct(patchedProduct);
+    } else if (name.includes("copa gelarti pops")) {
+      setSundaeProduct(patchedProduct);
+    } else if (name.includes("sundae 1 sabor") || name.includes("sundae 2 sabor")) {
+      setSundaeProduct(patchedProduct);
+    } else if (category === "malteadas") {
       if (patchedProduct.name.includes("12oz")) {
         setCustomizer12ozProduct(patchedProduct);
       } else {
@@ -670,6 +689,30 @@ export default function EditorialLayout({ products, category, onAdd, addedFlash,
         product={especialidadesProduct}
         open={!!especialidadesProduct}
         onClose={() => setEspecialidadesProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <HeladoFioreCustomizer
+        product={fioreProduct}
+        open={!!fioreProduct}
+        onClose={() => setFioreProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <GalletaMediumHelladoCustomizer
+        product={galletaHelladoProduct}
+        open={!!galletaHelladoProduct}
+        onClose={() => setGalletaHelladoProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <BrownieHeladoSalsaCustomizer
+        product={brownieHelladoProduct}
+        open={!!brownieHelladoProduct}
+        onClose={() => setBrownieHelladoProduct(null)}
+        onAdd={handleCustomizerAdd}
+      />
+      <SundaeSalsaCustomizer
+        product={sundaeProduct}
+        open={!!sundaeProduct}
+        onClose={() => setSundaeProduct(null)}
         onAdd={handleCustomizerAdd}
       />
     </>
