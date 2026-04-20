@@ -70,8 +70,16 @@ export default function Cajero() {
     queryKey: ["orders-cajero"],
     queryFn: () => base44.entities.Order.list("-created_date", 100),
     refetchInterval: 3000,
-    staleTime: 1000,
+    staleTime: 0,
   });
+
+  // Suscripción en tiempo real para refrescar al instante cuando se edita un pedido
+  useEffect(() => {
+    const unsub = base44.entities.Order.subscribe(() => {
+      queryClient.invalidateQueries({ queryKey: ["orders-cajero"] });
+    });
+    return unsub;
+  }, [queryClient]);
 
   const updateOrder = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Order.update(id, data),
@@ -219,7 +227,7 @@ export default function Cajero() {
           }}>
             {filteredOrders.map((order) => (
               <CajeroOrderCard
-                key={order.id}
+                key={`${order.id}-${order.updated_date}`}
                 order={order}
                 onFinalize={handleFinalize}
               />

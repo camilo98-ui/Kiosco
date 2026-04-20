@@ -148,7 +148,7 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
 
 }
 
-function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, upsellMsg, setUpsellMsg, handleUpsellAccept, autoOpenProduct, onAutoOpenDone }) {
+function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onAdd, addedFlash, onBack, searchOpen, setSearchOpen, products, onAddProduct, checkoutOpen, setCheckoutOpen, handleCheckout, isSubmitting, hiddenMenuOpen, setHiddenMenuOpen, upsellMsg, setUpsellMsg, handleUpsellAccept, autoOpenProduct, onAutoOpenDone, isEditing, editingCustomerName }) {
   const touchStartX = useRef(null);
 
   const handleTouchStart = (e) => {
@@ -190,7 +190,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
             />
         }
       </div>
-      <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} />
+      <PremiumCartBar onCheckout={() => setCheckoutOpen(true)} isEditing={isEditing} editingCustomerName={editingCustomerName} />
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />
@@ -222,6 +222,7 @@ export default function Menu() {
   const [showRating, setShowRating] = useState(false);
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [editingCustomerName, setEditingCustomerName] = useState(null);
+  const [editingOrderNumber, setEditingOrderNumber] = useState(null);
   const upsellTimer = useRef(null);
   const logoClickCount = useRef(0);
   const logoClickTimer = useRef(null);
@@ -345,8 +346,8 @@ export default function Menu() {
     const orderTotal = passedTotal || cartSnapshot.reduce((s, i) => s + i.price * i.quantity, 0);
     
     // Si editando, usar número de orden existente; si no, generar uno nuevo
-    const isEditing = editingOrderId && editingOrderId !== `temp-${Date.now()}`;
-    const currentNum = isEditing ? confirmedOrder?.order_number : (nextOrderNum || 101);
+    const isEditing = !!editingOrderId;
+    const currentNum = isEditing ? editingOrderNumber : (nextOrderNum || 101);
 
     clearCart();
     // Mostrar ticket inmediatamente
@@ -388,6 +389,7 @@ export default function Menu() {
     }
     setEditingOrderId(null);
     setEditingCustomerName(null);
+    setEditingOrderNumber(null);
   };
 
   const handleCheckout = handleCheckoutStart;
@@ -406,6 +408,7 @@ export default function Menu() {
     clearCart();
     order.items.forEach((item) => addItem(item, item.notes || ""));
     setEditingCustomerName(order.customer_name);
+    setEditingOrderNumber(order.order_number);
     setConfirmedOrder(null);
     setEditingOrderId(order.id);
   };
@@ -447,7 +450,9 @@ export default function Menu() {
         setUpsellMsg={setUpsellMsg}
         handleUpsellAccept={handleUpsellAccept}
         autoOpenProduct={autoOpenProduct}
-        onAutoOpenDone={() => setAutoOpenProduct(null)} />);
+        onAutoOpenDone={() => setAutoOpenProduct(null)}
+        isEditing={!!editingOrderId}
+        editingCustomerName={editingCustomerName} />);
 
 
   }
@@ -515,7 +520,7 @@ export default function Menu() {
       </div>
 
       {/* ── OVERLAYS ── */}
-      <PremiumCartBar onCheckout={handleOpenCheckout} />
+      <PremiumCartBar onCheckout={handleOpenCheckout} isEditing={!!editingOrderId} editingCustomerName={editingCustomerName} />
       <UpsellBanner message={upsellMsg} onDismiss={() => setUpsellMsg(null)} onAccept={handleUpsellAccept} />
       <CheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onConfirm={handleCheckout} isLoading={isSubmitting} />
       <HiddenMenu open={hiddenMenuOpen} onClose={() => setHiddenMenuOpen(false)} />

@@ -19,7 +19,7 @@ function getIncentive(total) {
   return INCENTIVE_THRESHOLDS.find(t => total >= t.min && total < t.max)?.msg || null;
 }
 
-export default function PremiumCartBar({ onCheckout }) {
+export default function PremiumCartBar({ onCheckout, isEditing = false, editingCustomerName = null }) {
   const { cart, updateQuantity, removeItem, updateNotes, total, itemCount, addItem } = useCart();
   const [open, setOpen] = useState(false);
   const [editingNotes, setEditingNotes] = useState(null);
@@ -65,7 +65,7 @@ export default function PremiumCartBar({ onCheckout }) {
               >
                 {itemCount}
               </motion.div>
-              <span className="font-black text-white" style={{ fontSize: 15 }}>Ver mi pedido</span>
+              <span className="font-black text-white" style={{ fontSize: 15 }}>{isEditing ? "✏️ Editando pedido" : "Ver mi pedido"}</span>
             </div>
             {getIncentive(total) && (
               <p style={{ fontSize: 9, color: "rgba(255,255,255,0.82)", marginTop: 2, marginLeft: 44, fontWeight: 600, lineHeight: 1.2 }}>
@@ -92,11 +92,20 @@ export default function PremiumCartBar({ onCheckout }) {
               className="flex items-center justify-between"
               style={{ fontSize: 18, color: "#2D1A22" }}
             >
-              <span className="font-black">Tu pedido</span>
+              <span className="font-black">{isEditing ? "✏️ Editando pedido" : "Tu pedido"}</span>
               <span style={{ fontSize: 13, color: "#BBA8B0", fontWeight: 600 }}>
                 {itemCount} items
               </span>
             </SheetTitle>
+            {isEditing && editingCustomerName && (
+              <div style={{
+                background: "#FFF0F5", border: "1.5px solid #F0C0D8",
+                borderRadius: 12, padding: "8px 14px", marginTop: 6,
+                fontSize: 12, color: "#C41E6A", fontWeight: 700,
+              }}>
+                ✏️ Modificando pedido de <strong>{editingCustomerName}</strong> — los cambios se guardan al confirmar
+              </div>
+            )}
           </SheetHeader>
 
           {cart.length === 0 && (
@@ -234,9 +243,9 @@ export default function PremiumCartBar({ onCheckout }) {
                  boxShadow: "0 4px 16px rgba(233,27,139,0.35)",
                }}
                onClick={() => { setOpen(false); onCheckout(); }}
-             >
-               ¡Confirmar pedido! 🎉
-             </button>
+               >
+                {isEditing ? "✅ Guardar cambios del pedido" : "¡Confirmar pedido! 🎉"}
+               </button>
            </div>
         </SheetContent>
       </Sheet>
