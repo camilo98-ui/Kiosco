@@ -24,14 +24,45 @@ const SALSAS = [
 const CHANTILLY = ["Con Crema Chantilly","Sin Crema Chantilly"];
 const CRACK = [{ label: "Sin Crack", price: 0 }, { label: "Con Crack", price: 4000 }];
 
+const EXTRAS = [
+  { name: "Gomas Ositos", price: 2900 },
+  { name: "Cerezas", price: 2900 },
+  { name: "M&M's", price: 2900 },
+  { name: "Banano", price: 2900 },
+  { name: "Fresas", price: 2900 },
+  { name: "Durazno", price: 2900 },
+  { name: "Mini Masmelos", price: 2900 },
+  { name: "Chantilly", price: 2900 },
+  { name: "Chips De Chocolate", price: 2900 },
+  { name: "Brownie", price: 2900 },
+  { name: "Galleta Oreo", price: 2900 },
+  { name: "Nueces", price: 2900 },
+  { name: "Barquillos", price: 2900 },
+  { name: "Chocolatina Milky Way", price: 2900 },
+  { name: "Leche Condensada", price: 2900 },
+  { name: "Macadamia", price: 2900 },
+  { name: "Sprinkles", price: 2900 },
+];
+
+const PRECIO_LITRO_GOURMET = 39900;
+const PRECIO_LITRO_EXCLUSIVO = 46900;
+const PRECIO_TARRINA_GOURMET = 39900;
+const PRECIO_TARRINA_EXCLUSIVO = 46900;
+
 // Determina qué tipo de customizer mostrar según el combo
 function getComboType(combo) {
   if (!combo) return null;
   const title = combo.title?.toLowerCase() || "";
+  if (title.includes("charlie brownie") || title.includes("charly brownie")) return "charlie_brownie";
   if (title.includes("banana split")) return "banana_split";
-  if (title.includes("charlie brownie") || title.includes("charly")) return "malteada";
-  if (title.includes("malteada") || combo.saborType === "malteada") return "malteada";
-  if (combo.saborType === "litro") return "litro";
+  if (title.includes("malteada 16") && !title.includes("charlie") && !title.includes("banana")) return "malteada_16";
+  if (title.includes("litro de helado") && title.includes("brownie")) return "litro_brownie";
+  if (title.includes("tarrina o litro")) return "tarrina_litro";
+  if (title.includes("2 tarrina") && title.includes("cono")) return "dos_tarrinas";
+  if (title.includes("litro") && title.includes("cono") && title.includes("topping")) return "litro_cono_toppings";
+  if (title.includes("malteada") && title.includes("agua")) return "malteada_agua";
+  if (title.includes("la 2da con descuento")) return "dos_malteadas";
+  if (title.includes("duplica") || title.includes("segundo litro")) return "segundo_litro";
   return null;
 }
 
@@ -78,54 +109,49 @@ function Check({ label, price, selected, onToggle }) {
   );
 }
 
-// ─── Customizer para Malteadas (y Charlie Brownie) ────────────────────────────
-function MalteadaForm({ combo, onConfirm }) {
-  const [openSec, setOpenSec] = useState("salsa");
-  const [salsa, setSalsa] = useState(null);
-  const [chantilly, setChantilly] = useState(null);
-  const [crack, setCrack] = useState(null);
+// ─── Customizer para Malteada 16oz (básica) ────────────────────────────────────
+function Malteada16Form({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("sabor");
+  const [sabor, setSabor] = useState(null);
+  const [extras, setExtras] = useState([]);
 
-  const SECS = ["salsa", "chantilly", "crack"];
-  const advance = (cur) => {
-    const next = SECS[SECS.indexOf(cur) + 1];
-    if (next) setTimeout(() => setOpenSec(next), 200);
-    else setTimeout(() => setOpenSec(null), 200);
+  const toggleExtra = (name, price) => {
+    setExtras(prev => prev.find(e => e.name === name) ? prev.filter(e => e.name !== name) : [...prev, { name, price }]);
   };
 
-  const crackPrice = CRACK.find(c => c.label === crack)?.price || 0;
-  const total = combo.price + crackPrice;
-  const ready = salsa && chantilly && crack;
+  const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
+  const total = combo.price + extrasTotal;
+  const ready = sabor;
 
   const handleConfirm = () => {
     if (!ready) return;
-    const notes = [`Salsa: ${salsa}`, `Chantilly: ${chantilly}`, `Crack: ${crack}`].join(" | ");
+    const notes = [
+      `Sabor: ${sabor}`,
+      extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
+    ].filter(Boolean).join(" | ");
     onConfirm(total, notes);
   };
 
   return (
     <>
-      <Section title="Salsa" required open={openSec === "salsa"} onToggle={() => setOpenSec(s => s === "salsa" ? null : "salsa")}>
-        {SALSAS.map(s => <Radio key={s} label={s} price={0} selected={salsa === s} onSelect={() => { setSalsa(s); advance("salsa"); }} />)}
+      <Section title="Sabor De Helado" required badge={sabor ? "✓" : ""} open={openSec === "sabor"} onToggle={() => setOpenSec(s => s === "sabor" ? null : "sabor")}>
+        {SABORES_ALL.map(s => <Radio key={s} label={s} price={0} selected={sabor === s} onSelect={() => { setSabor(s); setOpenSec("extras"); }} />)}
       </Section>
-      <Section title="¿Crema Chantilly?" required open={openSec === "chantilly"} onToggle={() => setOpenSec(s => s === "chantilly" ? null : "chantilly")}>
-        {CHANTILLY.map(c => <Radio key={c} label={c} price={0} selected={chantilly === c} onSelect={() => { setChantilly(c); advance("chantilly"); }} />)}
+      <Section title="Extras" required={false} open={openSec === "extras"} onToggle={() => setOpenSec(s => s === "extras" ? null : "extras")}>
+        {EXTRAS.map(e => <Check key={e.name} label={`${e.name}`} price={e.price} selected={!!extras.find(x => x.name === e.name)} onToggle={() => toggleExtra(e.name, e.price)} />)}
       </Section>
-      <Section title="Cobertura Chocolate Crack" required open={openSec === "crack"} onToggle={() => setOpenSec(s => s === "crack" ? null : "crack")}>
-        {CRACK.map(c => <Radio key={c.label} label={c.label} price={c.price} selected={crack === c.label} onSelect={() => { setCrack(c.label); advance("crack"); }} />)}
-      </Section>
-      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* Selecciona salsa, chantilly y crack" />
+      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* Elige un sabor de helado" />
     </>
   );
 }
 
-// ─── Customizer para Banana Split (3 sabores + 2 salsas) ─────────────────────
-function BananaSplitForm({ combo, onConfirm }) {
+// ─── Customizer para Charlie Brownie (2 sabores, 2 salsas gratis) ─────────────────
+function CharlieBrownieForm({ combo, onConfirm }) {
   const [openSec, setOpenSec] = useState("sabores");
   const [sabores, setSabores] = useState([]);
   const [salsas, setSalsas] = useState([]);
-  const [chantilly, setChantilly] = useState(null);
-  const [crack, setCrack] = useState(null);
-  const MAX_SABORES = 3;
+  const [extras, setExtras] = useState([]);
+  const MAX_SABORES = 2;
   const MAX_SALSAS = 2;
 
   const toggleSabor = (s) => setSabores(prev => {
@@ -140,57 +166,176 @@ function BananaSplitForm({ combo, onConfirm }) {
     if (prev.includes(s)) return prev.filter(x => x !== s);
     if (prev.length >= MAX_SALSAS) return prev;
     const next = [...prev, s];
-    if (next.length === MAX_SALSAS) setTimeout(() => setOpenSec("chantilly"), 300);
+    if (next.length === MAX_SALSAS) setTimeout(() => setOpenSec("extras"), 300);
     return next;
   });
 
-  const crackPrice = CRACK.find(c => c.label === crack)?.price || 0;
-  const total = combo.price + crackPrice;
-  const ready = sabores.length === MAX_SABORES && salsas.length >= 1 && chantilly && crack;
+  const toggleExtra = (name, price) => {
+    setExtras(prev => prev.find(e => e.name === name) ? prev.filter(e => e.name !== name) : [...prev, { name, price }]);
+  };
+
+  const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
+  const total = combo.price + extrasTotal;
+  const ready = sabores.length === MAX_SABORES && salsas.length === MAX_SALSAS;
 
   const handleConfirm = () => {
     if (!ready) return;
     const notes = [
-      `Sabores: ${sabores.join(", ")}`,
-      `Salsas: ${salsas.join(", ")}`,
-      `Chantilly: ${chantilly}`,
-      `Crack: ${crack}`,
-    ].join(" | ");
+      `Helados: ${sabores.join(", ")}`,
+      `Salsas: ${salsas.join(", ")} (Gratis)`,
+      extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
+    ].filter(Boolean).join(" | ");
     onConfirm(total, notes);
   };
 
   return (
     <>
-      <Section title="3 Sabores De Helado" required badge={`${sabores.length}/${MAX_SABORES}`} open={openSec === "sabores"} onToggle={() => setOpenSec(s => s === "sabores" ? null : "sabores")}>
-        <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Elige 3 sabores (Gourmet o Exclusivo)</p>
+      <Section title="2 Sabores De Helado" required badge={`${sabores.length}/${MAX_SABORES}`} open={openSec === "sabores"} onToggle={() => setOpenSec(s => s === "sabores" ? null : "sabores")}>
         {SABORES_ALL.map(s => <Check key={s} label={s} price={0} selected={sabores.includes(s)} onToggle={() => toggleSabor(s)} />)}
       </Section>
-      <Section title="2 Salsas" required badge={`${salsas.length}/${MAX_SALSAS}`} open={openSec === "salsas"} onToggle={() => setOpenSec(s => s === "salsas" ? null : "salsas")}>
-        <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Elige hasta 2 salsas</p>
+      <Section title="2 Salsas (Gratis)" required badge={`${salsas.length}/${MAX_SALSAS}`} open={openSec === "salsas"} onToggle={() => setOpenSec(s => s === "salsas" ? null : "salsas")}>
         {SALSAS.map(s => <Check key={s} label={s} price={0} selected={salsas.includes(s)} onToggle={() => toggleSalsa(s)} />)}
       </Section>
-      <Section title="¿Crema Chantilly?" required open={openSec === "chantilly"} onToggle={() => setOpenSec(s => s === "chantilly" ? null : "chantilly")}>
-        {CHANTILLY.map(c => <Radio key={c} label={c} price={0} selected={chantilly === c} onSelect={() => { setChantilly(c); setTimeout(() => setOpenSec("crack"), 200); }} />)}
+      <Section title="Extras" required={false} open={openSec === "extras"} onToggle={() => setOpenSec(s => s === "extras" ? null : "extras")}>
+        {EXTRAS.map(e => <Check key={e.name} label={`${e.name}`} price={e.price} selected={!!extras.find(x => x.name === e.name)} onToggle={() => toggleExtra(e.name, e.price)} />)}
       </Section>
-      <Section title="Cobertura Chocolate Crack" required open={openSec === "crack"} onToggle={() => setOpenSec(s => s === "crack" ? null : "crack")}>
-        {CRACK.map(c => <Radio key={c.label} label={c.label} price={c.price} selected={crack === c.label} onSelect={() => { setCrack(c.label); setTimeout(() => setOpenSec(null), 200); }} />)}
-      </Section>
-      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* 3 sabores, mín. 1 salsa, chantilly y crack" />
+      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* 2 helados y 2 salsas" />
     </>
   );
 }
 
-// ─── Customizer para Litro / Tarrina ─────────────────────────────────────────
-function LitroForm({ combo, onConfirm }) {
-  const [openSec, setOpenSec] = useState("sabores");
-  const [tab, setTab] = useState("gourmet");
+// ─── Customizer para Banana Split (1 sabor + 1 salsa + extras) ────────────────────
+function BananaSplitForm({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("sabor");
+  const [sabor, setSabor] = useState(null);
+  const [salsa, setSalsa] = useState(null);
+  const [extras, setExtras] = useState([]);
+
+  const toggleExtra = (name, price) => {
+    setExtras(prev => prev.find(e => e.name === name) ? prev.filter(e => e.name !== name) : [...prev, { name, price }]);
+  };
+
+  const extrasTotal = extras.reduce((sum, e) => sum + e.price, 0);
+  const total = combo.price + extrasTotal;
+  const ready = sabor && salsa;
+
+  const handleConfirm = () => {
+    if (!ready) return;
+    const notes = [
+      `Helado: ${sabor}`,
+      `Salsa: ${salsa}`,
+      extras.length > 0 ? `Extras: ${extras.map(e => e.name).join(", ")}` : null,
+    ].filter(Boolean).join(" | ");
+    onConfirm(total, notes);
+  };
+
+  return (
+    <>
+      <Section title="Sabor De Helado" required badge={sabor ? "✓" : ""} open={openSec === "sabor"} onToggle={() => setOpenSec(s => s === "sabor" ? null : "sabor")}>
+        {SABORES_ALL.map(s => <Radio key={s} label={s} price={0} selected={sabor === s} onSelect={() => { setSabor(s); setOpenSec("salsa"); }} />)}
+      </Section>
+      <Section title="Salsa" required badge={salsa ? "✓" : ""} open={openSec === "salsa"} onToggle={() => setOpenSec(s => s === "salsa" ? null : "salsa")}>
+        {SALSAS.map(s => <Radio key={s} label={s} price={0} selected={salsa === s} onSelect={() => { setSalsa(s); setOpenSec("extras"); }} />)}
+      </Section>
+      <Section title="Extras" required={false} open={openSec === "extras"} onToggle={() => setOpenSec(s => s === "extras" ? null : "extras")}>
+        {EXTRAS.map(e => <Check key={e.name} label={`${e.name}`} price={e.price} selected={!!extras.find(x => x.name === e.name)} onToggle={() => toggleExtra(e.name, e.price)} />)}
+      </Section>
+      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* Elige helado y salsa" />
+    </>
+  );
+}
+
+// ─── Customizer para Litro + Brownie (precio dinámico) ────────────────────────────
+function LitroBrownieForm({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("tipo");
+  const [tipo, setTipo] = useState(null);
   const [sabores, setSabores] = useState([]);
-
-  // Determinar cuántos sabores permite según el combo
-  const title = combo.title?.toLowerCase() || "";
-  const MAX_SABORES = title.includes("tarrina") ? 2 : title.includes("2 tarrina") ? 4 : 3;
-
+  const tab = tipo || "gourmet";
   const saboresList = tab === "gourmet" ? SABORES_GOURMET : SABORES_EXCLUSIVO;
+
+  const toggleSabor = (s) => setSabores(prev => {
+    if (prev.includes(s)) return prev.filter(x => x !== s);
+    if (prev.length >= 1) return prev;
+    const next = [...prev, s];
+    if (next.length === 1) setTimeout(() => setOpenSec(null), 200);
+    return next;
+  });
+
+  const litroPrice = tipo === "exclusivo" ? PRECIO_LITRO_EXCLUSIVO : PRECIO_LITRO_GOURMET;
+  const total = combo.price + litroPrice;
+  const ready = tipo && sabores.length === 1;
+
+  const handleConfirm = () => {
+    if (!ready) return;
+    const notes = `Tipo: ${tipo === "exclusivo" ? "Exclusivo" : "Gourmet"} | Sabor: ${sabores[0]}`;
+    onConfirm(total, notes);
+  };
+
+  return (
+    <>
+      <Section title="Tipo De Litro" required badge={tipo ? `${tipo}` : ""} open={openSec === "tipo"} onToggle={() => setOpenSec(s => s === "tipo" ? null : "tipo")}>
+        <Radio label={`Gourmet ${formatCOP(PRECIO_LITRO_GOURMET)}`} price={0} selected={tipo === "gourmet"} onSelect={() => { setTipo("gourmet"); setOpenSec("sabor"); }} />
+        <Radio label={`Exclusivo ${formatCOP(PRECIO_LITRO_EXCLUSIVO)}`} price={0} selected={tipo === "exclusivo"} onSelect={() => { setTipo("exclusivo"); setOpenSec("sabor"); }} />
+      </Section>
+      <Section title="Sabor" required badge={sabores.length ? "✓" : ""} open={openSec === "sabor"} onToggle={() => setOpenSec(s => s === "sabor" ? null : "sabor")}>
+        {saboresList.map(s => <Radio key={s} label={s} price={0} selected={sabores.includes(s)} onSelect={() => toggleSabor(s)} />)}
+      </Section>
+      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* Elige tipo y sabor" />
+    </>
+  );
+}
+
+// ─── Customizer para Tarrina o Litro ─────────────────────────────────────────────
+function TarrinaLitroForm({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("formato");
+  const [formato, setFormato] = useState(null);
+  const [tipo, setTipo] = useState(null);
+  const [sabores, setSabores] = useState([]);
+  const saboresList = tipo === "exclusivo" ? SABORES_EXCLUSIVO : SABORES_GOURMET;
+
+  const toggleSabor = (s) => setSabores(prev => {
+    if (prev.includes(s)) return prev.filter(x => x !== s);
+    if (prev.length >= 1) return prev;
+    return [...prev, s];
+  });
+
+  const basePrice = formato === "litro" 
+    ? (tipo === "exclusivo" ? PRECIO_LITRO_EXCLUSIVO : PRECIO_LITRO_GOURMET)
+    : (tipo === "exclusivo" ? PRECIO_TARRINA_EXCLUSIVO : PRECIO_TARRINA_GOURMET);
+  const total = combo.price + basePrice;
+  const ready = formato && tipo && sabores.length === 1;
+
+  const handleConfirm = () => {
+    if (!ready) return;
+    const notes = `${formato === "litro" ? "Litro" : "Tarrina"} ${tipo === "exclusivo" ? "Exclusivo" : "Gourmet"} | Sabor: ${sabores[0]}`;
+    onConfirm(total, notes);
+  };
+
+  return (
+    <>
+      <Section title="Formato" required badge={formato} open={openSec === "formato"} onToggle={() => setOpenSec(s => s === "formato" ? null : "formato")}>
+        <Radio label="Tarrina" price={0} selected={formato === "tarrina"} onSelect={() => { setFormato("tarrina"); setOpenSec("tipo"); }} />
+        <Radio label="Litro" price={0} selected={formato === "litro"} onSelect={() => { setFormato("litro"); setOpenSec("tipo"); }} />
+      </Section>
+      <Section title="Tipo" required badge={tipo} open={openSec === "tipo"} onToggle={() => setOpenSec(s => s === "tipo" ? null : "tipo")}>
+        <Radio label={`Gourmet ${formatCOP(formato === "litro" ? PRECIO_LITRO_GOURMET : PRECIO_TARRINA_GOURMET)}`} price={0} selected={tipo === "gourmet"} onSelect={() => { setTipo("gourmet"); setOpenSec("sabor"); }} />
+        <Radio label={`Exclusivo ${formatCOP(formato === "litro" ? PRECIO_LITRO_EXCLUSIVO : PRECIO_TARRINA_EXCLUSIVO)}`} price={0} selected={tipo === "exclusivo"} onSelect={() => { setTipo("exclusivo"); setOpenSec("sabor"); }} />
+      </Section>
+      <Section title="Sabor" required badge={sabores.length ? "✓" : ""} open={openSec === "sabor"} onToggle={() => setOpenSec(s => s === "sabor" ? null : "sabor")}>
+        {saboresList.map(s => <Radio key={s} label={s} price={0} selected={sabores.includes(s)} onSelect={() => { toggleSabor(s); if (!sabores.includes(s)) setTimeout(() => setOpenSec(null), 200); }} />)}
+      </Section>
+      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* Elige formato, tipo y sabor" />
+    </>
+  );
+}
+
+// ─── Customizer para 2 Tarrinas + Caja de Conos ───────────────────────────────────
+function DosTarrinasForm({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("tipo");
+  const [tipo, setTipo] = useState(null);
+  const [sabores, setSabores] = useState([]);
+  const MAX_SABORES = 2;
+  const saboresList = tipo === "exclusivo" ? SABORES_EXCLUSIVO : SABORES_GOURMET;
 
   const toggleSabor = (s) => setSabores(prev => {
     if (prev.includes(s)) return prev.filter(x => x !== s);
@@ -198,30 +343,139 @@ function LitroForm({ combo, onConfirm }) {
     return [...prev, s];
   });
 
-  const ready = sabores.length >= 1;
+  const tarrinaPrice = tipo === "exclusivo" ? PRECIO_TARRINA_EXCLUSIVO : PRECIO_TARRINA_GOURMET;
+  const total = combo.price + (tarrinaPrice * 2);
+  const ready = tipo && sabores.length === MAX_SABORES;
 
   const handleConfirm = () => {
     if (!ready) return;
-    const notes = `Sabores: ${sabores.join(", ")}`;
+    const notes = `${tipo === "exclusivo" ? "Exclusivo" : "Gourmet"} | Sabores: ${sabores.join(", ")}`;
+    onConfirm(total, notes);
+  };
+
+  return (
+    <>
+      <Section title="Tipo De Tarrinas" required badge={tipo} open={openSec === "tipo"} onToggle={() => setOpenSec(s => s === "tipo" ? null : "tipo")}>
+        <Radio label={`Gourmet 2x ${formatCOP(PRECIO_TARRINA_GOURMET)}`} price={0} selected={tipo === "gourmet"} onSelect={() => { setTipo("gourmet"); setOpenSec("sabores"); }} />
+        <Radio label={`Exclusivo 2x ${formatCOP(PRECIO_TARRINA_EXCLUSIVO)}`} price={0} selected={tipo === "exclusivo"} onSelect={() => { setTipo("exclusivo"); setOpenSec("sabores"); }} />
+      </Section>
+      <Section title={`Sabores De Las Tarrinas`} required badge={`${sabores.length}/${MAX_SABORES}`} open={openSec === "sabores"} onToggle={() => setOpenSec(s => s === "sabores" ? null : "sabores")}>
+        {saboresList.map(s => <Check key={s} label={s} price={0} selected={sabores.includes(s)} onToggle={() => toggleSabor(s)} />)}
+      </Section>
+      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* Elige tipo y 2 sabores" />
+    </>
+  );
+}
+
+// ─── Customizer para Litro + Caja Cono 2 + Toppings ──────────────────────────────
+function LitroConoToppingsForm({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("tipo");
+  const [tipo, setTipo] = useState(null);
+  const [sabor, setSabor] = useState(null);
+  const saboresList = tipo === "exclusivo" ? SABORES_EXCLUSIVO : SABORES_GOURMET;
+
+  const litroPrice = tipo === "exclusivo" ? PRECIO_LITRO_EXCLUSIVO : PRECIO_LITRO_GOURMET;
+  const total = combo.price + litroPrice;
+  const ready = tipo && sabor;
+
+  const handleConfirm = () => {
+    if (!ready) return;
+    const notes = `${tipo === "exclusivo" ? "Litro Exclusivo" : "Litro Gourmet"} | Sabor: ${sabor}`;
+    onConfirm(total, notes);
+  };
+
+  return (
+    <>
+      <Section title="Tipo De Litro" required badge={tipo} open={openSec === "tipo"} onToggle={() => setOpenSec(s => s === "tipo" ? null : "tipo")}>
+        <Radio label={`Gourmet ${formatCOP(PRECIO_LITRO_GOURMET)}`} price={0} selected={tipo === "gourmet"} onSelect={() => { setTipo("gourmet"); setOpenSec("sabor"); }} />
+        <Radio label={`Exclusivo ${formatCOP(PRECIO_LITRO_EXCLUSIVO)}`} price={0} selected={tipo === "exclusivo"} onSelect={() => { setTipo("exclusivo"); setOpenSec("sabor"); }} />
+      </Section>
+      <Section title="Sabor" required badge={sabor ? "✓" : ""} open={openSec === "sabor"} onToggle={() => setOpenSec(s => s === "sabor" ? null : "sabor")}>
+        {saboresList.map(s => <Radio key={s} label={s} price={0} selected={sabor === s} onSelect={() => { setSabor(s); setOpenSec(null); }} />)}
+      </Section>
+      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* Elige tipo y sabor" />
+    </>
+  );
+}
+
+// ─── Customizer para Malteada + Agua ──────────────────────────────────────────────
+function MalteadaAguaForm({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("sabor");
+  const [sabor, setSabor] = useState(null);
+
+  const ready = sabor;
+
+  const handleConfirm = () => {
+    if (!ready) return;
+    const notes = `Sabor: ${sabor}`;
     onConfirm(combo.price, notes);
   };
 
   return (
     <>
-      <Section title={`Elige Tus Sabores`} required badge={`${sabores.length}/${MAX_SABORES} máx`} open={openSec === "sabores"} onToggle={() => setOpenSec(s => s === "sabores" ? null : "sabores")}>
-        <div style={{ display: "flex", gap: 8, padding: "8px 16px 12px" }}>
-          {[{ key: "gourmet", label: "Gourmet 🍦" }, { key: "exclusivo", label: "Exclusivo ✨" }].map(t => (
-            <button key={t.key} onClick={() => setTab(t.key)} style={{ flex: 1, padding: "8px 0", borderRadius: 10, border: "none", cursor: "pointer", fontWeight: 700, fontSize: 12, fontFamily: "'Poppins', sans-serif", background: tab === t.key ? MAGENTA : "#FFF0F5", color: tab === t.key ? "#fff" : MAGENTA, transition: "all 0.2s" }}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-        <p style={{ fontSize: 11, color: "#BBA8B0", padding: "0 16px 6px" }}>Máximo {MAX_SABORES} sabores</p>
-        {saboresList.map(s => (
-          <Check key={s} label={s} price={0} selected={sabores.includes(s)} onToggle={() => toggleSabor(s)} />
-        ))}
+      <Section title="Sabor De Malteada" required badge={sabor ? "✓" : ""} open={openSec === "sabor"} onToggle={() => setOpenSec(s => s === "sabor" ? null : "sabor")}>
+        {SABORES_ALL.map(s => <Radio key={s} label={s} price={0} selected={sabor === s} onSelect={() => { setSabor(s); setOpenSec(null); }} />)}
       </Section>
-      <FooterBtn ready={ready} total={combo.price} onConfirm={handleConfirm} label="* Elige al menos 1 sabor" />
+      <FooterBtn ready={ready} total={combo.price} onConfirm={handleConfirm} label="* Elige un sabor" />
+    </>
+  );
+}
+
+// ─── Customizer para 2 Malteadas ─────────────────────────────────────────────────
+function DosMalteadasForm({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("sabor1");
+  const [sabor1, setSabor1] = useState(null);
+  const [sabor2, setSabor2] = useState(null);
+  const MAX_SABORES = 2;
+
+  const ready = sabor1 && sabor2;
+
+  const handleConfirm = () => {
+    if (!ready) return;
+    const notes = `Malteadas: ${sabor1}, ${sabor2}`;
+    onConfirm(combo.price, notes);
+  };
+
+  return (
+    <>
+      <Section title="1era Malteada" required badge={sabor1 ? "✓" : ""} open={openSec === "sabor1"} onToggle={() => setOpenSec(s => s === "sabor1" ? null : "sabor1")}>
+        {SABORES_ALL.map(s => <Radio key={s} label={s} price={0} selected={sabor1 === s} onSelect={() => { setSabor1(s); setOpenSec("sabor2"); }} />)}
+      </Section>
+      <Section title="2da Malteada (Descuento)" required badge={sabor2 ? "✓" : ""} open={openSec === "sabor2"} onToggle={() => setOpenSec(s => s === "sabor2" ? null : "sabor2")}>
+        {SABORES_ALL.map(s => <Radio key={s} label={s} price={0} selected={sabor2 === s} onSelect={() => { setSabor2(s); setOpenSec(null); }} />)}
+      </Section>
+      <FooterBtn ready={ready} total={combo.price} onConfirm={handleConfirm} label="* Elige 2 sabores de malteada" />
+    </>
+  );
+}
+
+// ─── Customizer para Segundo Litro ───────────────────────────────────────────────
+function SegundoLitroForm({ combo, onConfirm }) {
+  const [openSec, setOpenSec] = useState("tipo");
+  const [tipo, setTipo] = useState(null);
+  const [sabor, setSabor] = useState(null);
+  const saboresList = tipo === "exclusivo" ? SABORES_EXCLUSIVO : SABORES_GOURMET;
+
+  const litroPrice = tipo === "exclusivo" ? PRECIO_LITRO_EXCLUSIVO : PRECIO_LITRO_GOURMET;
+  const total = combo.price + litroPrice;
+  const ready = tipo && sabor;
+
+  const handleConfirm = () => {
+    if (!ready) return;
+    const notes = `${tipo === "exclusivo" ? "Litro Exclusivo" : "Litro Gourmet"} | Sabor: ${sabor}`;
+    onConfirm(total, notes);
+  };
+
+  return (
+    <>
+      <Section title="Tipo De Litro" required badge={tipo} open={openSec === "tipo"} onToggle={() => setOpenSec(s => s === "tipo" ? null : "tipo")}>
+        <Radio label={`Gourmet ${formatCOP(PRECIO_LITRO_GOURMET)}`} price={0} selected={tipo === "gourmet"} onSelect={() => { setTipo("gourmet"); setOpenSec("sabor"); }} />
+        <Radio label={`Exclusivo ${formatCOP(PRECIO_LITRO_EXCLUSIVO)}`} price={0} selected={tipo === "exclusivo"} onSelect={() => { setTipo("exclusivo"); setOpenSec("sabor"); }} />
+      </Section>
+      <Section title="Sabor" required badge={sabor ? "✓" : ""} open={openSec === "sabor"} onToggle={() => setOpenSec(s => s === "sabor" ? null : "sabor")}>
+        {saboresList.map(s => <Radio key={s} label={s} price={0} selected={sabor === s} onSelect={() => { setSabor(s); setOpenSec(null); }} />)}
+      </Section>
+      <FooterBtn ready={ready} total={total} onConfirm={handleConfirm} label="* Elige tipo y sabor" />
     </>
   );
 }
@@ -291,9 +545,16 @@ export default function ComboCustomizer({ combo, open, onClose, onAdd }) {
           </div>
         </div>
 
-        {comboType === "malteada" && <MalteadaForm combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "malteada_16" && <Malteada16Form combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "charlie_brownie" && <CharlieBrownieForm combo={combo} onConfirm={handleConfirm} />}
         {comboType === "banana_split" && <BananaSplitForm combo={combo} onConfirm={handleConfirm} />}
-        {comboType === "litro" && <LitroForm combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "litro_brownie" && <LitroBrownieForm combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "tarrina_litro" && <TarrinaLitroForm combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "dos_tarrinas" && <DosTarrinasForm combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "litro_cono_toppings" && <LitroConoToppingsForm combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "malteada_agua" && <MalteadaAguaForm combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "dos_malteadas" && <DosMalteadasForm combo={combo} onConfirm={handleConfirm} />}
+        {comboType === "segundo_litro" && <SegundoLitroForm combo={combo} onConfirm={handleConfirm} />}
       </SheetContent>
     </Sheet>
   );
