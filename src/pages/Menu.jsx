@@ -7,6 +7,7 @@ import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 import { useCart } from "@/lib/cartStore";
 import { useStore } from "@/lib/storeContext";
 import { CATEGORIES, UPSELL_RULES, formatCOP } from "@/lib/constants";
+import { useNavigate } from "react-router-dom";
 import { Search, Loader2, ChevronRight, ArrowLeft, MapPin } from "lucide-react";
 import LoginRoles from "@/components/LoginRoles";
 import RatingScreen from "@/components/RatingScreen";
@@ -203,6 +204,7 @@ function CategoryView({ activeCategory, categoryProducts, suggestedProducts, onA
 
 export default function Menu() {
   useSwipeNavigation();
+  const navigate = useNavigate();
   const { store, selectStore, loading: storeLoading } = useStore();
   const [activeCategory, setActiveCategory] = useState(null);
   const [upsellMsg, setUpsellMsg] = useState(null);
@@ -491,7 +493,7 @@ export default function Menu() {
           </button>
           
           {/* Ubicación */}
-          <button onClick={() => selectStore(null)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", borderRight: "1px solid rgba(255,255,255,0.15)", flexShrink: 0 }}>
+          <button onClick={() => { selectStore(null); navigate("/"); }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", borderRight: "1px solid rgba(255,255,255,0.15)", flexShrink: 0 }}>
             <MapPin size={13} color="#fff" strokeWidth={1.5} />
             <span style={{ fontSize: 10, color: "rgba(255,255,255,0.9)", fontFamily: "'Poppins', sans-serif", fontWeight: 500, maxWidth: 140, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", letterSpacing: "0.3px" }}>
               {store?.address || store?.name || "Tienda"}
