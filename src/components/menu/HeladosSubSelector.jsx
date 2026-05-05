@@ -657,6 +657,16 @@ export default function HeladosSubSelector({ products, onAdd, onDirectAdd }) {
 
   return (
     <>
+      <div style={{ background: "#F7F2F5", borderRadius: 28, padding: 14, fontFamily: FONT }}>
+        {/* 3 Category Cards */}
+        {SUBCATS.map((cat, i) => (
+          <CategoryCard key={cat.id} cat={cat} onSelect={setActiveSubcat} index={i} />
+        ))}
+
+        {/* Tendencia hoy: grid fijo 2×2 + carrusel especiales */}
+        <TendenciaSection onAdd={onAdd} />
+      </div>
+
       {/* Customizer sheet — usa onDirectAdd para ir al carrito sin pasar por handleAdd */}
       <HeladoSubcatCustomizer
         subcat={activeSubcat}
