@@ -100,15 +100,11 @@ function FamilyCarousel({ productCounts, onSelect, onCookieJaar }) {
 
 }
 
-function MostOrderedItem({ product, idx, onAdd, onSelectCategory }) {
+function MostOrderedItem({ product, idx, onAdd }) {
   const [imgError, setImgError] = useState(false);
-  const handleClick = () => {
-    // Navegar a la categoría del producto para que el customizer funcione
-    onSelectCategory(product.category, product);
-  };
   return (
     <button
-      onClick={handleClick}
+      onClick={() => onAdd(product)}
       style={{ display: "flex", alignItems: "center", gap: 14, background: "#FFF5F7", border: "none", borderBottom: "1px solid #F5EAEF", padding: "14px 16px", cursor: "pointer", textAlign: "left", width: "100%", WebkitTapHighlightColor: "transparent" }}>
       
       <div style={{ width: 52, height: 52, borderRadius: 14, background: ITEM_BG[idx % ITEM_BG.length], display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
@@ -129,7 +125,7 @@ function MostOrderedItem({ product, idx, onAdd, onSelectCategory }) {
 
 }
 
-function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
+function MostOrdered({ products, onAdd, onShowAll }) {
   const top = useMemo(() =>
   [...products].filter((p) => p.tag === "mas_vendido" && p.is_available !== false).slice(0, 8),
   [products]
@@ -142,7 +138,7 @@ function MostOrdered({ products, onAdd, onShowAll, onSelectCategory }) {
       <button onClick={onShowAll} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#D81B60", letterSpacing: "0.3px" }}>Ver todo</button>
       </div>
       {top.map((product, idx) =>
-      <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} onSelectCategory={onSelectCategory} />
+      <MostOrderedItem key={product.id} product={product} idx={idx} onAdd={onAdd} />
       )}
       <div style={{ height: 8 }} />
     </div>);
@@ -220,6 +216,7 @@ export default function Menu() {
   const [showCombosAll, setShowCombosAll] = useState(false);
   const [showCookieJaar, setShowCookieJaar] = useState(false);
   const [autoOpenProduct, setAutoOpenProduct] = useState(null);
+  const [directProduct, setDirectProduct] = useState(null);
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const [showRating, setShowRating] = useState(false);
   const [editingOrderId, setEditingOrderId] = useState(null);
@@ -534,10 +531,22 @@ export default function Menu() {
           </div> :
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
-            <MostOrdered products={products} onAdd={handleAddProduct} onShowAll={() => setShowMostOrdered(true)} onSelectCategory={(cat, product) => {setActiveCategory(cat);if (product) setAutoOpenProduct(product);}} />
+            <MostOrdered products={products} onAdd={(p) => setDirectProduct(p)} onShowAll={() => setShowMostOrdered(true)} />
           </motion.div>
         }
       </div>
+
+      {/* ── CUSTOMIZER DIRECTO (desde favoritos, sin cambiar de vista) ── */}
+      {directProduct && (
+        <EditorialLayout
+          products={[directProduct]}
+          category={directProduct.category}
+          onAdd={handleAddProduct}
+          addedFlash={null}
+          autoOpenProduct={directProduct}
+          onAutoOpenDone={() => setDirectProduct(null)}
+        />
+      )}
 
       {/* ── OVERLAYS ── */}
       <PremiumCartBar onCheckout={handleOpenCheckout} isEditing={!!editingOrderId} editingCustomerName={editingCustomerName} />
@@ -548,7 +557,7 @@ export default function Menu() {
       <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
       <CookieJaarModal open={showCookieJaar} onClose={() => setShowCookieJaar(false)} onAdd={handleAddProduct} />
       {showMostOrdered &&
-      <MostOrderedAll products={products} onAdd={(p) => {handleAddProduct(p);setShowMostOrdered(false);}} onBack={() => setShowMostOrdered(false)} />
+      <MostOrderedAll products={products} onAdd={(p) => { setDirectProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
       }
     </div>);
 
