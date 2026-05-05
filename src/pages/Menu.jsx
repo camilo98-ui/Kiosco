@@ -30,6 +30,7 @@ import WaterUpsell from "@/components/menu/WaterUpsell";
 import CuantosSon from "@/components/menu/CuantosSon";
 import CookieJaarModal from "@/components/menu/CookieJaarModal";
 import ParaLlevarLayout from "@/components/menu/ParaLlevarLayout";
+import DirectCustomizer from "@/components/menu/DirectCustomizer";
 
 const FAMILY_GRADIENTS = [
 "linear-gradient(135deg, #6D1B4E, #B5175A)",
@@ -216,7 +217,7 @@ export default function Menu() {
   const [showCombosAll, setShowCombosAll] = useState(false);
   const [showCookieJaar, setShowCookieJaar] = useState(false);
   const [autoOpenProduct, setAutoOpenProduct] = useState(null);
-  const [directProductOrigin, setDirectProductOrigin] = useState(null); // "home" si viene desde inicio
+  const [directProduct, setDirectProduct] = useState(null); // producto seleccionado desde home (abre customizer sin navegar)
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const [showRating, setShowRating] = useState(false);
   const [editingOrderId, setEditingOrderId] = useState(null);
@@ -452,7 +453,7 @@ export default function Menu() {
         suggestedProducts={suggestedProducts}
         onAdd={handleAddProduct}
         addedFlash={addedFlash}
-        onBack={() => { setActiveCategory(null); setDirectProductOrigin(null); }}
+        onBack={() => setActiveCategory(null)}
         searchOpen={searchOpen}
         setSearchOpen={setSearchOpen}
         products={products}
@@ -531,7 +532,7 @@ export default function Menu() {
           </div> :
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
-            <MostOrdered products={products} onAdd={(p) => { setDirectProductOrigin("home"); setActiveCategory(p.category); setAutoOpenProduct(p); }} onShowAll={() => setShowMostOrdered(true)} />
+            <MostOrdered products={products} onAdd={(p) => setDirectProduct(p)} onShowAll={() => setShowMostOrdered(true)} />
           </motion.div>
         }
       </div>
@@ -544,8 +545,16 @@ export default function Menu() {
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} products={products} onAddProduct={handleAddProduct} />
       <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
       <CookieJaarModal open={showCookieJaar} onClose={() => setShowCookieJaar(false)} onAdd={handleAddProduct} />
+      {/* DirectCustomizer: abre el modal de sabores sin navegar */}
+      {directProduct && (
+        <DirectCustomizer
+          product={directProduct}
+          onAdd={handleAddProduct}
+          onDone={() => setDirectProduct(null)}
+        />
+      )}
       {showMostOrdered &&
-      <MostOrderedAll products={products} onAdd={(p) => { setDirectProductOrigin("home"); setActiveCategory(p.category); setAutoOpenProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
+      <MostOrderedAll products={products} onAdd={(p) => { setDirectProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
       }
     </div>);
 
