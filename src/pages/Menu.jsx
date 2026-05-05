@@ -216,7 +216,7 @@ export default function Menu() {
   const [showCombosAll, setShowCombosAll] = useState(false);
   const [showCookieJaar, setShowCookieJaar] = useState(false);
   const [autoOpenProduct, setAutoOpenProduct] = useState(null);
-  const [directProduct, setDirectProduct] = useState(null);
+  const [directProductOrigin, setDirectProductOrigin] = useState(null); // "home" si viene desde inicio
   const [nextOrderNum, setNextOrderNum] = useState(null);
   const [showRating, setShowRating] = useState(false);
   const [editingOrderId, setEditingOrderId] = useState(null);
@@ -452,7 +452,7 @@ export default function Menu() {
         suggestedProducts={suggestedProducts}
         onAdd={handleAddProduct}
         addedFlash={addedFlash}
-        onBack={() => setActiveCategory(null)}
+        onBack={() => { setActiveCategory(null); setDirectProductOrigin(null); }}
         searchOpen={searchOpen}
         setSearchOpen={setSearchOpen}
         products={products}
@@ -531,22 +531,10 @@ export default function Menu() {
           </div> :
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
-            <MostOrdered products={products} onAdd={(p) => setDirectProduct(p)} onShowAll={() => setShowMostOrdered(true)} />
+            <MostOrdered products={products} onAdd={(p) => { setDirectProductOrigin("home"); setActiveCategory(p.category); setAutoOpenProduct(p); }} onShowAll={() => setShowMostOrdered(true)} />
           </motion.div>
         }
       </div>
-
-      {/* ── CUSTOMIZER DIRECTO (desde favoritos, sin cambiar de vista) ── */}
-      {directProduct && (
-        <EditorialLayout
-          products={[directProduct]}
-          category={directProduct.category}
-          onAdd={handleAddProduct}
-          addedFlash={null}
-          autoOpenProduct={directProduct}
-          onAutoOpenDone={() => setDirectProduct(null)}
-        />
-      )}
 
       {/* ── OVERLAYS ── */}
       <PremiumCartBar onCheckout={handleOpenCheckout} isEditing={!!editingOrderId} editingCustomerName={editingCustomerName} />
@@ -557,7 +545,7 @@ export default function Menu() {
       <CombosAllModal open={showCombosAll} onClose={() => setShowCombosAll(false)} onAdd={handleAddProduct} />
       <CookieJaarModal open={showCookieJaar} onClose={() => setShowCookieJaar(false)} onAdd={handleAddProduct} />
       {showMostOrdered &&
-      <MostOrderedAll products={products} onAdd={(p) => { setDirectProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
+      <MostOrderedAll products={products} onAdd={(p) => { setDirectProductOrigin("home"); setActiveCategory(p.category); setAutoOpenProduct(p); setShowMostOrdered(false); }} onBack={() => setShowMostOrdered(false)} />
       }
     </div>);
 
