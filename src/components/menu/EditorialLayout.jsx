@@ -212,9 +212,9 @@ function MalteadaCard({ product, onAdd, addedFlash, bg }) {
   return (
     <motion.div animate={isFlash ? { scale: 0.97 } : { scale: 1 }} transition={{ duration: 0.15 }} whileTap={{ scale: 0.95 }} onClick={() => onAdd(product)}
       style={{ width: 140, flexShrink: 0, border: "0.5px solid #FFE4F3", borderRadius: 16, overflow: "hidden", background: "#fff", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(233,27,139,0.06)", cursor: "pointer" }}>
-      <div style={{ background: bg, height: 100, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+      <div style={{ background: bg, height: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", padding: 6 }}>
         {product.image_url && !imgError ? (
-          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={product.image_url} alt={product.name} onError={() => setImgError(true)} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
         ) : (
           <span style={{ fontSize: 44 }}>{product.emoji || "🥤"}</span>
         )}
